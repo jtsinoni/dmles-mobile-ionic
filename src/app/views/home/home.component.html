@@ -1,0 +1,30 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>MQTT</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+    <ion-list>
+        <ion-item>
+            <ion-label floating>Host</ion-label>
+            <ion-input type="text" id="host" name="host" [(ngModel)]="data.host"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label floating>Port</ion-label>
+            <ion-input type="text" id="port" name="port" [(ngModel)]="data.port"></ion-input>
+        </ion-item>
+    </ion-list>
+
+    <!--<button ng-click="vm.connect()" id="connect" class="btn btn-primary disabled" disabled>Connect</button>-->
+    <!--<button ng-click="vm.disconnect()" id="disconnect" class="btn btn-danger disabled" disabled>Disconnect</button>-->
+
+    <button (click)="connect()" ion-button clear>Connect</button>
+    <button (click)="disconnect()" ion-button color="danger" clear>Disconnect</button>
+
+</ion-content>

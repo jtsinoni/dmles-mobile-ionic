@@ -6,7 +6,7 @@ import { Injectable }    from '@angular/core';
 import { UpstreamService } from './upstream.service'
 
 @Injectable()
-export class TopicUpstreamService implements UpstreamService {
+export class TopicUpstreamService extends UpstreamService {
 
     sendData(param?: any): boolean {
         console.log('TopicUpstreamService: ' + param);

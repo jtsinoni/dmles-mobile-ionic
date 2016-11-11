@@ -5,6 +5,7 @@ import { Injectable }    from '@angular/core';
 
 import Dexie from 'dexie';
 import {MQTTModel} from "../models/mqtt.model";
+import {CommonDataService} from "./common-data.service";
 
 @Injectable()
 export class DatabaseService extends Dexie {
@@ -16,10 +17,10 @@ export class DatabaseService extends Dexie {
     //contacts: Dexie.Table<MQTTModel, number>; // number = type of the primkey
     //...other tables goes here...
 
-    constructor () {
+    constructor (private commonDataService: CommonDataService) {
         super("dmles-mobile-dt-ionic");
         this.db = this;
-        this.data = new MQTTModel();
+        this.data = commonDataService.data;
 
         this.db.version(1).stores({
             messages: '++id, message'

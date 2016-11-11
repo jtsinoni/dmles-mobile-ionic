@@ -7,8 +7,13 @@ import { ListPage } from '../pages/list/list';
 import { HomeComponent } from './views/home/home.component';
 
 import { DatabaseService } from './services/database.service';
-import { FactoryUpstreamService } from './services/upstream/factory-upstream.service';
+//import { FactoryUpstreamService } from './services/upstream/factory-upstream.service';
 import { UpstreamService} from './services/upstream/upstream.service';
+import { upstreamServiceProvider } from './services/up2/upstream.service.provider';
+import {TopicUpstreamService} from "./services/upstream/topic-upstream.service";
+import {RestUpstreamService} from "./services/upstream/rest-upstream.service";
+import {CommonDataService} from "./services/common-data.service";
+import {TopicMessagingService} from "./services/topic-messaging.service";
 
 @NgModule({
     declarations: [
@@ -29,6 +34,6 @@ import { UpstreamService} from './services/upstream/upstream.service';
         ListPage,
         HomeComponent,
     ],
-    providers: [DatabaseService, FactoryUpstreamService]
+    providers: [TopicMessagingService, DatabaseService, CommonDataService, { provide: UpstreamService, useClass: TopicUpstreamService }]
 })
 export class AppModule {}

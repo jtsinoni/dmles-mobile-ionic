@@ -7,7 +7,7 @@ export class MQTTModel {
     port: string;
 
     constructor() {
-        this.topic = 'dmles-mobile';
+        this.topic = 'dmles-mobile-ionic';
         this.message = 'Hello DML-ES Mobile!';
         this.messages = '';
         this.host = 'localhost';

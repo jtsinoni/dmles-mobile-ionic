@@ -6,6 +6,8 @@ import {DatabaseService} from "../../services/database.service";
 import {FactoryUpstreamService} from "../../services/upstream/factory-upstream.service";
 import {UpstreamService} from '../../services/upstream/upstream.service';
 import {MQTTModel} from "../../models/mqtt.model";
+import {TopicMessagingService} from "../../services/topic-messaging.service";
+import {CommonDataService} from "../../services/common-data.service";
 @Component({
     templateUrl: 'home.component.html'
 })
@@ -14,13 +16,13 @@ export class HomeComponent {
     @Input()
     public data: MQTTModel;
 
-    private upstreamService: UpstreamService;
+    //private upstreamService: UpstreamService;
 
-    constructor(private databaseService: DatabaseService) {
-        this.data = databaseService.data;
-        this.upstreamService = FactoryUpstreamService.createService("topic");
+    constructor(private databaseService: DatabaseService, private upstreamService: UpstreamService,
+                private topicMessagingService: TopicMessagingService, private commonDataService: CommonDataService) {
+        this.data = commonDataService.data;
+        topicMessagingService.client();
     }
-
 
     public connect() {
         console.log("Received connect event");

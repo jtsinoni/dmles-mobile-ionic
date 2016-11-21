@@ -1,0 +1,72 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Topic</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <div [ngSwitch]="page">
+      <div *ngSwitchCase="'start'">
+
+        <ion-list inset>
+            <ion-item>
+                <ion-label floating>Host</ion-label>
+                <ion-input type="text" id="host" name="host" [(ngModel)]="data.host"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label floating>Port</ion-label>
+                <ion-input type="text" id="port" name="port" [(ngModel)]="data.port"></ion-input>
+            </ion-item>
+
+        </ion-list>
+
+        <!--<button ng-click="vm.connect()" id="connect" class="btn btn-primary disabled" disabled>Connect</button>-->
+        <!--<button ng-click="vm.disconnect()" id="disconnect" class="btn btn-danger disabled" disabled>Disconnect</button>-->
+
+        <button (click)="connect()" ion-button clear>Connect</button>
+        <button (click)="disconnect()" ion-button color="danger" clear>Disconnect</button>
+
+        <hr />
+
+        <button (click)="add('Test 123')" ion-button clear>Add Data</button>
+        <ion-textarea [(ngModel)]="data.message"></ion-textarea>
+
+        <!--<button (click)="add('Test 123')" ion-button color="danger" clear>Add record to Database</button>-->
+        <!--<button (click)="delete(5)" ion-button color="danger" clear>Delete record from Database</button>-->
+        <!--<button (click)="delete()" ion-button color="danger" clear>Delete all records from Database</button>-->
+        <!--<button (click)="find()" ion-button color="danger" clear>Find records from Database</button>-->
+
+        <!--<ion-list>-->
+          <!--<ion-item  *ngFor="let item of items" (click)="itemTapped($event,item)">-->
+            <!--{{item.id}} {{item.data}}-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+      </div>
+
+      <div *ngSwitchCase="'store'">
+        <store-data></store-data>
+      </div>
+    </div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="page">
+      <ion-segment-button value="start">
+        Start
+      </ion-segment-button>
+      <ion-segment-button value="store">
+        Store
+        <ion-badge>{{data.dataTableCount}}</ion-badge>
+      </ion-segment-button>
+      <ion-segment-button value="forward">
+        Forward
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-footer>

@@ -17,7 +17,7 @@ dmlesMobileApp.controller('mqttController', function($scope, mqttService, databa
             // Offload local changes
             syncService.pushLocalChanges();
 
-            // Is client connected
+            // Is connect connected
             if(newValues[1] != undefined ) {
                 toggleButtons(['#connect'], true);
                 toggleButtons(['#disconnect'], false);
@@ -42,7 +42,7 @@ dmlesMobileApp.controller('mqttController', function($scope, mqttService, databa
     });
 
     vm.connect = function () {
-        vm.data.client = mqttService.client(vm.data.host, vm.data.port);
+        vm.data.client = mqttService.connect(vm.data.host, vm.data.port);
         vm.data.client.on("message", function (topic, payload) {
             var textMessage = "Subscriber received message: " + payload.toString();
             $scope.$apply(function () {

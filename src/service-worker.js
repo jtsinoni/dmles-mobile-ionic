@@ -30,7 +30,7 @@ self.addEventListener('activate', (event) => {
 // This sample illustrates an aggressive approach to caching, in which every valid response is
 // cached and every request is first checked against the cache.
 // This may not be an appropriate approach if your web application makes requests for
-// arbitrary URLs as part of its normal operation (e.g. a RSS client or a news aggregator),
+// arbitrary URLs as part of its normal operation (e.g. a RSS connect or a news aggregator),
 // as the cache could end up containing large responses that might not end up ever being accessed.
 // Other approaches, like selectively caching based on response headers or only caching
 // responses served from a specific domain, might be more appropriate for those use cases.

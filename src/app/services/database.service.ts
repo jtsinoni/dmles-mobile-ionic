@@ -3,37 +3,54 @@
  */
 import { Injectable }    from '@angular/core';
 
-import Dexie from 'dexie';
-import {MQTTModel} from "../models/mqtt.model";
-import {CommonDataService} from "./common-data.service";
+import {DatabaseDefaultsModel} from '../models/database-defaults.model';
+import {DataTableDatabase} from '../database/data-table.database';
 
 @Injectable()
-export class DatabaseService extends Dexie {
-    private db: DatabaseService;
-    public data: MQTTModel;
+export class DatabaseService {
+  private dataDB: DataTableDatabase;
+  private databaseDefaultsModel: DatabaseDefaultsModel;
 
-    // Declare implicit table properties.
-    // (just to inform Typescript. Instanciated by Dexie in stores() method)
-    //contacts: Dexie.Table<MQTTModel, number>; // number = type of the primkey
-    //...other tables goes here...
+  constructor () {
+    this.dataDB = new DataTableDatabase(DatabaseDefaultsModel.databaseName);
+  }
 
-    constructor (private commonDataService: CommonDataService) {
-        super("dmles-mobile-dt-ionic");
-        this.db = this;
-        this.data = commonDataService.data;
+  /**
+   *
+   * @param data
+   * @returns {Promise<number>}
+   */
+  public add(data: string) {
+    return this.dataDB.data.add({data: data});
+  }
 
-        this.db.version(1).stores({
-            messages: '++id, message'
-        });
-
-        // Open it
-        this.db.open().catch(function (e) {
-            //alert ("Open failed: " + e);
-            console.error("Open failed: " + e.stack);
-        });
+  /**
+   * If id param is not null, delete individual record, else delete all records
+   * @param id
+   * @returns {Promise<void>}
+   */
+  public delete(id?: number) {
+    if(id) { //delete individual records
+      return this.dataDB.data.delete(id);
     }
+    // delete all data
+    return this.dataDB.data.clear();
+  }
 
+  /**
+   * For now get everything
+   * @param data
+   * @returns {Promise<Array<DataTableModel>>}
+   */
+  public find(data?: string) {
+    return this.dataDB.data.toArray();
+  }
 
+  /**
+   * Returns record count
+   * @returns {Promise<number>}
+   */
+  public count() {
+    return this.dataDB.data.count();
+  }
 }
-
-//export var db = new DatabaseService();

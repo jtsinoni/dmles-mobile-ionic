@@ -37,7 +37,7 @@ dmlesMobileApp.service('syncService', function(databaseService, mqttService) {
             }).then(function (items) {
                 // Connect to Host
                 //console.log("Connecting to Host: " + host + " Port: " + port);
-                var client = mqttService.client(host, port);
+                var client = mqttService.connect(host, port);
 
                 return {client: client, items: items};
 

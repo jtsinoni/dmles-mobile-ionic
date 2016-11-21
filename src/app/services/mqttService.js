@@ -48,7 +48,7 @@ dmlesMobileApp.service('mqttService', function() {
     this.disconnect = function(client) {
         client.end(true, function() {
             client.options.clientId = undefined;
-            console.log('client disconnected');
+            console.log('connect disconnected');
         });
     }
 

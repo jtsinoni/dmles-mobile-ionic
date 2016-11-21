@@ -179,7 +179,7 @@ declare module 'mqtt' {
         function connect(brokerUrl: string, options?: ClientOptions): Client;
 
         /**
-         * The Client class wraps a client connection to an MQTT broker over an arbitrary transport method (TCP, TLS, WebSocket, ecc).
+         * The Client class wraps a connect connection to an MQTT broker over an arbitrary transport method (TCP, TLS, WebSocket, ecc).
          *
          * Client automatically handles the following:
          *  - Regular server pings
@@ -225,14 +225,14 @@ declare module 'mqtt' {
             /**
              * end - close connection
              *
-             * @param force passing it to true will close the client right away, without waiting for the in-flight messages to be acked.
+             * @param force passing it to true will close the connect right away, without waiting for the in-flight messages to be acked.
              *     This parameter is optional.
              * @param callback
              */
             end(force?: boolean, callback?: Function): Client;
 
             /**
-             * Handle messages with backpressure support, one at a time. Override at will, but always call callback, or the client will
+             * Handle messages with backpressure support, one at a time. Override at will, but always call callback, or the connect will
              * hang.
              *
              * @param packet
@@ -381,7 +381,7 @@ declare module 'mqtt' {
         }
 
         /**
-         * The MqttConnection class represents a raw MQTT connection, both on the server and on the client side. For client side
+         * The MqttConnection class represents a raw MQTT connection, both on the server and on the connect side. For connect side
          * operations, it is strongly recommended that MqttClient is used, as MqttConnection requires a great deal of additional
          * boilerplate such as setting up error handling and ping request/responses.
          *
@@ -418,7 +418,7 @@ declare module 'mqtt' {
          * @deprecated use connect instead
          * Create a new MqttServer (see : IServer)
          *
-         * @param listener - callback called on server client event
+         * @param listener - callback called on server connect event
          */
         function createServer(listener?: Function): Server;
 
@@ -427,7 +427,7 @@ declare module 'mqtt' {
          * Create a new MqttSecureServer
          * @param keyPath - path to private key file
          * @param certPath - path to corresponding public cert
-         * @param listener - callback called on server client event
+         * @param listener - callback called on server connect event
          */
         function createSecureServer(keyPath: string, certPath: string, listener?: Function): Server;
 

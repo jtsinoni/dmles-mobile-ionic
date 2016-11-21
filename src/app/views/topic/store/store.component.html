@@ -1,0 +1,17 @@
+<div class="store-ionic-page">
+  <div><h1>Data that is stored</h1></div>
+  <br />
+  <ion-list>
+    <ion-item  *ngFor="let item of items; let i = index" (click)="itemTapped($event,item)">
+      <ion-row>
+        <ion-col width-10>{{item.id}}</ion-col>
+        <ion-col width-70>{{item.data}}</ion-col>
+        <ion-col width-20>
+          <button (click)="delete(item, i)" ion-button color="danger" clear icon-only item-right>
+            <ion-icon name='trash' is-active="true"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-list>
+</div>

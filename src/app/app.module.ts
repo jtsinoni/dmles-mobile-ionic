@@ -4,7 +4,7 @@ import { MyApp } from './app.component';
 import { HelloIonicPage } from '../pages/hello-ionic/hello-ionic';
 import { ItemDetailsPage } from '../pages/item-details/item-details';
 import { ListPage } from '../pages/list/list';
-import { HomeComponent } from './views/home/home.component';
+import { TopicComponent } from './views/topic/topic.component';
 
 import { DatabaseService } from './services/database.service';
 //import { FactoryUpstreamService } from './services/upstream/factory-upstream.service';
@@ -14,6 +14,7 @@ import {TopicUpstreamService} from "./services/upstream/topic-upstream.service";
 import {RestUpstreamService} from "./services/upstream/rest-upstream.service";
 import {CommonDataService} from "./services/common-data.service";
 import {TopicMessagingService} from "./services/topic-messaging.service";
+import {TopicModule} from "./views/topic/topic.module";
 
 @NgModule({
     declarations: [
@@ -21,10 +22,10 @@ import {TopicMessagingService} from "./services/topic-messaging.service";
         HelloIonicPage,
         ItemDetailsPage,
         ListPage,
-        HomeComponent,
     ],
     imports: [
-        IonicModule.forRoot(MyApp)
+      IonicModule.forRoot(MyApp),
+      TopicModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -32,7 +33,7 @@ import {TopicMessagingService} from "./services/topic-messaging.service";
         HelloIonicPage,
         ItemDetailsPage,
         ListPage,
-        HomeComponent,
+        TopicComponent,
     ],
     providers: [TopicMessagingService, DatabaseService, CommonDataService, { provide: UpstreamService, useClass: TopicUpstreamService }]
 })

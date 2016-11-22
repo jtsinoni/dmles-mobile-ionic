@@ -41,7 +41,7 @@ export class StoreComponent implements OnInit {
     this.items.splice(id, 1);
 
     // update badge count
-    this.commonDataService.data.dataTableCount = this.items.length;
+    this.commonDataService.data.badgeCount = this.items.length;
 
     // now remove from db
     this.databaseService.delete(item.id);

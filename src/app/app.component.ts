@@ -1,52 +1,62 @@
-import { Component, ViewChild } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 
-import { Platform, MenuController, Nav } from 'ionic-angular';
+import {Platform, MenuController, Nav} from 'ionic-angular';
 
-import { StatusBar } from 'ionic-native';
+import {StatusBar} from 'ionic-native';
 
-import { HelloIonicPage } from '../pages/hello-ionic/hello-ionic';
-import { ListPage } from '../pages/list/list';
-import { TopicComponent } from './views/topic/topic.component';
+import {HelloIonicPage} from '../pages/hello-ionic/hello-ionic';
+import {ListPage} from '../pages/list/list';
+import {TopicComponent} from './views/topic/topic.component';
+import {} from './services/connectivity.service';
+import {ConnectivityService} from "./services/connectivity.service";
+import {SyncService} from "./services/sync.service";
 //import { DatabaseService } from './services/database.service'
 
 
 @Component({
-  templateUrl: 'app.html'
+    templateUrl: 'app.html'
 })
 export class MyApp {
-  @ViewChild(Nav) nav: Nav;
+    @ViewChild(Nav) nav: Nav;
 
-  // make HelloIonicPage the root (or first) page
-  rootPage: any = HelloIonicPage;
-  pages: Array<{title: string, component: any}>;
+    // make HelloIonicPage the root (or first) page
+    rootPage: any = HelloIonicPage;
+    pages: Array<{title: string, component: any}>;
 
-  constructor(
-    public platform: Platform,
-    public menu: MenuController,
-    //private db: DatabaseService
-  ) {
-    this.initializeApp();
+    constructor(public platform: Platform,
+                public menu: MenuController,
+                public connectivityService: ConnectivityService,
+                public syncService: SyncService,
+                //private db: DatabaseService
+    ) {
+        this.initializeApp();
 
-    // set our app's pages
-    this.pages = [
-        { title: 'Hello Ionic', component: HelloIonicPage },
-        { title: 'My First List', component: ListPage },
-        { title: 'Topic Page', component: TopicComponent }
-    ];
-  }
+        // set our app's pages
+        this.pages = [
+            {title: 'Hello Ionic', component: HelloIonicPage},
+            {title: 'My First List', component: ListPage},
+            {title: 'Topic Page', component: TopicComponent}
+        ];
+    }
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      StatusBar.styleDefault();
-    });
-  }
+    initializeApp() {
+        this.platform.ready().then(() => {
+            // Okay, so the platform is ready and our plugins are available.
+            // Here you can do any higher level native things you might need.
+            StatusBar.styleDefault();
 
-  openPage(page) {
-    // close the menu when clicking a link from the menu
-    this.menu.close();
-    // navigate to the new page if it is not the current page
-    this.nav.setRoot(page.component);
-  }
+            if(this.syncService.isConnected) {
+                this.syncService.pushLocalChanges();
+            }
+            //console.log(`CheckConnection: ${this.connectivityService.checkConnection()}`);
+            //connectivityService.checkConnection();
+        });
+    }
+
+    openPage(page) {
+        // close the menu when clicking a link from the menu
+        this.menu.close();
+        // navigate to the new page if it is not the current page
+        this.nav.setRoot(page.component);
+    }
 }

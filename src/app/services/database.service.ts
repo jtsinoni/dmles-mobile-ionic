@@ -9,7 +9,7 @@ import {DataTableDatabase} from '../database/data-table.database';
 @Injectable()
 export class DatabaseService {
   private dataDB: DataTableDatabase;
-  private databaseDefaultsModel: DatabaseDefaultsModel;
+  //private databaseDefaultsModel: DatabaseDefaultsModel;
 
   constructor () {
     this.dataDB = new DataTableDatabase(DatabaseDefaultsModel.databaseName);

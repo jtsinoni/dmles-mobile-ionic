@@ -1,10 +1,10 @@
 /**
  * Created by johntsinonis on 11/9/16.
  */
-import {Component, Input, OnInit, OnChanges, SimpleChanges} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {DatabaseService} from "../../services/database.service";
 import {UpstreamService} from '../../services/upstream/upstream.service';
-import {MQTTModel} from "../../models/mqtt.model";
+import {CommonDataModel} from "../../models/common-data.model";
 import {TopicMessagingService} from "../../services/topic-messaging.service";
 import {CommonDataService} from "../../services/common-data.service";
 import {DataTableModel} from "../../models/data-table.model";
@@ -15,7 +15,7 @@ import {DataTableModel} from "../../models/data-table.model";
 export class TopicComponent implements OnInit {
 
     @Input()
-    public data: MQTTModel;
+    public data: CommonDataModel;
 
     // Init to empty array
     public items: DataTableModel[] = [];
@@ -35,7 +35,7 @@ export class TopicComponent implements OnInit {
     private updateCount() {
       this.databaseService.count()
         .then(count => {
-          this.data.dataTableCount = count;
+          this.data.badgeCount = count;
         }).catch(console.log.bind(console));
     }
 

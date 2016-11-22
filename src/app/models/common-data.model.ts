@@ -1,11 +1,11 @@
-export class MQTTModel {
+export class CommonDataModel {
     topic: string;
     message: string;
     messages: string;
     client: any;
     host: string;
     port: number;
-    dataTableCount: number;
+    badgeCount: number;
 
     constructor() {
         this.topic = 'dmles-mobile-ionic';
@@ -13,6 +13,6 @@ export class MQTTModel {
         this.messages = '';
         this.host = 'localhost';
         this.port = 61616;
-        this.dataTableCount = 0;
+        this.badgeCount = 0;
     }
 }

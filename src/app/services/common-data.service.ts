@@ -2,12 +2,12 @@
  * Created by johntsinonis on 11/11/16.
  */
 import { Injectable }    from '@angular/core';
-import {MQTTModel} from "../models/mqtt.model";
+import {CommonDataModel} from "../models/common-data.model";
 
 @Injectable()
 export class CommonDataService {
-    public data: MQTTModel;
+    public data: CommonDataModel;
     constructor () {
-        this.data = new MQTTModel();
+        this.data = new CommonDataModel();
     }
 }

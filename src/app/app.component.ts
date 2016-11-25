@@ -7,10 +7,8 @@ import {StatusBar} from 'ionic-native';
 import {HelloIonicPage} from '../pages/hello-ionic/hello-ionic';
 import {ListPage} from '../pages/list/list';
 import {TopicComponent} from './views/topic/topic.component';
-import {} from './services/connectivity.service';
-import {ConnectivityService} from "./services/connectivity.service";
 import {SyncService} from "./services/sync.service";
-//import { DatabaseService } from './services/database.service'
+import {ConnectivityService} from "./services/connectivity.service";
 
 
 @Component({
@@ -25,9 +23,8 @@ export class MyApp {
 
     constructor(public platform: Platform,
                 public menu: MenuController,
+                // public syncService: SyncService,
                 public connectivityService: ConnectivityService,
-                public syncService: SyncService,
-                //private db: DatabaseService
     ) {
         this.initializeApp();
 
@@ -45,11 +42,11 @@ export class MyApp {
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
 
-            if(this.syncService.isConnected) {
-                this.syncService.pushLocalChanges();
-            }
-            //console.log(`CheckConnection: ${this.connectivityService.checkConnection()}`);
-            //connectivityService.checkConnection();
+            console.log(`Connected: ${this.connectivityService.isConnected}`);
+
+            // if(this.syncService.isConnected) {
+            //     this.syncService.pushLocalChanges();
+            // }
         });
     }
 

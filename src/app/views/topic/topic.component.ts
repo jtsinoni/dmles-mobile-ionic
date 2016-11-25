@@ -33,14 +33,14 @@ export class TopicComponent implements OnInit {
     }
 
     private updateCount() {
-      this.databaseService.count()
-        .then(count => {
-          this.data.badgeCount = count;
-        }).catch(console.log.bind(console));
+        this.databaseService.count()
+            .then(count => {
+                this.data.badgeCount = count;
+            }).catch(console.log.bind(console));
     }
 
     ngOnInit(): void {
-      this.updateCount();
+        this.updateCount();
     }
 
     public connect() {
@@ -50,15 +50,15 @@ export class TopicComponent implements OnInit {
 
     public disconnect() {
         console.log("Received disconnect event");
-      //this.upstreamService.disc;
+        //this.upstreamService.disc;
     }
 
     public add(data: string) {
         console.log("Add data to database ...");
         this.databaseService.add(data)
-          .then(()=>{
-            this.updateCount();
-          }).catch(console.log.bind(console));
+            .then(()=> {
+                this.updateCount();
+            }).catch(console.log.bind(console));
     }
 
     public delete(id?: number) {
@@ -69,16 +69,16 @@ export class TopicComponent implements OnInit {
     public find(data?: string) {
         console.log(`Finding data ${data} ...`);
         this.databaseService.find(data)
-          .then(data => {
-              this.items = data;
-          }).catch(console.log.bind(console));
+            .then(data => {
+                this.items = data;
+            }).catch(console.log.bind(console));
     }
 
     public itemTapped(event, item) {
-      console.log(`Event: ${event} Item: ${item.data}`);
-      // this.navCtrl.push(ItemDetailsPage, {
-      //   item: item
-      // });
+        console.log(`Event: ${event} Item: ${item.data}`);
+        // this.navCtrl.push(ItemDetailsPage, {
+        //   item: item
+        // });
     }
 
 }

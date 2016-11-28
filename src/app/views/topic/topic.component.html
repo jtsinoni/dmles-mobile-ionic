@@ -32,8 +32,8 @@
 
         <hr />
 
-        <button (click)="add('Test 123')" ion-button clear>Add Data</button>
-        <ion-textarea [(ngModel)]="data.message"></ion-textarea>
+        <button (click)="add(message.value)" ion-button clear>Add Data</button>
+        <ion-textarea #message [(ngModel)]="data.message"></ion-textarea>
 
         <!--<button (click)="add('Test 123')" ion-button color="danger" clear>Add record to Database</button>-->
         <!--<button (click)="delete(5)" ion-button color="danger" clear>Delete record from Database</button>-->

@@ -54,11 +54,15 @@ export class TopicComponent implements OnInit {
     }
 
     public add(data: string) {
-        console.log("Add data to database ...");
-        this.databaseService.add(data)
-            .then(()=> {
-                this.updateCount();
-            }).catch(console.log.bind(console));
+        this.upstreamService.sendData(data).then(() => {
+            console.log("Upstream Returned Data: " + JSON.stringify(data));
+            this.updateCount();
+        });
+        // console.log("Add data to database ...");
+        // this.databaseService.add(data)
+        //     .then(()=> {
+        //         this.updateCount();
+        //     }).catch(console.log.bind(console));
     }
 
     public delete(id?: number) {

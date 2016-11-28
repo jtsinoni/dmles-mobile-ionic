@@ -12,9 +12,9 @@ export class FactoryUpstreamService {
     public static createService(type: string) : UpstreamService {
         switch(type) {
             case 'rest':
-                return new RestUpstreamService();
+                //return new RestUpstreamService();
             case 'topic':
-                return new TopicUpstreamService();
+                //return new TopicUpstreamService();
             default:
                 return null;
         }

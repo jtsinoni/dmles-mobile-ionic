@@ -6,13 +6,15 @@ import {Injectable}    from '@angular/core';
 import MQTT from 'mqtt';
 import {CommonDataModel} from "../models/common-data.model";
 import {CommonDataService} from "./common-data.service";
+import {ConnectivityService} from "./connectivity.service";
 
 @Injectable()
 export class TopicMessagingService {
     public data: CommonDataModel;
     public client: any;
 
-    constructor(private commonDataService: CommonDataService) {
+    constructor(private commonDataService: CommonDataService,
+                private connectivityService: ConnectivityService) {
         this.data = commonDataService.data;
     }
 
@@ -23,6 +25,11 @@ export class TopicMessagingService {
 
         if (topic) {
             this.data.topic = topic;
+        }
+
+        if(!this.connectivityService.isConnected) {
+            console.error('Network disconnected.');
+            return false;
         }
 
         if (!this.data.client) {

@@ -1,5 +1,4 @@
 import {Injectable}    from '@angular/core';
-import {ConnectivityService} from "./connectivity.service";
 import {DatabaseService} from "./database.service";
 import {TopicMessagingService} from "./topic-messaging.service";
 import {CommonDataService} from "./common-data.service";
@@ -7,15 +6,12 @@ import {CommonDataModel} from "../models/common-data.model";
 
 @Injectable()
 export class SyncService {
-    public isConnected: boolean = false;
     public offlineMessages: any[] = [];
     private data: CommonDataModel;
 
-    constructor(private connectivityService: ConnectivityService,
-                private databaseService: DatabaseService,
+    constructor(private databaseService: DatabaseService,
                 private topicMessageService: TopicMessagingService,
                 private commonDataService: CommonDataService) {
-        this.isConnected = connectivityService.checkConnection();
         this.data = commonDataService.data;
 
         //console.log(`SyncService => ${this.isConnected}`);

@@ -13,4 +13,17 @@ export class UpstreamService {
     sendData(param: any): Dexie.Promise<any> {
         return undefined;
     }
+
+    pushLocalChanges(): Dexie.Promise<any> {
+        return undefined;
+    }
+
+    connect(): Dexie.Promise<any> {
+        return undefined;
+    }
+
+    disconnect(): Dexie.Promise<any> {
+        return undefined;
+    }
+
 }

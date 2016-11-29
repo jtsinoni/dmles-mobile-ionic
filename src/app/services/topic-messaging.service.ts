@@ -96,14 +96,15 @@ export class TopicMessagingService {
         }
     }
 
-    public disconnect(client?: any) {
-        if (this.canConnect(client)) {
+    public disconnect() {
+        if (this.canConnect(this.data.client)) {
             this.data.client.end(true, function () {
-                this.data.client.options.clientId = undefined;
-
-                console.log('client disconnected');
+                //this.data.client.options.clientId = undefined;
+                //this.data.client.connected = false;
+                console.log(`Client disconnecting: ${this.data.client.disconnecting}`);
             }.bind(this));  // without, 'this', would be null
         }
+        return this.data.client;
     }
 
     public isConnected(client?: any): boolean {

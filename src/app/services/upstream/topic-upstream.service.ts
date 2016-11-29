@@ -11,11 +11,6 @@ import {CommonDataService} from "../common-data.service";
 import {CommonDataModel} from "../../models/common-data.model";
 import Dexie from 'dexie';
 
-class TopicUpstreamModel {
-    client: any;
-    param: any;
-}
-
 @Injectable()
 export class TopicUpstreamService extends UpstreamService {
     private data: CommonDataModel;
@@ -27,6 +22,31 @@ export class TopicUpstreamService extends UpstreamService {
         super();
 
         this.data = commonDataService.data
+    }
+
+    public connect(): Dexie.Promise<any> {
+        // Get client connection and subscribe
+        return this.getClientConnection()
+                    .then(this.subscribe);
+    }
+
+    public disconnect(): Dexie.Promise<any> {
+        // Get client connection and unsubscribe
+        return this.getClientConnection()
+            .then(this.unsubscribe)
+            .then((client) => {
+                return this.topicMessagingService.disconnect();
+            });
+    }
+
+    public pushLocalChanges(): Dexie.Promise<any> {
+        return this.findCachedData()
+            .then(this.publishMany)
+            .then(this.deleteCachedData)
+            .then((client) => {
+                this.data.pushedChanges = client.message;
+                return client;
+            })
     }
 
     public sendData(param: any): Dexie.Promise<any> {
@@ -43,48 +63,63 @@ export class TopicUpstreamService extends UpstreamService {
         }
     }
 
-    public pushLocalChanges() {
-        this.databaseService.find().then((items) => {
-            if (items.length > 0) {
-                return items;
-            } else {
-                throw new Error("NoItems");
-            }
-        })
+    private sendDataServer(message: any): Dexie.Promise<any> {
+        return this.getClientConnection()
+        //.then(this.subscribe)
+            .then((client) => {
+                client.message = message;
+                return client;
+            })
+            .then(this.publish)
+            //.then(this.unsubscribe)
+            .then(null, this.logErrorMessage);
     }
 
-    private adornClient(client: any, param: any) {
-        client.host = this.data.host;
-        client.port = this.data.port;
-        client.topic = this.data.topic;
-        client.topicMessagingService = this.topicMessagingService;
-        client.items = param;
+    private sendDataLocal(message: any): Dexie.Promise<any> {
+        return this.databaseService.add(message)
+            .then((id)=> {
+                console.log(`Succesfully added: ${message} with row id: ${id}`);
+            }).catch((error) => {
+                console.error(error);
+            });
+    }
+
+    private deleteCachedData(client: any) {
+        // Remove items from local storage
+        console.log("Removing messages from local storage");
+        client.databaseService.delete()
+            .then(() => {
+                //Do nothing
+            }).catch((error) => {
+                this.logErrorMessage(error);
+            });
 
         return client;
     }
 
-    private connectToHost(param: any): Dexie.Promise<any> {
-        let host = this.data.host;
-        let port = this.data.port;
-
-        return new Dexie.Promise((resolve, reject) => {
-            // First check for network connectivity
-            if(this.connectivityService.isConnected) {
-                // Second, check if already connected, if not make new Connection
-                if(this.topicMessagingService.isConnected(this.data.client)) {
-                    resolve(this.adornClient(this.data.client, param));
+    private findCachedData(): Dexie.Promise<any> {
+        return this.databaseService.find()
+            .then((items) => {
+                if (items.length > 0) {
+                    return this.adornClient(this.data.client, items)
                 } else {
-                    let client = this.topicMessagingService.connect(host, port);
-                    if(client.connected) {
-                        resolve(this.adornClient(this.data.client, param));
-                    } else {
-                        reject(`Failed to connect to host: ${host} port: ${port}, unable to connect to messaging server`);
-                    }
+                    throw new Error("NoItems");
                 }
-            } else {
-                reject(`Failed to connect to host: ${host} port: ${port}, no network connection.`);
-            }
-        });
+            })
+    }
+
+    private adornClient(client: any, message?: any) {
+        client.host = this.data.host;
+        client.port = this.data.port;
+        client.topic = this.data.topic;
+        client.topicMessagingService = this.topicMessagingService;
+        client.databaseService = this.databaseService;
+        client.connectivityService = this.connectivityService;
+        if (message) {
+            client.message = message;
+        }
+
+        return client;
     }
 
     private subscribe(client: any) {
@@ -96,16 +131,35 @@ export class TopicUpstreamService extends UpstreamService {
     }
 
     private publish(client: any) {
-        // Publish to Topic
-        console.log(`Publishing message: " + ${client.items} + to Topic: + ${client.topic}`);
-        client.topicMessagingService.publish(client.items, client, client.topic);
+        if(client.connectivityService.isConnected) {
+            // Publish to Topic
+            console.log(`Publishing message: ${client.message}  to Topic: + ${client.topic}`);
+            client.topicMessagingService.publish(client.message, client, client.topic);
+        } else {
+            console.warn("Network disconnected");
+        }
+
+        return client;
+    }
+
+    private publishMany(client: any) {
+        if(client.connectivityService.isConnected) {
+            // Publish many messages to Topic
+            console.log(`Publishing ${client.message.length} messages to Topic  + ${client.topic}`);
+
+            //TODO:  needs to be done in a transaction
+            for (let i in client.message) {
+                client.topicMessagingService.publish(client.message[i], client, client.topic);
+            }
+        } else {
+            console.warn("Network disconnected");
+        }
 
         return client;
     }
 
     private unsubscribe(client: any) {
         // Unsubscribe from Topic
-        console.log(`Unsubscribing from Topic: ${client.topic}`);
         client.topicMessagingService.unsubscribe(client, client.topic);
 
         return client;
@@ -115,20 +169,28 @@ export class TopicUpstreamService extends UpstreamService {
         console.error("Error: " + error);
     }
 
-    private sendDataServer(param: any): Dexie.Promise<any> {
-        return this.connectToHost(param)
-            .then(this.subscribe)
-            .then(this.publish)
-            .then(this.unsubscribe)
-            .then(null, this.logErrorMessage);
+    private getClientConnection(): Dexie.Promise<any> {
+        let host = this.data.host;
+        let port = this.data.port;
+
+        return new Dexie.Promise((resolve, reject) => {
+            // First check for network connectivity
+            if(this.connectivityService.isConnected) {
+                // Second, check if already connected, if not make new Connection
+                if(this.topicMessagingService.isConnected(this.data.client)) {
+                    resolve(this.adornClient(this.data.client));
+                } else {
+                    let client = this.topicMessagingService.connect(host, port);
+                    if(client.connected) {
+                        resolve(this.adornClient(this.data.client));
+                    } else {
+                        reject(`Failed to connect to host: ${host} port: ${port}, unable to connect to messaging server`);
+                    }
+                }
+            } else {
+                reject(`Failed to connect to host: ${host} port: ${port}, no network connection.`);
+            }
+        });
     }
 
-    private sendDataLocal(param: any): Dexie.Promise<any> {
-        return this.databaseService.add(param)
-            .then((id)=> {
-                console.log(`Succesfully added: ${param} with row id: ${id}`);
-            }).catch((error) => {
-                console.error(error);
-            });
-    }
 }

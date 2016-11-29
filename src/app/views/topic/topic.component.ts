@@ -8,6 +8,7 @@ import {CommonDataModel} from "../../models/common-data.model";
 import {TopicMessagingService} from "../../services/topic-messaging.service";
 import {CommonDataService} from "../../services/common-data.service";
 import {DataTableModel} from "../../models/data-table.model";
+import {ForwardDataModel} from "../../models/forward-data.model";
 
 @Component({
     templateUrl: 'topic.component.html',
@@ -16,6 +17,8 @@ export class TopicComponent implements OnInit {
 
     @Input()
     public data: CommonDataModel;
+
+    public forwardDataModel: ForwardDataModel;
 
     // Init to empty array
     public items: DataTableModel[] = [];
@@ -29,6 +32,8 @@ export class TopicComponent implements OnInit {
     constructor(private databaseService: DatabaseService, private upstreamService: UpstreamService,
                 private topicMessagingService: TopicMessagingService, private commonDataService: CommonDataService) {
         this.data = commonDataService.data;
+        this.forwardDataModel = commonDataService.forwardDataModel;
+
         topicMessagingService.connect('localhost', 61616);
     }
 
@@ -45,12 +50,31 @@ export class TopicComponent implements OnInit {
 
     public connect() {
         console.log("Received connect event");
-        this.upstreamService.sendData("Message 1");
+        this.upstreamService.connect();
     }
 
     public disconnect() {
         console.log("Received disconnect event");
-        //this.upstreamService.disc;
+        this.upstreamService.disconnect()
+            .then((client) => {
+                //console.log(`Client ID: ${client.options.clientId}, connected: ${client.connected}`);
+            });
+    }
+
+    public pushLocalChanges() {
+        this.upstreamService.pushLocalChanges().then((data) => {
+            console.log("Local Changes Pushed: " + JSON.stringify(data.message));
+            this.updateCount();
+
+            // Update Forward Page badge count
+            this.forwardDataModel.badgeCount = data.message.length;
+        }).catch((reason) => {
+            if(reason.message === "NoItems") {
+                console.log("The are no items in local storage");
+            } else {
+                console.error(reason);
+            }
+        });
     }
 
     public add(data: string) {
@@ -58,11 +82,6 @@ export class TopicComponent implements OnInit {
             console.log("Upstream Returned Data: " + JSON.stringify(data));
             this.updateCount();
         });
-        // console.log("Add data to database ...");
-        // this.databaseService.add(data)
-        //     .then(()=> {
-        //         this.updateCount();
-        //     }).catch(console.log.bind(console));
     }
 
     public delete(id?: number) {

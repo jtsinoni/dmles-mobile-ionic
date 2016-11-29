@@ -1,0 +1,12 @@
+<div class="forward-ionic-page">
+  <div><h1>Data that was forwarded to Upstream Service</h1></div>
+  <br />
+  <ion-list>
+    <ion-item  *ngFor="let item of data.pushedChanges; let i = index" (click)="itemTapped($event,item)">
+      <ion-row>
+        <ion-col width-10>{{item.id}}</ion-col>
+        <ion-col width-90>{{item.data}}</ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-list>
+</div>

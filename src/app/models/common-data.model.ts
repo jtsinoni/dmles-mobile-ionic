@@ -6,6 +6,7 @@ export class CommonDataModel {
     host: string;
     port: number;
     badgeCount: number;
+    pushedChanges: any[];
 
     constructor() {
         this.topic = 'dmles-mobile-ionic';
@@ -14,5 +15,6 @@ export class CommonDataModel {
         this.host = 'localhost';
         this.port = 61616;
         this.badgeCount = 0;
+        this.pushedChanges = [];
     }
 }

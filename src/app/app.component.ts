@@ -1,38 +1,32 @@
 import {Component, ViewChild} from '@angular/core';
-
 import {Platform, MenuController, Nav} from 'ionic-angular';
-
 import {StatusBar} from 'ionic-native';
 
-import {HelloIonicPage} from '../pages/hello-ionic/hello-ionic';
-import {ListPage} from '../pages/list/list';
 import {TopicComponent} from './views/topic/topic.component';
-import {SyncService} from "./services/sync.service";
-import {ConnectivityService} from "./services/connectivity.service";
-
+import {EquipmentRecordsComponent} from "./views/equipment/records/equipment-records.component";
+import {EquipmentRequestsComponent} from "./views/equipment/requests/equipment-requests.component";
 
 @Component({
     templateUrl: 'app.html'
 })
-export class MyApp {
+export class DMLESMobile {
     @ViewChild(Nav) nav: Nav;
 
-    // make HelloIonicPage the root (or first) page
-    rootPage: any = HelloIonicPage;
+    // make StartComponent the root (or first) page
+    rootPage: any = TopicComponent;
     pages: Array<{title: string, component: any}>;
 
     constructor(public platform: Platform,
                 public menu: MenuController,
-                // public syncService: SyncService,
-                public connectivityService: ConnectivityService,
+                //private upstreamService: UpstreamService
     ) {
         this.initializeApp();
 
         // set our app's pages
         this.pages = [
-            {title: 'Hello Ionic', component: HelloIonicPage},
-            {title: 'My First List', component: ListPage},
-            {title: 'Topic Page', component: TopicComponent}
+            {title: 'Equipment Records', component: EquipmentRecordsComponent},
+            {title: 'Equipment Requests', component: EquipmentRequestsComponent},
+            {title: 'Messaging', component: TopicComponent}
         ];
     }
 
@@ -41,12 +35,6 @@ export class MyApp {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
-
-            console.log(`Connected: ${this.connectivityService.isConnected}`);
-
-            // if(this.syncService.isConnected) {
-            //     this.syncService.pushLocalChanges();
-            // }
         });
     }
 

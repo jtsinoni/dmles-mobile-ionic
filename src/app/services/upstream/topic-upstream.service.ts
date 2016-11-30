@@ -8,20 +8,23 @@ import {TopicMessagingService} from "../topic-messaging.service";
 import {ConnectivityService} from "../connectivity.service";
 import {DatabaseService} from "../database.service";
 import {CommonDataService} from "../common-data.service";
-import {CommonDataModel} from "../../models/common-data.model";
 import Dexie from 'dexie';
+import {ForwardDataModel} from "../../models/forward-data.model";
+import {StoreDataModel} from "../../models/store-data.model";
 
 @Injectable()
 export class TopicUpstreamService extends UpstreamService {
-    private data: CommonDataModel;
+    private forwardDataModel: ForwardDataModel;
+    private storeDataModel: StoreDataModel;
 
     constructor(private topicMessagingService: TopicMessagingService,
                 private connectivityService: ConnectivityService,
                 private databaseService: DatabaseService,
                 private commonDataService: CommonDataService) {
-        super();
+        super(commonDataService);
 
-        this.data = commonDataService.data
+        this.forwardDataModel = commonDataService.forwardDataModel;
+        this.storeDataModel = commonDataService.storeDataModel;
     }
 
     public connect(): Dexie.Promise<any> {
@@ -44,7 +47,9 @@ export class TopicUpstreamService extends UpstreamService {
             .then(this.publishMany)
             .then(this.deleteCachedData)
             .then((client) => {
-                this.data.pushedChanges = client.message;
+                this.storeDataModel.badgeCount = 0;
+                this.forwardDataModel.pushedChanges = client.message;
+
                 return client;
             })
     }
@@ -124,7 +129,7 @@ export class TopicUpstreamService extends UpstreamService {
 
     private subscribe(client: any) {
         // Subscribe to Topic
-        console.log(`Subscribing to Topic: ${client.topic}, client => ${client.options.clientId}`);
+        console.log(`Subscribing to Topic: ${client.topic}, client: ${client.options.clientId}`);
         client.topicMessagingService.subscribe(client, client.topic);
 
         return client;
@@ -133,7 +138,7 @@ export class TopicUpstreamService extends UpstreamService {
     private publish(client: any) {
         if(client.connectivityService.isConnected) {
             // Publish to Topic
-            console.log(`Publishing message: ${client.message}  to Topic: + ${client.topic}`);
+            console.log(`Publishing message: ${client.message}  to Topic: ${client.topic}`);
             client.topicMessagingService.publish(client.message, client, client.topic);
         } else {
             console.warn("Network disconnected");
@@ -145,7 +150,7 @@ export class TopicUpstreamService extends UpstreamService {
     private publishMany(client: any) {
         if(client.connectivityService.isConnected) {
             // Publish many messages to Topic
-            console.log(`Publishing ${client.message.length} messages to Topic  + ${client.topic}`);
+            console.log(`Publishing ${client.message.length} messages to Topic: ${client.topic}`);
 
             //TODO:  needs to be done in a transaction
             for (let i in client.message) {
@@ -166,7 +171,7 @@ export class TopicUpstreamService extends UpstreamService {
     }
 
     private logErrorMessage(error) {
-        console.error("Error: " + error);
+        console.error(`Error: ${error}`);
     }
 
     private getClientConnection(): Dexie.Promise<any> {

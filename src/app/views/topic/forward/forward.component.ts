@@ -1,24 +1,21 @@
 import {Component} from "@angular/core/src/metadata/directives";
-import {OnInit} from "@angular/core";
-import {DataTableModel} from "../../../models/data-table.model";
-import {DatabaseService} from "../../../services/database.service";
 import {CommonDataService} from "../../../services/common-data.service";
-import {CommonDataModel} from "../../../models/common-data.model";
+import {ForwardDataModel} from "../../../models/forward-data.model";
 
 @Component({
-    selector: 'forward-data',
+    selector: 'forward-view',
     templateUrl: 'forward.component.html',
 })
 export class ForwardComponent {
-    data: CommonDataModel;
+    forwardDataModel: ForwardDataModel;
 
     constructor(private commonDataService: CommonDataService) {
-        this.data = commonDataService.data;
+        this.forwardDataModel = commonDataService.forwardDataModel;
     }
 
     public itemTapped(event, item) {
         console.log(`Store Event: ${event} Item: ${item.data}`);
-        // this.navCtrl.push(ItemDetailsPage, {
+        // this.navCtrl.push(EquipmentRequestDetailsComponent, {
         //   item: item
         // });
     }

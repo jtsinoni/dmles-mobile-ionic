@@ -14,9 +14,9 @@ export var HelloIonicPage = (function () {
     HelloIonicPage = __decorate([
         Component({
             templateUrl: 'hello-ionic.html'
-        }), 
+        }),
         __metadata('design:paramtypes', [])
     ], HelloIonicPage);
     return HelloIonicPage;
 }());
-//# sourceMappingURL=hello-ionic.js.map
+//# sourceMappingURL=equipment-records.component.js.map

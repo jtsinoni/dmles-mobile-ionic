@@ -66,7 +66,7 @@ export class TopicMessagingService {
                 if (err) {
                     console.error(err);
                 } else {
-                    console.log('called subscribe service');
+                    //console.log('called subscribe service');
                 }
             });
         }
@@ -78,7 +78,7 @@ export class TopicMessagingService {
                 if (err) {
                     console.error(err);
                 } else {
-                    console.log('called unsubscribe service');
+                    //console.log('called unsubscribe service');
                 }
             });
         }
@@ -90,7 +90,7 @@ export class TopicMessagingService {
                 if (err) {
                     console.error(err);
                 } else {
-                    console.log('called publish service');
+                    //console.log('called publish service');
                 }
             });
         }

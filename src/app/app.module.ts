@@ -1,9 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
-import { MyApp } from './app.component';
-import { HelloIonicPage } from '../pages/hello-ionic/hello-ionic';
-import { ItemDetailsPage } from '../pages/item-details/item-details';
-import { ListPage } from '../pages/list/list';
+import { DMLESMobile } from './app.component';
 import { TopicComponent } from './views/topic/topic.component';
 
 import { DatabaseService } from './services/database.service';
@@ -15,25 +12,32 @@ import {TopicModule} from "./views/topic/topic.module";
 
 import {ConnectivityService} from "./services/connectivity.service";
 import {SyncService} from "./services/sync.service";
+import {EquipmentRecordsComponent} from "./views/equipment/records/equipment-records.component";
+import {EquipmentRecordDetailsComponent} from "./views/equipment/records/details/equip-record-details.component";
+import {EquipmentRequestsComponent} from "./views/equipment/requests/equipment-requests.component";
+import {EquipmentRequestDetailsComponent} from "./views/equipment/requests/details/equip-request-details.component";
 
 @NgModule({
     declarations: [
-        MyApp,
-        HelloIonicPage,
-        ItemDetailsPage,
-        ListPage,
+        DMLESMobile,
+        EquipmentRecordsComponent,
+        EquipmentRecordDetailsComponent,
+        EquipmentRequestsComponent,
+        EquipmentRequestDetailsComponent,
+
     ],
     imports: [
-      IonicModule.forRoot(MyApp),
+      IonicModule.forRoot(DMLESMobile),
       TopicModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [
-        MyApp,
-        HelloIonicPage,
-        ItemDetailsPage,
-        ListPage,
+        DMLESMobile,
         TopicComponent,
+        EquipmentRecordsComponent,
+        EquipmentRecordDetailsComponent,
+        EquipmentRequestsComponent,
+        EquipmentRequestDetailsComponent,
     ],
     providers: [TopicMessagingService, DatabaseService, SyncService,
                 CommonDataService, ConnectivityService,

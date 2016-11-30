@@ -2,31 +2,25 @@
  * Created by johntsinonis on 11/9/16.
  */
 import {Component, Input, OnInit} from "@angular/core";
-import {DatabaseService} from "../../services/database.service";
-import {UpstreamService} from '../../services/upstream/upstream.service';
-import {CommonDataModel} from "../../models/common-data.model";
-import {TopicMessagingService} from "../../services/topic-messaging.service";
-import {CommonDataService} from "../../services/common-data.service";
-import {ForwardDataModel} from "../../models/forward-data.model";
-import {StoreDataModel} from "../../models/store-data.model";
+import {DatabaseService} from "../../../services/database.service";
+import {UpstreamService} from '../../../services/upstream/upstream.service';
+import {CommonDataModel} from "../../../models/common-data.model";
+import {TopicMessagingService} from "../../../services/topic-messaging.service";
+import {CommonDataService} from "../../../services/common-data.service";
+import {ForwardDataModel} from "../../../models/forward-data.model";
+import {StoreDataModel} from "../../../models/store-data.model";
 
 @Component({
-    templateUrl: 'topic.component.html',
-    selector: 'topic-view'
+    templateUrl: 'start.component.html',
+    selector: 'start-view'
 })
-export class TopicComponent implements OnInit {
+export class StartComponent implements OnInit {
 
     @Input()
     public data: CommonDataModel;
 
     public forwardDataModel: ForwardDataModel;
     public storeDataModel: StoreDataModel;
-
-    // Default toolbar start page
-    // TODO: should be setup in a defaults file or some other persistence mechanism
-    public page: string = "start";
-
-    //private upstreamService: UpstreamService;
 
     constructor(private databaseService: DatabaseService, private upstreamService: UpstreamService,
                 private topicMessagingService: TopicMessagingService, private commonDataService: CommonDataService) {

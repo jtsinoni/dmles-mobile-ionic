@@ -5,7 +5,7 @@ import {DatabaseService} from "../../../services/database.service";
 import {CommonDataService} from "../../../services/common-data.service";
 
 @Component({
-    selector: 'store-data',
+    selector: 'store-view',
     templateUrl: 'store.component.html',
 })
 export class StoreComponent implements OnInit {
@@ -19,12 +19,15 @@ export class StoreComponent implements OnInit {
         this.databaseService.find()
             .then(data => {
                 this.items = data;
-            }).catch(console.log.bind(console));
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     public itemTapped(event, item) {
         console.log(`Store Event: ${event} Item: ${item.data}`);
-        // this.navCtrl.push(ItemDetailsPage, {
+        // this.navCtrl.push(EquipmentRequestDetailsComponent, {
         //   item: item
         // });
     }
@@ -36,7 +39,7 @@ export class StoreComponent implements OnInit {
         this.items.splice(id, 1);
 
         // update badge count
-        this.commonDataService.data.badgeCount = this.items.length;
+        this.commonDataService.storeDataModel.badgeCount = this.items.length;
 
         // now remove from db
         this.databaseService.delete(item.id);

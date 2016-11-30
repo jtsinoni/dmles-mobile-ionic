@@ -22,38 +22,23 @@
                     <ion-input type="text" id="port" name="port" [(ngModel)]="data.port"></ion-input>
                 </ion-item>
 
+                <br />
+                <button (click)="connect()" ion-button>Connect</button>
+                <button (click)="disconnect()" ion-button color="danger">Disconnect</button>
+
+                <br /><hr/>
+                <button (click)="add(message.value)" ion-button>Add Data</button>
+                <ion-textarea #message [(ngModel)]="data.message"></ion-textarea>
+
             </ion-list>
-
-            <!--<button ng-click="vm.connect()" id="connect" class="btn btn-primary disabled" disabled>Connect</button>-->
-            <!--<button ng-click="vm.disconnect()" id="disconnect" class="btn btn-danger disabled" disabled>Disconnect</button>-->
-
-            <button (click)="connect()" ion-button clear>Connect</button>
-            <button (click)="disconnect()" ion-button color="danger" clear>Disconnect</button>
-
-            <hr/>
-            <button (click)="pushLocalChanges()" ion-button clear>Push Local Changes</button>
-
-            <button (click)="add(message.value)" ion-button clear>Add Data</button>
-            <ion-textarea #message [(ngModel)]="data.message"></ion-textarea>
-
-            <!--<button (click)="add('Test 123')" ion-button color="danger" clear>Add record to Database</button>-->
-            <!--<button (click)="delete(5)" ion-button color="danger" clear>Delete record from Database</button>-->
-            <!--<button (click)="delete()" ion-button color="danger" clear>Delete all records from Database</button>-->
-            <!--<button (click)="find()" ion-button color="danger" clear>Find records from Database</button>-->
-
-            <!--<ion-list>-->
-            <!--<ion-item  *ngFor="let item of items" (click)="itemTapped($event,item)">-->
-            <!--{{item.id}} {{item.data}}-->
-            <!--</ion-item>-->
-            <!--</ion-list>-->
         </div>
 
         <div *ngSwitchCase="'store'">
-            <store-data></store-data>
+            <store-view></store-view>
         </div>
 
         <div *ngSwitchCase="'forward'">
-            <forward-data></forward-data>
+            <forward-view></forward-view>
         </div>
     </div>
 
@@ -67,11 +52,11 @@
             </ion-segment-button>
             <ion-segment-button value="store">
                 Store
-                <ion-badge>{{data.badgeCount}}</ion-badge>
+                <ion-badge>{{storeDataModel.badgeCount}}</ion-badge>
             </ion-segment-button>
             <ion-segment-button value="forward">
                 Forward
-                <ion-badge>{{forwardDataModel.badgeCount}}</ion-badge>
+                <ion-badge>{{forwardDataModel.getBadgeCount()}}</ion-badge>
             </ion-segment-button>
         </ion-segment>
     </ion-toolbar>

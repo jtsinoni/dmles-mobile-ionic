@@ -2,10 +2,14 @@
  * Created by johntsinonis on 11/29/16.
  */
 export class ForwardDataModel {
-    badgeCount: number;
+    pushedChanges: any[];
 
     constructor() {
-        this.badgeCount = 0;
+        this.pushedChanges = [];
+    }
+
+    public getBadgeCount(): number {
+        return this.pushedChanges.length;
     }
 }
 

@@ -75,29 +75,25 @@ export class TopicUpstreamService extends UpstreamService {
                 client.message = message;
                 return client;
             })
-            .then(this.publish)
+            .then(this.publish);
             //.then(this.unsubscribe)
-            .then(null, this.logErrorMessage);
+            //.then(null, this.logErrorMessage);
     }
 
     private sendDataLocal(message: any): Dexie.Promise<any> {
         return this.databaseService.add(message)
             .then((id)=> {
                 console.log(`Succesfully added: ${message} with row id: ${id}`);
-            }).catch((error) => {
-                console.error(error);
-            });
+            })
+            // .catch((error) => {
+            //     console.error(error);
+            // });
     }
 
     private deleteCachedData(client: any) {
         // Remove items from local storage
         console.log("Removing messages from local storage");
-        client.databaseService.delete()
-            .then(() => {
-                //Do nothing
-            }).catch((error) => {
-                this.logErrorMessage(error);
-            });
+        client.databaseService.delete();
 
         return client;
     }
@@ -168,10 +164,6 @@ export class TopicUpstreamService extends UpstreamService {
         client.topicMessagingService.unsubscribe(client, client.topic);
 
         return client;
-    }
-
-    private logErrorMessage(error) {
-        console.error(`Error: ${error}`);
     }
 
     private getClientConnection(): Dexie.Promise<any> {

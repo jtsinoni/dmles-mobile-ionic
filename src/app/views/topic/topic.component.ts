@@ -1,24 +1,16 @@
 /**
  * Created by johntsinonis on 11/9/16.
  */
-import {Component, Input, OnInit} from "@angular/core";
-import {DatabaseService} from "../../services/database.service";
-import {UpstreamService} from '../../services/upstream/upstream.service';
-import {CommonDataModel} from "../../models/common-data.model";
-import {TopicMessagingService} from "../../services/topic-messaging.service";
-import {CommonDataService} from "../../services/common-data.service";
+import {Component} from "@angular/core";
 import {ForwardDataModel} from "../../models/forward-data.model";
 import {StoreDataModel} from "../../models/store-data.model";
+import {CommonDataService} from "../../services/common-data.service";
 
 @Component({
     templateUrl: 'topic.component.html',
     selector: 'topic-view'
 })
-export class TopicComponent implements OnInit {
-
-    @Input()
-    public data: CommonDataModel;
-
+export class TopicComponent {
     public forwardDataModel: ForwardDataModel;
     public storeDataModel: StoreDataModel;
 
@@ -26,58 +18,10 @@ export class TopicComponent implements OnInit {
     // TODO: should be setup in a defaults file or some other persistence mechanism
     public page: string = "start";
 
-    //private upstreamService: UpstreamService;
-
-    constructor(private databaseService: DatabaseService, private upstreamService: UpstreamService,
-                private topicMessagingService: TopicMessagingService, private commonDataService: CommonDataService) {
-        this.data = commonDataService.data;
+    constructor(private commonDataService: CommonDataService) {
         this.forwardDataModel = commonDataService.forwardDataModel;
         this.storeDataModel = commonDataService.storeDataModel;
-
-        topicMessagingService.connect('localhost', 61616);
     }
-
-    private updateCount() {
-        this.databaseService.count()
-            .then(count => {
-                this.storeDataModel.badgeCount = count;
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }
-
-    ngOnInit(): void {
-        this.updateCount();
-    }
-
-    public connect() {
-        console.log("Received connect event");
-        this.upstreamService.connect();
-    }
-
-    public disconnect() {
-        console.log("Received disconnect event");
-        this.upstreamService.disconnect()
-            .then((client) => {
-                //console.log(`Client ID: ${client.options.clientId}, connected: ${client.connected}`);
-            });
-    }
-
-    public add(data: string) {
-        this.upstreamService.sendData(data).then(() => {
-            //console.log("Upstream Returned Data: " + JSON.stringify(data));
-            this.updateCount();
-        });
-    }
-
-    public itemTapped(event, item) {
-        console.log(`Event: ${event} Item: ${item.data}`);
-        // this.navCtrl.push(EquipmentRequestDetailsComponent, {
-        //   item: item
-        // });
-    }
-
 }
 
 

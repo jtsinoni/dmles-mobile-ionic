@@ -10,27 +10,7 @@
 <ion-content padding>
     <div [ngSwitch]="page">
         <div *ngSwitchCase="'start'">
-
-            <ion-list inset>
-                <ion-item>
-                    <ion-label floating>Host</ion-label>
-                    <ion-input type="text" id="host" name="host" [(ngModel)]="data.host"></ion-input>
-                </ion-item>
-
-                <ion-item>
-                    <ion-label floating>Port</ion-label>
-                    <ion-input type="text" id="port" name="port" [(ngModel)]="data.port"></ion-input>
-                </ion-item>
-
-                <br />
-                <button (click)="connect()" ion-button>Connect</button>
-                <button (click)="disconnect()" ion-button color="danger">Disconnect</button>
-
-                <br /><hr/>
-                <button (click)="add(message.value)" ion-button>Add Data</button>
-                <ion-textarea #message [(ngModel)]="data.message"></ion-textarea>
-
-            </ion-list>
+            <start-view></start-view>
         </div>
 
         <div *ngSwitchCase="'store'">

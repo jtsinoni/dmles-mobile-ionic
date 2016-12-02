@@ -9,12 +9,18 @@
         <ion-input type="text" id="port" name="port" [(ngModel)]="data.port"></ion-input>
     </ion-item>
 
-    <br />
-    <button (click)="connect()" ion-button>Connect</button>
-    <button (click)="disconnect()" ion-button color="danger">Disconnect</button>
+    <button #connectButton (click)="connect($event, disconnectButton)" ion-button [disabled]="!connectivityService.isConnected">Connect</button>
+    <button #disconnectButton (click)="disconnect($event, connectButton)" ion-button color="danger" [disabled]="connectivityService.isConnected">Disconnect</button>
 
     <br /><hr/>
     <button (click)="add(message.value)" ion-button>Add Data</button>
-    <ion-textarea #message [(ngModel)]="data.message"></ion-textarea>
+    <ion-textarea #message [ngModel]="data.message" rows="4"></ion-textarea>
+
+    <br />
+    <div class="log-group">
+        <label>Log Messages</label>
+        <button (click)="clearLogMessages()" ion-button clear>Clear</button>
+    </div>
+    <ion-textarea [ngModel]="data.messages" rows="4" readonly></ion-textarea>
 
 </ion-list>

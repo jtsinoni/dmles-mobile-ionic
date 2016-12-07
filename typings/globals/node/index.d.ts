@@ -1839,7 +1839,7 @@ declare module "net" {
          *   2. connect
          *   3. data
          *   4. drain
-         *   5. end
+         *   5. clientDisconnection
          *   6. error
          *   7. lookup
          *   8. timeout
@@ -1849,7 +1849,7 @@ declare module "net" {
         addListener(event: "connect", listener: () => void): this;
         addListener(event: "data", listener: (data: Buffer) => void): this;
         addListener(event: "drain", listener: () => void): this;
-        addListener(event: "end", listener: () => void): this;
+        addListener(event: "clientDisconnection", listener: () => void): this;
         addListener(event: "error", listener: (err: Error) => void): this;
         addListener(event: "lookup", listener: (err: Error, address: string, family: string | number, host: string) => void): this;
         addListener(event: "timeout", listener: () => void): this;
@@ -1859,7 +1859,7 @@ declare module "net" {
         emit(event: "connect"): boolean;
         emit(event: "data", data: Buffer): boolean;
         emit(event: "drain"): boolean;
-        emit(event: "end"): boolean;
+        emit(event: "clientDisconnection"): boolean;
         emit(event: "error", err: Error): boolean;
         emit(event: "lookup", err: Error, address: string, family: string | number, host: string): boolean;
         emit(event: "timeout"): boolean;
@@ -1869,7 +1869,7 @@ declare module "net" {
         on(event: "connect", listener: () => void): this;
         on(event: "data", listener: (data: Buffer) => void): this;
         on(event: "drain", listener: () => void): this;
-        on(event: "end", listener: () => void): this;
+        on(event: "clientDisconnection", listener: () => void): this;
         on(event: "error", listener: (err: Error) => void): this;
         on(event: "lookup", listener: (err: Error, address: string, family: string | number, host: string) => void): this;
         on(event: "timeout", listener: () => void): this;
@@ -1879,7 +1879,7 @@ declare module "net" {
         once(event: "connect", listener: () => void): this;
         once(event: "data", listener: (data: Buffer) => void): this;
         once(event: "drain", listener: () => void): this;
-        once(event: "end", listener: () => void): this;
+        once(event: "clientDisconnection", listener: () => void): this;
         once(event: "error", listener: (err: Error) => void): this;
         once(event: "lookup", listener: (err: Error, address: string, family: string | number, host: string) => void): this;
         once(event: "timeout", listener: () => void): this;
@@ -1889,7 +1889,7 @@ declare module "net" {
         prependListener(event: "connect", listener: () => void): this;
         prependListener(event: "data", listener: (data: Buffer) => void): this;
         prependListener(event: "drain", listener: () => void): this;
-        prependListener(event: "end", listener: () => void): this;
+        prependListener(event: "clientDisconnection", listener: () => void): this;
         prependListener(event: "error", listener: (err: Error) => void): this;
         prependListener(event: "lookup", listener: (err: Error, address: string, family: string | number, host: string) => void): this;
         prependListener(event: "timeout", listener: () => void): this;
@@ -1899,7 +1899,7 @@ declare module "net" {
         prependOnceListener(event: "connect", listener: () => void): this;
         prependOnceListener(event: "data", listener: (data: Buffer) => void): this;
         prependOnceListener(event: "drain", listener: () => void): this;
-        prependOnceListener(event: "end", listener: () => void): this;
+        prependOnceListener(event: "clientDisconnection", listener: () => void): this;
         prependOnceListener(event: "error", listener: (err: Error) => void): this;
         prependOnceListener(event: "lookup", listener: (err: Error, address: string, family: string | number, host: string) => void): this;
         prependOnceListener(event: "timeout", listener: () => void): this;
@@ -2467,7 +2467,7 @@ declare module "fs" {
         /** Constant for fs.open(). Flag indicating that if the file exists and is a regular file, and the file is opened successfully for write access, its length shall be truncated to zero. */
         export const O_TRUNC: number;
 
-        /** Constant for fs.open(). Flag indicating that data will be appended to the end of the file. */
+        /** Constant for fs.open(). Flag indicating that data will be appended to the clientDisconnection of the file. */
         export const O_APPEND: number;
 
         /** Constant for fs.open(). Flag indicating that the open should fail if the path is not a directory. */
@@ -2670,7 +2670,7 @@ declare module "path" {
      */
     export function basename(p: string, ext?: string): string;
     /**
-     * Return the extension of the path, from the last '.' to end of string in the last portion of the path.
+     * Return the extension of the path, from the last '.' to clientDisconnection of string in the last portion of the path.
      * If there is no '.' in the last portion of the path or the first character of it is '.', then it returns an empty string
      *
      * @param p the path to evaluate.
@@ -3320,7 +3320,7 @@ declare module "stream" {
              * The defined events on documents including:
              *   1. close
              *   2. data
-             *   3. end
+             *   3. clientDisconnection
              *   4. readable
              *   5. error
              **/
@@ -3328,49 +3328,49 @@ declare module "stream" {
             addListener(event: string, listener: Function): this;
             addListener(event: "close", listener: () => void): this;
             addListener(event: "data", listener: (chunk: Buffer | string) => void): this;
-            addListener(event: "end", listener: () => void): this;
+            addListener(event: "clientDisconnection", listener: () => void): this;
             addListener(event: "readable", listener: () => void): this;
             addListener(event: "error", listener: (err: Error) => void): this;
 
             emit(event: string, ...args: any[]): boolean;
             emit(event: "close"): boolean;
             emit(event: "data", chunk: Buffer | string): boolean;
-            emit(event: "end"): boolean;
+            emit(event: "clientDisconnection"): boolean;
             emit(event: "readable"): boolean;
             emit(event: "error", err: Error): boolean;
 
             on(event: string, listener: Function): this;
             on(event: "close", listener: () => void): this;
             on(event: "data", listener: (chunk: Buffer | string) => void): this;
-            on(event: "end", listener: () => void): this;
+            on(event: "clientDisconnection", listener: () => void): this;
             on(event: "readable", listener: () => void): this;
             on(event: "error", listener: (err: Error) => void): this;
 
             once(event: string, listener: Function): this;
             once(event: "close", listener: () => void): this;
             once(event: "data", listener: (chunk: Buffer | string) => void): this;
-            once(event: "end", listener: () => void): this;
+            once(event: "clientDisconnection", listener: () => void): this;
             once(event: "readable", listener: () => void): this;
             once(event: "error", listener: (err: Error) => void): this;
 
             prependListener(event: string, listener: Function): this;
             prependListener(event: "close", listener: () => void): this;
             prependListener(event: "data", listener: (chunk: Buffer | string) => void): this;
-            prependListener(event: "end", listener: () => void): this;
+            prependListener(event: "clientDisconnection", listener: () => void): this;
             prependListener(event: "readable", listener: () => void): this;
             prependListener(event: "error", listener: (err: Error) => void): this;
 
             prependOnceListener(event: string, listener: Function): this;
             prependOnceListener(event: "close", listener: () => void): this;
             prependOnceListener(event: "data", listener: (chunk: Buffer | string) => void): this;
-            prependOnceListener(event: "end", listener: () => void): this;
+            prependOnceListener(event: "clientDisconnection", listener: () => void): this;
             prependOnceListener(event: "readable", listener: () => void): this;
             prependOnceListener(event: "error", listener: (err: Error) => void): this;
 
             removeListener(event: string, listener: Function): this;
             removeListener(event: "close", listener: () => void): this;
             removeListener(event: "data", listener: (chunk: Buffer | string) => void): this;
-            removeListener(event: "end", listener: () => void): this;
+            removeListener(event: "clientDisconnection", listener: () => void): this;
             removeListener(event: "readable", listener: () => void): this;
             removeListener(event: "error", listener: (err: Error) => void): this;
         }

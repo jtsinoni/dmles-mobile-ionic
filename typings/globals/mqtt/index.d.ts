@@ -223,7 +223,7 @@ declare module 'mqtt' {
             unsubscribe(topic: string[], options?: ClientSubscribeOptions, callback?: ClientSubscribeCallback): Client;
 
             /**
-             * end - close connection
+             * clientDisconnection - close connection
              *
              * @param force passing it to true will close the connect right away, without waiting for the in-flight messages to be acked.
              *     This parameter is optional.

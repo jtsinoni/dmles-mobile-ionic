@@ -5,10 +5,9 @@ import { Injectable }    from '@angular/core';
 
 import { UpstreamService } from './upstream.service'
 import {TopicMessagingService} from "../topic-messaging.service";
-import {ConnectivityService} from "../connectivity.service";
+import {NetworkService} from "../network.service";
 import {DatabaseService} from "../database.service";
 import {CommonDataService} from "../common-data.service";
-import Dexie from 'dexie';
 import {ForwardDataModel} from "../../models/forward-data.model";
 import {StoreDataModel} from "../../models/store-data.model";
 
@@ -18,7 +17,7 @@ export class TopicUpstreamService extends UpstreamService {
     private storeDataModel: StoreDataModel;
 
     constructor(private topicMessagingService: TopicMessagingService,
-                private connectivityService: ConnectivityService,
+                private networkService: NetworkService,
                 private databaseService: DatabaseService,
                 private commonDataService: CommonDataService) {
         super(commonDataService);
@@ -27,39 +26,76 @@ export class TopicUpstreamService extends UpstreamService {
         this.storeDataModel = commonDataService.storeDataModel;
     }
 
-    public connect(): Dexie.Promise<any> {
-        // Get client connection and subscribe
-        return this.getClientConnection()
-                    .then(this.subscribe);
+    /**
+     * Check if already connected, if not, create connection and subscribe.
+     * @returns @returns {Promise<any>} MQTT client
+     */
+    public connect(): Promise<any> {
+        let localClient = this.topicMessagingService.client;
+        if(this.clientConnected()) {
+            console.warn(`Client already connected: Client ID: ${localClient.options.clientId}`);
+            return Promise.resolve(localClient);
+        } else {
+            return this.clientConnection()
+                .then(this.subscribe)
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
     }
 
-    public disconnect(): Dexie.Promise<any> {
-        // Get client connection and unsubscribe
-        return this.getClientConnection()
-            .then(this.unsubscribe)
-            .then((client) => {
-                return this.topicMessagingService.disconnect();
-            });
+    /**
+     * Check to see if already disconnected, no point in disconnecting, if already "disconnected"
+     * @returns {Promise<any>} may contain undefined, if never connected, then try to disconnect again
+     */
+    public disconnect(): Promise<any> {
+        let localClient = this.topicMessagingService.client;
+        if(this.clientConnected()) {
+            return Promise.resolve(localClient)
+                .then(this.unsubscribe)
+                .then(this.clientDisconnection)
+                .catch((error) => {
+                    console.error(error);
+                })
+        } else {
+            let message = `Client already disconnected`;
+            if(localClient) {
+                message = message + `: Client ID: ${localClient.options.clientId}`;
+            }
+            console.warn(message);
+            return Promise.resolve(localClient);
+        }
     }
 
-    public pushLocalChanges(): Dexie.Promise<any> {
-        return this.findCachedData()
+    public pushLocalChanges(): Promise<any> {
+        //let self = this;
+        return this.clientConnection()
+            .then(this.findCachedData)
             .then(this.publishMany)
             .then(this.deleteCachedData)
             .then((client) => {
                 this.storeDataModel.badgeCount = 0;
-                this.forwardDataModel.pushedChanges = client.message;
+                this.forwardDataModel.pushedChanges = client.items;
 
                 return client;
             })
+            .catch((reason) => {
+                if(reason.message === "NoItems") {
+                    console.log("The are no items in local storage");
+                } else {
+                    console.error(reason);
+                }
+            });
     }
 
-    public sendData(param: any): Dexie.Promise<any> {
-        if(this.connectivityService.isConnected) {
-            // 1. Connect to Host
-            // 2. Subscribe to Topic
-            // 3. Publish messages to Topic
-            // 4. Unsubscribe from Topic
+    /**
+     * Sends data to local cache or an upstream service
+     * @param param
+     * @returns {Promise<any>}
+     */
+    public sendData(param: any): Promise<any> {
+        if(this.networkService.isConnected) {
+            // Connect to Host and Publish messages to Topic
             return this.sendDataServer(param);
 
         } else {
@@ -68,121 +104,188 @@ export class TopicUpstreamService extends UpstreamService {
         }
     }
 
-    private sendDataServer(message: any): Dexie.Promise<any> {
-        return this.getClientConnection()
-        //.then(this.subscribe)
+    /**
+     * Connects to messaging server then sends data
+     * @param message
+     * @returns {Promise<U|R>}
+     */
+    private sendDataServer(message: any): Promise<any> {
+        return this.clientConnection()
             .then((client) => {
                 client.message = message;
                 return client;
             })
-            .then(this.publish);
-            //.then(this.unsubscribe)
-            //.then(null, this.logErrorMessage);
+            .then(this.publish)
+            .catch((error) => {
+                console.error(error);
+            })
     }
 
-    private sendDataLocal(message: any): Dexie.Promise<any> {
+    /**
+     * Sends data to local cache
+     * @param message
+     * @returns {Promise<U|R>|Observable<R>|Promise<undefined|R>}
+     */
+    private sendDataLocal(message: any): Promise<number> {
         return this.databaseService.add(message)
             .then((id)=> {
-                console.log(`Succesfully added: ${message} with row id: ${id}`);
+                return id;
             })
-            // .catch((error) => {
-            //     console.error(error);
-            // });
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
-    private deleteCachedData(client: any) {
-        // Remove items from local storage
-        console.log("Removing messages from local storage");
-        client.databaseService.delete();
-
-        return client;
-    }
-
-    private findCachedData(): Dexie.Promise<any> {
-        return this.databaseService.find()
+    /**
+     * Finds data that is cached
+     * @param client
+     * @returns {Promise<any>|Thenable<any>|Promise<U>|Thenable<U>|PromiseLike<TResult>}
+     */
+    private findCachedData(client: any): Promise<any> {
+        return client.databaseService.find()
             .then((items) => {
                 if (items.length > 0) {
-                    return this.adornClient(this.data.client, items)
+                    client.items = items;
+                    return client;
                 } else {
                     throw new Error("NoItems");
                 }
             })
     }
 
-    private adornClient(client: any, message?: any) {
-        client.host = this.data.host;
-        client.port = this.data.port;
-        client.topic = this.data.topic;
-        client.topicMessagingService = this.topicMessagingService;
-        client.databaseService = this.databaseService;
-        client.connectivityService = this.connectivityService;
-        if (message) {
-            client.message = message;
-        }
-
-        return client;
+    /**
+     * Deletes data that is cached
+     * @param client
+     * @returns {Promise<U|R>}
+     */
+    private deleteCachedData(client: any): Promise<any> {
+        // Remove items from local storage
+        return client.databaseService.delete()
+            .then(() => {
+                console.log(`Removed ${client.items.length} messages from local storage`);
+                return client;
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
-    private subscribe(client: any) {
-        // Subscribe to Topic
-        console.log(`Subscribing to Topic: ${client.topic}, client: ${client.options.clientId}`);
-        client.topicMessagingService.subscribe(client, client.topic);
 
-        return client;
+
+    /**
+     * Subscribe to Topic
+     * @param client
+     * @returns {Promise<U|R>}
+     */
+    private subscribe(client: any): Promise<any> {
+        return client.topicMessagingService.subscribe(client.topic)
+            .then((granted) => {
+                granted.forEach((element) => {
+                    console.log(`Subscribing to Topic: ${element.topic}, client: ${client.options.clientId}`);
+                });
+                return client;
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
-    private publish(client: any) {
-        if(client.connectivityService.isConnected) {
-            // Publish to Topic
-            console.log(`Publishing message: ${client.message}  to Topic: ${client.topic}`);
-            client.topicMessagingService.publish(client.message, client, client.topic);
-        } else {
-            console.warn("Network disconnected");
-        }
-
-        return client;
-    }
-
-    private publishMany(client: any) {
-        if(client.connectivityService.isConnected) {
-            // Publish many messages to Topic
-            console.log(`Publishing ${client.message.length} messages to Topic: ${client.topic}`);
-
-            //TODO:  needs to be done in a transaction
-            for (let i in client.message) {
-                client.topicMessagingService.publish(client.message[i], client, client.topic);
-            }
-        } else {
-            console.warn("Network disconnected");
-        }
-
-        return client;
-    }
-
+    /**
+     * Unsubscribe from Topic
+     * @param client
+     * @returns {Promise<U|R>}
+     */
     private unsubscribe(client: any) {
-        // Unsubscribe from Topic
-        client.topicMessagingService.unsubscribe(client, client.topic);
-
-        return client;
+        return client.topicMessagingService.unsubscribe(client.topic)
+            .then((results) => {
+                console.log(`Unsubscribing from Topic: ${results.topic}, client: ${results.options.clientId}`);
+                return results;
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
-    private getClientConnection(): Dexie.Promise<any> {
+    /**
+     * Publish message to Topic
+     * @param client
+     * @returns {Promise<any>}
+     */
+    private publish(client: any): Promise<any> {
+        return client.topicMessagingService.publish(client.topic, client.message)
+            .then(() => {
+                console.log(`Publishing message: ${client.message}  to Topic: ${client.topic}`);
+                return client;
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+    /**
+     * Publish multiple messages to Topic
+     * @param client
+     * @returns {Promise<U|R>}
+     */
+    private publishMany(client: any): Promise<any> {
+        let promises = [];
+        client.items.forEach((item) => {
+            let promise = client.topicMessagingService.publish(client.topic, item.data);
+            promises.push(promise);
+        });
+
+        return Promise.all(promises)
+            .then((results) => {
+                console.log(`Published ${client.items.length} messages to Topic: ${client.topic}`);
+                return client;
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+    /**
+     * Disconnect client from messaging broker
+     * @param client
+     * @returns {Promise<U|R>}
+     */
+    private clientDisconnection(client: any): Promise<any> {
+        return client.topicMessagingService.disconnect()
+            .then(() => {
+                return client;
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+    /**
+     * This is two-fold, first checks if a cellular network exists, then checks if the client has an
+     * existing connection to a messaging broker.  If the the client has a connection, just return the
+     * same connection, else create a new connection to the messaging broker.
+     *
+     * @returns {Promise<T>|Promise}
+     */
+    private clientConnection(): Promise<any> {
         let host = this.data.host;
         let port = this.data.port;
 
-        return new Dexie.Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             // First check for network connectivity
-            if(this.connectivityService.isConnected) {
+            if(this.networkService.isConnected) {
+                let localClient  = this.topicMessagingService.client;
+
                 // Second, check if already connected, if not make new Connection
-                if(this.topicMessagingService.isConnected(this.data.client)) {
-                    resolve(this.adornClient(this.data.client));
+                if(localClient && localClient.connected) {
+                    resolve(localClient);
                 } else {
-                    let client = this.topicMessagingService.connect(host, port);
-                    if(client.connected) {
-                        resolve(this.adornClient(this.data.client));
-                    } else {
-                        reject(`Failed to connect to host: ${host} port: ${port}, unable to connect to messaging server`);
-                    }
+                    this.topicMessagingService.connect(host, port)
+                        .then((client) => {
+                            resolve(this.adornClient(client));
+                        })
+                        .catch((error) => {
+                            reject(error);
+                        });
                 }
             } else {
                 reject(`Failed to connect to host: ${host} port: ${port}, no network connection.`);
@@ -190,4 +293,34 @@ export class TopicUpstreamService extends UpstreamService {
         });
     }
 
+    /**
+     * Retruns true if the client is connected to a messaging broker, else false
+     * @returns {boolean}
+     */
+    private clientConnected(): boolean {
+        if(this.topicMessagingService.client && this.topicMessagingService.client.connected) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Adds additional services to the client
+     * @param client
+     * @param message
+     * @returns {any}
+     */
+    private adornClient(client: any, message?: any): any {
+        client.host = this.data.host;
+        client.port = this.data.port;
+        client.topic = this.data.topic;
+        client.topicMessagingService = this.topicMessagingService;
+        client.databaseService = this.databaseService;
+        client.networkService = this.networkService;
+        if (message) {
+            client.message = message;
+        }
+
+        return client;
+    }
 }

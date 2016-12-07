@@ -31,7 +31,7 @@ self.addEventListener('activate', (event) => {
 // cached and every request is first checked against the cache.
 // This may not be an appropriate approach if your web application makes requests for
 // arbitrary URLs as part of its normal operation (e.g. a RSS connect or a news aggregator),
-// as the cache could end up containing large responses that might not end up ever being accessed.
+// as the cache could clientDisconnection up containing large responses that might not clientDisconnection up ever being accessed.
 // Other approaches, like selectively caching based on response headers or only caching
 // responses served from a specific domain, might be more appropriate for those use cases.
 self.addEventListener('fetch', (event) => {

@@ -10,8 +10,7 @@ import {CommonDataService} from "./services/common-data.service";
 import {TopicMessagingService} from "./services/topic-messaging.service";
 import {TopicModule} from "./views/topic/topic.module";
 
-import {ConnectivityService} from "./services/connectivity.service";
-import {SyncService} from "./services/sync.service";
+import {NetworkService} from "./services/network.service";
 import {EquipmentRecordsComponent} from "./views/equipment/records/equipment-records.component";
 import {EquipmentRecordDetailsComponent} from "./views/equipment/records/details/equip-record-details.component";
 import {EquipmentRequestsComponent} from "./views/equipment/requests/equipment-requests.component";
@@ -39,8 +38,8 @@ import {EquipmentRequestDetailsComponent} from "./views/equipment/requests/detai
         EquipmentRequestsComponent,
         EquipmentRequestDetailsComponent,
     ],
-    providers: [TopicMessagingService, DatabaseService, SyncService,
-                CommonDataService, ConnectivityService,
+    providers: [TopicMessagingService, DatabaseService,
+                CommonDataService, NetworkService,
                 { provide: UpstreamService, useClass: TopicUpstreamService }]
 })
 export class AppModule {}

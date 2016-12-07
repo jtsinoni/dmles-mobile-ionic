@@ -1,12 +1,15 @@
-import {Injectable} from "@angular/core";
-import Dexie from "dexie";
-import {Network} from 'ionic-native';
-import {CommonDataModel} from "../../models/common-data.model";
-import {CommonDataService} from "../common-data.service";
 /**
  * Created by johntsinonis on 11/10/16.
  */
+import {Injectable} from "@angular/core";
+import {Network} from 'ionic-native';
+import {CommonDataModel} from "../../models/common-data.model";
+import {CommonDataService} from "../common-data.service";
+
 @Injectable()
+/**
+ * Contains several factory methods that need to be implemented by the child classes
+ */
 export class UpstreamService {
     protected data: CommonDataModel;
 
@@ -16,34 +19,29 @@ export class UpstreamService {
         this.init();
     }
 
+    /**
+     * If device connects to network, push any locally stored changes to the upstream service
+     */
     private init() {
         Network.onConnect().subscribe(() => {
             console.log('Pushing local changes ... ');
-            this.pushLocalChanges()
-                .catch((reason) => {
-                    if(reason.message === "NoItems") {
-                        console.log("The are no items in local storage");
-                    } else {
-                        console.error(reason);
-                    }
-                });
+            this.pushLocalChanges();
         });
     }
 
-
-    sendData(param: any): Dexie.Promise<any> {
+    sendData(param: any): Promise<any> {
         return undefined;
     }
 
-    pushLocalChanges(): Dexie.Promise<any> {
+    pushLocalChanges(): Promise<any> {
         return undefined;
     }
 
-    connect(): Dexie.Promise<any> {
+    connect(): Promise<any> {
         return undefined;
     }
 
-    disconnect(): Dexie.Promise<any> {
+    disconnect(): Promise<any> {
         return undefined;
     }
 

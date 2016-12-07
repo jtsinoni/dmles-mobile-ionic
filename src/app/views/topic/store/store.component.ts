@@ -11,7 +11,8 @@ import {CommonDataService} from "../../../services/common-data.service";
 export class StoreComponent implements OnInit {
     public items: DataTableModel[] = [];
 
-    constructor(private databaseService: DatabaseService, private commonDataService: CommonDataService) {
+    constructor(private databaseService: DatabaseService,
+                private commonDataService: CommonDataService) {
 
     }
 

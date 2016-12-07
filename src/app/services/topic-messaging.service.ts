@@ -4,113 +4,97 @@
 import {Injectable}    from '@angular/core';
 
 import MQTT from 'mqtt';
-import {CommonDataModel} from "../models/common-data.model";
-import {CommonDataService} from "./common-data.service";
-import {ConnectivityService} from "./connectivity.service";
 
 @Injectable()
 export class TopicMessagingService {
-    public data: CommonDataModel;
     public client: any;
 
-    constructor(private commonDataService: CommonDataService,
-                private connectivityService: ConnectivityService) {
-        this.data = commonDataService.data;
+    constructor() {
     }
 
-    private canConnect(client?: any, topic?: string): boolean {
-        if (client) {
-            this.data.client = client;
-        }
+    /**
+     * Connects to a messaging broker
+     * @param host
+     * @param port
+     * @returns {Promise<T>|Promise}
+     */
+    public connect(host: string, port: number): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.client = MQTT.connect(`mqtt://${host}:${port}`);
+            this.client.on('connect', () => {
+                resolve(this.client);
+            });
 
-        if (topic) {
-            this.data.topic = topic;
-        }
+            this.client.on('error', (error) => {
+                reject(error);
+            });
 
-        if(!this.connectivityService.isConnected) {
-            console.error('Network disconnected.');
-            return false;
-        }
-
-        if (!this.data.client) {
-            console.error('Client connection needs to be made first.');
-            return false;
-        }
-        return true;
+            // stop trying to reconnect after 10 attempts
+            // let tries = 10;
+            // client.on('reconnect', () => {
+            //     tries--;
+            //     if(tries == 0) {
+            //         console.log(`Disconnecting after multiple attempts`);
+            //         client.clientDisconnection(true);
+            //     }
+            // });
+        });
     }
 
-    public connect(host?: string, port?: number) {
-        if (host) {
-            this.data.host = host;
-        }
-
-        if (port) {
-            this.data.port = port;
-        }
-
-        this.data.client = MQTT.connect(`mqtt://${this.data.host}:${this.data.port}`);
-
-        //this.subscribe();
-        //this.publish("Hello world");
-        //this.unsubscribe();
-        //this.disconnect();
-        //console.log("MQTT Client" + this.data.client);
-        // return
-        return this.data.client;
-    }
-
-    public subscribe(client?: any, topic?: string) {
-
-        if (this.canConnect(client, topic)) {
-            this.data.client.subscribe(this.data.topic, {qos: 1}, function (err, granted) {
+    /**
+     * Subscribe to a topic
+     * @param topic
+     * @returns {Promise<T>|Promise}
+     */
+    public subscribe(topic: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.client.subscribe(topic, {qos: 1}, function (err, granted) {
                 if (err) {
-                    console.error(err);
+                    reject(err);
                 } else {
-                    //console.log('called subscribe service');
+                    resolve(granted);
                 }
             });
-        }
+        });
     }
 
-    public unsubscribe(client?: any, topic?: string) {
-        if (this.canConnect(client, topic)) {
-            this.data.client.unsubscribe(this.data.topic, function (err) {
+    /**
+     * Unsubscribe from a topic
+     * @param topic
+     * @returns {Promise<T>|Promise}
+     */
+    public unsubscribe(topic: string): Promise<any> {
+        let self = this;
+        return new Promise((resolve, reject) => {
+            this.client.unsubscribe(topic, function (err) {
                 if (err) {
-                    console.error(err);
+                    reject(err);
                 } else {
-                    //console.log('called unsubscribe service');
+                    resolve(self.client);
                 }
             });
-        }
+        });
     }
 
-    public publish(message: string, client?: any, topic?: string) {
-        if (this.canConnect(client, topic)) {
-            this.data.client.publish(this.data.topic, message, {qos: 1}, function (err) {
+    public publish(topic: string, message: string): Promise<any> {
+        let self = this;
+        return new Promise((resolve, reject) => {
+            this.client.publish(topic, message, {qos: 1}, function (err) {
                 if (err) {
-                    console.error(err);
+                    reject(err);
                 } else {
-                    //console.log('called publish service');
+                    resolve(self.client);
                 }
             });
-        }
+        });
     }
 
-    public disconnect() {
-        if (this.canConnect(this.data.client)) {
-            this.data.client.end(true, function () {
-                //this.data.client.options.clientId = undefined;
-                //this.data.client.connected = false;
-                console.log(`Client disconnecting: ${this.data.client.disconnecting}`);
-            }.bind(this));  // without, 'this', would be null
-        }
-        return this.data.client;
-    }
-
-    public isConnected(client?: any): boolean {
-        if (this.canConnect(client)) {
-            return this.data.client.connected;
-        }
-        return false;
+    public disconnect(): Promise<any> {
+        let self = this;
+        return new Promise((resolve, reject) => {
+            this.client.end(true, () => {
+                resolve(self.client);
+            });
+        });
     }
 }

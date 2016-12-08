@@ -23,6 +23,12 @@ export class StartComponent implements OnInit {
     @Input()
     public isConnected: boolean;
 
+    @Input()
+    public disableConnectButton: boolean = false;
+
+    @Input()
+    public disableDisconnectButton: boolean = true;
+
     public storeDataModel: StoreDataModel;
 
     constructor(private databaseService: DatabaseService,
@@ -80,7 +86,9 @@ export class StartComponent implements OnInit {
                 let message = `Received connect event, Client ID: ${client.options.clientId}, connected: ${client.connected}`;
 
                 this.addLogMessage(message);
-                this.isConnected = true;
+                //this.isConnected = true;
+                this.disableConnectButton = true;
+                this.disableDisconnectButton = false;
             })
             .catch((error) => {
                 this.logErrorMessage(error);
@@ -96,7 +104,8 @@ export class StartComponent implements OnInit {
                 }
 
                 this.addLogMessage(message);
-                this.isConnected = false;
+                this.disableConnectButton = false;
+                this.disableDisconnectButton = true;
             })
             .catch((error) => {
                 this.logErrorMessage(error);
@@ -138,6 +147,29 @@ export class StartComponent implements OnInit {
         this.data.messages = '';
     }
 
+    public disabledConnectButtonState(): boolean {
+        if(this.isConnected) {
+            if(this.disableConnectButton) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    public disabledDisconnectButtonState(): boolean {
+        if(this.isConnected) {
+            if(this.disableDisconnectButton) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
 
 }
 

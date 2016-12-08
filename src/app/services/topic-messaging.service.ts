@@ -4,12 +4,16 @@
 import {Injectable}    from '@angular/core';
 
 import MQTT from 'mqtt';
+import {CommonDataModel} from "../models/common-data.model";
+import {CommonDataService} from "./common-data.service";
 
 @Injectable()
 export class TopicMessagingService {
     public client: any;
+    private dataModel: CommonDataModel;
 
-    constructor() {
+    constructor(private commonDataService: CommonDataService) {
+        this.dataModel = commonDataService.data;
     }
 
     /**
@@ -19,25 +23,48 @@ export class TopicMessagingService {
      * @returns {Promise<T>|Promise}
      */
     public connect(host: string, port: number): Promise<any> {
+        /*
+         The keepalive interval is 60 seconds
+         Clean Session is true
+         The message delivery retry interval is 15 seconds
+         The connection timeout period is 30 seconds
+         */
         return new Promise((resolve, reject) => {
-            this.client = MQTT.connect(`mqtt://${host}:${port}`);
+            // reconnectPeriod: 0, do not try to reconnect if messaging server is not available
+            this.client = MQTT.connect(`mqtt://${host}:${port}`, {reconnectPeriod: 2000});
+            //this.client = MQTT.connect(`mqtt://${host}:${port}`);
             this.client.on('connect', () => {
+
+                console.log(`Received online event, Client ID: ${this.client.options.clientId}, connected: ${this.client.connected}`);
                 resolve(this.client);
             });
 
             this.client.on('error', (error) => {
-                reject(error);
+
+                console.error(`Received error event, Client ID: ${this.client.options.clientId}, connected: ${this.client.connected}`);
+                resolve(this.client);
             });
 
-            // stop trying to reconnect after 10 attempts
-            // let tries = 10;
-            // client.on('reconnect', () => {
-            //     tries--;
-            //     if(tries == 0) {
-            //         console.log(`Disconnecting after multiple attempts`);
-            //         client.clientDisconnection(true);
-            //     }
-            // });
+            this.client.on('offline', (results) => {
+
+                console.warn(`Received offline event, Client ID: ${this.client.options.clientId}, connected: ${this.client.connected}`);
+                resolve(this.client);
+            });
+
+
+            //stop trying to reconnect after 10 attempts
+            let origTryCount = this.dataModel.reconnectAttempts;
+            let tries = origTryCount;
+
+            this.client.on('reconnect', (results) => {
+                tries--;
+                if(tries == 0) {
+                    this.disconnect();
+                    console.log(`Stopped retrying to get a connection after ${origTryCount} attempts, results: ${results}`);
+                }
+
+                resolve(this.client);
+            });
         });
     }
 

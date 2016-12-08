@@ -5,6 +5,7 @@ export class CommonDataModel {
     client: any;
     host: string;
     port: number;
+    reconnectAttempts: number;
 
     constructor() {
         this.topic = 'dmles-mobile-ionic';
@@ -12,5 +13,6 @@ export class CommonDataModel {
         this.messages = '';
         this.host = 'localhost';
         this.port = 61616;
+        this.reconnectAttempts = 10;
     }
 }

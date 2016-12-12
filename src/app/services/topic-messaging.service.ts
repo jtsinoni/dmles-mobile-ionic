@@ -6,14 +6,29 @@ import {Injectable}    from '@angular/core';
 import MQTT from 'mqtt';
 import {CommonDataModel} from "../models/common-data.model";
 import {CommonDataService} from "./common-data.service";
+import {Subject, Observable} from "rxjs";
+import {MessagingModel} from "../models/messaging.model";
 
 @Injectable()
 export class TopicMessagingService {
     public client: any;
+    private static onServiceAvailableSubject: Subject<any> = new Subject();
+    private static onTryToConnectSubject: Subject<any> = new Subject();
+
     private dataModel: CommonDataModel;
+    private messagingModel: MessagingModel;
 
     constructor(private commonDataService: CommonDataService) {
         this.dataModel = commonDataService.data;
+        this.messagingModel = commonDataService.messagingModel;
+    }
+
+    public static onServiceAvailable(): Observable<any> {
+        return (TopicMessagingService.onServiceAvailableSubject.asObservable());
+    }
+
+    public static onTryToConnect(): Observable<any> {
+        return (TopicMessagingService.onTryToConnectSubject.asObservable());
     }
 
     /**
@@ -23,19 +38,16 @@ export class TopicMessagingService {
      * @returns {Promise<T>|Promise}
      */
     public connect(host: string, port: number): Promise<any> {
-        /*
-         The keepalive interval is 60 seconds
-         Clean Session is true
-         The message delivery retry interval is 15 seconds
-         The connection timeout period is 30 seconds
-         */
-        return new Promise((resolve, reject) => {
-            // reconnectPeriod: 0, do not try to reconnect if messaging server is not available
-            this.client = MQTT.connect(`mqtt://${host}:${port}`, {reconnectPeriod: 2000});
-            //this.client = MQTT.connect(`mqtt://${host}:${port}`);
-            this.client.on('connect', () => {
 
-                console.log(`Received online event, Client ID: ${this.client.options.clientId}, connected: ${this.client.connected}`);
+        return new Promise((resolve, reject) => {
+            // reconnectPeriod: 2 (default), reconnect every 2 seconds until reconnectAttempts has reached
+            this.client = MQTT.connect(`mqtt://${host}:${port}`, {reconnectPeriod: this.messagingModel.reconnectPeriod});
+
+            this.client.on('connect', () => {
+                //console.log(`Received online event, Client ID: ${this.client.options.clientId}, connected: ${this.client.connected}`);
+
+                TopicMessagingService.onTryToConnectSubject.next(true);
+                TopicMessagingService.onServiceAvailableSubject.next(true);
                 resolve(this.client);
             });
 
@@ -46,21 +58,37 @@ export class TopicMessagingService {
             });
 
             this.client.on('offline', (results) => {
-
                 console.warn(`Received offline event, Client ID: ${this.client.options.clientId}, connected: ${this.client.connected}`);
+
+                TopicMessagingService.onTryToConnectSubject.next(false);
+                TopicMessagingService.onServiceAvailableSubject.next(false);
                 resolve(this.client);
             });
 
 
-            //stop trying to reconnect after 10 attempts
-            let origTryCount = this.dataModel.reconnectAttempts;
-            let tries = origTryCount;
+            //stop trying to reconnect after 10 (default) attempts
+            //TODO: Use RXJS interval Observables
+            // let source = Observable
+            //     .fromEventPattern(
+            //         (h) => {  this.client.on('reconnect', h); },
+            //         (h) => {  }
+            //     )
+            //     .timeInterval();
+            //
+            // source.subscribe(
+            //     x => console.log(`Received reconnect event in Observable => ${JSON.stringify(x)}`),
+            //     err => console.log('Error: ' + err),
+            //     () => console.log('Completed'));
 
-            this.client.on('reconnect', (results) => {
+            let tries = this.dataModel.reconnectAttempts;
+            this.client.on('reconnect', () => {
                 tries--;
                 if(tries == 0) {
                     this.disconnect();
-                    console.log(`Stopped retrying to get a connection after ${origTryCount} attempts, results: ${results}`);
+                    console.log(`Stopped retrying to get a connection after ${this.dataModel.reconnectAttempts} attempts`);
+
+                    TopicMessagingService.onTryToConnectSubject.next(true);
+                    TopicMessagingService.onServiceAvailableSubject.next(false);
                 }
 
                 resolve(this.client);
@@ -120,6 +148,8 @@ export class TopicMessagingService {
         let self = this;
         return new Promise((resolve, reject) => {
             this.client.end(true, () => {
+
+                TopicMessagingService.onServiceAvailableSubject.next(false);
                 resolve(self.client);
             });
         });

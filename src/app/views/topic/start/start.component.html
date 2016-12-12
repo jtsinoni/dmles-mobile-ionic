@@ -9,8 +9,12 @@
         <ion-input type="text" id="port" name="port" [(ngModel)]="data.port"></ion-input>
     </ion-item>
 
-    <button (click)="connect()" ion-button [disabled]="disabledConnectButtonState()">Connect</button>
-    <button (click)="disconnect()" ion-button color="danger" [disabled]="disabledDisconnectButtonState()">Disconnect</button>
+    <button (click)="connect()" ion-button [disabled]="disabledButtonState(disableConnectButton)">Connect</button>
+    <button (click)="disconnect()" ion-button color="danger" [disabled]="disabledButtonState(disableDisconnectButton)">Disconnect</button>
+
+    <!--<button (click)="connect()" ion-button>Connect</button>-->
+    <!--<button (click)="disconnect()" ion-button color="danger">Disconnect</button>-->
+
 
     <br /><hr/>
     <button (click)="add(message.value)" ion-button>Add Data</button>

@@ -16,31 +16,25 @@ import {NetworkService} from "../../../services/network.service";
     selector: 'start-view'
 })
 export class StartComponent implements OnInit {
-
     @Input()
     public data: CommonDataModel;
 
     @Input()
-    public isConnected: boolean;
+    public isConnected: boolean = false;
 
-    @Input()
     public disableConnectButton: boolean = false;
-
-    @Input()
     public disableDisconnectButton: boolean = true;
+    private isServiceAvailable: boolean = false;
 
     public storeDataModel: StoreDataModel;
 
     constructor(private databaseService: DatabaseService,
                 private upstreamService: UpstreamService,
-                private topicMessagingService: TopicMessagingService,
                 private commonDataService: CommonDataService,
                 public connectivityService: NetworkService) {
         this.data = commonDataService.data;
         this.storeDataModel = commonDataService.storeDataModel;
         this.isConnected = connectivityService.isConnected;
-
-        //topicMessagingService.connect(this.data.host, this.data.port);
 
         Network.onDisconnect().subscribe(() => {
             this.isConnected = false;
@@ -49,6 +43,92 @@ export class StartComponent implements OnInit {
         Network.onConnect().subscribe(() => {
             this.isConnected = true;
         });
+
+        TopicMessagingService.onTryToConnect().subscribe((results) => {
+            console.log(`TopicMessagingService.onTryToConnect() => ${results}`);
+            this.isConnected = results;
+        });
+
+        TopicMessagingService.onServiceAvailable().subscribe((connected) => {
+            if(connected) {
+                this.disableConnectButton = true;
+                this.disableDisconnectButton = false;
+            } else {
+                this.disableConnectButton = false;
+                this.disableDisconnectButton = true;
+            }
+
+            this.isServiceAvailable = connected;
+        });
+    }
+
+    ngOnInit(): void {
+        this.updateCount();
+        //this.upstreamService.pushLocalChanges();
+    }
+
+    public connect() {
+        this.upstreamService.connect()
+            .then((client) => {
+                //let message = "Received connect event, data => " + JSON.stringify(results);
+                let message = `Received connect event, Client ID: ${client.options.clientId}, connected: ${client.connected}`;
+
+                this.addLogMessage(message);
+                //this.disableConnectButton = true;
+                //this.disableDisconnectButton = false;
+
+                this.upstreamService.pushLocalChanges();
+            })
+            .catch((error) => {
+                this.logErrorMessage(error);
+            });
+    }
+
+    public disconnect() {
+        this.upstreamService.disconnect()
+            .then((client) => {
+                let message = `Received disconnect event`;
+                if(client) {
+                    message = message + `, Client ID: ${client.options.clientId}, connected: ${client.connected}`;
+                }
+
+                this.addLogMessage(message);
+                //this.disableConnectButton = false;
+                //this.disableDisconnectButton = true;
+            })
+            .catch((error) => {
+                this.logErrorMessage(error);
+            });
+    }
+
+    public add(data: string) {
+        this.upstreamService.sendData(data)
+            .then((response) => {
+                if(typeof(response) === 'number') {
+                    this.updateCount();
+
+                    let logMessage = `Succesfully added: ${data} with row id: ${response}`;
+                    this.addLogMessage(logMessage);
+                } else {
+                    this.addLogMessage(`Sending data to messaging server => ${data}`);
+                }
+
+            })
+            .catch((error) => {
+                this.logErrorMessage(error);
+            });
+    }
+
+    public clearLogMessages() {
+        this.data.messages = '';
+    }
+
+    public disabledButtonState(state: boolean): boolean {
+        if(this.isConnected) {
+            return state;
+        } else {
+            return true;
+        }
     }
 
     private updateCount() {
@@ -74,103 +154,6 @@ export class StartComponent implements OnInit {
         console.error(error);
         this.appendLogMessage(error);
     }
-
-    ngOnInit(): void {
-        this.updateCount();
-    }
-
-    public connect() {
-        this.upstreamService.connect()
-            .then((client) => {
-                //let message = "Received connect event, data => " + JSON.stringify(results);
-                let message = `Received connect event, Client ID: ${client.options.clientId}, connected: ${client.connected}`;
-
-                this.addLogMessage(message);
-                //this.isConnected = true;
-                this.disableConnectButton = true;
-                this.disableDisconnectButton = false;
-            })
-            .catch((error) => {
-                this.logErrorMessage(error);
-            });
-    }
-
-    public disconnect() {
-        this.upstreamService.disconnect()
-            .then((client) => {
-                let message = `Received disconnect event`;
-                if(client) {
-                    message = message + `, Client ID: ${client.options.clientId}, connected: ${client.connected}`;
-                }
-
-                this.addLogMessage(message);
-                this.disableConnectButton = false;
-                this.disableDisconnectButton = true;
-            })
-            .catch((error) => {
-                this.logErrorMessage(error);
-            });
-    }
-
-    public testPushLocalChanges() {
-        this.upstreamService.pushLocalChanges()
-            .then((results) => {
-
-            })
-            .catch((error) => {
-                this.logErrorMessage(error);
-            });
-
-    }
-
-    public add(data: string) {
-        this.upstreamService.sendData(data)
-            .then((response) => {
-                if(typeof(response) === 'number') {
-                    this.updateCount();
-
-                    let logMessage = `Succesfully added: ${data} with row id: ${response}`;
-                    this.addLogMessage(logMessage);
-                } else {
-                    //console.log("Upstream Returned Data: " + JSON.stringify(data));
-                    //this.updateCount();
-                    this.addLogMessage(`Sending data to messaging server => ${data}`);
-                }
-
-            })
-            .catch((error) => {
-                this.logErrorMessage(error);
-            });
-    }
-
-    public clearLogMessages() {
-        this.data.messages = '';
-    }
-
-    public disabledConnectButtonState(): boolean {
-        if(this.isConnected) {
-            if(this.disableConnectButton) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
-    }
-
-    public disabledDisconnectButtonState(): boolean {
-        if(this.isConnected) {
-            if(this.disableDisconnectButton) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
-    }
-
 }
 
 

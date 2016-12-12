@@ -15,6 +15,7 @@ import {StoreDataModel} from "../../models/store-data.model";
 export class TopicUpstreamService extends UpstreamService {
     private forwardDataModel: ForwardDataModel;
     private storeDataModel: StoreDataModel;
+    private serviceAvailable: boolean = false;
 
     constructor(private topicMessagingService: TopicMessagingService,
                 private networkService: NetworkService,
@@ -24,6 +25,11 @@ export class TopicUpstreamService extends UpstreamService {
 
         this.forwardDataModel = commonDataService.forwardDataModel;
         this.storeDataModel = commonDataService.storeDataModel;
+
+        TopicMessagingService.onServiceAvailable().subscribe((results) => {
+            console.log(`TopicUpstreamService:connected => ${results}`);
+            this.serviceAvailable = results;
+        });
     }
 
     /**
@@ -69,7 +75,15 @@ export class TopicUpstreamService extends UpstreamService {
 
     public pushLocalChanges(): Promise<any> {
         //let self = this;
-        return this.clientConnection()
+        //return this.clientConnection()
+        return Promise.resolve(this.serviceAvailable)
+            .then((connected) => {
+                if(!connected) {
+                    throw Error(`Client not connected`)
+                } else {
+                    return this.topicMessagingService.client;
+                }
+            })
             .then(this.findCachedData)
             .then(this.publishMany)
             .then(this.deleteCachedData)
@@ -94,7 +108,7 @@ export class TopicUpstreamService extends UpstreamService {
      * @returns {Promise<any>}
      */
     public sendData(param: any): Promise<any> {
-        if(this.networkService.isConnected) {
+        if(this.networkService.isConnected && this.serviceAvailable) {
             // Connect to Host and Publish messages to Topic
             return this.sendDataServer(param);
 

@@ -5,7 +5,7 @@ import {Network} from 'ionic-native';
 export class NetworkService {
     public isConnected: boolean = false;
 
-    //public data: CommonDataModel;
+    //public data: MessagingModel;
     constructor() {
         // This is the initial state.  Network.onDisconnect() or Network.onConnect() does not get called
         // unless the connection was previously lost or gained.

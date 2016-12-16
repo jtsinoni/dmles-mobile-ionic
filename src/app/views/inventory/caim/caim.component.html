@@ -1,0 +1,20 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>CAIM</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+<h1>CAIM Stuff</h1>
+	<ion-item>
+		<ion-input type="text" placeholder="Search" [(ngModel)]="searchValue" name="searchInput"></ion-input>
+	</ion-item>
+	<div padding>
+		<button ion-button color="primary" block  (click)="showLoadingData(searchValue)">
+			<ion-icon name="md-search"></ion-icon>
+		</button>
+	</div>
+</ion-content>

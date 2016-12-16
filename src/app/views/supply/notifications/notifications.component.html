@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-title>DML-ES Mobile</ion-title>     
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>My Notifications</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <button ion-item *ngFor="let notice of notifications" (press)="notificationSelected($event, notice)" (swipe)="notificationSwiped($event, notice)">
+      <ion-icon name="medical" item-left></ion-icon>
+        <div>{{notice.title}}</div>    
+      <div class="item-note">
+        {{notice.message}}
+      </div>
+    </button>
+  </ion-list>
+</ion-content>

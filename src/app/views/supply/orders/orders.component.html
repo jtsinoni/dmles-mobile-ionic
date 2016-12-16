@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-title>DML-ES Mobile</ion-title>     
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>My Orders</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let order of ordersList" (press)="orderSelected(order)">
+      <ion-icon name="medical" item-left></ion-icon>
+      <div>{{order.documentNumber ? order.documentNumber : order.id}}</div>
+      <div>{{order.itemId}}</div>
+      <div><span>Order Qty:</span>{{order.orderQuantity}}</div>
+    </ion-item>
+  </ion-list>
+</ion-content>

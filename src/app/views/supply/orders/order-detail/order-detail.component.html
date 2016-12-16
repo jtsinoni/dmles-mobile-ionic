@@ -1,0 +1,30 @@
+<!--
+  Generated template for the OrderDetail component.
+
+  See https://angular.io/docs/ts/latest/api/core/index/ComponentMetadata-class.html
+  for more info on Angular 2 Components.
+-->
+
+<ion-card>
+  <ion-card-header>
+    Order Detail
+  </ion-card-header>
+  <ion-card-content>
+    <ion-card-title>
+      {{order.documentNumber}}
+    </ion-card-title>
+    <div><span>Item Id:</span> {{order.itemId}}
+    </div>
+    <div><span *ngIf="supplyItem">{{supplyItem.itemDescription}}</span></div>
+    <div>
+      <span>Order Qty:</span> {{order.orderQuantity}}
+    </div>
+    <div>
+      <span>Requested by:</span> {{order.requestor}}
+    </div>
+    <div class="image-div">
+      <img class="item-image" alt="item image" *ngIf="supplyItem" src="{{ supplyItem.imageUrl }}" >
+    </div>
+    <button  ion-button (click)="dismiss()">X</button>
+  </ion-card-content>
+</ion-card>

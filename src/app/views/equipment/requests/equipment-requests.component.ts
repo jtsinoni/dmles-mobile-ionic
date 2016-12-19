@@ -29,7 +29,7 @@ export class EquipmentRequestsComponent {
         }
     }
 
-    itemTapped(event, item) {
+    itemTapped(item) {
         this.navCtrl.push(EquipmentRequestDetailsComponent, {
             item: item
         });

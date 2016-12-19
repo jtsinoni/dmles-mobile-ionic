@@ -29,6 +29,18 @@ export class InMemoryDataService implements InMemoryDbService {
       { id: 'W560JL6060J012', documentNumber: 'W560JL6060J012', itemId: '00 876 980 01', issueDate: new Date().toJSON(), issueState: 1, quantityIssued: 2, requestor: 'Ted' }
 
     ];
-    return { notifications, supplyItems, orders, issues };
+
+    let equipmentRequests = [
+      { id: 1125, requestNumber: 1125, requestTitle: 'Test1', quantityRequested: 1, totalPrice: 100.00, submitter: 'LISA MORALES', organization: 'W33DME', customer: 'Y06AAF', currentStatus: 'Submitted', level: 'X', updatedDate: '2016-12-13 22:31:28.120Z' },
+      { id: 1155, requestNumber: 1155, requestTitle: 'Test2', quantityRequested: 10, totalPrice: 5000.00, submitter: 'LISA MORALES', organization: 'W33DME', customer: 'Y06AAF', currentStatus: 'Submitted', level: 'X', updatedDate: '2016-12-14 14:36:42.482Z' }
+
+    ];
+
+    let equipmentRecords = [
+      { id: 'C7044A', itemId: 'C7044A', shortItemDescription: 'PRINTER, LASERJET BLACK & WHITE', longDescription: 'PRINTER AUTOMATIC DATA PROCESSING' , equipmentStatus: 'On Hand', ecn: '0L0965', deviceClass: 'EQUIPMENT-EXPENSE NON-MEDICAL' },
+      { id: '651501C706836', itemId: '651501C706836', shortItemDescription: 'MONITORING SYSTEMS, PHYSIOLOGIC', longDescription: 'MONITORING SYSTEM, PHYSIOLOGIC, ACUTE CARE' , equipmentStatus: 'On Hand', ecn: '002605', deviceClass: 'EQUIPMENT-EXPENSE MEDICAL' }
+
+    ];
+    return { notifications, supplyItems, orders, issues, equipmentRequests, equipmentRecords };
   }
 }

@@ -27,7 +27,7 @@ export class EquipmentRequestService extends ApiService<EquipmentRequestModel, n
     return this.getOne(id);
   }
 
-  createRequest(request: EquipmentRequestModel) : Promise<void> {
+  createRequest(request: EquipmentRequestModel) : Promise<EquipmentRequestModel> {
     return this.create(request);
   }
 

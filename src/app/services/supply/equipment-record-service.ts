@@ -26,7 +26,7 @@ export class EquipmentRecordService extends ApiService<EquipmentRecordModel, str
     return this.getOne(id);
   }
 
-  addRecord(record: EquipmentRecordModel) : Promise<void> {
+  addRecord(record: EquipmentRecordModel) : Promise<EquipmentRecordModel> {
      return this.create(record);
   }
 

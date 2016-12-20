@@ -27,6 +27,10 @@ export class EquipmentRequestService extends ApiService<EquipmentRequestModel, n
     return this.getOne(id);
   }
 
+  updateRequest(request: EquipmentRequestModel) : Promise<EquipmentRequestModel> {
+    return this.update(request);
+  }
+
   createRequest(request: EquipmentRequestModel) : Promise<EquipmentRequestModel> {
     return this.create(request);
   }

@@ -7,7 +7,7 @@ export class OrderModel extends DataItemModel<string> {
     public itemId: string;
     public unitOfPurchasePrice: number;
     public orderDate: Date;
-    public requiredDate: Date;
+    public requiredDate: string;
     public requestor: string;
     public orderState: number;
     id:string; 

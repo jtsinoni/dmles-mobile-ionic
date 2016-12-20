@@ -1,5 +1,5 @@
-import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { NgModule } from '@angular/core';
+import { IonicApp, IonicModule } from 'ionic-angular';
 import { DMLESMobile } from './app.component';
 import { TopicComponent } from './views/topic/topic.component';
 import { InventoryComponent } from './views/inventory/inventory.component';
@@ -52,7 +52,7 @@ import { HttpModule } from '@angular/http';
         TopicMessagingService, DatabaseService,
         CommonDataService, NetworkService,
         { provide: UpstreamService, useClass: TopicUpstreamService },
-        { provide: ErrorHandler, useClass: IonicErrorHandler }
+        //{ provide: ErrorHandler, useClass: IonicErrorHandler }
     ]
 })
 export class AppModule { }

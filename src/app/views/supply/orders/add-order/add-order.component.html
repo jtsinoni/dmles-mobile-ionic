@@ -15,7 +15,7 @@
       </ion-item>
       <ion-item>
         <ion-label>Required Date</ion-label>
-        <ion-datetime id="requiredDate" formControlName="requiredDateInput" displayFormat="MMM DD YYYY" [(ngModel)]="model.requiredDate"></ion-datetime>
+        <ion-datetime id="requiredDate" formControlName="requiredDateInput" displayFormat="MMM DD YYYY" [(ngModel)]="model.requiredDate" [max]="futureDate" ></ion-datetime>
       </ion-item>
       <div class="image-div">
         <img class="item-image" alt="item image" *ngIf="supplyItem" src="{{ supplyItem.imageUrl }}">

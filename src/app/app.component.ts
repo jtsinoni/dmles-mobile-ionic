@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {Platform, Nav} from 'ionic-angular';
+import {Platform, Nav, MenuController} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import { AppContainerComponent } from './app-container.component';
 // import {TopicComponent} from './views/topic/topic.component';
@@ -30,7 +30,7 @@ export class DMLESMobile {
     //     ];
     // }
 
-    constructor(public platform: Platform) {
+    constructor(public platform: Platform, menu: MenuController) {
         this.initializeApp();
     }
   

@@ -116,14 +116,6 @@ export class TopicUpstreamService extends UpstreamService {
             // Not connected, need to cache data
             return this.sendDataLocal(param);
         }
-
-        // return this.clientConnection()
-        //     .then((client) => {
-        //
-        //     })
-        //     .catch((error) => {
-        //         console.error(error);
-        //     })
     }
 
     /**
@@ -191,8 +183,6 @@ export class TopicUpstreamService extends UpstreamService {
                 console.error(error);
             });
     }
-
-
 
     /**
      * Subscribe to Topic

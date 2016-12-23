@@ -25,6 +25,7 @@
     "@ionic/storage": "1.1.6",
     "@types/mqtt": "0.0.32",
     "@types/phonegap": "^2.3.27",
+    "angular2-logger": "^0.5.1",
     "dexie": "^1.5.1",
     "ionic-angular": "2.0.0-rc.2",
     "ionic-native": "2.2.3",

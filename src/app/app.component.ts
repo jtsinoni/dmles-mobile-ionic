@@ -5,6 +5,7 @@ import {StatusBar} from 'ionic-native';
 import {TopicComponent} from './views/topic/topic.component';
 import {EquipmentRecordsComponent} from "./views/equipment/records/equipment-records.component";
 import {EquipmentRequestsComponent} from "./views/equipment/requests/equipment-requests.component";
+import {RolesComponent} from "./views/admin/roles/roles.component";
 
 @Component({
     templateUrl: 'app.html'
@@ -26,7 +27,8 @@ export class DMLESMobile {
         this.pages = [
             {title: 'Equipment Records', component: EquipmentRecordsComponent},
             {title: 'Equipment Requests', component: EquipmentRequestsComponent},
-            {title: 'Messaging', component: TopicComponent}
+            {title: 'Messaging', component: TopicComponent},
+            {title: 'Roles', component: RolesComponent}
         ];
     }
 

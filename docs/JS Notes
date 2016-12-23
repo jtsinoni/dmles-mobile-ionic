@@ -1,0 +1,11 @@
+  Check if passed in var is a string or array
+  ===========================================
+  if (typeof topic === 'string') {
+    packet.unsubscriptions = [topic]
+  } else if (typeof topic === 'object' && topic.length) {
+    packet.unsubscriptions = topic
+  }
+
+  packet.unsubscriptions.forEach(function (topic) {
+    delete that._subscribedTopics[topic]
+  })

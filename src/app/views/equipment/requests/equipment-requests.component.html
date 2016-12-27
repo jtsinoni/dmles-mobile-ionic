@@ -8,11 +8,11 @@
 </ion-header>
 <ion-content>
   <ion-list>
-    <button ion-item *ngFor="let item of items" (click)="itemTapped(item)">
-      <ion-icon name="{{item.icon}}" item-left></ion-icon>
-      {{item.title}}
+    <button ion-item *ngFor="let item of equipmentRequestList" (click)="itemTapped(item)">
+      <ion-icon name="flask" item-left></ion-icon>
+      {{item.requestTitle}}
       <div class="item-note" item-right>
-        {{item.note}}
+        {{item.organization}}
       </div>
     </button>
   </ion-list>

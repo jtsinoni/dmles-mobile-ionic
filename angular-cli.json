@@ -1,7 +1,7 @@
 {
   "project": {
     "version": "1.0.0-beta.16",
-    "name": "testtest"
+    "name": "dmles-mobile"
   },
   "apps": [
     {
@@ -9,19 +9,19 @@
       "outDir": "dist",
       "assets": "assets",
       "index": "index.html",
-      "main": "main.ts",
-      "test": "test/test.ts",
+      "main": "www/build/main.js",
+      "test": "./test/test.ts",
       "tsconfig": "../tsconfig.json",
       "prefix": "app",
       "mobile": true,
       "styles": [
-        "main.css"
+        "www/build/main.css"
       ],
       "scripts": [],
       "environments": {
-        "source": "environments/environment.ts",
-        "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts"
+        "source": "test/environments/environment.ts",
+        "dev": "test/environments/environment.ts",
+        "prod": "test/environments/environment.prod.ts"
       }
     }
   ],
@@ -39,6 +39,6 @@
   },
   "defaults": {
     "styleExt": "css",
-    "prefixInterfaces": false
+    "prefixInterfaces": false     
   }
 }

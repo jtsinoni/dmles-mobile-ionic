@@ -11,9 +11,9 @@ import { SupplyItemService } from './supply/supply-item-service';
 
 @NgModule({
     imports: [
-        InMemoryWebApiModule.forRoot(InMemoryDataService),
+        InMemoryWebApiModule.forRoot(InMemoryDataService, {passThruUnknownUrl: true}),
     ],
-    providers: [     
+    providers: [
         NotificationService,
         OrderService,
         SupplyItemService,

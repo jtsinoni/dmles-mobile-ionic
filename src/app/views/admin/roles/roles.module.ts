@@ -7,6 +7,7 @@ import {RolesComponent} from "./roles.component";
     declarations: [RolesComponent, RoleDetailsComponent],
     imports: [IonicModule],
     exports: [RolesComponent, RoleDetailsComponent],
+    entryComponents: [RolesComponent, RoleDetailsComponent],
 })
 export class RolesModule {
 

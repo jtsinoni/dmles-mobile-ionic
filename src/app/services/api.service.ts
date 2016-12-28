@@ -3,14 +3,9 @@ import {Logger} from "angular2-logger/core";
 import {ApiConstants} from "../constants/api.constants";
 import {AppService} from "./app.service";
 import {AuthenticationService} from "./authentication.service";
-import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
-export interface IApiService {
 
-}
-
-@Injectable()
-export class ApiService implements IApiService {
+export class ApiService {
     private apiServiceName: string = "Api Service";
 
     constructor(private http: Http, public log: Logger, protected Authentication: AuthenticationService, private App: AppService, private managerName: string) {

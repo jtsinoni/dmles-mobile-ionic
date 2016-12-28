@@ -5,6 +5,7 @@ import {Logger} from "angular2-logger/core";
 import {ApiService} from "../../services/api.service";
 import {AppService} from "../../services/app.service";
 import {AuthenticationService} from "../../services/authentication.service";
+import {Observable} from "rxjs";
 
 export interface IRequestApiService {
 }
@@ -23,7 +24,7 @@ export class RequestApiService extends ApiService implements IRequestApiService 
         return this.get('request/buildWeighins?requestId=' + requestId);
     }
 
-    public getEquipmentRequests() {
+    public getEquipmentRequests(): Observable<any> {
         return this.get("getEquipmentRequests");
     }
 

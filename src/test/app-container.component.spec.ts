@@ -11,7 +11,7 @@ describe('dmles-mobile-ionic-app-container', () => {
   });
 
   it('initialises with four possible areas', () => {
-    expect(instance['areas'].length).toEqual(4);
+    expect(instance['areas'].length).toEqual(5);
   });
 
 //   it('initialises with a root page', () => {

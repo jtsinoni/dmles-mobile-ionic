@@ -1,4 +1,3 @@
-'use strict'
 import { ServiceBase } from './service-base';
 import { ProviderConstants } from './provider-constants';
 import { Http } from '@angular/http';
@@ -27,16 +26,16 @@ export abstract class ApiService<T extends DataItemModel<K>, K> extends ServiceB
         return this.getMany().then(items => items.find(item => item.id === id));
     }
 
-    create(item: T): Promise<T> {  
+    create(item: T): Promise<T> {
         // TODO check this url
-        const url = `${this.serviceUrl}/${item.id}`;      
+        const url = `${this.serviceUrl}/${item.id}`;
         return this.http
             .post(url, JSON.stringify(item), { headers: ProviderConstants.JSON_HEADERS })
             .toPromise()
             .then(res => res.json().data)
             .catch(this.handleError);
     }
-    
+
     update(item: T): Promise<T> {
         // TODO check this url
         const url = `${this.serviceUrl}/${item}`;

@@ -3,7 +3,6 @@ import {NgModule, ModuleWithProviders} from "@angular/core";
 import {UtilService} from "./util.service";
 import {BaseSelectFilterService} from "./base-select-filter.service";
 import {Base64Service} from "./base64.service";
-import {ApiService} from "../../services/api.service";
 import {OAuthService} from "../../services/oauth.service";
 import {AuthenticationService} from "../../services/authentication.service";
 import {LocalStorageService} from "../../services/local-storage.service";
@@ -18,7 +17,7 @@ export class CommonServicesModule {
             ngModule: CommonServicesModule,
             providers: [Base64Service, BaseSelectFilterService, UtilService,
                         LocalStorageService, AuthenticationService,
-                        AppConfig, AppService, ApiService, OAuthService]
+                        AppConfig, AppService, OAuthService]
         };
     }
 

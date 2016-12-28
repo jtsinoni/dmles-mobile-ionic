@@ -37,8 +37,8 @@ export class InMemoryDataService implements InMemoryDbService {
     ];
 
     let equipmentRecords = [
-      { id: 'C7044A', itemId: 'C7044A', shortItemDescription: 'PRINTER, LASERJET BLACK & WHITE', longDescription: 'PRINTER AUTOMATIC DATA PROCESSING' , equipmentStatus: 'On Hand', ecn: '0L0965', deviceClass: 'EQUIPMENT-EXPENSE NON-MEDICAL' },
-      { id: '651501C706836', itemId: '651501C706836', shortItemDescription: 'MONITORING SYSTEMS, PHYSIOLOGIC', longDescription: 'MONITORING SYSTEM, PHYSIOLOGIC, ACUTE CARE' , equipmentStatus: 'On Hand', ecn: '002605', deviceClass: 'EQUIPMENT-EXPENSE MEDICAL' }
+      { id: 'C7044A', itemId: 'C7044A', orgId: 'YMEADG', shortItemDescription: 'PRINTER, LASERJET BLACK & WHITE', longDescription: 'PRINTER AUTOMATIC DATA PROCESSING' , equipmentStatus: 'On Hand', ecn: '0L0965', deviceClass: 'EQUIPMENT-EXPENSE NON-MEDICAL' },
+      { id: '651501C706836', itemId: '651501C706836', orgId: 'Y06CMF', shortItemDescription: 'MONITORING SYSTEMS, PHYSIOLOGIC', longDescription: 'MONITORING SYSTEM, PHYSIOLOGIC, ACUTE CARE' , equipmentStatus: 'On Hand', ecn: '002605', deviceClass: 'EQUIPMENT-EXPENSE MEDICAL' }
 
     ];
     return { notifications, supplyItems, orders, issues, equipmentRequests, equipmentRecords };

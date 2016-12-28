@@ -3,16 +3,45 @@
     <button menuToggle *ngIf="!selectedItem">
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{selectedItem.itemId}}</ion-title>
+    <ion-title text-wrap>{{selectedItem.shortItemDescription}}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
- <div *ngIf="selectedItem" class="selection">
-    <b>{{selectedItem.shortItemDescription}}</b>
-    <ion-icon name="cog"></ion-icon>
-    <div>
-      You navigated here from <b>{{selectedItem.shortItemDescription}}</b>
-    </div>
+  <div *ngIf="selectedItem" class="selection">
+    <ion-grid>
+      <ion-row>
+        <ion-col width-25>
+          <ion-badge item-left>Org ID</ion-badge>
+        </ion-col>
+        <ion-col width-75>
+          <label>{{selectedItem.orgId}}</label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col width-25>
+          <ion-badge item-left>ECN</ion-badge>
+        </ion-col>
+        <ion-col width-75>
+          <label>{{selectedItem.ecn}}</label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col width-25>
+          <ion-badge item-left>Item ID</ion-badge>
+        </ion-col>
+        <ion-col width-75>
+          <label>{{selectedItem.itemId}}</label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col width-33>
+          <ion-badge item-left>Device Class</ion-badge>
+        </ion-col>
+        <ion-col width-67>
+          <label>{{selectedItem.deviceClass}}</label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
 </ion-content>

@@ -3,6 +3,7 @@ import {NavController, NavParams} from 'ionic-angular';
 
 import {RoleDetailsComponent} from './details/role-details.component';
 import {RoleService} from "../../../common/endpoints/role.service";
+import {Logger} from "angular2-logger/core";
 
 @Component({
     templateUrl: 'roles.component.html'
@@ -10,28 +11,18 @@ import {RoleService} from "../../../common/endpoints/role.service";
 
 export class RolesComponent {
     selectedItem: any;
-    icons: string[];
 
     @Input()
     items: Array<any>;
 
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
-                private RoleService: RoleService) {
+                private RoleService: RoleService,
+                private log: Logger) {
+
         // If we navigated to this page, we will have an item available as a nav param
         this.selectedItem = navParams.get('item');
 
-        // this.icons = ['flask', 'wifi', 'beer', 'football', 'basketball', 'paper-plane',
-        //     'american-football', 'boat', 'bluetooth', 'build'];
-        //
-        // this.items = [];
-        // for (let i = 1; i < 11; i++) {
-        //     this.items.push({
-        //         title: 'Equipment Request ' + i,
-        //         note: 'This is Equipment Request #' + i,
-        //         icon: this.icons[Math.floor(Math.random() * this.icons.length)]
-        //     });
-        // }
         this.getAllRoles();
     }
 
@@ -40,17 +31,9 @@ export class RolesComponent {
             .map(results => results.json())
             .subscribe((results) => {
                 this.items = results;
-                // for(let result of results) {
-                //     role = new Role(result);
-                // }
-                //this.logger.info(`getAllRoles => ${JSON.stringify(results)}`);
+                this.log.debug(`getAllRoles => ${JSON.stringify(results)}`);
             });
 
-        // this.OAuthService.get("getAllRoles")
-        //     .map(results => results.json())
-        //     .subscribe((results) => {
-        //         this.logger.info(`getAllRoles => ${JSON.stringify(results)}`);
-        //     })
     }
 
     itemTapped(event, item) {

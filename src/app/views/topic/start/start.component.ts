@@ -84,18 +84,22 @@ export class StartComponent implements OnInit {
                 this.OAuthService.getToken("user.admin.123")
                     .subscribe(
                         (token) => {
-                            this.logger.info(`OAuth Token => ${token}`);
+                            let message = `OAuth Token => ${token}`;
+                            this.addLogMessage(message);
                         },
                         (error) => {
-                            this.logger.error(`Error => ${error}`);
+                            let message = `Error => ${error}`;
+                            this.logErrorMessage(message);
                         },
                         () => {
-                            this.logger.info(`Authentication Complete`);
+                            let message = `Authentication Complete`;
+                            this.addLogMessage(message);
                         }
                     )
             })
             .catch((error) => {
-                this.logger.error(`Error => ${error}`);
+                let message = `Error => ${error}`;
+                this.logErrorMessage(message);
             });
     }
 

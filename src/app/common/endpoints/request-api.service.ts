@@ -1,17 +1,14 @@
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
 import {Logger} from "angular2-logger/core";
+import {Observable} from "rxjs";
 
 import {ApiService} from "../../services/api.service";
 import {AppService} from "../../services/app.service";
 import {AuthenticationService} from "../../services/authentication.service";
-import {Observable} from "rxjs";
-
-export interface IRequestApiService {
-}
 
 @Injectable()
-export class RequestApiService extends ApiService implements IRequestApiService {
+export class RequestApiService extends ApiService {
 
     constructor(http: Http,
                 public log: Logger,

@@ -3,10 +3,10 @@ import { HttpModule } from '@angular/http';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import {Logger, Options as LoggerOptions, Level as LoggerLevel} from "angular2-logger/core";
 import { DMLESMobile } from './app.component';
-import { TopicComponent } from './views/topic/topic.component';
+
+import { AppContainerComponent } from './app-container.component';
 import { InventoryComponent } from './views/inventory/inventory.component';
 import { SupplyComponent } from './views/supply/supply.component';
-import { EquipmentComponent } from "./views/equipment/equipment.component";
 
 import { DatabaseService } from './services/database.service';
 import { UpstreamService } from './services/upstream/upstream.service';
@@ -15,21 +15,14 @@ import { CommonDataService } from "./services/common-data.service";
 import { TopicMessagingService } from "./services/topic-messaging.service";
 import { NetworkService } from "./services/network.service";
 
-
 import { TopicModule } from "./views/topic/topic.module";
 import { InventoryModule } from "./views/inventory/inventory.module";
 import { EquipmentModule } from "./views/equipment/equipment.module";
 import { SupplyModule } from "./views/supply/supply.module";
 import { ServicesModule } from "./services/services.module";
-
 import {CommonServicesModule} from "./common/services/common-services.module";
 import {CommonEndpointsModule} from "./common/endpoints/common-endpoints.module";
-import {RolesModule} from "./views/admin/roles/roles.module";
-
-import { AppContainerComponent } from './app-container.component';
 import {AdminModule} from "./views/admin/admin.module";
-
-
 
 @NgModule({
     declarations: [
@@ -45,16 +38,13 @@ import {AdminModule} from "./views/admin/admin.module";
         EquipmentModule,
         SupplyModule,
         HttpModule,
-        RolesModule,
         AdminModule,
         ServicesModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [
         DMLESMobile,
-        TopicComponent,
         InventoryComponent,
-        EquipmentComponent,
         SupplyComponent,
         AppContainerComponent,
     ],

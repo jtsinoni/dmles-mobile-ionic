@@ -9,10 +9,12 @@ import { EquipmentRecordDetailsComponent } from './records/details/equip-record-
 
 
 @NgModule({
-    declarations: [EquipmentComponent , EquipmentRecordsComponent, EquipmentRequestsComponent, EquipmentRequestDetailsComponent, EquipmentRecordDetailsComponent],
+    declarations: [EquipmentComponent , EquipmentRecordsComponent,
+                   EquipmentRequestsComponent, EquipmentRequestDetailsComponent, EquipmentRecordDetailsComponent],
     imports: [IonicModule],
     exports: [EquipmentComponent ],
-    entryComponents: [EquipmentRecordsComponent, EquipmentRequestsComponent, EquipmentRequestDetailsComponent, EquipmentRecordDetailsComponent]
+    entryComponents: [EquipmentComponent, EquipmentRecordsComponent, EquipmentRequestsComponent,
+                      EquipmentRequestDetailsComponent, EquipmentRecordDetailsComponent]
 })
 export class EquipmentModule {
 

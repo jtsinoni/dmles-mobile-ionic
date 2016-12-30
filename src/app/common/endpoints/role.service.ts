@@ -1,5 +1,7 @@
 import {Http} from "@angular/http";
 import {Logger} from "angular2-logger/core";
+import {Observable} from "rxjs";
+import {Injectable} from "@angular/core";
 
 import {ApiService} from "../../services/api.service";
 import {Role} from "../../models/roles/role.model";
@@ -10,15 +12,9 @@ import {PermState} from "../../models/roles/perm-state.model";
 import {PermEndpoint} from "../../models/roles/perm-endpoint.model";
 import {AuthenticationService} from "../../services/authentication.service";
 import {AppService} from "../../services/app.service";
-import {Observable} from "rxjs";
-import {Injectable} from "@angular/core";
-
-export interface IRoleService {
-
-}
 
 @Injectable()
-export class RoleService extends ApiService implements IRoleService {
+export class RoleService extends ApiService {
     public serviceName: string = "Role Service";
 
     constructor(http: Http,

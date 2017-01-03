@@ -1,6 +1,8 @@
 import {Injectable}    from '@angular/core';
 import {Network} from 'ionic-native';
 
+declare var Connection: any;
+
 @Injectable()
 export class NetworkService {
     public isConnected: boolean = false;
@@ -22,29 +24,32 @@ export class NetworkService {
         });
     }
 
-    public checkConnection() {
-        // let networkState = Network.connection;
-        // let states = {};
+    public checkConnection(): boolean {
+        let networkState = Network.connection;
+        let states = {};
+        let connected: boolean = false;
 
-        // let c = new Connection();
+        // Connection object only exists on device, or if using ionics browser platform
+        if(typeof Connection !== "undefined") {
+            states[Connection.UNKNOWN] = 'Unknown connection';
+            states[Connection.ETHERNET] = 'Ethernet connection';
+            states[Connection.WIFI] = 'WiFi connection';
+            states[Connection.CELL_2G] = 'Cell 2G connection';
+            states[Connection.CELL_3G] = 'Cell 3G connection';
+            states[Connection.CELL_4G] = 'Cell 4G connection';
+            states[Connection.NONE] = 'No network connection';
 
-        // if(c) {
-        //     states[Connection.UNKNOWN] = 'Unknown connection';
-        //     states[Connection.ETHERNET] = 'Ethernet connection';
-        //     states[Connection.WIFI] = 'WiFi connection';
-        //     states[Connection.CELL_2G] = 'Cell 2G connection';
-        //     states[Connection.CELL_3G] = 'Cell 3G connection';
-        //     states[Connection.CELL_4G] = 'Cell 4G connection';
-        //     states[Connection.NONE] = 'No network connection';
+            console.log('Connection type: ' + states[networkState]);
+            if (states[Connection.NONE] == states[networkState]) {
+                connected = false;
+            } else {
+                connected = true;
+            }
+        // This only occurs if running in browser i.e. ionic serve, assuming always connected
+        } else {
+            connected = true;
+        }
 
-        //     console.log('Connection type: ' + states[networkState]);
-        //     if (states[Connection.NONE] == states[networkState]) {
-        //         return false;
-        //     } else {
-        //         return true;
-        //     }
-        // }
-        //TODO: should be false
-        return false;
+        return connected;
     }
 }

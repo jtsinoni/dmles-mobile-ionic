@@ -14,6 +14,7 @@ export class TopicMessagingService {
     public client: any;
     private static onServiceAvailableSubject: Subject<any> = new Subject();
     private static onTryToConnectSubject: Subject<any> = new Subject();
+    private static onReconnectAttemptsSubject: Subject<any> = new Subject();
 
     private dataModel: CommonDataModel;
     private messagingModel: MessagingModel;
@@ -29,6 +30,10 @@ export class TopicMessagingService {
 
     public static onTryToConnect(): Observable<any> {
         return (TopicMessagingService.onTryToConnectSubject.asObservable());
+    }
+
+    public static onReconnectAttempts(): Observable<any> {
+        return (TopicMessagingService.onReconnectAttemptsSubject.asObservable());
     }
 
     /**
@@ -80,16 +85,20 @@ export class TopicMessagingService {
             //     err => console.log('Error: ' + err),
             //     () => console.log('Completed'));
 
-            let tries = this.dataModel.reconnectAttempts;
+            let tries = 1;
             this.client.on('reconnect', () => {
-                tries--;
-                if(tries == 0) {
+                TopicMessagingService.onReconnectAttemptsSubject.next({message: `Reconnect attempt => ${tries}`, tries: tries});
+
+                if(tries == this.dataModel.reconnectAttempts) {
                     this.disconnect();
-                    console.log(`Stopped retrying to get a connection after ${this.dataModel.reconnectAttempts} attempts`);
+                    let message = `Stopped retrying to get a connection after ${this.dataModel.reconnectAttempts} attempts`;
+                    console.log(message);
 
                     TopicMessagingService.onTryToConnectSubject.next(true);
                     TopicMessagingService.onServiceAvailableSubject.next(false);
+                    TopicMessagingService.onReconnectAttemptsSubject.next({message: message, tries: tries});
                 }
+                tries++;
 
                 resolve(this.client);
             });

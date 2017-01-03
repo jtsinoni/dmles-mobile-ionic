@@ -33,7 +33,7 @@ export class DMLESMobile {
     constructor(public platform: Platform, menu: MenuController) {
         this.initializeApp();
     }
-  
+
 
     initializeApp() {
         this.platform.ready().then(() => {

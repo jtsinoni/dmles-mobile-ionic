@@ -3,6 +3,7 @@
  */
 import {Component, Input, OnInit} from "@angular/core";
 import {Network} from 'ionic-native';
+
 import {DatabaseService} from "../../../services/database.service";
 import {UpstreamService} from '../../../services/upstream/upstream.service';
 import {CommonDataModel} from "../../../models/common-data.model";
@@ -10,6 +11,11 @@ import {TopicMessagingService} from "../../../services/topic-messaging.service";
 import {CommonDataService} from "../../../services/common-data.service";
 import {StoreDataModel} from "../../../models/store-data.model";
 import {NetworkService} from "../../../services/network.service";
+import {Platform} from "ionic-angular";
+import {Logger} from "angular2-logger/core";
+import {OAuthService} from "../../../services/oauth.service";
+
+declare var window: any;
 
 @Component({
     templateUrl: 'start.component.html',
@@ -22,16 +28,16 @@ export class StartComponent implements OnInit {
     @Input()
     public isConnected: boolean = false;
 
-    public disableConnectButton: boolean = false;
-    public disableDisconnectButton: boolean = true;
-    private isServiceAvailable: boolean = false;
-
+    @Input()
     public storeDataModel: StoreDataModel;
 
-    constructor(private databaseService: DatabaseService,
+    constructor(private platform: Platform,
+                private databaseService: DatabaseService,
                 private upstreamService: UpstreamService,
                 private commonDataService: CommonDataService,
-                public connectivityService: NetworkService) {
+                public connectivityService: NetworkService,
+                private logger: Logger,
+                private OAuthService: OAuthService) {
         this.data = commonDataService.data;
         this.storeDataModel = commonDataService.storeDataModel;
         this.isConnected = connectivityService.isConnected;
@@ -49,22 +55,52 @@ export class StartComponent implements OnInit {
             this.isConnected = results;
         });
 
+        TopicMessagingService.onReconnectAttempts().subscribe((results) => {
+            //console.log(`TopicMessagingService.onTryToConnect() => ${results}`);
+            //this.isConnected = results;
+            this.addLogMessage(results.message);
+        });
+
         TopicMessagingService.onServiceAvailable().subscribe((connected) => {
             if(connected) {
-                this.disableConnectButton = true;
-                this.disableDisconnectButton = false;
+                this.storeDataModel.disableConnectButton = true;
+                this.storeDataModel.disableDisconnectButton = false;
             } else {
-                this.disableConnectButton = false;
-                this.disableDisconnectButton = true;
+                this.storeDataModel.disableConnectButton = false;
+                this.storeDataModel.disableDisconnectButton = true;
             }
 
-            this.isServiceAvailable = connected;
+            this.storeDataModel.isServiceAvailable = connected;
         });
     }
 
     ngOnInit(): void {
         this.updateCount();
-        //this.upstreamService.pushLocalChanges();
+    }
+
+    public login() {
+        this.platform.ready()
+            .then(() => {
+                this.OAuthService.getToken("user.admin.123")
+                    .subscribe(
+                        (token) => {
+                            let message = `OAuth Token => ${token}`;
+                            this.addLogMessage(message);
+                        },
+                        (error) => {
+                            let message = `Error => ${error}`;
+                            this.logErrorMessage(message);
+                        },
+                        () => {
+                            let message = `Authentication Complete`;
+                            this.addLogMessage(message);
+                        }
+                    )
+            })
+            .catch((error) => {
+                let message = `Error => ${error}`;
+                this.logErrorMessage(message);
+            });
     }
 
     public connect() {
@@ -74,10 +110,13 @@ export class StartComponent implements OnInit {
                 let message = `Received connect event, Client ID: ${client.options.clientId}, connected: ${client.connected}`;
 
                 this.addLogMessage(message);
-                //this.disableConnectButton = true;
-                //this.disableDisconnectButton = false;
-
-                this.upstreamService.pushLocalChanges();
+                this.upstreamService.pushLocalChanges()
+                    .then((client) => {
+                        if(client && client.items) {
+                            message = `Published ${client.items.length} messages to Topic: ${client.topic}`;
+                            this.addLogMessage(message);
+                        }
+                    })
             })
             .catch((error) => {
                 this.logErrorMessage(error);
@@ -93,8 +132,6 @@ export class StartComponent implements OnInit {
                 }
 
                 this.addLogMessage(message);
-                //this.disableConnectButton = false;
-                //this.disableDisconnectButton = true;
             })
             .catch((error) => {
                 this.logErrorMessage(error);
@@ -146,7 +183,7 @@ export class StartComponent implements OnInit {
     }
 
     private addLogMessage(message: string) {
-        console.log(message);
+        this.logger.info(message);
         this.appendLogMessage(message);
     }
 

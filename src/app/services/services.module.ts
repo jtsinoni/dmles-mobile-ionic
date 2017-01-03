@@ -12,9 +12,9 @@ import { EquipmentRecordService } from './supply/equipment-record-service';
 
 @NgModule({
     imports: [
-        InMemoryWebApiModule.forRoot(InMemoryDataService),
+        InMemoryWebApiModule.forRoot(InMemoryDataService, {passThruUnknownUrl: true}),
     ],
-    providers: [     
+    providers: [
         NotificationService,
         OrderService,
         SupplyItemService,

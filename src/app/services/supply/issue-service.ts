@@ -25,6 +25,7 @@ export class IssueService extends ApiService<IssueModel, string> {
   }
 
   getIssue(id: string) {
+    console.log('calling getIssue from issue service');
     return this.getOne(id);
   }
 

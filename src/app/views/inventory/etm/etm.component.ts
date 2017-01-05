@@ -5,7 +5,7 @@ import { LoadingController } from 'ionic-angular';
 
 @Component({
   selector: 'inventory-etm',
-  templateUrl: 'etm.component.html'
+  templateUrl: './etm.component.html'
 })
 export class EtmComponent extends Search {
 

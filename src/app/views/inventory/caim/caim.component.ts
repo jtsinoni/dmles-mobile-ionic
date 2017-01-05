@@ -5,7 +5,7 @@ import { LoadingController } from 'ionic-angular';
 
 @Component({
   selector: 'inventory-caim',
-  templateUrl: 'caim.component.html'
+  templateUrl: './caim.component.html'
 })
 export class CaimComponent extends Search {
 

@@ -6,7 +6,7 @@ import {RoleService} from "../../../common/endpoints/role.service";
 import {Logger} from "angular2-logger/core";
 
 @Component({
-    templateUrl: 'roles.component.html'
+    templateUrl: './roles.component.html'
 })
 
 export class RolesComponent {

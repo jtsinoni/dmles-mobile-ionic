@@ -14,9 +14,12 @@ module.exports = function (config) {
     ],
     files: [
       { pattern: './src/test/test.ts', watched: false }
-    ],
+    ],    
     preprocessors: {
       './src/test/test.ts': ['angular-cli']
+    },
+    mime: {
+      'text/x-typescript': ['ts','tsx']
     },
     remapIstanbulReporter: {
       reports: {
@@ -28,9 +31,9 @@ module.exports = function (config) {
       config: './angular-cli.json',
       environment: 'dev'
     },
-    reporters: [
-      'mocha', 'karma-remap-istanbul'
-    ], 
+    reporters: config.angularCli && config.angularCli.codeCoverage
+              ? ['mocha', 'karma-remap-istanbul']
+              : ['mocha'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,

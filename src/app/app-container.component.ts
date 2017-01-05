@@ -9,7 +9,7 @@ import {AdminComponent} from "./views/admin/admin.component";
 
 
 @Component( {
-    templateUrl: 'app-container.html'
+    templateUrl: './app-container.html'
 })
 export class AppContainerComponent {
 

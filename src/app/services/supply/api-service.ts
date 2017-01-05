@@ -4,6 +4,7 @@ import { Http } from '@angular/http';
 import { DataItemModel } from '../../models/data-item.model';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
+import {Observable} from "rxjs";
 
 export abstract class ApiService<T extends DataItemModel<K>, K> extends ServiceBase {
 
@@ -52,6 +53,11 @@ export abstract class ApiService<T extends DataItemModel<K>, K> extends ServiceB
             .toPromise()
             .then(() => null)
             .catch(this.handleError);
+    }
+
+     get(id: K): Observable<any> {     
+        const url = `${this.serviceUrl}/${id}`;
+        return this.http.get(url);
     }
 
 }

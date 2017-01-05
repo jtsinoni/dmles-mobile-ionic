@@ -18,7 +18,7 @@ import {OAuthService} from "../../../services/oauth.service";
 declare var window: any;
 
 @Component({
-    templateUrl: 'start.component.html',
+    templateUrl: './start.component.html',
     selector: 'start-view'
 })
 export class StartComponent implements OnInit {

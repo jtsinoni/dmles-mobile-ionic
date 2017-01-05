@@ -13,20 +13,27 @@ export class ApiService {
 
     private determineUrl(action: string) {
         let url: string = '';
-        if (this.managerName === "User") {
-            url = this.App.getBtBaseUrl() + ApiConstants.USER_API + action;
-        } else if (this.managerName === "Role") {
-            url = this.App.getBtBaseUrl() + ApiConstants.ROLE_API + action;
-        } else if (this.managerName === "EquipmentManagement") {
-            url = this.App.getBtBaseUrl() + ApiConstants.EQUIPMENT_API + action;
-        } else if (this.managerName === "Site") {
-            url = this.App.getBtBaseUrl() + ApiConstants.SITE_API + action;
-        } else if (this.managerName === "System") {
-            url = this.App.getBtBaseUrl() + ApiConstants.SYSTEM_API + action;
-        } else if (this.managerName === "OAuth") {
-            url = this.App.getBtBaseUrl() + ApiConstants.OAUTH_API + action;
-        } else {
-            url = this.App.getBtBaseUrl() + this.managerName + '/Api/' + action;
+        switch (this.managerName) {
+            case "User":
+                url = this.App.getBtBaseUrl() + ApiConstants.USER_API + action;
+                break;
+            case "Role":
+                url = this.App.getBtBaseUrl() + ApiConstants.ROLE_API + action;
+                break;
+            case "EquipmentManagement":
+                url = this.App.getBtBaseUrl() + ApiConstants.EQUIPMENT_API + action;
+                break;
+            case "Site":
+                url = this.App.getBtBaseUrl() + ApiConstants.SITE_API + action;
+                break;
+            case "System":
+                url = this.App.getBtBaseUrl() + ApiConstants.SYSTEM_API + action;
+                break;
+            case "OAuth":
+                url = this.App.getBtBaseUrl() + ApiConstants.OAUTH_API + action;
+                break;
+            default:
+                url = this.App.getBtBaseUrl() + this.managerName + '/Api/' + action;
         }
         return url;
     };

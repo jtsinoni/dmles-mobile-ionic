@@ -8,7 +8,7 @@ import { EquipmentRecordService } from "../../../services/supply/equipment-recor
 
 
 @Component({
-    templateUrl: 'equipment-records.component.html'
+    templateUrl: './equipment-records.component.html'
 })
 
 export class EquipmentRecordsComponent {

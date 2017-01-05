@@ -9,7 +9,7 @@ import { NotificationService } from "../../../services/supply/notification-servi
 
 @Component({
   selector: 'notifications-notifications',
-  templateUrl: 'notifications.component.html'
+  templateUrl: './notifications.component.html'
 })
 
 export class NotificationsComponent {

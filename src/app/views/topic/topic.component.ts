@@ -7,7 +7,7 @@ import {StoreDataModel} from "../../models/store-data.model";
 import {CommonDataService} from "../../services/common-data.service";
 
 @Component({
-    templateUrl: 'topic.component.html',
+    templateUrl: './topic.component.html',
     selector: 'topic-view'
 })
 export class TopicComponent {

@@ -1,8 +1,8 @@
-import {Injectable} from "@angular/core";
+import { Injectable } from "@angular/core";
 
 @Injectable()
 export class UtilService {
-    constructor() {}
+    constructor() { }
 
     public addZero(i) {
         if (i < 10) {
@@ -34,8 +34,8 @@ export class UtilService {
         return Number(currency.replace(/[^0-9\.]+/g, ""));
     }
 
-    public esBuildSearchStatsStr(numResults:string, time:string){
-        var searchStatsStr:string = numResults + " items found ( " + time + " milliseconds )";
+    public esBuildSearchStatsStr(numResults: string, time: string) {
+        var searchStatsStr: string = numResults + " items found ( " + time + " milliseconds )";
         return searchStatsStr;
     }
 
@@ -43,8 +43,8 @@ export class UtilService {
      * Escape special characters that might be embedded in the user-input search string(s)
      * not doing this causes issues for elasticsearch
      */
-    public esEscapeSpecialChars(searchInput:string) {
-        var escapedInput:string = searchInput.replace(/[!@#$%^&()+=\-[\]\\';,./{}|":<>?~_]/g, "\\$&");
+    public esEscapeSpecialChars(searchInput: string) {
+        var escapedInput: string = searchInput.replace(/[!@#$%^&()+=\-[\]\\';,./{}|":<>?~_]/g, "\\$&");
         return escapedInput;
     }
 
@@ -55,10 +55,23 @@ export class UtilService {
 
     public getDate(d) {
         var yr = d.getFullYear();
-        var mn = this.addZero(d.getMonth());
+        var mn = this.addZero(d.getMonth()) + 1;
         var dy = this.addZero(d.getDay());
         return yr + "-" + mn + "-" + dy;
     }
+
+    public getIsoDateString(d: Date, addYears: number) {
+        var yr = d.getFullYear();
+        if (addYears && addYears != 0) {
+            yr += addYears;
+        }
+        var mn = this.padZero(d.getMonth());
+        var dy = this.padZero(d.getDate());
+        let yearString = yr + "-" + mn + "-" + dy + "T00:00:00Z";
+
+        return yearString;
+    }
+
 
     public getDateTime(dateVar) {
         var d = new Date();
@@ -96,9 +109,9 @@ export class UtilService {
         return isFound;
     }
 
-    public isObjectEmpty(obj:any){
+    public isObjectEmpty(obj: any) {
         var isEmpty = false;
-        if({} === obj || null == obj || "" == obj){
+        if ({} === obj || null == obj || "" == obj) {
             isEmpty = true;
         }
         return isEmpty;
@@ -142,6 +155,13 @@ export class UtilService {
     public validateEmail(email) {
         var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);
+    }
+
+    private padZero(i) {
+        if (i < 10) {
+            i = "0" + i;
+        }
+        return i;
     }
 
 }

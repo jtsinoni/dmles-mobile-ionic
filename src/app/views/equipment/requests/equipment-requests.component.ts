@@ -7,7 +7,7 @@ import { EquipmentRequestModel } from '../../../models/equipment-request.model';
 import { EquipmentRequestService } from "../../../services/supply/equipment-request-service";
 
 @Component({
-    templateUrl: 'equipment-requests.component.html'
+    templateUrl: './equipment-requests.component.html'
 })
 
 export class EquipmentRequestsComponent {

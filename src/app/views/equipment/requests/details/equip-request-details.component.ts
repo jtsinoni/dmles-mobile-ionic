@@ -5,7 +5,7 @@ import { EquipmentRequestModel } from '../../../../models/equipment-request.mode
 
 
 @Component({
-  templateUrl: 'equip-request-details.component.html'
+  templateUrl: './equip-request-details.component.html'
 })
 export class EquipmentRequestDetailsComponent {
   selectedItem: EquipmentRequestModel;

@@ -14,6 +14,7 @@ import {NetworkService} from "../../../services/network.service";
 import {Platform} from "ionic-angular";
 import {Logger} from "angular2-logger/core";
 import {OAuthService} from "../../../services/oauth.service";
+import {NotificationService} from "../../../services/notification.service";
 
 declare var window: any;
 
@@ -37,7 +38,8 @@ export class StartComponent implements OnInit {
                 private commonDataService: CommonDataService,
                 public connectivityService: NetworkService,
                 private logger: Logger,
-                private OAuthService: OAuthService) {
+                private OAuthService: OAuthService,
+                private NotificationService: NotificationService) {
         this.data = commonDataService.data;
         this.storeDataModel = commonDataService.storeDataModel;
         this.isConnected = connectivityService.isConnected;
@@ -180,6 +182,14 @@ export class StartComponent implements OnInit {
 
     private appendLogMessage(message: string) {
         this.data.messages = this.data.messages + message + "\n";
+
+        // let notification = {
+        //     title: 'Topic Notification:',
+        //     text: message,
+        //     data: { message }
+        // };
+        //
+        // this.LoggerService.addNotification([notification]);
     }
 
     private addLogMessage(message: string) {

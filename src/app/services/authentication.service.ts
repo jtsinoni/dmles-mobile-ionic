@@ -11,7 +11,7 @@ export class AuthenticationService {
     private serviceName = "Authentication Service";
 
     constructor(private log: Logger, private LocalStorageService: LocalStorageService) {
-        this.log.debug(`${this.serviceName} - Start'`);
+        this.log.debug(`${this.serviceName} - Start`);
     }
 
     public getToken() {

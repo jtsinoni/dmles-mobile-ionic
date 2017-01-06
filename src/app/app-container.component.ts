@@ -13,14 +13,10 @@ import {AdminComponent} from "./views/admin/admin.component";
 })
 export class AppContainerComponent {
 
-    //rootPage = this;
-
-
     areas = new Array<AreaModel>();
 
     constructor (public navCtrl: NavController, public alertController: AlertController) {
         this.setAreas();
-
     }
 
     setAreas() {

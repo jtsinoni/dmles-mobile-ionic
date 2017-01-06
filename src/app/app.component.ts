@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {Platform, Nav, MenuController} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import { AppContainerComponent } from './app-container.component';
-// import {TopicComponent} from './views/topic/topic.component';
+// import {LogsModalComponent} from './views/topic/topic.component';
 // import {EquipmentRecordsComponent} from "./views/equipment/records/equipment-records.component";
 // import {EquipmentRequestsComponent} from "./views/equipment/requests/equipment-requests.component";
 
@@ -26,7 +26,7 @@ export class DMLESMobile {
     //     this.pages = [
     //         {title: 'Equipment Records', component: EquipmentRecordsComponent},
     //         {title: 'Equipment Requests', component: EquipmentRequestsComponent},
-    //         {title: 'Messaging', component: TopicComponent}
+    //         {title: 'Messaging', component: LogsModalComponent}
     //     ];
     // }
 

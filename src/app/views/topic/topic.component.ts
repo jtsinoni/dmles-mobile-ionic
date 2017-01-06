@@ -5,6 +5,7 @@ import {Component} from "@angular/core";
 import {ForwardDataModel} from "../../models/forward-data.model";
 import {StoreDataModel} from "../../models/store-data.model";
 import {CommonDataService} from "../../services/common-data.service";
+import {LogViewerService} from "../../services/log-viewer.service";
 
 @Component({
     templateUrl: './topic.component.html',
@@ -18,9 +19,14 @@ export class TopicComponent {
     // TODO: should be setup in a defaults file or some other persistence mechanism
     public page: string = "start";
 
-    constructor(private commonDataService: CommonDataService) {
+    constructor(private commonDataService: CommonDataService,
+                private logViewerService: LogViewerService) {
         this.forwardDataModel = commonDataService.forwardDataModel;
         this.storeDataModel = commonDataService.storeDataModel;
+    }
+
+    public viewLogs() {
+        this.logViewerService.presentModal();
     }
 }
 

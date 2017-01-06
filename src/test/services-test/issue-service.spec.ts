@@ -30,9 +30,11 @@ describe('IssueService', () => {
         mockBackend = getTestBed().get(MockBackend);
     }));
 
-    it('Issue Service should be defined', () => {
+    it('IssueService should be defined', () => {
         issueService = getTestBed().get(IssueService);
-        expect(issueService).not.toBeNull();
+        expect(issueService).toBeDefined();
+        expect(issueService.getAllIssues()).toBeDefined();
+        expect(issueService.getIssue('W560JL6062J011')).toBeDefined();
     });
 
     // it('Issue Service getAllIssues - the promise is defined', () => {
@@ -40,7 +42,7 @@ describe('IssueService', () => {
     //     expect(issues).toBeDefined();
     // });
 
-    it('should fetch a single issue by id',
+    it('getIssue should fetch a single issue by id',
         async(inject([IssueService], (issueService) => {
             mockBackend.connections.subscribe(
                 (connection: MockConnection) => {

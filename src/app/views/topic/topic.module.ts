@@ -9,7 +9,7 @@ import {StartComponent} from "./start/start.component";
     declarations: [TopicComponent, StartComponent, StoreComponent, ForwardComponent],
     imports: [IonicModule],
     exports: [TopicComponent],
-    entryComponents: [TopicComponent]
+    entryComponents: [TopicComponent],
 })
 export class TopicModule {
 

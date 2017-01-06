@@ -6,10 +6,10 @@ declare var window: any;
 
 @Injectable()
 export class LocalStorageService {
-    private serviceName = "LocalStorageService";
+    private serviceName = "LocalFileStorageService";
 
     constructor(private log: Logger, private utilService: UtilService) {
-        this.log.debug(`${this.serviceName} - Start'`);
+        this.log.debug(`${this.serviceName} - Start`);
     }
 
     public clearData(){

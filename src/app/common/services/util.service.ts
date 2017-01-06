@@ -4,6 +4,10 @@ import {Injectable} from "@angular/core";
 export class UtilService {
     constructor() {}
 
+    public generateUUID():number {
+        return Math.floor((1 + Math.random()) * 1000);
+    }
+
     public addZero(i) {
         if (i < 10) {
             i = "0" + i;

@@ -1,0 +1,21 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>
+            Description
+        </ion-title>
+        <ion-buttons start>
+            <button ion-button (click)="dismiss()">
+                <span color="primary">Cancel</span>
+                <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <div>
+        <button (click)="writeFile()" ion-button>Write File</button>
+        <button (click)="readFile()" ion-button>Read File</button>
+        <button (click)="deleteFile()" ion-button>Delete File</button>
+    </div>
+</ion-content>

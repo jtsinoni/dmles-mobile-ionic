@@ -5,7 +5,7 @@ import { NotificationModel } from "../../models/notification.model";
 import { ApiService } from './api-service';
 
 /*
-  Generated class for the NotificationService provider.
+  Generated class for the LoggerService provider.
 
   See https://angular.io/docs/ts/latest/guide/dependency-injection.html
   for more info on providers and Angular 2 DI.
@@ -13,7 +13,7 @@ import { ApiService } from './api-service';
 @Injectable()
 export class NotificationService extends ApiService<NotificationModel, number> {
 
-  
+
 
   constructor(http: Http) {
     // TODO get - set url

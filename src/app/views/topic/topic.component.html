@@ -1,7 +1,7 @@
 <ion-header>
     <ion-navbar>
         <ion-title item-left>Messaging</ion-title>
-        <ion-buttons end>
+        <ion-buttons end *ngIf="isMobility">
             <button ion-button color="dark" clear (click)="viewLogs()">Logs</button>
         </ion-buttons>
     </ion-navbar>

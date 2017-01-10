@@ -1,6 +1,5 @@
-import {Logger} from "angular2-logger/core";
 import {Injectable} from "@angular/core";
-import {File} from 'ionic-native';
+import {File, RemoveResult} from 'ionic-native';
 
 declare var cordova: any;
 
@@ -8,8 +7,8 @@ declare var cordova: any;
 export class LocalFileStorageService {
     private serviceName = "LocalFileStorageService";
 
-    constructor(private log: Logger) {
-        this.log.debug(`${this.serviceName} - Start`);
+    constructor() {
+        console.debug(`${this.serviceName} - Start`);
     }
 
     public writeFile(data: string) {
@@ -22,9 +21,13 @@ export class LocalFileStorageService {
             })
     }
 
-    public readFile() {
+    public readFile(component?: any) {
         File.readAsText(cordova.file.dataDirectory, "client.log")
             .then((fileContents) => {
+                if(component) {
+                    //component.logData = this.base64Service.b64DecodeUnicode(<string>fileContents);
+                    component.logData = fileContents;
+                }
                 console.debug(`readFile() => ${fileContents}`);
             })
             .catch((error) => {
@@ -34,12 +37,11 @@ export class LocalFileStorageService {
 
     public deleteFile() {
         File.removeFile(cordova.file.dataDirectory, "client.log")
-            .then((removeResult) => {
-                console.debug(`File client.log removed succesfully => ${JSON.stringify(removeResult)}`);
+            .then((removeResult: RemoveResult) => {
+                console.debug(`File ${removeResult.fileRemoved.name} removed => ${removeResult.success}`);
             })
             .catch((error) => {
                 console.error(error.message)
-
             });
     }
 }

@@ -3,6 +3,7 @@
  */
 import {Component, Input, OnInit} from "@angular/core";
 import {Network} from 'ionic-native';
+import {Platform} from "ionic-angular";
 
 import {DatabaseService} from "../../../services/database.service";
 import {UpstreamService} from '../../../services/upstream/upstream.service';
@@ -11,10 +12,9 @@ import {TopicMessagingService} from "../../../services/topic-messaging.service";
 import {CommonDataService} from "../../../services/common-data.service";
 import {StoreDataModel} from "../../../models/store-data.model";
 import {NetworkService} from "../../../services/network.service";
-import {Platform} from "ionic-angular";
-import {Logger} from "angular2-logger/core";
 import {OAuthService} from "../../../services/oauth.service";
 import {NotificationService} from "../../../services/notification.service";
+import {LoggerService} from "../../../services/logger/logger-service";
 
 declare var window: any;
 
@@ -37,9 +37,9 @@ export class StartComponent implements OnInit {
                 private upstreamService: UpstreamService,
                 private commonDataService: CommonDataService,
                 public connectivityService: NetworkService,
-                private logger: Logger,
                 private OAuthService: OAuthService,
-                private NotificationService: NotificationService) {
+                private NotificationService: NotificationService,
+                private log: LoggerService) {
         this.data = commonDataService.data;
         this.storeDataModel = commonDataService.storeDataModel;
         this.isConnected = connectivityService.isConnected;
@@ -53,7 +53,7 @@ export class StartComponent implements OnInit {
         });
 
         TopicMessagingService.onTryToConnect().subscribe((results) => {
-            console.log(`TopicMessagingService.onTryToConnect() => ${results}`);
+            this.log.info(`TopicMessagingService.onTryToConnect() => ${results}`);
             this.isConnected = results;
         });
 
@@ -193,12 +193,12 @@ export class StartComponent implements OnInit {
     }
 
     private addLogMessage(message: string) {
-        this.logger.info(message);
+        this.log.info(message);
         this.appendLogMessage(message);
     }
 
     private logErrorMessage(error: string) {
-        console.error(error);
+        this.log.error(error);
         this.appendLogMessage(error);
     }
 }

@@ -8,7 +8,7 @@ declare var cordova: any;
 
 
 @Component({
-    templateUrl: 'logs-modal.component.html',
+    templateUrl: './logs-modal.component.html',
     selector: 'logs-modal-view'
 })
 export class LogsModalComponent {

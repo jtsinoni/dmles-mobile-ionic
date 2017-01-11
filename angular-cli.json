@@ -7,13 +7,13 @@
     {
       "root": "src",
       "outDir": "dist",
-      "assets": "assets",
+      "assets": ["assets"],
       "index": "index.html",
       "main": "www/build/main.js",
       "test": "./test/test.ts",
       "tsconfig": "../tsconfig.json",
       "prefix": "app",
-      "mobile": true,
+      "mobile": false,
       "styles": [
         "www/build/main.css"
       ],
@@ -40,5 +40,12 @@
   "defaults": {
     "styleExt": "css",
     "prefixInterfaces": false     
+  },
+  "spec":  {
+    "class": false,
+    "component": true,
+    "directive": true,
+    "module": false,
+    "service": true
   }
 }

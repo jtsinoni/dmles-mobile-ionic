@@ -80,3 +80,19 @@ export class AlertControllerMock {
     });
   }
 }
+
+export class ModalControllerMock {
+  public close(): any {
+    return new Promise((resolve: Function) => {
+      resolve();
+    });
+  }
+}
+
+export class ActionSheetControllerMock {
+  public close(): any {
+    return new Promise((resolve: Function) => {
+      resolve();
+    });
+  }
+}

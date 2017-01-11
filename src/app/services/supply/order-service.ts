@@ -37,7 +37,7 @@ export class OrderService extends ApiService<OrderModel, string> {
     return this.update(order);
   }
 
-  addOrder(order: OrderModel): Promise<void> {
+  addOrder(order: OrderModel): Promise<OrderModel> {
     
     let dNumber = this.createReferenceNumber();
     console.log('Doc Num:' + dNumber);

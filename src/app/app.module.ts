@@ -34,7 +34,8 @@ import {LogViewerModule} from "./views/logs/log-viewer.module";
         HttpModule,
         AdminModule,
         ServicesModule,
-        LogViewerModule
+        LogViewerModule,
+        // CommonDirectivesModule,
     ],
     bootstrap: [IonicApp],
     entryComponents: [

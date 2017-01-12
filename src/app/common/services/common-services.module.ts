@@ -30,7 +30,8 @@ export class CommonServicesModule {
                         LocalStorageService, AuthenticationService,
                         AppConfig, AppService, OAuthService,
                         DatabaseService, CommonDataService, NetworkService, NotificationService,
-                        TopicUpstreamService, TopicMessagingService, LogViewerService, LocalFileStorageService,
+                        TopicUpstreamService, TopicMessagingService,
+                        LogViewerService, LocalFileStorageService,
                         { provide: UpstreamService, useClass: TopicUpstreamService },
                         { provide: LoggerService, useClass: FileLoggerService }]
         };

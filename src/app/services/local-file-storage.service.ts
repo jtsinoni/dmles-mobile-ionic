@@ -25,7 +25,6 @@ export class LocalFileStorageService {
         File.readAsText(cordova.file.dataDirectory, "client.log")
             .then((fileContents) => {
                 if(component) {
-                    //component.logData = this.base64Service.b64DecodeUnicode(<string>fileContents);
                     component.logData = fileContents;
                 }
                 console.debug(`readFile() => ${fileContents}`);

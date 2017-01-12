@@ -1,8 +1,13 @@
 import { Injectable } from "@angular/core";
+import {Platform} from "ionic-angular";
 
 @Injectable()
 export class UtilService {
-    constructor() { }
+    constructor(private platform: Platform) {}
+
+    public isMobility(): boolean {
+        return (this.platform.is('mobile')) ?true :false;
+    }
 
     public generateUUID():number {
         return Math.floor((1 + Math.random()) * 1000);

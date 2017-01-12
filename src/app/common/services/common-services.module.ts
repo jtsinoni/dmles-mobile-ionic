@@ -17,6 +17,8 @@ import {UpstreamService} from "../../services/upstream/upstream.service";
 import {NotificationService} from "../../services/notification.service";
 import {LogViewerService} from "../../services/log-viewer.service";
 import {LocalFileStorageService} from "../../services/local-file-storage.service";
+import {FileLoggerService} from "../../services/logger/file-logger-service";
+import {LoggerService} from "../../services/logger/logger-service";
 
 @NgModule({
 })
@@ -29,7 +31,8 @@ export class CommonServicesModule {
                         AppConfig, AppService, OAuthService,
                         DatabaseService, CommonDataService, NetworkService, NotificationService,
                         TopicUpstreamService, TopicMessagingService, LogViewerService, LocalFileStorageService,
-                        { provide: UpstreamService, useClass: TopicUpstreamService }]
+                        { provide: UpstreamService, useClass: TopicUpstreamService },
+                        { provide: LoggerService, useClass: FileLoggerService }]
         };
     }
 

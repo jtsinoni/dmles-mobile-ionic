@@ -9,7 +9,7 @@ import {LogViewerService} from "../../services/log-viewer.service";
 import {UtilService} from "../../common/services/util.service";
 
 @Component({
-    templateUrl: 'topic.component.html',
+    templateUrl: './topic.component.html',
     selector: 'topic-view',
 })
 

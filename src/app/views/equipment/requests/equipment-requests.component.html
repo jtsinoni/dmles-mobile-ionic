@@ -1,20 +1,23 @@
 <ion-header>
-    <ion-navbar>
-        <ion-title>Equipment Requests</ion-title>
-    </ion-navbar>
+  <ion-title>DML-ES Mobile</ion-title>     
+   <ion-toolbar>
+        <ion-navbar>
+            <ion-title>Equipment Requests</ion-title>
+        </ion-navbar>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <ion-list>
-        <button ion-item *ngFor="let item of items" (click)="itemTapped(item)">
-            <h2>{{item.requestInformation.requestTitle}}</h2>
-            <p>{{item.requestInformation.requestReason.name}}</p>
-            <div class="item-note" item-right>
-                {{item.totalPrice}}
-            </div>
-        </button>
-    </ion-list>
-    <div *ngIf="selectedItem" padding>
-        You navigated here from <b>{{selectedItem.title}}</b>
-    </div>
+  <ion-list>
+    <button ion-item *ngFor="let item of equipmentRequestList" (click)="itemTapped(item)">
+      <ion-icon name="flask" item-left></ion-icon>
+      {{item.requestTitle}}
+      <div class="item-note" item-right>
+        {{item.organization}}
+      </div>
+    </button>
+  </ion-list>
+  <div *ngIf="selectedItem" padding>
+    You navigated here from <b>{{selectedItem.title}}</b>
+  </div>
 </ion-content>

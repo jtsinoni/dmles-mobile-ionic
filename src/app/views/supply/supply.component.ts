@@ -9,7 +9,7 @@ import { SupplyItemsComponent } from  './items/supply-items.component';
 
 @Component({
   selector: 'supply-supply',
-  templateUrl: 'supply.component.html'  
+  templateUrl: './supply.component.html'  
 })
 
 export class SupplyComponent {

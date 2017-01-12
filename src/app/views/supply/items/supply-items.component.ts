@@ -13,7 +13,7 @@ import { LoadingController } from 'ionic-angular';
 
 @Component({
   selector: 'page-supplyItems',
-  templateUrl: 'supply-items.component.html'
+  templateUrl: './supply-items.component.html'
 })
 export class SupplyItemsComponent extends Search {
 

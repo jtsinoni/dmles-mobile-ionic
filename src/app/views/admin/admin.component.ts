@@ -6,7 +6,7 @@ import {RolesComponent} from "./roles/roles.component";
 
 @Component({
     selector: 'admin-view',
-    templateUrl: 'admin.component.html'
+    templateUrl: './admin.component.html'
 })
 
 export class AdminComponent {

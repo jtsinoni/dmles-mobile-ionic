@@ -6,7 +6,7 @@ import { LoadingController } from 'ionic-angular';
 
 @Component({
   selector: 'inventory-im-receipts',
-  templateUrl: 'im-receipts.component.html'
+  templateUrl: './im-receipts.component.html'
 })
 export class ImReceiptsComponent extends Search  {
 

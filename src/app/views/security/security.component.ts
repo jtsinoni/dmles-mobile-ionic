@@ -5,7 +5,7 @@ import { NavController } from 'ionic-angular';
 
 @Component({
   selector: 'security',
-  templateUrl: 'security.html'
+  templateUrl: './security.html'
 })
 export class SecurityComponent {
 

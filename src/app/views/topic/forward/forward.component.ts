@@ -4,7 +4,7 @@ import {ForwardDataModel} from "../../../models/forward-data.model";
 
 @Component({
     selector: 'forward-view',
-    templateUrl: 'forward.component.html',
+    templateUrl: './forward.component.html',
 })
 export class ForwardComponent {
     forwardDataModel: ForwardDataModel;

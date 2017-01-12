@@ -5,6 +5,8 @@ import { OrderModel } from '../../../../models/order.model';
 import { SupplyItemModel } from '../../../../models/supply-item.model';
 import { OrderService } from '../../../../services/supply/order-service';
 import { QuantityValidator } from '../../../common/validators/quantity-validator';
+import { UtilService } from '../../../../common/services/util.service';
+import {Logger} from "angular2-logger/core";
 
 /*
   Generated class for the AddOrder component.
@@ -14,7 +16,7 @@ import { QuantityValidator } from '../../../common/validators/quantity-validator
 */
 @Component({
   selector: 'add-order',
-  templateUrl: 'add-order.component.html'
+  templateUrl: './add-order.component.html'
 })
 export class AddOrderComponent {
 
@@ -24,9 +26,8 @@ export class AddOrderComponent {
   submitted = false;
   futureDate: string;
 
-
-
-  constructor(params: NavParams, public orderService: OrderService, public formBuilder: FormBuilder, public viewController: ViewController) {
+ 
+  constructor(params: NavParams, public orderService: OrderService, public formBuilder: FormBuilder, public viewController: ViewController, utilService: UtilService, public log: Logger) {
     this.supplyItem = params.get('supplyItem');
     if (this.supplyItem) {
       this.model.itemId = this.supplyItem.itemId;
@@ -39,9 +40,8 @@ export class AddOrderComponent {
     } else {
       console.log('not getting a supply item here');
     }
-
-    this.futureDate = this.setDates(10);
-    this.model.requiredDate = this.setDates(0);
+   
+    this.futureDate = utilService.getIsoDateString(new Date(), 2);
 
   }
 
@@ -56,7 +56,7 @@ export class AddOrderComponent {
   }
 
   saveOrder() {
-    console.log('saving the order');
+    this.log.debug('saving the order')
     // todo return promise then close
     this.orderService.addOrder(this.model);
     this.dismiss();
@@ -70,34 +70,5 @@ export class AddOrderComponent {
   dismiss() {
     this.viewController.dismiss();
   }
-
-  private setDates(yearGap) {
-
-    let currentDate = new Date();
-    let year = currentDate.getFullYear();
-    year = year + yearGap;
-    let month = currentDate.getMonth();
-    let day = currentDate.getDate();
-
-    let rDate = new Date(year, month, day, 0, 0, 0, 0);
-    return this.getDate(rDate);
-  }
-
-
-  // todo move to utils - rename getISODateString or similar
-  public getDate(d) {
-    var yr = d.getFullYear();
-    var mn = this.padZero(d.getMonth()) + 1;
-    var dy = this.padZero(d.getDate());
-    return yr + "-" + mn + "-" + dy + "T00:00:00Z";
-  }
-
-  public padZero(i) {
-    if (i < 10) {
-      i = "0" + i;
-    }
-    return i;
-  }
-
 
 }

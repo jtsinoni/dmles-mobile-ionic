@@ -1,14 +1,80 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{selectedItem.requestInformation.requestTitle}}</ion-title>
+    <button menuToggle *ngIf="!selectedItem">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{selectedItem.requestTitle}}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
- <div *ngIf="selectedItem" class="selection">
-    <b>{{selectedItem.requestInformation.requestTitle}}</b>
-    <div>
-      You navigated here from <b>{{selectedItem.requestInformation.requestTitle}}</b>
-    </div>
+  <div *ngIf="selectedItem" class="selection">
+    <ion-grid>
+      <ion-row>
+        <ion-col width-33>
+          <ion-badge item-left>Number</ion-badge>
+        </ion-col>
+        <ion-col width-67>
+          <label>{{selectedItem.requestNumber}}</label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col width-33>
+          <ion-badge item-left>Quantity</ion-badge>
+        </ion-col>
+        <ion-col width-67>
+          <label>{{selectedItem.quantityRequested}}</label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col width-33>
+          <ion-badge item-left>Total Price</ion-badge>
+        </ion-col>
+        <ion-col width-75>
+          <label>{{selectedItem.totalPrice}}</label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col width-33>
+          <ion-badge item-left>Submitter</ion-badge>
+        </ion-col>
+        <ion-col width-67>
+          <label>{{selectedItem.submitter}}</label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col width-33>
+          <ion-badge item-left>Organization</ion-badge>
+        </ion-col>
+        <ion-col width-67>
+          <label>{{selectedItem.organization}}</label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col width-33>
+          <ion-badge item-left>Status</ion-badge>
+        </ion-col>
+        <ion-col width-67>
+          <label>{{selectedItem.currentStatus}}</label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col width-33>
+          <ion-badge item-left>Level</ion-badge>
+        </ion-col>
+        <ion-col width-67>
+          <label>{{selectedItem.level}}</label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col width-33>
+          <ion-badge item-left>Updated</ion-badge>
+        </ion-col>
+        <ion-col width-67>
+          <label>{{selectedItem.updatedDate}}</label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
   </div>
 </ion-content>

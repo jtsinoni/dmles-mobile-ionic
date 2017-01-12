@@ -10,7 +10,7 @@ import { OrderService } from "../../../services/supply/order-service";
 
 @Component({
   selector: 'page-orders',
-  templateUrl: 'orders.component.html'
+  templateUrl: './orders.component.html'
 })
 export class OrdersComponent {
 

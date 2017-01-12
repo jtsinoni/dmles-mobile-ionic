@@ -6,7 +6,7 @@ import {LoggerService} from "../../../services/logger/logger-service";
 import {Input} from "@angular/core/src/metadata/directives";
 
 @Component({
-    templateUrl: 'logs-modal.component.html',
+    templateUrl: './logs-modal.component.html',
     selector: 'logs-modal-view'
 })
 export class LogsModalComponent {

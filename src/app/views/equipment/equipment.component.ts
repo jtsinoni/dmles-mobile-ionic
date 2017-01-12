@@ -8,7 +8,7 @@ import {EquipmentRequestsComponent} from "./requests/equipment-requests.componen
 
 @Component({
     selector: 'equipment-view',
-    templateUrl: 'equipment.component.html'
+    templateUrl: './equipment.component.html'
 })
 
 export class EquipmentComponent {

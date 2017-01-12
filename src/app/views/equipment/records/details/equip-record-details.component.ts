@@ -4,7 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 
 
 @Component({
-  templateUrl: 'equip-record-details.component.html'
+  templateUrl: './equip-record-details.component.html'
 })
 export class EquipmentRecordDetailsComponent {
   selectedItem: any;

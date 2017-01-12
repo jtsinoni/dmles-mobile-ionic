@@ -12,7 +12,7 @@ import { SupplyItemService } from '../../../../services/supply/supply-item-servi
 */
 @Component({
   selector: 'order-detail',
-  templateUrl: 'order-detail.component.html'  
+  templateUrl: './order-detail.component.html'  
 })
 export class OrderDetailComponent {
 

@@ -6,7 +6,7 @@ import {CommonDataService} from "../../../services/common-data.service";
 
 @Component({
     selector: 'store-view',
-    templateUrl: 'store.component.html',
+    templateUrl: './store.component.html',
 })
 export class StoreComponent implements OnInit {
     public items: DataTableModel[] = [];

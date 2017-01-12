@@ -49,6 +49,14 @@ export class NavMock {
   }
 }
 
+export class NavParamMock {
+   public get(param: string): any {
+    return new Promise((resolve: Function) => {
+      resolve();
+    });
+  }
+}
+
 export class PlatformMock {
   public ready(): any {
     return new Promise((resolve: Function) => {
@@ -66,6 +74,22 @@ export class MenuMock {
 }
 
 export class AlertControllerMock {
+  public close(): any {
+    return new Promise((resolve: Function) => {
+      resolve();
+    });
+  }
+}
+
+export class ModalControllerMock {
+  public close(): any {
+    return new Promise((resolve: Function) => {
+      resolve();
+    });
+  }
+}
+
+export class ActionSheetControllerMock {
   public close(): any {
     return new Promise((resolve: Function) => {
       resolve();

@@ -7,7 +7,7 @@ import { SecurityComponent } from "../security/security.component";
 
 @Component({
   selector: 'login-login',
-  templateUrl: 'login.html',
+  templateUrl: './login.html',
   providers: [Storage]
 })
 export class LoginComponent {

@@ -8,7 +8,7 @@ import { IssueService } from '../../../services/supply/issue-service';
 
 @Component({
   selector: 'page-issues',
-  templateUrl: 'issues.component.html'
+  templateUrl: './issues.component.html'
 })
 export class IssuesComponent {
 

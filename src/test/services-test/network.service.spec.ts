@@ -13,7 +13,7 @@ describe('NetworkService', () => {
         expect(networkService).not.toBeNull();
     });
 
-    it('returns false for checkConnection', () => {
-        expect(networkService.checkConnection()).toEqual(false);
+    it('returns true for checkConnection', () => {
+        expect(networkService.checkConnection()).toEqual(true);
     });
 });

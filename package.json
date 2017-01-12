@@ -12,6 +12,7 @@
     "build:before": "build",
     "run:before": "build",
     "test": "ng test",
+    "testcoverage": "ng test --code-coverage",
     "e2e": "protractor",
     "postinstall":"ionic state restore && webdriver-manager update"
   },

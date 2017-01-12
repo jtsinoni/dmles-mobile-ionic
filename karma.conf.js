@@ -14,15 +14,15 @@ module.exports = function (config) {
     ],
     files: [
       { pattern: './src/test/test.ts', watched: false }
-    ],    
+    ],
     preprocessors: {
       './src/test/test.ts': ['angular-cli']
     },
     mime: {
-      'text/x-typescript': ['ts','tsx']
+      'text/x-typescript': ['ts', 'tsx']
     },
     remapIstanbulReporter: {
-      reports: {
+      reports: {       
         html: 'coverage',
         lcovonly: './coverage/coverage.lcov'
       }
@@ -32,8 +32,8 @@ module.exports = function (config) {
       environment: 'dev'
     },
     reporters: config.angularCli && config.angularCli.codeCoverage
-              ? ['mocha', 'karma-remap-istanbul']
-              : ['mocha'],
+      ? ['mocha', 'karma-remap-istanbul']
+      : ['mocha'],    
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,

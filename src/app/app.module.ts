@@ -17,6 +17,7 @@ import {CommonServicesModule} from "./common/services/common-services.module";
 import {CommonEndpointsModule} from "./common/endpoints/common-endpoints.module";
 import {AdminModule} from "./views/admin/admin.module";
 import {LogViewerModule} from "./views/logs/log-viewer.module";
+import {CommonDirectivesModule} from "./common/directives/common-directives.module";
 
 @NgModule({
     declarations: [
@@ -35,7 +36,7 @@ import {LogViewerModule} from "./views/logs/log-viewer.module";
         AdminModule,
         ServicesModule,
         LogViewerModule,
-        // CommonDirectivesModule,
+        CommonDirectivesModule,
     ],
     bootstrap: [IonicApp],
     entryComponents: [

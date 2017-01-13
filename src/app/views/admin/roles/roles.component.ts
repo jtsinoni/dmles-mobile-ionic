@@ -3,7 +3,7 @@ import {NavController, NavParams} from 'ionic-angular';
 
 import {RoleDetailsComponent} from './details/role-details.component';
 import {RoleService} from "../../../common/endpoints/role.service";
-import {Logger} from "angular2-logger/core";
+import {LoggerService} from "../../../services/logger/logger-service";
 
 @Component({
     templateUrl: './roles.component.html'
@@ -18,7 +18,7 @@ export class RolesComponent {
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
                 private RoleService: RoleService,
-                private log: Logger) {
+                private log: LoggerService) {
 
         // If we navigated to this page, we will have an item available as a nav param
         this.selectedItem = navParams.get('item');

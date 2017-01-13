@@ -5,6 +5,7 @@ import {Injectable} from "@angular/core";
 import {Network} from 'ionic-native';
 import {CommonDataModel} from "../../models/common-data.model";
 import {CommonDataService} from "../common-data.service";
+import {LoggerService} from "../logger/logger-service";
 
 @Injectable()
 /**
@@ -13,7 +14,7 @@ import {CommonDataService} from "../common-data.service";
 export class UpstreamService {
     protected data: CommonDataModel;
 
-    constructor(commonDataService: CommonDataService) {
+    constructor(public commonDataService: CommonDataService, public log: LoggerService) {
         this.data = commonDataService.data
 
         this.init();
@@ -24,7 +25,7 @@ export class UpstreamService {
      */
     private init() {
         Network.onConnect().subscribe(() => {
-            console.log('Pushing local changes ... ');
+            this.log.info('Pushing local changes ... ');
             this.pushLocalChanges();
         });
     }

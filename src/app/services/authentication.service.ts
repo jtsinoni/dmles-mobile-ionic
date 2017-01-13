@@ -1,16 +1,13 @@
-// import {User} from "../_models/user.model";
-// import {ApiConstants} from "../_constants/api.constants";
-// import {StateConstants} from "../_constants/state.constants";
-import {Logger} from "angular2-logger/core";
 import {ApiConstants} from "../constants/api.constants";
 import {Injectable} from "@angular/core";
 import {LocalStorageService} from "./local-storage.service";
+import {LoggerService} from "./logger/logger-service";
 
 @Injectable()
 export class AuthenticationService {
     private serviceName = "Authentication Service";
 
-    constructor(private log: Logger, private LocalStorageService: LocalStorageService) {
+    constructor(private log: LoggerService, private LocalStorageService: LocalStorageService) {
         this.log.debug(`${this.serviceName} - Start`);
     }
 

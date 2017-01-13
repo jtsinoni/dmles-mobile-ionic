@@ -1,6 +1,3 @@
-/**
- * Created by johntsinonis on 11/11/16.
- */
 import { Injectable }    from '@angular/core';
 import {CommonDataModel} from "../models/common-data.model";
 import {StoreDataModel} from "../models/store-data.model";

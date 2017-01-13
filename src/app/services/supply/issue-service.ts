@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map';
 import { ApiService } from './api-service';
 
 import { IssueModel } from '../../models/issue.model';
+import {LoggerService} from "../logger/logger-service";
 
 /*
   Generated class for the IssueService provider.
@@ -15,7 +16,7 @@ import { IssueModel } from '../../models/issue.model';
 @Injectable()
 export class IssueService extends ApiService<IssueModel, string> {
 
-  constructor(public http: Http) {
+  constructor(public http: Http, private log: LoggerService) {
 
     super(http, 'supply/issues');
   }
@@ -25,7 +26,7 @@ export class IssueService extends ApiService<IssueModel, string> {
   }
 
   getIssue(id: string) {
-    console.log('calling getIssue from issue service');
+    this.log.log('calling getIssue from issue service');
     return this.getOne(id);
   }
 

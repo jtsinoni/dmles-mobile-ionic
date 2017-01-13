@@ -1,5 +1,4 @@
 import {Http} from "@angular/http";
-import {Logger} from "angular2-logger/core";
 import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
 
@@ -12,13 +11,14 @@ import {PermState} from "../../models/roles/perm-state.model";
 import {PermEndpoint} from "../../models/roles/perm-endpoint.model";
 import {AuthenticationService} from "../../services/authentication.service";
 import {AppService} from "../../services/app.service";
+import {LoggerService} from "../../services/logger/logger-service";
 
 @Injectable()
 export class RoleService extends ApiService {
     public serviceName: string = "Role Service";
 
     constructor(http: Http,
-                public log: Logger,
+                public log: LoggerService,
                 protected authenticationService: AuthenticationService,
                 private app: AppService) {
 

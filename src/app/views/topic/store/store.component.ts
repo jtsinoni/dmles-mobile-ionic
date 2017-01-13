@@ -3,6 +3,7 @@ import {OnInit} from "@angular/core";
 import {DataTableModel} from "../../../models/data-table.model";
 import {DatabaseService} from "../../../services/database.service";
 import {CommonDataService} from "../../../services/common-data.service";
+import {LoggerService} from "../../../services/logger/logger-service";
 
 @Component({
     selector: 'store-view',
@@ -12,8 +13,8 @@ export class StoreComponent implements OnInit {
     public items: DataTableModel[] = [];
 
     constructor(private databaseService: DatabaseService,
-                private commonDataService: CommonDataService) {
-
+                private commonDataService: CommonDataService,
+                private log: LoggerService) {
     }
 
     ngOnInit(): void {
@@ -22,19 +23,19 @@ export class StoreComponent implements OnInit {
                 this.items = data;
             })
             .catch((error) => {
-                console.error(error);
+                this.log.error(error);
             });
     }
 
     public itemTapped(event, item) {
-        console.log(`Store Event: ${event} Item: ${item.data}`);
+        this.log.info(`Store Event: ${event} Item: ${item.data}`);
         // this.navCtrl.push(RoleDetailsComponent, {
         //   item: item
         // });
     }
 
     public delete(item: DataTableModel, id: number) {
-        console.log(`Deleting record with ${item.id} ...`);
+        this.log.info(`Deleting record with ${item.id} ...`);
 
         // remove from scope
         this.items.splice(id, 1);

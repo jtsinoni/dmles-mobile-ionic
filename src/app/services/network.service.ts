@@ -1,5 +1,6 @@
 import {Injectable}    from '@angular/core';
 import {Network} from 'ionic-native';
+import {LoggerService} from "./logger/logger-service";
 
 declare var Connection: any;
 
@@ -7,19 +8,19 @@ declare var Connection: any;
 export class NetworkService {
     public isConnected: boolean = false;
 
-    //public data: MessagingModel;
-    constructor() {
+    constructor(private log: LoggerService) {
+
         // This is the initial state.  Network.onDisconnect() or Network.onConnect() does not get called
         // unless the connection was previously lost or gained.
         this.isConnected = this.checkConnection();
 
         Network.onDisconnect().subscribe(() => {
-            console.log('network disconnected');
+            this.log.debug('network disconnected');
             this.isConnected = false;
         });
 
         Network.onConnect().subscribe(() => {
-            console.log('network connected');
+            this.log.debug('network connected');
             this.isConnected = true;
         });
     }
@@ -39,7 +40,7 @@ export class NetworkService {
             states[Connection.CELL_4G] = 'Cell 4G connection';
             states[Connection.NONE] = 'No network connection';
 
-            console.log('Connection type: ' + states[networkState]);
+            this.log.debug('Connection type: ' + states[networkState]);
             if (states[Connection.NONE] == states[networkState]) {
                 connected = false;
             } else {

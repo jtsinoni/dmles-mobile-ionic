@@ -1,7 +1,7 @@
 /**
  * Created by johntsinonis on 11/9/16.
  */
-import {Component, Output} from "@angular/core";
+import {Component} from "@angular/core";
 import {ForwardDataModel} from "../../models/forward-data.model";
 import {StoreDataModel} from "../../models/store-data.model";
 import {CommonDataService} from "../../services/common-data.service";
@@ -20,7 +20,6 @@ export class TopicComponent {
     // TODO: should be setup in a defaults file or some other persistence mechanism
     public page: string = "start";
 
-    @Output()
     public isMobility: boolean;
 
     constructor(private commonDataService: CommonDataService,

@@ -10,6 +10,7 @@ import {DatabaseService} from "../database.service";
 import {CommonDataService} from "../common-data.service";
 import {ForwardDataModel} from "../../models/forward-data.model";
 import {StoreDataModel} from "../../models/store-data.model";
+import {LoggerService} from "../logger/logger-service";
 
 @Injectable()
 export class TopicUpstreamService extends UpstreamService {
@@ -20,14 +21,15 @@ export class TopicUpstreamService extends UpstreamService {
     constructor(private topicMessagingService: TopicMessagingService,
                 private networkService: NetworkService,
                 private databaseService: DatabaseService,
-                private commonDataService: CommonDataService) {
-        super(commonDataService);
+                public commonDataService: CommonDataService,
+                public log: LoggerService) {
+        super(commonDataService, log);
 
         this.forwardDataModel = commonDataService.forwardDataModel;
         this.storeDataModel = commonDataService.storeDataModel;
 
         TopicMessagingService.onServiceAvailable().subscribe((results) => {
-            console.log(`TopicUpstreamService:connected => ${results}`);
+            this.log.info(`TopicUpstreamService:connected => ${results}`);
             this.serviceAvailable = results;
         });
     }
@@ -39,13 +41,13 @@ export class TopicUpstreamService extends UpstreamService {
     public connect(): Promise<any> {
         let localClient = this.topicMessagingService.client;
         if(this.clientConnected()) {
-            console.warn(`Client already connected: Client ID: ${localClient.options.clientId}`);
+            this.log.warn(`Client already connected: Client ID: ${localClient.options.clientId}`);
             return Promise.resolve(localClient);
         } else {
             return this.clientConnection()
                 .then(this.subscribe)
                 .catch((error) => {
-                    console.error(error);
+                    this.log.error(error);
                 });
         }
     }
@@ -61,14 +63,14 @@ export class TopicUpstreamService extends UpstreamService {
                 .then(this.unsubscribe)
                 .then(this.clientDisconnection)
                 .catch((error) => {
-                    console.error(error);
+                    this.log.error(error);
                 })
         } else {
             let message = `Client already disconnected`;
             if(localClient) {
                 message = message + `: Client ID: ${localClient.options.clientId}`;
             }
-            console.warn(message);
+            this.log.warn(message);
             return Promise.resolve(localClient);
         }
     }
@@ -79,7 +81,7 @@ export class TopicUpstreamService extends UpstreamService {
         return Promise.resolve(this.serviceAvailable)
             .then((connected) => {
                 if(!connected) {
-                    throw Error(`Client not connected`)
+                    this.log.warn(`Client not connected`);
                 } else {
                     return this.topicMessagingService.client;
                 }
@@ -95,9 +97,9 @@ export class TopicUpstreamService extends UpstreamService {
             })
             .catch((reason) => {
                 if(reason.message === "NoItems") {
-                    console.log("The are no items in local storage");
+                    this.log.info("The are no items in local storage");
                 } else {
-                    console.error(reason);
+                    this.log.error(reason);
                 }
             });
     }
@@ -131,7 +133,7 @@ export class TopicUpstreamService extends UpstreamService {
             })
             .then(this.publish)
             .catch((error) => {
-                console.error(error);
+                this.log.error(error);
             })
     }
 
@@ -146,7 +148,7 @@ export class TopicUpstreamService extends UpstreamService {
                 return id;
             })
             .catch((error) => {
-                console.error(error);
+                this.log.error(error);
             });
     }
 
@@ -176,11 +178,11 @@ export class TopicUpstreamService extends UpstreamService {
         // Remove items from local storage
         return client.databaseService.delete()
             .then(() => {
-                console.log(`Removed ${client.items.length} messages from local storage`);
+                client.log.info(`Removed ${client.items.length} messages from local storage`);
                 return client;
             })
             .catch((error) => {
-                console.error(error);
+                client.log.error(error);
             });
     }
 
@@ -193,12 +195,12 @@ export class TopicUpstreamService extends UpstreamService {
         return client.topicMessagingService.subscribe(client.topic)
             .then((granted) => {
                 granted.forEach((element) => {
-                    console.log(`Subscribing to Topic: ${element.topic}, client: ${client.options.clientId}`);
+                    client.log.info(`Subscribing to Topic: ${element.topic}, client: ${client.options.clientId}`);
                 });
                 return client;
             })
             .catch((error) => {
-                console.error(error);
+                client.log.error(error);
             });
     }
 
@@ -210,11 +212,11 @@ export class TopicUpstreamService extends UpstreamService {
     private unsubscribe(client: any) {
         return client.topicMessagingService.unsubscribe(client.topic)
             .then((results) => {
-                console.log(`Unsubscribing from Topic: ${results.topic}, client: ${results.options.clientId}`);
+                client.log.info(`Unsubscribing from Topic: ${results.topic}, client: ${results.options.clientId}`);
                 return results;
             })
             .catch((error) => {
-                console.error(error);
+                client.log.error(error);
             });
     }
 
@@ -226,11 +228,11 @@ export class TopicUpstreamService extends UpstreamService {
     private publish(client: any): Promise<any> {
         return client.topicMessagingService.publish(client.topic, client.message)
             .then(() => {
-                console.log(`Publishing message: ${client.message}  to Topic: ${client.topic}`);
+                client.log.info(`Publishing message: ${client.message}  to Topic: ${client.topic}`);
                 return client;
             })
             .catch((error) => {
-                console.error(error);
+                client.log.error(error);
             });
     }
 
@@ -248,11 +250,11 @@ export class TopicUpstreamService extends UpstreamService {
 
         return Promise.all(promises)
             .then((results) => {
-                console.log(`Published ${client.items.length} messages to Topic: ${client.topic}`);
+                client.log.info(`Published ${client.items.length} messages to Topic: ${client.topic}`);
                 return client;
             })
             .catch((error) => {
-                console.error(error);
+                client.log.error(error);
             });
     }
 
@@ -267,7 +269,7 @@ export class TopicUpstreamService extends UpstreamService {
                 return client;
             })
             .catch((error) => {
-                console.error(error);
+                client.log.error(error);
             });
     }
 
@@ -329,6 +331,7 @@ export class TopicUpstreamService extends UpstreamService {
         client.topicMessagingService = this.topicMessagingService;
         client.databaseService = this.databaseService;
         client.networkService = this.networkService;
+        client.log = this.log;
         if (message) {
             client.message = message;
         }

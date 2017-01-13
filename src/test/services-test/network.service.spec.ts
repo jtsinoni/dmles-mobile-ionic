@@ -1,4 +1,5 @@
 import { NetworkService } from '../../app/services/network.service';
+import {LoggerServiceMock} from "../mocks";
 
 
 let networkService: NetworkService = null;
@@ -6,7 +7,7 @@ let networkService: NetworkService = null;
 describe('NetworkService', () => {
 
     beforeEach(() => {
-        networkService = new NetworkService();        
+        networkService = new NetworkService((<any> new LoggerServiceMock));
     });
 
     it('initialises', () => {

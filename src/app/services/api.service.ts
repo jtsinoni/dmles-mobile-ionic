@@ -1,14 +1,15 @@
 import {Http, Headers} from "@angular/http";
-import {Logger} from "angular2-logger/core";
+import {Observable} from "rxjs";
+
 import {ApiConstants} from "../constants/api.constants";
 import {AppService} from "./app.service";
 import {AuthenticationService} from "./authentication.service";
-import {Observable} from "rxjs";
+import {LoggerService} from "./logger/logger-service";
 
 export class ApiService {
     private apiServiceName: string = "Api Service";
 
-    constructor(private http: Http, public log: Logger, protected Authentication: AuthenticationService, private App: AppService, private managerName: string) {
+    constructor(private http: Http, public log: LoggerService, protected Authentication: AuthenticationService, private App: AppService, private managerName: string) {
     }
 
     private determineUrl(action: string) {

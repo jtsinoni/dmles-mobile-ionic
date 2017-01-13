@@ -1,6 +1,6 @@
-import {Logger} from "angular2-logger/core";
 import {AppConfig} from "../configs/app-config";
 import {Injectable} from "@angular/core";
+import {LoggerService} from "./logger/logger-service";
 
 export interface IAppService {
 
@@ -11,7 +11,7 @@ export class AppService implements IAppService {
     private btBaseUrl:string;
     private serviceName:string = "App Service";
 
-    constructor(private log: Logger, private AppConfig: AppConfig) {
+    constructor(private log: LoggerService, private AppConfig: AppConfig) {
         this.setConfigs();
     }
 

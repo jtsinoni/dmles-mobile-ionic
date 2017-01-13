@@ -2,7 +2,6 @@ import {Component} from "@angular/core";
 import {ViewController} from "ionic-angular";
 
 import {LocalFileStorageService} from "../../../services/local-file-storage.service";
-import {LoggerService} from "../../../services/logger/logger-service";
 import {Input} from "@angular/core/src/metadata/directives";
 
 @Component({
@@ -14,8 +13,7 @@ export class LogsModalComponent {
     public logData: string;
 
     constructor(private viewController: ViewController,
-                private localFileStorageService: LocalFileStorageService,
-                private log: LoggerService) {
+                private localFileStorageService: LocalFileStorageService) {
     }
 
     ngOnInit(): void {

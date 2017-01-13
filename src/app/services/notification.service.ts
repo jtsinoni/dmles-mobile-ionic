@@ -1,14 +1,14 @@
 import {Injectable} from "@angular/core";
 import {LocalNotifications} from 'ionic-native';
-import {Logger} from "angular2-logger/core";
 import {UtilService} from "../common/services/util.service";
+import {LoggerService} from "./logger/logger-service";
 
 
 @Injectable()
 export class NotificationService {
     private serviceName = "Notification Service";
 
-    constructor(private log: Logger,
+    constructor(private log: LoggerService,
                 private UtilService: UtilService) {
         this.log.debug(`${this.serviceName} - Start`);
     }

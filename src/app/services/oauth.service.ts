@@ -1,6 +1,5 @@
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
-import {Logger} from "angular2-logger/core";
 
 import {ApiService} from "./api.service";
 import {CurrentUserProfile} from "../models/current-user-profile.model";
@@ -10,6 +9,7 @@ import {AppService} from "./app.service";
 import {Base64Service} from "../common/services/base64.service";
 import {Observable} from "rxjs";
 import {LocalStorageService} from "./local-storage.service";
+import {LoggerService} from "./logger/logger-service";
 
 declare var window: any;
 
@@ -19,7 +19,7 @@ export class OAuthService extends ApiService {
     public serviceName: string = "OAuth Service";
 
     constructor(http: Http,
-                public log: Logger,
+                public log: LoggerService,
                 protected authenticationService: AuthenticationService,
                 private app: AppService,
                 private Base64Service: Base64Service,

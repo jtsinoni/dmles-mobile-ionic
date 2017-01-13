@@ -10,6 +10,7 @@ import { AddOrderComponent } from '../orders/add-order/add-order.component';
 
 import { Search } from "../../common/search";
 import { LoadingController } from 'ionic-angular';
+import {LoggerService} from "../../../services/logger/logger-service";
 
 @Component({
   selector: 'page-supplyItems',
@@ -22,11 +23,12 @@ export class SupplyItemsComponent extends Search {
   constructor(public navCtrl: NavController,
     navParams: NavParams,
     public supplyItemService: SupplyItemService,
-    public alertController: AlertController, 
+    public alertController: AlertController,
     public loadingController: LoadingController,
     public modalController: ModalController,
     public actionSheetController: ActionSheetController,
-    public platform: Platform) {
+    public platform: Platform,
+    private log: LoggerService) {
     super(loadingController);
 
   }
@@ -50,13 +52,13 @@ export class SupplyItemsComponent extends Search {
         {
           text: 'Cancel',
           handler: data => {
-            console.log('Cancel clicked');
+              this.log.info('Cancel clicked');
           }
         },
         {
           text: 'Go',
           handler: data => {
-            console.log('Go clicked');
+            this.log.info('Go clicked');
             this.showLoadingData(data.value);
           }
         }
@@ -71,7 +73,7 @@ export class SupplyItemsComponent extends Search {
     this.supplyItemService.getAllSupplyItems().then(supplyItems => this.supplyItemList = supplyItems);
   }
 
-  itemSelected(item) {  
+  itemSelected(item) {
 
     let options = this.actionSheetController.create({
       buttons: [
@@ -81,14 +83,14 @@ export class SupplyItemsComponent extends Search {
           handler: () => {
             this.orderItem(item);
           }
-        },    
+        },
          {
           text: 'Detail',
           role: 'all',
           handler: () => {
-            if (item) {            
+            if (item) {
               this.showItemDetail(item);
-            } 
+            }
           }
         },
         {
@@ -96,7 +98,7 @@ export class SupplyItemsComponent extends Search {
           role: 'all',
           icon: !this.platform.is('ios') ? 'close' : null,
           handler: () => {
-            console.log('Close clicked');
+              this.log.info('Close clicked');
           }
         }
       ]
@@ -111,15 +113,15 @@ export class SupplyItemsComponent extends Search {
 
   }
 
-  
+
   showItemDetail(item : SupplyItemModel) {
-     
+
 
   }
 
   showImageDetail(url: string) {
     //  let detailModal = this.modalController.create();
     // detailModal.present();
-  }   
-  
+  }
+
 }

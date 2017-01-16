@@ -1,8 +1,5 @@
-<ion-header>
-    <ion-navbar>
-        <ion-title>Equipment</ion-title>
-    </ion-navbar>
-</ion-header>
+<mb-header-page remove-parent-element [title]="'Equipment'"></mb-header-page>
+
 <ion-content>
     <ion-list>
         <button menuClose ion-item icon-left color="{{area.color}}" *ngFor="let area of areas" (click)="goTo(area)">

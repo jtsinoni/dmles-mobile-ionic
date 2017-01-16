@@ -8,7 +8,6 @@ import { SupplyComponent} from './views/supply/supply.component';
 import {AdminComponent} from "./views/admin/admin.component";
 import {LoggerService} from "./services/logger/logger-service";
 
-
 @Component( {
     templateUrl: './app-container.html'
 })

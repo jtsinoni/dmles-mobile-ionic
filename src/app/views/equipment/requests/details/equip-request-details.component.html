@@ -1,8 +1,4 @@
-<ion-header>
-    <ion-navbar>
-        <ion-title>{{selectedItem.requestInformation.requestTitle}}</ion-title>
-    </ion-navbar>
-</ion-header>
+<mb-header-page remove-parent-element [title]="selectedItem.requestInformation.requestTitle"></mb-header-page>
 
 <ion-content>
     <div *ngIf="selectedItem" class="selection">

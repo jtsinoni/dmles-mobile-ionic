@@ -2,11 +2,12 @@ import { TestBed, getTestBed, async, inject } from '@angular/core/testing';
 import { IssueService } from '../../app/services/supply/issue-service';
 import {
      BaseRequestOptions,
-     HttpModule, Http, XHRBackend 
+     HttpModule, Http, XHRBackend
 } from '@angular/http';
 import { MockConnection, MockBackend } from '@angular/http/testing';
 //import { IssueModel } from '../../app/models/issue.model';
 import 'rxjs/add/operator/toPromise';
+import {LoggerService} from "../../app/services/logger/logger-service";
 
 let issueService: IssueService = null;
 
@@ -15,7 +16,7 @@ describe('IssueService', () => {
     let mockBackend: MockBackend;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            providers: [IssueService, MockBackend, BaseRequestOptions,
+            providers: [IssueService, LoggerService, MockBackend, BaseRequestOptions,
                 {
                     provide: Http,
                     deps: [MockBackend, BaseRequestOptions],
@@ -60,10 +61,10 @@ describe('IssueService', () => {
             // let model:IssueModel = issueService.getIssue('W560JL6062J011').toPromise()
             // .then(response => response.json().data as IssueModel);
             // expect(model).toBeDefined();
-            
+
             // // .subscribe(
             // //     (data) => {
-            // //         expect(data).toBeDefined();   
+            // //         expect(data).toBeDefined();
             // //         console.log('data: ' + data.data);
             // //         // expect(data.id).toBe('W560JL6062J011');
             // //         // expect(data.itemId).toEqual('00 2500 1');

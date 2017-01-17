@@ -1,17 +1,10 @@
-<ion-header>
-  <ion-title>DML-ES Mobile</ion-title>     
-   <ion-toolbar>
-        <ion-navbar>
-            <ion-title>Notifications</ion-title>
-        </ion-navbar>
-    </ion-toolbar>
-</ion-header>
+<mb-header-page remove-parent-element [title]="'Notifications'"></mb-header-page>
 
 <ion-content>
   <ion-list>
     <button ion-item *ngFor="let notice of notifications" (press)="notificationSelected($event, notice)" (swipe)="notificationSwiped($event, notice)">
       <ion-icon name="medical" item-left></ion-icon>
-        <div>{{notice.title}}</div>    
+        <div>{{notice.title}}</div>
       <div class="item-note">
         {{notice.message}}
       </div>

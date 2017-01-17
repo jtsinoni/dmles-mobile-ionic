@@ -12,7 +12,7 @@ export class LocalFileStorageService {
     }
 
     public writeFile(data: string) {
-        File.writeFile(cordova.file.dataDirectory, "client.log", data, {append: true})
+        File.writeFile(cordova.file.dataDirectory, "client.log", data, {replace: false, create: true, append: true})
             .then((results) => {
                 console.debug(`writeFile(): Data written to client.log => ${data}`);
             })

@@ -1,11 +1,5 @@
-<ion-header>
-    <!--<ion-title>DML-ES Mobile</ion-title>-->
-    <ion-toolbar>
-        <ion-navbar>
-            <ion-title>Supply</ion-title>
-        </ion-navbar>
-    </ion-toolbar>
-</ion-header>
+<mb-header-page remove-parent-element [title]="'Supply'"></mb-header-page>
+
 <ion-content>
     <ion-list>
         <button menuClose ion-item icon-left color="{{area.color}}" *ngFor="let area of areas" (click)="goTo(area)">

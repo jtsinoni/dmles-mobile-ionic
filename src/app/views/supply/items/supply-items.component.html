@@ -1,11 +1,4 @@
-<ion-header>
-  <ion-title>DML-ES Mobile</ion-title>     
-   <ion-toolbar>
-        <ion-navbar>
-            <ion-title>My Items</ion-title>
-        </ion-navbar>
-    </ion-toolbar>
-</ion-header>
+<mb-header-page remove-parent-element [title]="'My Items'"></mb-header-page>
 
 <ion-content>
   <ion-list>
@@ -17,7 +10,7 @@
       <div>{{item.itemDescription}}</div>
       <div><span>OHB:</span>{{item.onHandBalance}}</div>
     </ion-item>
-  </ion-list>  
+  </ion-list>
   <ion-fab right bottom>
     <button ion-fab (click)="showFindItem()"><ion-icon name="search" >
       </ion-icon></button>

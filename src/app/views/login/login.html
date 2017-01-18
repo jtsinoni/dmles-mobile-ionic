@@ -3,7 +3,7 @@
   <ion-navbar>    
     <ion-card>
       <ion-card-content>
-        <span>Server:</span><span>{{user.myServer}}</span>
+        <span>Server:</span><span>{{loginModel.serverName}}</span>
       </ion-card-content>
     </ion-card>
   </ion-navbar>
@@ -13,14 +13,14 @@
 
   <ion-list>
     <ion-item>
-      <ion-input type="text" placeholder="Username">{{user.username}}</ion-input>
+      <ion-input type="text" #input placeholder="User DN" [(ngModel)]="loginModel.username" name="loginInput" id="loginInputField"></ion-input>
     </ion-item>
-    <ion-item>
+    <!--<ion-item>
       <ion-input type="password" placeholder="Password">{{user.password}}</ion-input>
-    </ion-item>
+    </ion-item>-->
   </ion-list>
   <div padding>
-    <button ion-button color="primary" block (click)="signIn($event, user)">Sign In</button>
+    <button ion-button color="primary" id="loginButton" block (click)="login(loginModel)">Sign In</button>
   </div>
 
 </ion-content>

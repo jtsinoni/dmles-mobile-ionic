@@ -5,6 +5,7 @@ import {Logger, Options as LoggerOptions, Level as LoggerLevel} from "angular2-l
 import {DMLESMobile} from './app.component';
 
 import {AppContainerComponent} from './app-container.component';
+import {LoginComponent} from  './views/login/login.component';
 import {InventoryComponent} from './views/inventory/inventory.component';
 import {SupplyComponent} from './views/supply/supply.component';
 import {InventoryModule} from "./views/inventory/inventory.module";
@@ -22,6 +23,7 @@ import {LogViewerModule} from "./views/logs/log-viewer.module";
     declarations: [
         DMLESMobile,
         AppContainerComponent,
+        LoginComponent
     ],
     imports: [
         IonicModule.forRoot(DMLESMobile),
@@ -43,6 +45,7 @@ import {LogViewerModule} from "./views/logs/log-viewer.module";
         InventoryComponent,
         SupplyComponent,
         AppContainerComponent,
+        LoginComponent
     ],
     providers: [
         Logger,

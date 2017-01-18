@@ -1,4 +1,4 @@
-export class User {
+export class UserModel {
 
     public accessApprovedDate:Date = null;
     public createdDate:Date = null;
@@ -21,7 +21,7 @@ export class User {
     public userType:string = "";
 
     constructor();
-    constructor(obj:User);
+    constructor(obj:UserModel);
     constructor(obj?:any) {
         this.accessApprovedDate = obj && obj.accessApprovedDate || null;
         this.createdDate = obj && obj.createdDate || null;

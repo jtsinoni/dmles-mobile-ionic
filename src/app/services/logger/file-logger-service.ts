@@ -1,4 +1,3 @@
-import {Platform} from "ionic-angular";
 declare var console: any;
 
 import {Injectable} from "@angular/core";
@@ -9,18 +8,15 @@ import {ILogger} from "./ilogger";
 export class FileLoggerService implements ILogger {
     private serviceName = "File Logger Service";
 
-    constructor(private localFileStorageService: LocalFileStorageService,
-                private platform: Platform) {
+    constructor(private localFileStorageService: LocalFileStorageService) {
     }
 
     ngOnInit(): void {
         this.log(`${this.serviceName} - Start`);
     }
 
-    private writeFile(message: string) {
-        if(this.platform.is('mobile')) {
-            this.localFileStorageService.writeFile(message + "<br />");
-        }
+    private writeFile(message: string) {       
+         this.localFileStorageService.writeFile(message + "<br />");        
     }
 
     public log(message: any): void {

@@ -7,6 +7,7 @@ import { OrderModel } from '../../../models/order.model';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 
 import { OrderService } from "../../../services/supply/order-service";
+import {LoggerService} from "../../../services/logger/logger-service";
 
 @Component({
   selector: 'page-orders',
@@ -19,9 +20,10 @@ export class OrdersComponent {
   constructor(public navCtrl: NavController,
     navParams: NavParams,
     public orderService: OrderService,
-    public modalController: ModalController, 
+    public modalController: ModalController,
     public actionSheetController: ActionSheetController,
-    public platform: Platform) {
+    public platform: Platform,
+    public log: LoggerService) {
 
   }
 
@@ -35,7 +37,7 @@ export class OrdersComponent {
 
   }
 
-  orderSelected(order) {  
+  orderSelected(order) {
 
     let options = this.actionSheetController.create({
       buttons: [
@@ -57,9 +59,9 @@ export class OrdersComponent {
           text: 'Detail',
           role: 'all',
           handler: () => {
-            if (order) {            
+            if (order) {
               this.presentDetailModal(order);
-            } 
+            }
           }
         },
         {
@@ -67,7 +69,7 @@ export class OrdersComponent {
           role: 'close',
           icon: !this.platform.is('ios') ? 'close' : null,
           handler: () => {
-            console.log('Close clicked');
+            this.log.info('Close clicked');
           }
         }
       ]

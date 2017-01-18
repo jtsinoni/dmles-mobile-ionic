@@ -1,6 +1,6 @@
-import {Logger} from "angular2-logger/core";
 import {UtilService} from "../common/services/util.service";
 import {Injectable} from "@angular/core";
+import {LoggerService} from "./logger/logger-service";
 
 declare var window: any;
 
@@ -8,7 +8,7 @@ declare var window: any;
 export class LocalStorageService {
     private serviceName = "LocalFileStorageService";
 
-    constructor(private log: Logger, private utilService: UtilService) {
+    constructor(private log: LoggerService, private utilService: UtilService) {
         this.log.debug(`${this.serviceName} - Start`);
     }
 

@@ -6,7 +6,7 @@ import { EquipmentComponent} from './views/equipment/equipment.component';
 import { InventoryComponent} from './views/inventory/inventory.component';
 import { SupplyComponent} from './views/supply/supply.component';
 import {AdminComponent} from "./views/admin/admin.component";
-
+import {LoggerService} from "./services/logger/logger-service";
 
 @Component( {
     templateUrl: './app-container.html'
@@ -15,7 +15,7 @@ export class AppContainerComponent {
 
     areas = new Array<AreaModel>();
 
-    constructor (public navCtrl: NavController, public alertController: AlertController) {
+    constructor (public navCtrl: NavController, public alertController: AlertController, public log: LoggerService) {
         this.setAreas();
     }
 
@@ -48,13 +48,13 @@ export class AppContainerComponent {
         {
           text: 'Cancel',
           handler: data => {
-            console.log('Cancel clicked');
+              this.log.debug('Cancel clicked');
           }
         },
         {
           text: 'Go',
           handler: data => {
-            console.log('Go clicked');
+            this.log.debug('Go clicked');
             //this.showLoadingData(data.value);
           }
         }

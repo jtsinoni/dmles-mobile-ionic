@@ -5,9 +5,7 @@ import { LoginComponent } from './views/login/login.component';
 
 //import { AppContainerComponent } from './app-container.component';
 
-// import {LogsModalComponent} from './views/topic/topic.component';
-// import {EquipmentRecordsComponent} from "./views/equipment/records/equipment-records.component";
-// import {EquipmentRequestsComponent} from "./views/equipment/requests/equipment-requests.component";
+import {NetworkService} from "./services/network.service";
 
 @Component({
     template: `<ion-nav [root]="rootPage"></ion-nav>`
@@ -15,10 +13,9 @@ import { LoginComponent } from './views/login/login.component';
 export class DMLESMobile {
     @ViewChild(Nav) nav: Nav;
 
-    // make StartComponent the root (or first) page
     rootPage: any = LoginComponent;
 
-    constructor(public platform: Platform, menu: MenuController) {
+    constructor(public platform: Platform, menu: MenuController, networkService: NetworkService) {
         this.initializeApp();
     }
 

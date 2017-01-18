@@ -5,6 +5,7 @@ import { NavController, NavParams, ActionSheetController, Platform } from 'ionic
 import { IssueModel } from '../../../models/issue.model';
 
 import { IssueService } from '../../../services/supply/issue-service';
+import {LoggerService} from "../../../services/logger/logger-service";
 
 @Component({
   selector: 'page-issues',
@@ -18,10 +19,11 @@ public issuesList: Array<IssueModel>;
     navParams: NavParams,
     public issueService: IssueService,
     public actionSheetController: ActionSheetController,
-    public platform: Platform) {
+    public platform: Platform,
+    private log: LoggerService) {
 
   }
-  
+
    ionViewWillEnter() {
     this.getIssues();
 
@@ -54,7 +56,7 @@ public issuesList: Array<IssueModel>;
           role: 'close',
           icon: !this.platform.is('ios') ? 'close' : null,
           handler: () => {
-            console.log('Close clicked');
+            this.log.info('Close clicked');
           }
         }
       ]

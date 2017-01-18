@@ -1,11 +1,4 @@
-<ion-header>
-  <ion-navbar>
-    <button menuToggle *ngIf="!selectedItem">
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>{{selectedItem.name}}</ion-title>
-  </ion-navbar>
-</ion-header>
+<mb-header-page remove-parent-element [title]="selectedItem.name"></mb-header-page>
 
 <ion-content>
  <div *ngIf="selectedItem" class="selection">

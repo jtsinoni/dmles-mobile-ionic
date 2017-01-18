@@ -13,7 +13,6 @@ import {CommonDataService} from "../../../services/common-data.service";
 import {StoreDataModel} from "../../../models/store-data.model";
 import {NetworkService} from "../../../services/network.service";
 import {OAuthService} from "../../../services/oauth.service";
-import {NotificationService} from "../../../services/notification.service";
 import {LoggerService} from "../../../services/logger/logger-service";
 
 declare var window: any;
@@ -38,7 +37,6 @@ export class StartComponent implements OnInit {
                 private commonDataService: CommonDataService,
                 public connectivityService: NetworkService,
                 private OAuthService: OAuthService,
-                private NotificationService: NotificationService,
                 private log: LoggerService) {
         this.data = commonDataService.data;
         this.storeDataModel = commonDataService.storeDataModel;

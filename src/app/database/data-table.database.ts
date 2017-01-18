@@ -1,13 +1,11 @@
-/**
- * Created by johntsinonis on 11/16/16.
- */
 import Dexie from 'dexie';
 import {DataTableModel} from '../models/data-table.model';
+import {LoggerService} from "../services/logger/logger-service";
 
 export class DataTableDatabase extends Dexie {
     data: Dexie.Table<DataTableModel, number>;
 
-    constructor(databaseName: string) {
+    constructor(databaseName: string, private log: LoggerService) {
         super(databaseName);
         this.version(1).stores({
             data: "++id,data"
@@ -15,7 +13,7 @@ export class DataTableDatabase extends Dexie {
 
         // Open it
         this.open().catch(function (e) {
-            console.error("Open failed: " + e.stack);
+            this.log.error("Open failed: " + e.stack);
         });
 
         this.data.mapToClass(DataTableModel);

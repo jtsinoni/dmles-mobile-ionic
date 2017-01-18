@@ -6,7 +6,7 @@ import { SupplyItemModel } from '../../../../models/supply-item.model';
 import { OrderService } from '../../../../services/supply/order-service';
 import { QuantityValidator } from '../../../common/validators/quantity-validator';
 import { UtilService } from '../../../../common/services/util.service';
-import {Logger} from "angular2-logger/core";
+import {LoggerService} from "../../../../services/logger/logger-service";
 
 /*
   Generated class for the AddOrder component.
@@ -26,8 +26,8 @@ export class AddOrderComponent {
   submitted = false;
   futureDate: string;
 
- 
-  constructor(params: NavParams, public orderService: OrderService, public formBuilder: FormBuilder, public viewController: ViewController, utilService: UtilService, public log: Logger) {
+
+  constructor(params: NavParams, public orderService: OrderService, public formBuilder: FormBuilder, public viewController: ViewController, utilService: UtilService, public log: LoggerService) {
     this.supplyItem = params.get('supplyItem');
     if (this.supplyItem) {
       this.model.itemId = this.supplyItem.itemId;
@@ -38,9 +38,9 @@ export class AddOrderComponent {
         requiredDateInput: ['', Validators.required]
       });
     } else {
-      console.log('not getting a supply item here');
+      this.log.info('not getting a supply item here');
     }
-   
+
     this.futureDate = utilService.getIsoDateString(new Date(), 2);
 
   }

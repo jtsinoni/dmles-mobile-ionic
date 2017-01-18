@@ -4,12 +4,11 @@ import {TopicComponent} from "./topic.component";
 import {StoreComponent} from "./store/store.component";
 import {ForwardComponent} from "./forward/forward.component";
 import {StartComponent} from "./start/start.component";
-import {RemoveParentElementDirective} from "../../common/directives/remove-parent-element.directive";
-import {HeaderPageComponent} from "../common/header/header-page.component";
+import {CommonDirectivesModule} from "../../common/directives/common-directives.module";
 
 @NgModule({
-    declarations: [TopicComponent, StartComponent, StoreComponent, ForwardComponent, HeaderPageComponent, RemoveParentElementDirective],
-    imports: [IonicModule],
+    declarations: [TopicComponent, StartComponent, StoreComponent, ForwardComponent],
+    imports: [IonicModule, CommonDirectivesModule],
     exports: [TopicComponent],
     entryComponents: [TopicComponent],
 })

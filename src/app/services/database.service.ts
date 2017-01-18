@@ -5,13 +5,14 @@ import {Injectable}    from '@angular/core';
 
 import {DatabaseDefaultsModel} from '../models/database-defaults.model';
 import {DataTableDatabase} from '../database/data-table.database';
+import {LoggerService} from "./logger/logger-service";
 
 @Injectable()
 export class DatabaseService {
     private dataDB: DataTableDatabase;
 
-    constructor() {
-        this.dataDB = new DataTableDatabase(DatabaseDefaultsModel.databaseName);
+    constructor(private log: LoggerService) {
+        this.dataDB = new DataTableDatabase(DatabaseDefaultsModel.databaseName, log);
     }
 
     /**

@@ -1,6 +1,3 @@
-/**
- * Created by johntsinonis on 11/11/16.
- */
 import {Injectable}    from '@angular/core';
 
 import MQTT from 'mqtt';
@@ -8,6 +5,7 @@ import {CommonDataModel} from "../models/common-data.model";
 import {CommonDataService} from "./common-data.service";
 import {Subject, Observable} from "rxjs";
 import {MessagingModel} from "../models/messaging.model";
+import {LoggerService} from "./logger/logger-service";
 
 @Injectable()
 export class TopicMessagingService {
@@ -19,7 +17,8 @@ export class TopicMessagingService {
     private dataModel: CommonDataModel;
     private messagingModel: MessagingModel;
 
-    constructor(private commonDataService: CommonDataService) {
+    constructor(private commonDataService: CommonDataService,
+                private log: LoggerService) {
         this.dataModel = commonDataService.data;
         this.messagingModel = commonDataService.messagingModel;
     }
@@ -58,12 +57,12 @@ export class TopicMessagingService {
 
             this.client.on('error', (error) => {
 
-                console.error(`Received error event, Client ID: ${this.client.options.clientId}, connected: ${this.client.connected}`);
+                this.log.error(`Received error event, Client ID: ${this.client.options.clientId}, connected: ${this.client.connected}`);
                 resolve(this.client);
             });
 
             this.client.on('offline', (results) => {
-                console.warn(`Received offline event, Client ID: ${this.client.options.clientId}, connected: ${this.client.connected}`);
+                this.log.warn(`Received offline event, Client ID: ${this.client.options.clientId}, connected: ${this.client.connected}`);
 
                 TopicMessagingService.onTryToConnectSubject.next(false);
                 TopicMessagingService.onServiceAvailableSubject.next(false);
@@ -92,7 +91,7 @@ export class TopicMessagingService {
                 if(tries == this.dataModel.reconnectAttempts) {
                     this.disconnect();
                     let message = `Stopped retrying to get a connection after ${this.dataModel.reconnectAttempts} attempts`;
-                    console.log(message);
+                    this.log.info(message);
 
                     TopicMessagingService.onTryToConnectSubject.next(true);
                     TopicMessagingService.onServiceAvailableSubject.next(false);

@@ -22,6 +22,29 @@ export class FormMock {
   }
 }
 
+export class LoggerServiceMock {
+    public log(args: any): void {
+    }
+
+    public info(args: any): void {
+    }
+
+    public warn(args: any): void {
+    }
+
+    public debug(args: any): void {
+    }
+
+    public error(args: any): void {
+    }
+}
+
+export class NetworkServiceMock {
+    public checkConnection(): boolean {
+        return true;
+    }
+}
+
 export class NavMock {
 
   public pop(): any {

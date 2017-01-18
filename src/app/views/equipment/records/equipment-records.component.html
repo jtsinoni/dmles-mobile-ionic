@@ -1,11 +1,5 @@
-<ion-header>
-  <ion-title>DML-ES Mobile</ion-title>     
-   <ion-toolbar>
-        <ion-navbar>
-            <ion-title>Equipment Records</ion-title>
-        </ion-navbar>
-    </ion-toolbar>
-</ion-header>
+<mb-header-page remove-parent-element [title]="'Equipment Records'"></mb-header-page>
+
 <ion-content>
   <ion-list>
     <button ion-item *ngFor="let item of equipmentRecordList" (click)="itemTapped(item)">

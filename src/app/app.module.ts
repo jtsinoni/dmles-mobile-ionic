@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {HttpModule} from '@angular/http';
 import {IonicApp, IonicModule} from 'ionic-angular';
-import {Logger, Options as LoggerOptions, Level as LoggerLevel} from "angular2-logger/core";
 import {DMLESMobile} from './app.component';
 
 import {AppContainerComponent} from './app-container.component';
@@ -18,6 +17,12 @@ import {CommonServicesModule} from "./common/services/common-services.module";
 import {CommonEndpointsModule} from "./common/endpoints/common-endpoints.module";
 import {AdminModule} from "./views/admin/admin.module";
 import {LogViewerModule} from "./views/logs/log-viewer.module";
+import {CommonDirectivesModule} from "./common/directives/common-directives.module";
+
+import {Options as LoggerOptions} from "./services/logger/options";
+import {Level as LoggerLevel} from "./services/logger/level";
+import {LoggerService} from "./services/logger/logger-service";
+import {FileLoggerService} from "./services/logger/file-logger-service";
 
 @NgModule({
     declarations: [
@@ -37,7 +42,7 @@ import {LogViewerModule} from "./views/logs/log-viewer.module";
         AdminModule,
         ServicesModule,
         LogViewerModule,
-        // CommonDirectivesModule,
+        CommonDirectivesModule,
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -48,9 +53,9 @@ import {LogViewerModule} from "./views/logs/log-viewer.module";
         LoginComponent
     ],
     providers: [
-        Logger,
+        { provide: LoggerService, useClass: FileLoggerService },
         { provide: LoggerOptions, useValue: { level: LoggerLevel.DEBUG } },
-        //{ provide: ErrorHandler, useClass: IonicErrorHandler }
+        // //{ provide: ErrorHandler, useClass: IonicErrorHandler }
     ]
 })
 export class AppModule { }

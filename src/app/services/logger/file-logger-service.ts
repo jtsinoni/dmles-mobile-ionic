@@ -24,7 +24,7 @@ export class FileLoggerService extends LoggerService implements ILogger  {
 
     private writeFile(message: string) {
         if(this.platform.is('mobile')) {
-            this.localFileStorageService.writeFile(message + "<br />");
+            this.localFileStorageService.writeToFile(message + "<br />");
         }
     }
 

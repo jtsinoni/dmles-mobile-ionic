@@ -1,18 +1,4 @@
-<ion-header>
-    <ion-navbar>
-        <ion-title item-left>Messaging</ion-title>
-        <ion-buttons end>
-            <button ion-button color="dark" clear>Logs</button>
-        </ion-buttons>
-        <!--<ion-nav-buttons side="right">-->
-
-        <!--</ion-nav-buttons>-->
-
-        <!--<button ion-button color="light" icon-right>-->
-            <!--Logs-->
-        <!--</button>-->
-    </ion-navbar>
-</ion-header>
+<mb-header-page remove-parent-element [title]="'Logs'"></mb-header-page>
 
 <ion-content padding>
     <div [ngSwitch]="page">

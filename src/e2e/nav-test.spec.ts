@@ -11,7 +11,7 @@ describe('dmles-mobile-ionic-app', () => {
     });
 
     it('should have a main title', () => {
-        expect(browser.getTitle()).toEqual('Ionic App');
+        expect(browser.getTitle()).toEqual('DML-ES Mobile');
     });
 
     it('should have app title \'DML-ES Mobile\'', () => {
@@ -24,12 +24,12 @@ describe('dmles-mobile-ionic-app', () => {
 
     it('should show find something dialog', () => {
         findButton.click();
-       'looking for something'.split('').forEach((c => alertInputField.sendKeys(c)));       
+       'looking for something'.split('').forEach((c => alertInputField.sendKeys(c)));
         browser.driver.sleep(1000);
         expect(element(by.id('alert-msg-0')).getText()).toEqual('Find something')
         alertButton.click();
     });
 
-   
+
 
 });

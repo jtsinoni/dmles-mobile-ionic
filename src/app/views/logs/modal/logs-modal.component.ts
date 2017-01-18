@@ -24,8 +24,9 @@ export class LogsModalComponent {
         this.viewController.dismiss();
     }
 
-    public deleteFile() {
+    public clear() {
         this.localFileStorageService.deleteFile();
+        this.logData = "";
     }
 
     private readFile() {

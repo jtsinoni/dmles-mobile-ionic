@@ -14,6 +14,8 @@ import {StoreDataModel} from "../../../models/store-data.model";
 import {NetworkService} from "../../../services/network.service";
 import {OAuthService} from "../../../services/oauth.service";
 import {LoggerService} from "../../../services/logger/logger-service";
+import {AppConfig} from "../../../configs/app-config";
+import {JSONWebTokenService} from "../../../services/jason-web-token.service";
 
 declare var window: any;
 
@@ -22,6 +24,7 @@ declare var window: any;
     selector: 'start-view'
 })
 export class StartComponent implements OnInit {
+
     @Input()
     public data: CommonDataModel;
 
@@ -37,7 +40,9 @@ export class StartComponent implements OnInit {
                 private commonDataService: CommonDataService,
                 public connectivityService: NetworkService,
                 private OAuthService: OAuthService,
-                private log: LoggerService) {
+                private log: LoggerService,
+                private AppConfig: AppConfig,
+                private jwtService: JSONWebTokenService) {
         this.data = commonDataService.data;
         this.storeDataModel = commonDataService.storeDataModel;
         this.isConnected = connectivityService.isConnected;
@@ -81,10 +86,12 @@ export class StartComponent implements OnInit {
     public login() {
         this.platform.ready()
             .then(() => {
-                this.OAuthService.getToken("user.admin.123")
+                this.OAuthService.getToken(this.AppConfig.OAuth.userName)
                     .subscribe(
                         (token) => {
-                            let message = `OAuth Token => ${token}`;
+                            let decodedToken = this.jwtService.decodeToken(token);
+                            let message = `OAuth Token Decoded => ${JSON.stringify(decodedToken)}`;
+
                             this.addLogMessage(message);
                         },
                         (error) => {
@@ -191,7 +198,7 @@ export class StartComponent implements OnInit {
     }
 
     private addLogMessage(message: string) {
-        this.log.info(message);
+        this.log.debug(message);
         this.appendLogMessage(message);
     }
 

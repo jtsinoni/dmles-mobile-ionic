@@ -3,7 +3,6 @@ import {ModalController} from 'ionic-angular';
 import {LogsModalComponent} from "./modal/logs-modal.component";
 
 @Component({
-    selector: 'logs-view'
 })
 export class LogsComponent {
 

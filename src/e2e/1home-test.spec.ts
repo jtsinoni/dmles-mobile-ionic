@@ -4,10 +4,10 @@ let findButton: ElementFinder = element(by.id('findSomethingButton'));
 let alertInputField: ElementFinder = element(by.css('.alert-input'));
 let alertButton: ElementFinder = element.all(by.css('.alert-button')).first();
 
-describe('dmles-mobile-ionic-app', () => {
+describe('AppContainerComponent', () => {
 
     beforeEach(() => {
-        browser.get('');
+        browser.waitForAngular();
     });
 
     it('should have a main title', () => {
@@ -24,7 +24,7 @@ describe('dmles-mobile-ionic-app', () => {
 
     it('should show find something dialog', () => {
         findButton.click();
-       'looking for something'.split('').forEach((c => alertInputField.sendKeys(c)));
+       'looking for something'.split('').forEach((c => alertInputField.sendKeys(c)));       
         browser.driver.sleep(1000);
         expect(element(by.id('alert-msg-0')).getText()).toEqual('Find something')
         alertButton.click();

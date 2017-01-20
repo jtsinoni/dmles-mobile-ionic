@@ -1,7 +1,10 @@
 import {Component, ViewChild} from '@angular/core';
 import {Platform, Nav, MenuController} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
-import { AppContainerComponent } from './app-container.component';
+import { LoginComponent } from './views/login/login.component';
+
+//import { AppContainerComponent } from './app-container.component';
+
 import {NetworkService} from "./services/network.service";
 
 @Component({
@@ -10,7 +13,7 @@ import {NetworkService} from "./services/network.service";
 export class DMLESMobile {
     @ViewChild(Nav) nav: Nav;
 
-    rootPage: any = AppContainerComponent;
+    rootPage: any = LoginComponent;
 
     constructor(public platform: Platform, menu: MenuController, networkService: NetworkService) {
         this.initializeApp();
@@ -25,10 +28,6 @@ export class DMLESMobile {
         });
     }
 
-    openPage(page) {
-        // close the menu when clicking a link from the menu
-        // this.menu.close();
-        // // navigate to the new page if it is not the current page
-        // this.nav.setRoot(page.component);
-    }
+    // openPage(page) {
+    // }
 }

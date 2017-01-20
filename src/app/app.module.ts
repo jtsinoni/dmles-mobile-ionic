@@ -4,6 +4,7 @@ import {IonicApp, IonicModule} from 'ionic-angular';
 import {DMLESMobile} from './app.component';
 
 import {AppContainerComponent} from './app-container.component';
+import {LoginComponent} from  './views/login/login.component';
 import {InventoryComponent} from './views/inventory/inventory.component';
 import {SupplyComponent} from './views/supply/supply.component';
 import {InventoryModule} from "./views/inventory/inventory.module";
@@ -27,6 +28,7 @@ import {FileLoggerService} from "./services/logger/file-logger-service";
     declarations: [
         DMLESMobile,
         AppContainerComponent,
+        LoginComponent
     ],
     imports: [
         IonicModule.forRoot(DMLESMobile),
@@ -48,6 +50,7 @@ import {FileLoggerService} from "./services/logger/file-logger-service";
         InventoryComponent,
         SupplyComponent,
         AppContainerComponent,
+        LoginComponent
     ],
     providers: [
         { provide: LoggerService, useClass: FileLoggerService },

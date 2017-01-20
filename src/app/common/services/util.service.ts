@@ -1,16 +1,18 @@
 import { Injectable } from "@angular/core";
-import {Platform} from "ionic-angular";
+import { Platform } from "ionic-angular";
 
 @Injectable()
 export class UtilService {
-    constructor(private platform: Platform) {}
+    constructor(private platform: Platform) { }
 
     public isMobility(): boolean {
-        return (this.platform.is('mobile')) ?true :false;
+        return (this.platform.is('mobile')) ? true : false;
     }
 
-    public generateUUID():number {
-        return Math.floor((1 + Math.random()) * 1000);
+    public generateUUID(): string {
+        //return Math.floor((1 + Math.random()) * 1000);
+        return Math.random().toString(26).substring(2, 15) +
+        Math.random().toString(26).substring(2, 15);
     }
 
     public addZero(i) {
@@ -166,11 +168,19 @@ export class UtilService {
         return re.test(email);
     }
 
+    public generateTemporaryKey(): string {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16);
+           
+    }
+
     private padZero(i) {
         if (i < 10) {
             i = "0" + i;
         }
         return i;
     }
+
+
 
 }

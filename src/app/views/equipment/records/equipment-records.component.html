@@ -2,15 +2,13 @@
 
 <ion-content>
   <ion-list>
-    <button ion-item *ngFor="let item of equipmentRecordList" (click)="itemTapped(item)">
-      <ion-icon name="cog" item-left></ion-icon>
-      {{item.itemId}}
-      <div class="item-note" item-right>
-        {{item.shortItemDesc}}
-      </div>
+    <button ion-item *ngFor="let item of items" (click)="itemTapped(item)">
+            <h2>ECN: ({{item.fields.meECNId}})</h2>
+            <p>ITEM ID: ({{item.fields.itemId}})</p>
+            <p>ITEM: ({{item.fields.itemDesc}})</p>
     </button>
   </ion-list>
   <div *ngIf="selectedItem" padding>
-    You navigated here from <b>{{item.itemId}}</b>
+        You navigated here from <b>{{selectedItem.fields.meECNId}}</b>
   </div>
 </ion-content>

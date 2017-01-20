@@ -20,8 +20,6 @@ describe('LoginComponent', () => {
     it('should have app title \'DML-ES Mobile\'', () => {
         expect(element(by.css('ion-title')).getText()).toContain('DML-ES Mobile');
     });
-
-
     it('has a Log In Button', () => {
         expect(element(by.id('loginButton')).isPresent()).toEqual(true);
     }, 2000);

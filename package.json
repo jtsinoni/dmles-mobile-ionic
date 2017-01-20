@@ -14,7 +14,7 @@
     "test": "ng test",
     "testcoverage": "ng test --code-coverage",
     "e2e": "protractor",
-    "postinstall":"ionic state restore && webdriver-manager update"
+    "postinstall": "ionic state restore && webdriver-manager update"
   },
   "dependencies": {
     "@angular/common": "2.2.1",
@@ -29,6 +29,8 @@
     "@ionic/storage": "1.1.6",
     "@types/mqtt": "0.0.32",
     "@types/phonegap": "^2.3.27",
+    "angular-in-memory-web-api": "0.2.0",
+    "angular2-jwt": "^0.1.28",
     "angular2-logger": "^0.5.1",
     "angular2-uuid": "^1.1.0",
     "dexie": "^1.5.1",
@@ -37,8 +39,7 @@
     "ionicons": "3.0.0",
     "mqtt": "^2.0.1",
     "rxjs": "5.0.0-beta.12",
-    "zone.js": "0.6.26",
-    "angular-in-memory-web-api": "0.2.0"
+    "zone.js": "0.6.26"
   },
   "devDependencies": {
     "@ionic/app-scripts": "0.0.39",

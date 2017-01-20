@@ -11,7 +11,7 @@ describe('AppContainerComponent', () => {
     });
 
     it('should have a main title', () => {
-        expect(browser.getTitle()).toEqual('Ionic App');
+        expect(browser.getTitle()).toEqual('DML-ES Mobile');
     });
 
     it('should have app title \'DML-ES Mobile\'', () => {
@@ -29,4 +29,7 @@ describe('AppContainerComponent', () => {
         expect(element(by.id('alert-msg-0')).getText()).toEqual('Find something')
         alertButton.click();
     });
+
+
+
 });

@@ -14,7 +14,7 @@ export class LocalStorageService {
 
     public clearData(){
         window.localStorage.clear();
-        this.log.info(`${this.serviceName} - Cache data cleared`);
+        this.log.debug(`${this.serviceName} - Cache data cleared`);
     }
 
     public getData(key:string){
@@ -29,21 +29,21 @@ export class LocalStorageService {
             value = JSON.parse(value);
         }
 
-        this.log.info(`${this.serviceName} - Get cache data: ${key} => ${value}`);
+        this.log.debug(`${this.serviceName} - Get cache data: ${key} => ${value}`);
         return value;
     }
 
     public removeData(key:string){
         window.localStorage.removeItem(key);
-        this.log.info(`${this.serviceName} - Cache data removed: ${key}`);
+        this.log.debug(`${this.serviceName} - Cache data removed: ${key}`);
     }
 
     public storeData(key:string, data:any, stringify:boolean){
-        this.log.info(`${this.serviceName} - Store cache data: ${key} => ${JSON.stringify(data)}`);
+        this.log.debug(`${this.serviceName} - Store cache data: ${key} => ${JSON.stringify(data)}`);
 
         if(stringify && !this.utilService.isObjectEmpty(data)){
             data = JSON.stringify(data);
-            this.log.info(`${this.serviceName} - Stringified cached data`);
+            this.log.debug(`${this.serviceName} - Stringified cached data`);
         }
 
         window.localStorage[key] = data;

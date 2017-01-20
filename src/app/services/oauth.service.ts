@@ -10,6 +10,8 @@ import {Base64Service} from "../common/services/base64.service";
 import {Observable} from "rxjs";
 import {LocalStorageService} from "./local-storage.service";
 import {LoggerService} from "./logger/logger-service";
+import {AppConfig} from "../configs/app-config";
+import {JSONWebTokenService} from "./jason-web-token.service";
 
 declare var window: any;
 
@@ -22,15 +24,17 @@ export class OAuthService extends ApiService {
                 public log: LoggerService,
                 protected authenticationService: AuthenticationService,
                 private app: AppService,
+                private AppConfig: AppConfig,
                 private Base64Service: Base64Service,
-                private localStorageService: LocalStorageService) {
+                private localStorageService: LocalStorageService,
+                private jwtService: JSONWebTokenService) {
 
         super(http, log, authenticationService, app, "OAuth");
         this.log.debug(`${this.serviceName} - Start`);
     }
 
     private apiGetToken(dn:string): Observable<any> {
-        var encodedDn = this.Base64Service.b64EncodeUnicode(dn + ":password");
+        var encodedDn = this.Base64Service.b64EncodeUnicode(`${dn}:${this.AppConfig.OAuth.password}`);
         return this.getTokenViaOAuth("token", encodedDn);
     }
 
@@ -38,6 +42,12 @@ export class OAuthService extends ApiService {
         let token = this.localStorageService.getData(ApiConstants.DMLES_TOKEN);
         if(token){
             this.log.debug(`${this.serviceName} - Token found locally`);
+
+            // Check if token is expired
+            if(this.jwtService.isTokenExpired(token)) {
+                this.log.debug(`Token expired => ${this.jwtService.getTokenExpirationDate(token)}`);
+                return this.getNewToken(dn);
+            }
 
             return Observable.of(token);
         }else{

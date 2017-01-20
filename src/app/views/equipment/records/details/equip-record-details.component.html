@@ -1,4 +1,4 @@
-<mb-header-page remove-parent-element [title]="selectedItem.shortItemDescription"></mb-header-page>
+<mb-header-page remove-parent-element [title]="selectedItem.fields.itemDesc"></mb-header-page>
 
 <ion-content>
   <div *ngIf="selectedItem" class="selection">
@@ -8,7 +8,7 @@
           <ion-badge item-left>Org ID</ion-badge>
         </ion-col>
         <ion-col width-75>
-          <label>{{selectedItem.orgId}}</label>
+          <label>{{selectedItem.fields.orgId}}</label>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -16,7 +16,7 @@
           <ion-badge item-left>ECN</ion-badge>
         </ion-col>
         <ion-col width-75>
-          <label>{{selectedItem.ecn}}</label>
+          <label>{{selectedItem.fields.meECNId}}</label>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -24,7 +24,7 @@
           <ion-badge item-left>Item ID</ion-badge>
         </ion-col>
         <ion-col width-75>
-          <label>{{selectedItem.itemId}}</label>
+          <label>{{selectedItem.fields.itemId}}</label>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -32,7 +32,7 @@
           <ion-badge item-left>Device Class</ion-badge>
         </ion-col>
         <ion-col width-67>
-          <label>{{selectedItem.deviceClass}}</label>
+          <label>{{selectedItem.fields.deviceClass}}</label>
         </ion-col>
       </ion-row>
     </ion-grid>

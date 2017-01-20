@@ -7,10 +7,14 @@ import {AppService} from "../../services/app.service";
 import {AuthenticationService} from "../../services/authentication.service";
 import {LoggerService} from "../../services/logger/logger-service";
 
+import { Platform } from 'ionic-angular'; //mec... yoyo...
+
+
 @Injectable()
 export class RequestApiService extends ApiService {
 
     constructor(http: Http,
+                public platform: Platform, //mec...
                 public log: LoggerService,
                 protected authenticationService: AuthenticationService,
                 private app: AppService) {
@@ -23,6 +27,38 @@ export class RequestApiService extends ApiService {
 
     public getEquipmentRequests(): Observable<any> {
         return this.get("getEquipmentRequests");
+    }
+
+    public getEquipmentRecords(): Observable<any> {
+        //alert("mec...3");
+        //const searchString = 'getEquipmentRecordSearchResults?searchValue=23209 (deleteInd:N)&aggregations={"aggregations": [{"name":"orgIds","field":"orgId","size":"300"},{"name":"nomenclatures","field":"deviceText.raw","size":"5000"}{"name":"manufacturers","field":"manufOrgName.raw","size":"5500"}{"name":"commonModels","field":"manufMdlComnId.raw","size":"5000"}{"name":"customerNames","field":"custOrgNM.raw","size":"5000"}{"name":"custOrgIds","field":"custOrgId","size":"5000"}{"name":"custodianNames","field":"custodianName.raw","size":"5000"}]}';
+        //const searchString = 'getEquipmentRecordSearchResults?searchValue=23209%20(deleteInd%3AN)&aggregations=%7B%22aggregations%22%3A%20%5B%7B%22name%22%3A%22orgIds%22%2C%22field%22%3A%22orgId%22%2C%22size%22%3A%22300%22%7D%2C%7B%22name%22%3A%22nomenclatures%22%2C%22field%22%3A%22deviceText.raw%22%2C%22size%22%3A%225000%22%7D%7B%22name%22%3A%22manufacturers%22%2C%22field%22%3A%22manufOrgName.raw%22%2C%22size%22%3A%225500%22%7D%7B%22name%22%3A%22commonModels%22%2C%22field%22%3A%22manufMdlComnId.raw%22%2C%22size%22%3A%225000%22%7D%7B%22name%22%3A%22customerNames%22%2C%22field%22%3A%22custOrgNM.raw%22%2C%22size%22%3A%225000%22%7D%7B%22name%22%3A%22custOrgIds%22%2C%22field%22%3A%22custOrgId%22%2C%22size%22%3A%225000%22%7D%7B%22name%22%3A%22custodianNames%22%2C%22field%22%3A%22custodianName.raw%22%2C%22size%22%3A%225000%22%7D%5D%7D';
+        //const searchString = 'getEquipmentRecord?dodaac=W33DME&meId=29306'; //mec... "getEquipmentRecords");
+        //const searchString = 'getEquipmentRecordSearchResults?searchValue=1234%20(deleteInd%3AN)&aggregations=%7B%22aggregations%22%3A%20%5B%7B%22name%22%3A%22orgIds%22%2C%22field%22%3A%22orgId%22%2C%22size%22%3A%22300%22%7D%2C%7B%22name%22%3A%22nomenclatures%22%2C%22field%22%3A%22deviceText.raw%22%2C%22size%22%3A%225000%22%7D%7B%22name%22%3A%22manufacturers%22%2C%22field%22%3A%22manufOrgName.raw%22%2C%22size%22%3A%225500%22%7D%7B%22name%22%3A%22commonModels%22%2C%22field%22%3A%22manufMdlComnId.raw%22%2C%22size%22%3A%225000%22%7D%7B%22name%22%3A%22customerNames%22%2C%22field%22%3A%22custOrgNM.raw%22%2C%22size%22%3A%225000%22%7D%7B%22name%22%3A%22custOrgIds%22%2C%22field%22%3A%22custOrgId%22%2C%22size%22%3A%225000%22%7D%7B%22name%22%3A%22custodianNames%22%2C%22field%22%3A%22custodianName.raw%22%2C%22size%22%3A%225000%22%7D%5D%7D';
+        const searchString = 'getEquipmentRecordSearchResults?searchValue=123 (deleteInd%3AN)';
+        alert("mec...3 with (" + searchString + ")");
+
+        var step;
+        for (step = 0; step < this.platform.platforms().length; step++) {
+
+            var message =
+                "mec... yoyo... platform (" + step + ") (" + this.platform.platforms()[step] +
+                ") CORE(" + this.platform.is('core') + ")" +
+                ") iOS(" + this.platform.is('ios') + ")" +
+                ") android(" + this.platform.is('android') + ")" +
+                ") Windows(" + this.platform.is('windows') + ")" +
+                ") Mobile(" + this.platform.is('mobile') + ")" +
+                ") MobileWeb(" + this.platform.is('mobileweb') + ")" +
+                "";
+            console.log(message);
+        }
+
+
+        //alert("mec... yoyo... CLOSE!");
+        //window.close();
+
+        return this.get(searchString); //mec...
+        //mec... return this.get("getEquipmentRecord?dodaac=W33DME&meId=29306"); //mec... "getEquipmentRecords");
     }
 
     public getCriticalityCodes(service) {

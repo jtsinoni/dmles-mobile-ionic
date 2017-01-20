@@ -3,16 +3,17 @@
  */
 import {Injectable}    from '@angular/core';
 
-import {DatabaseDefaultsModel} from '../models/database-defaults.model';
 import {DataTableDatabase} from '../database/data-table.database';
 import {LoggerService} from "./logger/logger-service";
+import {AppConfig} from "../configs/app-config";
 
 @Injectable()
-export class DatabaseService {
+export class DatabaseService{
     private dataDB: DataTableDatabase;
 
-    constructor(private log: LoggerService) {
-        this.dataDB = new DataTableDatabase(DatabaseDefaultsModel.databaseName, log);
+    constructor(private log: LoggerService,
+                private appConfig: AppConfig) {
+        this.dataDB = new DataTableDatabase(this.appConfig.indexedDatabase.name, this.log);
     }
 
     /**

@@ -45,6 +45,24 @@ export class NetworkServiceMock {
     }
 }
 
+export class UpstreamServiceMock {
+    sendData(param: any): Promise<any> {
+        return Promise.resolve();
+    }
+
+    pushLocalChanges(): Promise<any> {
+        return Promise.resolve();
+    }
+
+    connect(): Promise<any> {
+        return Promise.resolve();
+    }
+
+    disconnect(): Promise<any> {
+        return Promise.resolve();
+    }
+}
+
 export class NavMock {
 
   public pop(): any {

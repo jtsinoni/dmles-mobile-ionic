@@ -7,9 +7,8 @@ export class DataTableDatabase extends Dexie {
 
     constructor(databaseName: string, private log: LoggerService) {
         super(databaseName);
-        this.version(1).stores({
-            data: "++id,data"
-        });
+        this.version(1).stores({data: "++id,data"});
+        this.version(2).stores({data: "++id,data"});
 
         // Open it
         this.open().catch(function (e) {

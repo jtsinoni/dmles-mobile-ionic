@@ -81,7 +81,7 @@ export class TopicUpstreamService extends UpstreamService {
         return Promise.resolve(this.serviceAvailable)
             .then((connected) => {
                 if(!connected) {
-                    this.log.warn(`Client not connected`);
+                    throw new Error("NotConnected");
                 } else {
                     return this.topicMessagingService.client;
                 }
@@ -97,7 +97,9 @@ export class TopicUpstreamService extends UpstreamService {
             })
             .catch((reason) => {
                 if(reason.message === "NoItems") {
-                    this.log.info("The are no items in local storage");
+                    this.log.debug("The are no items in local storage");
+                } else if(reason.message === "NotConnected") {
+                    this.log.warn("Client not connected");
                 } else {
                     this.log.error(reason);
                 }

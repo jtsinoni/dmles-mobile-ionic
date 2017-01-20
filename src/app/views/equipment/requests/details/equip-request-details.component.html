@@ -1,10 +1,12 @@
 <mb-header-page remove-parent-element [title]="selectedItem.requestInformation.requestTitle"></mb-header-page>
 
-<ion-content>
+<ion-content padding>
     <div *ngIf="selectedItem" class="selection">
-        <b>{{selectedItem.requestInformation.requestTitle}}</b>
-        <div>
-            You navigated here from <b>{{selectedItem.requestInformation.requestTitle}}</b>
-        </div>
+        <ion-list>
+            <ion-list-header>Request Information</ion-list-header>
+            <ion-item>
+                Total Price: {{selectedItem.totalPrice}}
+            </ion-item>
+        </ion-list>
     </div>
 </ion-content>

@@ -1,14 +1,19 @@
-import {Injectable}    from '@angular/core';
+import {Injectable, OnInit}    from '@angular/core';
 import {Network} from 'ionic-native';
 import {LoggerService} from "./logger/logger-service";
 
 declare var Connection: any;
 
 @Injectable()
-export class NetworkService {
+export class NetworkService implements OnInit {
     public isConnected: boolean = false;
+    private serviceName = "LogViewer Service";
 
     constructor(private log: LoggerService) {
+    }
+
+    ngOnInit(): void {
+        this.log.debug(`${this.serviceName} - Start`);
 
         // This is the initial state.  Network.onDisconnect() or Network.onConnect() does not get called
         // unless the connection was previously lost or gained.

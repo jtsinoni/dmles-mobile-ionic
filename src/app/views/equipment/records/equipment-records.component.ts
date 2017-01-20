@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
-import {Logger} from "angular2-logger/core";
+import {LoggerService} from "../../../services/logger/logger-service";
 
 import {EquipmentRecordDetailsComponent} from './details/equip-record-details.component';
 import {RequestApiService} from "../../../common/endpoints/request-api.service";
@@ -18,7 +18,7 @@ export class EquipmentRecordsComponent {
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
                 private RequestApiService: RequestApiService,
-                private log: Logger) {
+                private log: LoggerService) {
     }
 
     ngOnInit() {

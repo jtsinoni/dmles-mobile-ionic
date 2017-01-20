@@ -14,7 +14,7 @@ describe('LoginComponent', () => {
     });
 
     it('should have a main title', () => {
-        expect(browser.getTitle()).toEqual('Ionic App');
+        expect(browser.getTitle()).toEqual('DML-ES Mobile');
     });
 
     it('should have app title \'DML-ES Mobile\'', () => {

@@ -7,15 +7,17 @@ import { EquipmentRequestsComponent } from './requests/equipment-requests.compon
 import { EquipmentRequestDetailsComponent } from './requests/details/equip-request-details.component';
 import { EquipmentRecordDetailsComponent } from './records/details/equip-record-details.component';
 import {CommonDirectivesModule} from "../../common/directives/common-directives.module";
+import {EquipmentRequestCardRowComponent} from "./requests/details/card-row/equip-request-card-row.component";
 
 
 @NgModule({
     declarations: [EquipmentComponent , EquipmentRecordsComponent,
-                   EquipmentRequestsComponent, EquipmentRequestDetailsComponent, EquipmentRecordDetailsComponent],
+                   EquipmentRequestsComponent, EquipmentRequestDetailsComponent,
+                   EquipmentRecordDetailsComponent, EquipmentRequestCardRowComponent],
     imports: [IonicModule, CommonDirectivesModule],
     exports: [EquipmentComponent ],
     entryComponents: [EquipmentComponent, EquipmentRecordsComponent, EquipmentRequestsComponent,
-                      EquipmentRequestDetailsComponent, EquipmentRecordDetailsComponent]
+                      EquipmentRequestDetailsComponent, EquipmentRecordDetailsComponent, EquipmentRequestCardRowComponent]
 })
 export class EquipmentModule {
 

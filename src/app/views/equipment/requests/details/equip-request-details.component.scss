@@ -1,5 +1,13 @@
-equip-record-details-page {
+.equip-record-details-page {
+    ion-card ion-card-header {
+        color: map-get($colors, primary);
+        border-bottom: 1px solid #e0e0e0;
+        margin-bottom: 10px;
+    }
 
+    ion-card ion-row {
+        -webkit-align-items: center;
+    }
 
 }
 

@@ -17,7 +17,7 @@ export class ForwardComponent {
 
     public itemTapped(event, item) {
         this.log.info(`Store Event: ${event} Item: ${item.data}`);
-        // this.navCtrl.push(EquipmentRequestDetailsComponent, {
+        // this.navCtrl.push(EquipmentRequestCardRowComponent, {
         //   item: item
         // });
     }

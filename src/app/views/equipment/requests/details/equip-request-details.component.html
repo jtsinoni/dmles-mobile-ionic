@@ -1,12 +1,84 @@
 <mb-header-page remove-parent-element [title]="selectedItem.requestInformation.requestTitle"></mb-header-page>
 
-<ion-content padding>
-    <div *ngIf="selectedItem" class="selection">
-        <ion-list>
-            <ion-list-header>Request Information</ion-list-header>
-            <ion-item>
-                Total Price: {{selectedItem.totalPrice}}
-            </ion-item>
-        </ion-list>
-    </div>
+<ion-content class="equip-record-details-page">
+    <ion-card>
+        <ion-card-header>
+            <ion-row>
+                <ion-col item-left>Equipment Details</ion-col>
+                <ion-col item-right text-right>
+                    <button ion-button color="primary" clear small>
+                        <ion-icon ios="ios-create" md="md-create"></ion-icon>
+                    </button>
+                </ion-col>
+            </ion-row>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-row>Request Title: {{selectedItem.requestInformation.requestTitle}}</ion-row>
+            <ion-row>Request Number: {{selectedItem.requestInformation.requestNumber}}</ion-row>
+            <ion-row>Total Price: {{selectedItem.totalPrice}}</ion-row>
+            <ion-row>Critical Code: {{selectedItem.requestInformation.criticalCode}}</ion-row>
+        </ion-card-content>
+        <mb-ion-row></mb-ion-row>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header>Request Reason</ion-card-header>
+        <ion-card-content>
+            <ion-row>Code: {{selectedItem.requestInformation.requestReason.code}} {{selectedItem.requestInformation.customer.custodianLastName}}</ion-row>
+            <ion-row>Mask: {{selectedItem.requestInformation.requestReason.mask}}</ion-row>
+            <ion-row>Name: {{selectedItem.requestInformation.requestReason.name}}</ion-row>
+        </ion-card-content>
+        <mb-ion-row></mb-ion-row>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header>Submitter</ion-card-header>
+        <ion-card-content>
+            <ion-row>Email: {{selectedItem.requestInformation.submitter.email}}</ion-row>
+            <ion-row>DODAAC: {{selectedItem.requestInformation.submitter.dodaac}}</ion-row>
+            <ion-row>Service Code: {{selectedItem.requestInformation.submitter.serviceCode}}</ion-row>
+            <ion-row>Region Code: {{selectedItem.requestInformation.submitter.regionCode}}</ion-row>
+        </ion-card-content>
+        <mb-ion-row></mb-ion-row>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header>Customer</ion-card-header>
+        <ion-card-content>
+            <ion-row>Custodian: {{selectedItem.requestInformation.customer.custodianFirstName}} {{selectedItem.requestInformation.customer.custodianLastName}}</ion-row>
+            <ion-row>Custodian Phone: {{selectedItem.requestInformation.customer.custodianPhoneNum}}</ion-row>
+            <ion-row>Customer Name: {{selectedItem.requestInformation.customer.customerName}}</ion-row>
+        </ion-card-content>
+        <mb-ion-row></mb-ion-row>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header>Equipment</ion-card-header>
+        <ion-card-content>
+            <ion-row>Description: {{selectedItem.requestInformation.equipment.description}} {{selectedItem.requestInformation.customer.custodianLastName}}</ion-row>
+            <ion-row>Manufacturer: {{selectedItem.requestInformation.equipment.manufacturer}}</ion-row>
+        </ion-card-content>
+        <mb-ion-row></mb-ion-row>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header>Organization</ion-card-header>
+        <ion-card-content>
+            <ion-row>Org ID: {{selectedItem.requestInformation.organization.organizationID}} {{selectedItem.requestInformation.customer.custodianLastName}}</ion-row>
+            <ion-row>Org Name: {{selectedItem.requestInformation.organization.organizationOrgName}}</ion-row>
+            <ion-row>Org Serial: {{selectedItem.requestInformation.organization.organizationSerial}}</ion-row>
+        </ion-card-content>
+        <mb-ion-row></mb-ion-row>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header>Catalog Item</ion-card-header>
+        <ion-card-content>
+            <ion-row>Item Desc: {{selectedItem.catalogItem.shortItemDesc}}</ion-row>
+            <ion-row>Device Text: {{selectedItem.catalogItem.deviceText}}</ion-row>
+        </ion-card-content>
+        <mb-ion-row></mb-ion-row>
+    </ion-card>
+
 </ion-content>
+

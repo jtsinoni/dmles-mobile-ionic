@@ -18,7 +18,7 @@ const DEFAULT_OPTIONS: Options = {
 export class LoggerService implements ILogger {
     protected level: Level;
 
-    // For browsers that don't implement the debug method, log will be used instead. Fixes #62.
+    // For browsers that don't implement the debug method, log will be used instead.
     protected CONSOLE_DEBUG_METHOD = console["debug"] ? "debug" : "log";
 
     constructor(@Optional() options?: Options) {

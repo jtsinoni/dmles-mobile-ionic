@@ -1,0 +1,10 @@
+.equip-record-details-page {
+    ion-card ion-card-header {
+        color: map-get($colors, primary);
+    }
+
+    ion-card ion-col {
+        padding: 0;
+    }
+}
+

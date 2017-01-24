@@ -23,35 +23,36 @@ export class FileLoggerService extends LoggerService implements ILogger  {
     }
 
     private writeFile(message: string) {
-        if(this.platform.is('mobile')) {
+        // Check if we are running on a 'cordova' (device), otherwise write to console?
+        if (this.platform.is('mobile') && this.platform.is('cordova')) {
             this.localFileStorageService.writeToFile(message + "<br />");
         }
     }
 
     public log(message: any): void {
         if(this.isLogEnabled() && console && console.log) {
-            console.log(message);
+            console.log('Log: ' + message);
             this.writeFile(message);
         }
     }
 
     public info(message: any): void {
         if(this.isInfoEnabled() && console && console.info) {
-            console.info(message);
+            console.info('Info: ' + message);
             this.writeFile(message);
         }
     }
 
     public warn(message: any): void {
         if(this.isWarnEnabled() && console && console.warn) {
-            console.warn(message);
+            console.warn('Warn: ' + message);
             this.writeFile(message);
         }
     }
 
     public debug(message: any): void {
         if(this.isDebugEnabled() && console) {
-            (<any>console)[this.CONSOLE_DEBUG_METHOD](message);
+            (<any>console)[this.CONSOLE_DEBUG_METHOD]('Debug: ' + message);
             //console.debug(message);
             this.writeFile(message);
         }
@@ -59,7 +60,7 @@ export class FileLoggerService extends LoggerService implements ILogger  {
 
     public error(message: any): void {
         if(this.isErrorEnabled() && console && console.error) {
-            console.error(message);
+            console.error('Error: ' + message);
             this.writeFile(message);
         }
     }

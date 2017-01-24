@@ -11,6 +11,8 @@ import {RequestApiService} from "../../../common/endpoints/request-api.service";
 
 export class EquipmentRecordsComponent {
     selectedItem: any;
+    searchValue: string;
+    aggregations: string;
 
     @Input()
     items: Array<any>;
@@ -24,16 +26,19 @@ export class EquipmentRecordsComponent {
     ngOnInit() {
         // If we navigated to this page, we will have an item available as a nav param
         this.selectedItem = this.navParams.get('item');
+        this.searchValue = this.navParams.get('searchValue');
+        this.aggregations = this.navParams.get('aggregations');
 
         this.getEquipmentRecords();
     }
 
     private getEquipmentRecords() {
-        this.RequestApiService.getEquipmentRecords()
+        //alert('mec...cool, we have (' + this.searchValue + ', ' + this.aggregations + ')');
+        this.RequestApiService.getEquipmentRecords(this.searchValue, this.aggregations)
             .map(results => results.json())
             .subscribe(
                 (results) => {
-                    this.items = results.hits.hits; //mec...magic???
+                    this.items = results.hits.hits; //mec: NOTE: MAGIC - We are 2 layers deep in results
                     this.log.debug(`results => ${JSON.stringify(results)}`);
                 },
                 (error) => {

@@ -7,21 +7,21 @@ import {AppService} from "../../services/app.service";
 import {AuthenticationService} from "../../services/authentication.service";
 import {LoggerService} from "../../services/logger/logger-service";
 
-import { Platform } from 'ionic-angular'; //mec... yoyo...
+import { Platform } from 'ionic-angular';
 
 
 @Injectable()
 export class RequestApiService extends ApiService {
 
     constructor(http: Http,
-                public platform: Platform, //mec...
+                public platform: Platform,
                 public log: LoggerService,
                 protected authenticationService: AuthenticationService,
                 private app: AppService) {
         super(http, log, authenticationService, app, "EquipmentManagement");
     }
 
-    public buildWeighIns(requestId){
+    public buildWeighIns(requestId) {
         return this.get('request/buildWeighins?requestId=' + requestId);
     }
 
@@ -29,20 +29,13 @@ export class RequestApiService extends ApiService {
         return this.get("getEquipmentRequests");
     }
 
-    public getEquipmentRecords(): Observable<any> {
-        //alert("mec...3");
-        //const searchString = 'getEquipmentRecordSearchResults?searchValue=23209 (deleteInd:N)&aggregations={"aggregations": [{"name":"orgIds","field":"orgId","size":"300"},{"name":"nomenclatures","field":"deviceText.raw","size":"5000"}{"name":"manufacturers","field":"manufOrgName.raw","size":"5500"}{"name":"commonModels","field":"manufMdlComnId.raw","size":"5000"}{"name":"customerNames","field":"custOrgNM.raw","size":"5000"}{"name":"custOrgIds","field":"custOrgId","size":"5000"}{"name":"custodianNames","field":"custodianName.raw","size":"5000"}]}';
-        //const searchString = 'getEquipmentRecordSearchResults?searchValue=23209%20(deleteInd%3AN)&aggregations=%7B%22aggregations%22%3A%20%5B%7B%22name%22%3A%22orgIds%22%2C%22field%22%3A%22orgId%22%2C%22size%22%3A%22300%22%7D%2C%7B%22name%22%3A%22nomenclatures%22%2C%22field%22%3A%22deviceText.raw%22%2C%22size%22%3A%225000%22%7D%7B%22name%22%3A%22manufacturers%22%2C%22field%22%3A%22manufOrgName.raw%22%2C%22size%22%3A%225500%22%7D%7B%22name%22%3A%22commonModels%22%2C%22field%22%3A%22manufMdlComnId.raw%22%2C%22size%22%3A%225000%22%7D%7B%22name%22%3A%22customerNames%22%2C%22field%22%3A%22custOrgNM.raw%22%2C%22size%22%3A%225000%22%7D%7B%22name%22%3A%22custOrgIds%22%2C%22field%22%3A%22custOrgId%22%2C%22size%22%3A%225000%22%7D%7B%22name%22%3A%22custodianNames%22%2C%22field%22%3A%22custodianName.raw%22%2C%22size%22%3A%225000%22%7D%5D%7D';
-        //const searchString = 'getEquipmentRecord?dodaac=W33DME&meId=29306'; //mec... "getEquipmentRecords");
-        //const searchString = 'getEquipmentRecordSearchResults?searchValue=1234%20(deleteInd%3AN)&aggregations=%7B%22aggregations%22%3A%20%5B%7B%22name%22%3A%22orgIds%22%2C%22field%22%3A%22orgId%22%2C%22size%22%3A%22300%22%7D%2C%7B%22name%22%3A%22nomenclatures%22%2C%22field%22%3A%22deviceText.raw%22%2C%22size%22%3A%225000%22%7D%7B%22name%22%3A%22manufacturers%22%2C%22field%22%3A%22manufOrgName.raw%22%2C%22size%22%3A%225500%22%7D%7B%22name%22%3A%22commonModels%22%2C%22field%22%3A%22manufMdlComnId.raw%22%2C%22size%22%3A%225000%22%7D%7B%22name%22%3A%22customerNames%22%2C%22field%22%3A%22custOrgNM.raw%22%2C%22size%22%3A%225000%22%7D%7B%22name%22%3A%22custOrgIds%22%2C%22field%22%3A%22custOrgId%22%2C%22size%22%3A%225000%22%7D%7B%22name%22%3A%22custodianNames%22%2C%22field%22%3A%22custodianName.raw%22%2C%22size%22%3A%225000%22%7D%5D%7D';
-        const searchString = 'getEquipmentRecordSearchResults?searchValue=123 (deleteInd%3AN)';
-        alert("mec...3 with (" + searchString + ")");
+    public getEquipmentRecords(searchValue, aggregations): Observable<any> {
+        let searchString = 'getEquipmentRecordSearchResults?' + searchValue + ' ' + aggregations;
 
-        var step;
+        let step = 0;
         for (step = 0; step < this.platform.platforms().length; step++) {
-
-            var message =
-                "mec... yoyo... platform (" + step + ") (" + this.platform.platforms()[step] +
+            let message =
+                "Platform #(" + step + ") - (" + this.platform.platforms()[step] +
                 ") CORE(" + this.platform.is('core') + ")" +
                 ") iOS(" + this.platform.is('ios') + ")" +
                 ") android(" + this.platform.is('android') + ")" +
@@ -50,22 +43,20 @@ export class RequestApiService extends ApiService {
                 ") Mobile(" + this.platform.is('mobile') + ")" +
                 ") MobileWeb(" + this.platform.is('mobileweb') + ")" +
                 "";
-            console.log(message);
+            this.log.debug(message);
         }
 
+        //mec...this.authenticationService.logout(); //mec...
 
-        //alert("mec... yoyo... CLOSE!");
-        //window.close();
-
-        return this.get(searchString); //mec...
-        //mec... return this.get("getEquipmentRecord?dodaac=W33DME&meId=29306"); //mec... "getEquipmentRecords");
+        alert("mec... BAG HARDCODE (" + searchString + ")");
+        return this.get(searchString);
     }
 
     public getCriticalityCodes(service) {
         return this.get('getCriticalCodes?serviceAgency=' + service);
     }
 
-    public getDevices(){
+    public getDevices() {
         return this.get('getDevices');
     }
 
@@ -81,45 +72,45 @@ export class RequestApiService extends ApiService {
         return this.get("getEquipmentRequestTypes");
     };
 
-    public getLiteratureTypes(){
+    public getLiteratureTypes() {
         return this.get('getLiteratureTypes');
     }
 
-    public getManufacturers(){
+    public getManufacturers() {
         return this.get('getEquipmentManufacturers');
     }
 
-    public getMountingTypes(){
+    public getMountingTypes() {
         return this.get('getEquipmentMountingTypes');
     }
 
-    public getLevelsCriteriaNeeded(request){
+    public getLevelsCriteriaNeeded(request) {
         return this.post("getLevelsCriteriaNeeded", request);
     }
 
-    public getRequestsByCustodianId(userId,active){
-        return this.get("getRequestsByCustodianId?userId=" + userId+"&active="+active);
+    public getRequestsByCustodianId(userId, active) {
+        return this.get("getRequestsByCustodianId?userId=" + userId + "&active=" + active);
     }
 
-    public getRequestsByRequestStatus(status){
+    public getRequestsByRequestStatus(status) {
         return this.get("getRequestsByRequestStatus?status=" + status);
     }
 
-    public getTraineeTypes(){
+    public getTraineeTypes() {
         return this.get("getEquipmentTraineeTypes");
     }
 
-    public getTrainingLocations(){
+    public getTrainingLocations() {
         return this.get("getTraineeLocationTypes");
     }
 
-    public getWeighInResults(){
+    public getWeighInResults() {
         return this.get("request/getWeighInResults");
     }
 
     public saveEquipmentRequest(equipmentRequest) {
-    return this.post("request/save", equipmentRequest);
-}
+        return this.post("request/save", equipmentRequest);
+    }
 
     public saveFacilities(equipmentRequest) {
         return this.post("request/saveFacilities", equipmentRequest);
@@ -167,53 +158,53 @@ export class RequestApiService extends ApiService {
 
     /********* Comments **********/
 
-    public addProcessComment(requestId, comment){
+    public addProcessComment(requestId, comment) {
         return this.get("request/addProcessComment?requestId=" + requestId + "&comment=" + comment);
     }
 
-    public addWeighInComment(requestId, weighInRole, comment){
+    public addWeighInComment(requestId, weighInRole, comment) {
         return this.get("request/addWeighInComment?requestId=" + requestId + "&weighInRole=" + weighInRole + "&comment=" + comment);
     }
 
-    public removeProcessComment(requestId, commentId){
+    public removeProcessComment(requestId, commentId) {
         return this.get("request/removeProcessComment?requestId=" + requestId + "&commentId=" + commentId);
     }
 
-    public removeWeighInComment(requestId, weighInRole, commentId){
+    public removeWeighInComment(requestId, weighInRole, commentId) {
         return this.get("request/removeWeighInComment?requestId=" + requestId + "&weighInRole=" + weighInRole + "&commentId=" + commentId);
     }
 
     /********* Level Results **********/
 
-    public approve(requestId){
+    public approve(requestId) {
         return this.get("request/approve?requestId=" + requestId);
     }
 
-    public cancel(requestId){
+    public cancel(requestId) {
         return this.get("request/cancel?requestId=" + requestId);
     }
 
-    public forceUp(requestId){
+    public forceUp(requestId) {
         return this.get("request/forceUp?requestId=" + requestId);
     }
 
-    public hold(requestId){
+    public hold(requestId) {
         return this.get("request/hold?requestId=" + requestId);
     }
 
-    public reactivate(requestId){
+    public reactivate(requestId) {
         return this.get("request/reactivate?requestId=" + requestId);
     }
 
-    public reject(requestId){
+    public reject(requestId) {
         return this.get("request/reject?requestId=" + requestId);
     }
 
-    public retract(requestId){
+    public retract(requestId) {
         return this.get("request/retract?requestId=" + requestId);
     }
 
-    public rework(requestId){
+    public rework(requestId) {
         return this.get("request/rework?requestId=" + requestId);
     }
 
@@ -229,11 +220,11 @@ export class RequestApiService extends ApiService {
 
     /******* Workflow Management *******/
 
-    public getWorkflowDefinition(service){
+    public getWorkflowDefinition(service) {
         return this.get("request/workflowDefinition/getDefinition?service=" + service);
     }
 
-    public updateWorkflowDefCostCriteria(serviceName, levelID, totalCost){
+    public updateWorkflowDefCostCriteria(serviceName, levelID, totalCost) {
         return this.get("request/updateWorkflowDefCostCriteria?serviceName=" + serviceName + "&levelID=" + levelID + "&totalCost=" + totalCost);
     }
 }

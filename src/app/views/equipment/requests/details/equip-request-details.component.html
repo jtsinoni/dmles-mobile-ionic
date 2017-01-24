@@ -1,17 +1,19 @@
 <mb-header-page remove-parent-element [title]="selectedItem.requestInformation.requestTitle"></mb-header-page>
 
 <ion-content class="equip-record-details-page">
-    <ion-card>
+    <ion-card (click)="equipmentDetails()">
+    <!--<ion-card [class.my-class]="isClassVisible" (click)="equipmentDetails(); isClassVisible = !isClassVisible;">        -->
         <ion-card-header>
             <ion-row>
                 <ion-col item-left>Equipment Details</ion-col>
                 <ion-col item-right text-right>
-                    <button ion-button color="primary" clear small>
-                        <ion-icon ios="ios-create" md="md-create"></ion-icon>
+                    <button (click)="editEquipmentDetails(); $event.stopPropagation();" ion-button color="primary" clear small>
+                        <ion-icon name="create"></ion-icon>
                     </button>
                 </ion-col>
             </ion-row>
         </ion-card-header>
+
         <ion-card-content>
             <ion-row>Request Title: {{selectedItem.requestInformation.requestTitle}}</ion-row>
             <ion-row>Request Number: {{selectedItem.requestInformation.requestNumber}}</ion-row>

@@ -34,7 +34,7 @@ export class OAuthService extends ApiService {
     }
 
     private apiGetToken(dn:string): Observable<any> {
-        var encodedDn = this.Base64Service.b64EncodeUnicode(`${dn}:${this.AppConfig.OAuth.password}`);
+        let encodedDn = this.Base64Service.b64EncodeUnicode(`${dn}:${this.AppConfig.OAuth.password}`);
         return this.getTokenViaOAuth("token", encodedDn);
     }
 

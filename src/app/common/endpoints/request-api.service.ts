@@ -32,10 +32,9 @@ export class RequestApiService extends ApiService {
     public getEquipmentRecords(searchValue, aggregations): Observable<any> {
         let searchString = 'getEquipmentRecordSearchResults?' + searchValue + ' ' + aggregations;
 
-        let step = 0;
-        for (step = 0; step < this.platform.platforms().length; step++) {
+        this.platform.platforms().forEach((platformName, step) => {
             let message =
-                "Platform #(" + step + ") - (" + this.platform.platforms()[step] +
+                "Platform #(" + step + ") - (" + platformName +
                 ") CORE(" + this.platform.is('core') + ")" +
                 ") iOS(" + this.platform.is('ios') + ")" +
                 ") android(" + this.platform.is('android') + ")" +
@@ -44,9 +43,7 @@ export class RequestApiService extends ApiService {
                 ") MobileWeb(" + this.platform.is('mobileweb') + ")" +
                 "";
             this.log.debug(message);
-        }
-
-        //mec...this.authenticationService.logout(); //mec...
+        });
 
         alert("mec... BAG HARDCODE (" + searchString + ")");
         return this.get(searchString);

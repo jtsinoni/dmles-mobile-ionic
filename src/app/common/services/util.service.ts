@@ -6,7 +6,7 @@ export class UtilService {
     constructor(private platform: Platform) { }
 
     public isMobility(): boolean {
-        return (this.platform.is('mobile')) ? true : false;
+        return (this.platform.is('cordova')) ? true : false;
     }
 
     public generateUUID(): string {
@@ -171,7 +171,7 @@ export class UtilService {
     public generateTemporaryKey(): string {
         return Math.floor((1 + Math.random()) * 0x10000)
             .toString(16);
-           
+
     }
 
     private padZero(i) {

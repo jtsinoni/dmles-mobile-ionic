@@ -2,7 +2,6 @@
 
 <ion-content class="equip-record-details-page">
     <ion-card (click)="equipmentDetails()">
-    <!--<ion-card [class.my-class]="isClassVisible" (click)="equipmentDetails(); isClassVisible = !isClassVisible;">        -->
         <ion-card-header>
             <ion-row>
                 <ion-col item-left>Equipment Details</ion-col>
@@ -14,7 +13,7 @@
             </ion-row>
         </ion-card-header>
 
-        <ion-card-content>
+        <ion-card-content class="ripple">
             <ion-row>Request Title: {{selectedItem.requestInformation.requestTitle}}</ion-row>
             <ion-row>Request Number: {{selectedItem.requestInformation.requestNumber}}</ion-row>
             <ion-row>Total Price: {{selectedItem.totalRequisitionCost}}</ion-row>

@@ -6,7 +6,7 @@ declare var window: any;
 
 @Injectable()
 export class LocalStorageService {
-    private serviceName = "LocalFileStorageService";
+    private serviceName = "LocalStorageService";
 
     constructor(private log: LoggerService, private utilService: UtilService) {
         this.log.debug(`${this.serviceName} - Start`);

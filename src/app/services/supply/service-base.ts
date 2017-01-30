@@ -1,6 +1,3 @@
-'use strict'
-
-
 export abstract class ServiceBase {
 
     protected handleError(error: any): Promise<any> {

@@ -5,11 +5,10 @@ import {NgModule} from '@angular/core';
 import {RemoveParentElementDirective} from './remove-parent-element.directive';
 import {HeaderPageComponent} from "../../views/common/header/header-page.component";
 import {IonicModule} from "ionic-angular";
-import {AddRippleEffectDirective} from "./add-ripple-effect.directive";
 
 @NgModule({
-    declarations: [HeaderPageComponent, RemoveParentElementDirective, AddRippleEffectDirective],
+    declarations: [HeaderPageComponent, RemoveParentElementDirective],
     imports: [IonicModule],
-    exports: [HeaderPageComponent, RemoveParentElementDirective, AddRippleEffectDirective],
+    exports: [HeaderPageComponent, RemoveParentElementDirective],
 })
 export class CommonDirectivesModule{}

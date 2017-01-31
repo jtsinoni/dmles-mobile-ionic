@@ -6,12 +6,6 @@ import {LoggerService} from "../../../../services/logger/logger-service";
 
 @Component({
     templateUrl: './equip-request-details.component.html',
-    styles: [
-        `.my-class {
-            /*background: rgba(0, 0, 0, 0.2);          */
-            }
-        `
-    ]
 })
 export class EquipmentRequestDetailsComponent {
     selectedItem: any;
@@ -28,7 +22,11 @@ export class EquipmentRequestDetailsComponent {
         this.log.debug(`EquipmentRequestDetailsComponent:equipmentDetails()`);
     }
 
-    public editEquipmentDetails() {
+    public editEquipmentDetails(event: Event) {
+        if(event) {
+            event.stopPropagation();
+        }
+
         this.log.debug(`EquipmentRequestDetailsComponent:editEquipmentDetails()`);
     }
 }

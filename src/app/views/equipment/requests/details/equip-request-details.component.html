@@ -1,12 +1,12 @@
 <mb-header-page remove-parent-element [title]="selectedItem.requestInformation.requestTitle"></mb-header-page>
 
-<ion-content class="equip-record-details-page">
+<ion-content class="equip-request-details-page">
     <ion-card (click)="equipmentDetails()">
         <ion-card-header>
             <ion-row>
                 <ion-col item-left>Equipment Details</ion-col>
                 <ion-col item-right text-right>
-                    <button (click)="editEquipmentDetails(); $event.stopPropagation();" ion-button color="primary" clear small>
+                    <button (click)="editEquipmentDetails($event); $event.stopPropagation();" ion-button color="primary" clear small>
                         <ion-icon name="create"></ion-icon>
                     </button>
                 </ion-col>

@@ -1,28 +1,26 @@
 <ion-header>
-    <ion-toolbar>
-      <ion-title>DML-ES Mobile</ion-title>
-    </ion-toolbar>
-</ion-header>
-<ion-content>
-    <!--<ion-grid>
-        <ion-row wrap >
-            <ion-col width-50 *ngFor="let area of areas">
-                <button ion-button icon-left (click)="doSomething()" ion-text color="{{area.color}}">
-                <ion-icon name="{{area.iconName}}"></ion-icon>
-                {{area.name}}
-                </button>
-            </ion-col>
-        </ion-row>
-    </ion-grid>-->
-      <ion-list>
-      <button menuClose ion-item icon-left color="{{area.color}}" *ngFor="let area of areas" (click)="goTo(area)">
-        <ion-icon name="{{area.iconName}}"></ion-icon>
-         {{area.title}}
-      </button>
-    </ion-list>
+    <ion-navbar>
+       <button ion-button menuToggle icon-only>
+      <ion-icon name='menu'></ion-icon>     
+        </button>
+        <ion-title>LogiCole Mobile</ion-title>
 
+        <ion-buttons end>
+            <button ion-button icon-only (click)="showAppMenu()">
+        <ion-icon name="more"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-header>
+       <p>We could put notifications, or messages based on roles or user here. Or based on a role or preference navigate to the area most used</p>
+    </ion-header>
+   
     <ion-fab right bottom>
-    <button id="findSomethingButton" ion-fab (click)="showFindItem()"><ion-icon name="search" >
+        <button id="findSomethingButton" ion-fab (click)="showFindItem()"><ion-icon name="search" >
       </ion-icon></button>
-  </ion-fab>
+    </ion-fab>
 </ion-content>

@@ -1,4 +1,3 @@
-'use strict';
 
 import { Headers } from '@angular/http';
 

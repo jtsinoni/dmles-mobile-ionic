@@ -63,6 +63,12 @@ export class UpstreamServiceMock {
     }
 }
 
+export class UtilServiceMock {
+  public isMobility(): boolean {
+        return false;
+    }
+}
+
 export class NavMock {
 
   public pop(): any {
@@ -130,7 +136,28 @@ export class ModalControllerMock {
   }
 }
 
+export class MenuControllerMock {
+  public close(): any {
+    return new Promise((resolve: Function) => {
+      resolve();
+    });
+  }
+
+  public enable(shouldEnable: boolean, menuId?: string) {
+    
+  }
+}
+
+
 export class ActionSheetControllerMock {
+  public close(): any {
+    return new Promise((resolve: Function) => {
+      resolve();
+    });
+  }
+}
+
+export class AppMock {
   public close(): any {
     return new Promise((resolve: Function) => {
       resolve();

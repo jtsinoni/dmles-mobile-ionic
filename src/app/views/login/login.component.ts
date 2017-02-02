@@ -1,63 +1,67 @@
-import {Component} from '@angular/core';
-import {LoginModel} from "../../models/login.model";
-import {NavController, Platform} from 'ionic-angular';
-import {Storage} from "@ionic/storage";
-import {AppContainerComponent} from '../../app-container.component';
-import {OAuthService} from "../../services/oauth.service";
-import {LoggerService} from "../../services/logger/logger-service";
-import {AppService} from "../../services/app.service";
-import {JSONWebTokenService} from "../../services/jason-web-token.service";
+import { Component } from '@angular/core';
+import { LoginModel } from "../../models/login.model";
+import { NavController, Platform, ModalController } from 'ionic-angular';
+import { AppContainerComponent } from '../../app-container.component';
+import { OAuthService } from "../../services/oauth.service";
+import { LoggerService } from "../../services/logger/logger-service";
+import { AppService } from "../../services/app.service";
+import { JSONWebTokenService } from "../../services/jason-web-token.service";
+import { WarningDialogComponent } from "../common/dialogs/warning-dialog.component";
+import { App, MenuController } from 'ionic-angular';
 
 @Component({
     selector: 'login-login',
-    templateUrl: './login.html',
-    providers: [Storage]
+    templateUrl: './login.html'
+
 })
 export class LoginComponent {
 
     loginModel: LoginModel;
 
     constructor(private platform: Platform,
-                public navCtrl: NavController,
-                public storage: Storage,
-                private OAuthService: OAuthService,
-                private log: LoggerService,
-                private appService: AppService,
-                private jwtService: JSONWebTokenService) {
+        public navCtrl: NavController,
+        private OAuthService: OAuthService,
+        private log: LoggerService,
+        private appService: AppService,
+        private jwtService: JSONWebTokenService,
+        private modalController: ModalController,
+        private menuController: MenuController,
+        private app: App) {
         this.loginModel = new LoginModel(this.appService.getBtBaseUrl());
+        this.menuController.enable(false, "mainMenu");
 
     }
 
     public login(loginModel: LoginModel) {
+
         let message = '';
         this.addLogMessage('logging in: ' + loginModel.username);
         this.platform.ready()
             .then(() => {
                 this.OAuthService.getToken(loginModel.username)
                     .subscribe(
-                        (token) => {
+                    (token) => {
 
-                            let decodedToken = this.jwtService.decodeToken(token);
-                            let message = `OAuth Token Decoded => ${JSON.stringify(decodedToken)}`;
-                            this.addLogMessage(message);
-                        },
-                        (error) => {
-                            message = `Error => ${error}`;
-                            this.logErrorMessage(message);
-                        },
-                        () => {
-                            message = `Authentication Complete`;
-                            this.addLogMessage(message);
-                            this.navCtrl.setRoot(AppContainerComponent);
-                        }
-                    )
-            }).then(() => {
-            //todo remove this for real Authentication
-            this.navCtrl.setRoot(AppContainerComponent);
-        })
+                        let decodedToken = this.jwtService.decodeToken(token);
+                        let message = `OAuth Token Decoded => ${JSON.stringify(decodedToken)}`;
+                        this.addLogMessage(message);
+                    },
+                    (error) => {
+                        message = `Error => ${error}`;
+                        this.logErrorMessage(message);
+                        this.showErrorModal(message);
+                    },
+                    () => {
+                        message = `Authentication Complete`;
+                        this.addLogMessage(message);
+                        //this.navCtrl.setRoot(AppContainerComponent, );
+                        this.app.getRootNav().setRoot(AppContainerComponent);
+                    })
+            })
             .catch((error) => {
                 message = `Error => ${error}`;
                 this.logErrorMessage(message);
+                this.showErrorModal(message);
             });
     }
 
@@ -69,5 +73,11 @@ export class LoginComponent {
         this.log.error(error);
     }
 
+    private showErrorModal(message) {
+        let errorModal = this.modalController.create(WarningDialogComponent, { txt: message });
+        errorModal.present();
+    }
+
+   
 
 }

@@ -33,7 +33,7 @@ export class EquipmentRecordsComponent {
     }
 
     private getEquipmentRecords() {
-        //alert('mec...cool, we have (' + this.searchValue + ', ' + this.aggregations + ')');
+        this.log.debug('In getEquipmentRecords with (' + this.searchValue + ', ' + this.aggregations + ')');
         this.RequestApiService.getEquipmentRecords(this.searchValue, this.aggregations)
             .map(results => results.json())
             .subscribe(

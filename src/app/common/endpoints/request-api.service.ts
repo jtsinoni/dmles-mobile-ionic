@@ -45,7 +45,7 @@ export class RequestApiService extends ApiService {
             this.log.debug(message);
         });
 
-        alert("mec... BAG HARDCODE (" + searchString + ")");
+        this.log.debug('In getEquipmentRecords with (' + searchValue + ', ' + aggregations + ') making (' + searchString + ')');
         return this.get(searchString);
     }
 

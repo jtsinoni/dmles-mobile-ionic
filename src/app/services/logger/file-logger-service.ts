@@ -10,7 +10,6 @@ import {LoggerService} from "./logger-service";
 @Injectable()
 export class FileLoggerService extends LoggerService implements ILogger  {
     private serviceName = "File Logger Service";
-    //private level: Level;
 
     constructor(private localFileStorageService: LocalFileStorageService,
                 private platform: Platform,
@@ -24,7 +23,7 @@ export class FileLoggerService extends LoggerService implements ILogger  {
 
     private writeFile(message: string) {
         // Check if we are running on a 'cordova' (device), otherwise write to console?
-        if (this.platform.is('mobile') && this.platform.is('cordova')) {
+        if (this.platform.is('cordova')) {
             this.localFileStorageService.writeToFile(message + "<br />");
         }
     }

@@ -23,6 +23,7 @@ import {Options as LoggerOptions} from "./services/logger/options";
 import {Level as LoggerLevel} from "./services/logger/level";
 import {LoggerService} from "./services/logger/logger-service";
 import {FileLoggerService} from "./services/logger/file-logger-service";
+import {SecurityModule} from "./views/security/security.module";
 
 @NgModule({
     declarations: [
@@ -43,6 +44,7 @@ import {FileLoggerService} from "./services/logger/file-logger-service";
         ServicesModule,
         LogViewerModule,
         CommonDirectivesModule,
+        SecurityModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [

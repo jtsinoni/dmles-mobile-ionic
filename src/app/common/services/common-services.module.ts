@@ -7,7 +7,6 @@ import {OAuthService} from "../../services/oauth.service";
 import {AuthenticationService} from "../../services/authentication.service";
 import {LocalStorageService} from "../../services/local-storage.service";
 import {AppService} from "../../services/app.service";
-import {AppConfig} from "../../configs/app-config";
 import {DatabaseService} from "../../services/database.service";
 import {CommonDataService} from "../../services/common-data.service";
 import {NetworkService} from "../../services/network.service";
@@ -27,7 +26,7 @@ export class CommonServicesModule {
             ngModule: CommonServicesModule,
             providers: [Base64Service, BaseSelectFilterService, UtilService,
                         LocalStorageService, AuthenticationService,
-                        AppConfig, AppService, OAuthService,
+                        AppService, OAuthService,
                         DatabaseService, CommonDataService, NetworkService, NotificationService,
                         TopicUpstreamService, TopicMessagingService,
                         LogViewerService, LocalFileStorageService, JSONWebTokenService,

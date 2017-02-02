@@ -1,15 +1,16 @@
 import {Injectable} from "@angular/core";
 import {File, RemoveResult, FileEntry} from 'ionic-native';
+import {AppConfigConstants} from "../constants/app-config.constants";
 
 declare var cordova: any;
-const FILE_NAME = "client.log"
+const FILE_NAME = AppConfigConstants.clientLogFileName;
 
 @Injectable()
 export class LocalFileStorageService {
     private serviceName = "LocalFileStorageService";
 
     constructor() {
-        console.debug(`${this.serviceName} - Start`);
+        console.debug(`Debug: ${this.serviceName} - Start`);
     }
 
     public writeToFile(data: string) {

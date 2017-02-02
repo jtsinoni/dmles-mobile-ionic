@@ -10,6 +10,7 @@ export class ApiService {
     private apiServiceName: string = "Api Service";
 
     constructor(private http: Http, public log: LoggerService, protected Authentication: AuthenticationService, private App: AppService, private managerName: string) {
+        this.log.debug(`${this.apiServiceName} - Start`);
     }
 
     private determineUrl(action: string) {

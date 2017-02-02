@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, Input} from "@angular/core";
 import {LogViewerService} from "../../../services/log-viewer.service";
 import {UtilService} from "../../../common/services/util.service";
 
@@ -7,24 +7,25 @@ import {UtilService} from "../../../common/services/util.service";
     templateUrl: './header-page.component.html',
 })
 
-export class HeaderPageComponent implements OnInit {
+export class HeaderPageComponent {
 
     @Input()
     public title: string;
-
-    @Input()
-    public isMobility: boolean;
 
     constructor(private logViewerService: LogViewerService,
                 private utilService: UtilService) {
     }
 
-    ngOnInit(): void {
-        this.isMobility = this.utilService.isMobility();
-    }
-
     public viewLogs() {
         this.logViewerService.presentModal();
+    }
+
+    public showLogButton(): boolean {
+        if(this.utilService.isProd()) {
+            return false;
+        }
+
+        return (this.utilService.isMobility()) ? true : false;
     }
 
 }

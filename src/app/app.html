@@ -11,6 +11,10 @@
   </ion-header>
   <ion-content>
     <ion-list>
+      <button menuClose ion-item icon-left color="primary" (click)="goToHome()">
+        <ion-icon name="home"></ion-icon>
+        Home       
+      </button>
       <button menuClose ion-item icon-left color="{{area.color}}" *ngFor="let area of areas" (click)="goTo(area)">
         <ion-icon name="{{area.iconName}}"></ion-icon>
          {{area.title}}

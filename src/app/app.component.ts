@@ -58,4 +58,8 @@ export class DMLESMobile {
     goTo(area: AreaModel) {
         this.nav.push(area.component);
     }
+
+    goToHome() {
+        this.nav.popAll();
+    }
 }

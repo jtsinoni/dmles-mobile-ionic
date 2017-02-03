@@ -1,21 +1,14 @@
 import { DMLESMobile }                      from '../app/app.component';
-import {
-    MenuMock, NavMock, PlatformMock, NetworkServiceMock, LoggerServiceMock,
-    AuthenticationServiceMock
-} from './mocks';
+import {MenuMock, NavMock, PlatformMock, NetworkServiceMock, AppMock, UtilServiceMock} from './mocks';
 
 let instance: DMLESMobile = null;
 
 describe('dmles-mobile-ionic-app', () => {
 
     beforeEach(() => {
-        instance = new DMLESMobile((<any> new PlatformMock), (<any> new LoggerServiceMock),(<any> new AuthenticationServiceMock), (<any> new MenuMock), (<any> new NetworkServiceMock));
+        instance = new DMLESMobile((<any> new PlatformMock), (<any> new MenuMock), (<any> new NetworkServiceMock), (<any> new UtilServiceMock), (<any> new AppMock));
         instance['nav'] = (<any>new NavMock());
     });
-
-    // it('initialises with two possible pages', () => {
-    //   expect(instance['pages'].length).toEqual(2);
-    // });
 
     it('initialises with a root page', () => {
         expect(instance['rootPage']).not.toBe(null);
@@ -23,6 +16,10 @@ describe('dmles-mobile-ionic-app', () => {
 
     it('initialises with an app', () => {
         expect(instance['app']).not.toBe(null);
+    });
+
+    it('initialises with six possible areas', () => {
+        expect(instance['areas'].length).toEqual(6);
     });
 
     // it('opens a page', () => {

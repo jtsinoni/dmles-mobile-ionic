@@ -1,12 +1,8 @@
-/**
- * Created by johntsinonis on 11/9/16.
- */
 import { Component } from "@angular/core";
 import { ForwardDataModel } from "../../models/forward-data.model";
 import { StoreDataModel } from "../../models/store-data.model";
 import { CommonDataService } from "../../services/common-data.service";
-import { LogViewerService } from "../../services/log-viewer.service";
-import { UtilService } from "../../common/services/util.service";
+import {AppConfigConstants} from "../../constants/app-config.constants";
 
 @Component({
     templateUrl: './topic.component.html',
@@ -17,25 +13,11 @@ export class TopicComponent {
     public storeDataModel: StoreDataModel;
 
     // Default toolbar start page
-    // TODO: should be setup in a defaults file or some other persistence mechanism
-    public page: string = "start";
+    public page: string = AppConfigConstants.topicComponent.page;
 
-    //@Output()
-    public isMobility: boolean;
-
-    constructor(private commonDataService: CommonDataService,
-        private logViewerService: LogViewerService,
-        private utilService: UtilService) {
+    constructor(private commonDataService: CommonDataService) {
         this.forwardDataModel = commonDataService.forwardDataModel;
         this.storeDataModel = commonDataService.storeDataModel;
-    }
-
-    ngOnInit(): void {
-        this.isMobility = this.utilService.isMobility();      
-    }
-
-    public viewLogs() {
-        this.logViewerService.presentModal();
     }
 }
 

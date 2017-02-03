@@ -1,19 +1,17 @@
-/**
- * Created by johntsinonis on 11/8/16.
- */
 import {Injectable}    from '@angular/core';
 
 import {DataTableDatabase} from '../database/data-table.database';
 import {LoggerService} from "./logger/logger-service";
-import {AppConfig} from "../configs/app-config";
+import {AppConfigConstants} from "../constants/app-config.constants";
 
 @Injectable()
 export class DatabaseService{
     private dataDB: DataTableDatabase;
+    private serviceName = "Database Service";
 
-    constructor(private log: LoggerService,
-                private appConfig: AppConfig) {
-        this.dataDB = new DataTableDatabase(this.appConfig.indexedDatabase.name, this.log);
+    constructor(private log: LoggerService) {
+        this.log.debug(`${this.serviceName} - Start`);
+        this.dataDB = new DataTableDatabase(AppConfigConstants.indexedDatabase.name, this.log);
     }
 
     /**

@@ -5,8 +5,16 @@ import { Platform } from "ionic-angular";
 export class UtilService {
     constructor(private platform: Platform) { }
 
+    public isProd(): boolean {
+        return (IONIC_ENV_MB === 'prod')? true : false;
+    }
+
     public isMobility(): boolean {
-        return (this.platform.is('cordova')) ? true : false;
+        // checking for platform 'cordova' is not good enough, if you run ionic emulate browser,
+        // the browser emulator in this case has a cordova object.
+        return (this.platform.is('ios') ||
+                this.platform.is('android') ||
+                this.platform.is('windows')) ? true : false;
     }
 
     public generateUUID(): string {

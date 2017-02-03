@@ -1,6 +1,3 @@
-/**
- * Created by johntsinonis on 11/9/16.
- */
 import {Component, Input, OnInit} from "@angular/core";
 import {Network} from 'ionic-native';
 import {Platform} from "ionic-angular";
@@ -14,7 +11,7 @@ import {StoreDataModel} from "../../../models/store-data.model";
 import {NetworkService} from "../../../services/network.service";
 import {OAuthService} from "../../../services/oauth.service";
 import {LoggerService} from "../../../services/logger/logger-service";
-import {AppConfig} from "../../../configs/app-config";
+import {AppConfigConstants} from "../../../constants/app-config.constants";
 import {JSONWebTokenService} from "../../../services/jason-web-token.service";
 
 declare var window: any;
@@ -41,7 +38,6 @@ export class StartComponent implements OnInit {
                 public connectivityService: NetworkService,
                 private OAuthService: OAuthService,
                 private log: LoggerService,
-                private AppConfig: AppConfig,
                 private jwtService: JSONWebTokenService) {
         this.data = commonDataService.data;
         this.storeDataModel = commonDataService.storeDataModel;
@@ -86,7 +82,7 @@ export class StartComponent implements OnInit {
     public login() {
         this.platform.ready()
             .then(() => {
-                this.OAuthService.getToken(this.AppConfig.OAuth.userName)
+                this.OAuthService.getToken(AppConfigConstants.OAuth.userName)
                     .subscribe(
                         (token) => {
                             let decodedToken = this.jwtService.decodeToken(token);

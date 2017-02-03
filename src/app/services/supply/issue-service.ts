@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
-
-import { ApiService } from './api-service';
 
 import { IssueModel } from '../../models/issue.model';
-import {LoggerService} from "../logger/logger-service";
+import { LoggerService } from "../logger/logger-service";
+import { InMemoryDataService } from './in-memory-data-service';
 
 /*
   Generated class for the IssueService provider.
@@ -14,11 +11,19 @@ import {LoggerService} from "../logger/logger-service";
   for more info on providers and Angular 2 DI.
 */
 @Injectable()
-export class IssueService extends ApiService<IssueModel, string> {
+export class IssueService extends InMemoryDataService<IssueModel, string> {
 
-  constructor(public http: Http, private log: LoggerService) {
+  constructor(private log: LoggerService) {
+    super();
+    this.createData();
 
-    super(http, 'supply/issues');
+  }
+
+  private createData() {
+    this.data = [
+      { id: 'W560JL6062J011', documentNumber: 'W560JL6062J011', itemId: '00 2500 1', issueDate: new Date().toJSON(), issueState: 1, quantityIssued: 6, requestor: 'Billy' },
+      { id: 'W560JL6060J012', documentNumber: 'W560JL6060J012', itemId: '00 876 980 01', issueDate: new Date().toJSON(), issueState: 1, quantityIssued: 2, requestor: 'Ted' }
+    ];
   }
 
   getAllIssues(): Promise<Array<IssueModel>> {

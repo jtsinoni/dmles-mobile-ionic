@@ -70,7 +70,7 @@ export class SupplyItemsComponent extends Search {
   }
 
   getSupplyItems() {
-    this.supplyItemService.getAllSupplyItems().then(supplyItems => this.supplyItemList = supplyItems);
+    this.supplyItemService.getAllSupplyItems().then(supplyItems => this.supplyItemList = supplyItems);    
   }
 
   itemSelected(item) {

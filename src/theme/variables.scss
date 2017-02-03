@@ -29,7 +29,7 @@ $colors: (
   light:      #f4f4f4,
   gray:       #f0f0f0,
   dark:       #222,
-  primary-blue:       #387ef5 
+  primary-blue:       #387ef5
 );
 
 
@@ -70,4 +70,4 @@ $colors: (
 // http://ionicframework.com/docs/v2/ionicons/
 
 $ionicons-font-path: "../assets/fonts";
-@import "ionicons";
+@import "ionic.ionicons";

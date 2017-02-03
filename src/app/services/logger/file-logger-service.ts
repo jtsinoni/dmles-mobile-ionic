@@ -6,24 +6,32 @@ import {LocalFileStorageService} from "../local-file-storage.service";
 import {ILogger} from "./ilogger";
 import {Options} from "./options";
 import {LoggerService} from "./logger-service";
+import {UtilService} from "../../common/services/util.service";
 
 @Injectable()
 export class FileLoggerService extends LoggerService implements ILogger  {
     private serviceName = "File Logger Service";
+    private isMobility: boolean = false;
+    private isProd: boolean = false;
 
     constructor(private localFileStorageService: LocalFileStorageService,
                 private platform: Platform,
+                private util: UtilService,
                 @Optional() options?: Options) {
         super(options);
+        this.init();
     }
 
-    ngOnInit(): void {
-        this.log(`${this.serviceName} - Start`);
+    private init() {
+        this.debug(`${this.serviceName} - Start`);
+
+        this.isMobility = this.util.isMobility();
+        this.isProd = this.util.isProd();
     }
 
     private writeFile(message: string) {
         // Check if we are running on a 'cordova' (device), otherwise write to console?
-        if (this.platform.is('cordova')) {
+        if (this.isMobility && !this.isProd) {
             this.localFileStorageService.writeToFile(message + "<br />");
         }
     }

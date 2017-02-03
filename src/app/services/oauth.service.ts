@@ -10,7 +10,7 @@ import {Base64Service} from "../common/services/base64.service";
 import {Observable} from "rxjs";
 import {LocalStorageService} from "./local-storage.service";
 import {LoggerService} from "./logger/logger-service";
-import {AppConfig} from "../configs/app-config";
+import {AppConfigConstants} from "../constants/app-config.constants";
 import {JSONWebTokenService} from "./jason-web-token.service";
 
 declare var window: any;
@@ -18,13 +18,12 @@ declare var window: any;
 @Injectable()
 export class OAuthService extends ApiService {
     public currentUser: CurrentUserProfile;
-    public serviceName: string = "OAuth Service";
+    private serviceName: string = "OAuth Service";
 
     constructor(http: Http,
                 public log: LoggerService,
                 protected authenticationService: AuthenticationService,
                 private app: AppService,
-                private AppConfig: AppConfig,
                 private Base64Service: Base64Service,
                 private localStorageService: LocalStorageService,
                 private jwtService: JSONWebTokenService) {
@@ -34,7 +33,7 @@ export class OAuthService extends ApiService {
     }
 
     private apiGetToken(dn:string): Observable<any> {
-        let encodedDn = this.Base64Service.b64EncodeUnicode(`${dn}:${this.AppConfig.OAuth.password}`);
+        let encodedDn = this.Base64Service.b64EncodeUnicode(`${dn}:${AppConfigConstants.OAuth.password}`);
         return this.getTokenViaOAuth("token", encodedDn);
     }
 

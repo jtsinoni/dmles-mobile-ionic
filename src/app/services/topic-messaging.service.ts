@@ -9,6 +9,8 @@ import {LoggerService} from "./logger/logger-service";
 
 @Injectable()
 export class TopicMessagingService {
+    private serviceName: string = "TopicMessaging Service";
+
     public client: any;
     private static onServiceAvailableSubject: Subject<any> = new Subject();
     private static onTryToConnectSubject: Subject<any> = new Subject();
@@ -19,6 +21,8 @@ export class TopicMessagingService {
 
     constructor(private commonDataService: CommonDataService,
                 private log: LoggerService) {
+        this.log.debug(`${this.serviceName} - Start`);
+
         this.dataModel = commonDataService.data;
         this.messagingModel = commonDataService.messagingModel;
     }

@@ -1,11 +1,10 @@
-import {Injectable} from "@angular/core";
-
-@Injectable()
-export class AppConfig {
+export class AppConfigConstants {
     constructor() {
     }
 
-    public apiHosts: any = {
+    public static clientLogFileName: string = "client.log";
+
+    public static apiHosts: any = {
         //"btBaseUrl"   : "http://jw8cui04:8080/"  // Test
         //"btBaseUrl"   : "http://140.139.224.44:8080/"  // Test
 
@@ -19,19 +18,23 @@ export class AppConfig {
     };
 
     //TODO: get from UserForm, derived credentials, etc
-    public OAuth: any = {
+    public static OAuth: any = {
         userName:"user.admin.123",
         password:"password"
     }
 
-    public indexedDatabase: any = {
+    public static indexedDatabase: any = {
         name: "dmles-mobile-dt"
     }
 
-    public messagingServer: any = {
+    public static messagingServer: any = {
         host:"localhost",
         port:"61616",
         topic:"dmles-mobile",
         reconnectAttempts:10
+    }
+
+    public static topicComponent: any = {
+        page:"start"
     }
 }

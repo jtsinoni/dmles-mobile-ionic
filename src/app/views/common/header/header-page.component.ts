@@ -1,31 +1,39 @@
-import {Component, Input} from "@angular/core";
-import {LogViewerService} from "../../../services/log-viewer.service";
-import {UtilService} from "../../../common/services/util.service";
+import { Component, Input, OnInit } from "@angular/core";
+//import { LogViewerService } from "../../../services/log-viewer.service";
+import { UtilService } from "../../../common/services/util.service";
+import { PopoverController } from 'ionic-angular';
+import {AppMenuComponent} from './app-menu.component';
+
+
 
 @Component({
     selector: 'mb-header-page',
     templateUrl: './header-page.component.html',
 })
 
-export class HeaderPageComponent {
+export class HeaderPageComponent implements OnInit {
 
     @Input()
     public title: string;
 
-    constructor(private logViewerService: LogViewerService,
-                private utilService: UtilService) {
+    @Input()
+    public isMobility: boolean;
+
+    constructor(private utilService: UtilService, private popoverCtrl: PopoverController) {
     }
 
-    public viewLogs() {
-        this.logViewerService.presentModal();
+    ngOnInit(): void {
+        this.isMobility = this.utilService.isMobility();
     }
 
-    public showLogButton(): boolean {
-        if(this.utilService.isProd()) {
-            return false;
-        }
+    // public viewLogs() {
+    //     this.logViewerService.presentModal();
+    // }
 
-        return (this.utilService.isMobility()) ? true : false;
+    showSettingsAreas() {
+        let popover = this.popoverCtrl.create(AppMenuComponent);
+        popover.present(AppMenuComponent);
     }
+    
 
 }

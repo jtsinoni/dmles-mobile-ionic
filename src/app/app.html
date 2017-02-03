@@ -1,19 +1,28 @@
-<ion-menu [content]="content">
-
+<ion-menu id="mainMenu" [content]="content" persistent="true">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Equipment</ion-title>
+      <ion-title>LogiCole Mobile</ion-title>
+      <ion-buttons end>
+        <button ion-button menuClose>
+        <ion-icon name="close"></ion-icon>
+      </button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
-
   <ion-content>
     <ion-list>
-      <button ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        {{p.title}}
+      <button menuClose ion-item icon-left color="primary" (click)="goToHome()">
+        <ion-icon name="home"></ion-icon>
+        Home       
+      </button>
+      <button menuClose ion-item icon-left color="{{area.color}}" *ngFor="let area of areas" (click)="goTo(area)">
+        <ion-icon name="{{area.iconName}}"></ion-icon>
+         {{area.title}}
       </button>
     </ion-list>
   </ion-content>
 
 </ion-menu>
+
 
 <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

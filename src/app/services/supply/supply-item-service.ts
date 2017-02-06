@@ -46,9 +46,8 @@ export class SupplyItemService extends InMemoryDataService<SupplyItemModel, stri
   }
 
   getSupplyItem(id: string): Promise<SupplyItemModel> {
+    this.log.debug('getting itemId: ' + id);
     return this.getOne(id);
   }
-
-
 
 }

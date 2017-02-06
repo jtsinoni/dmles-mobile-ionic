@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-// import { Http } from '@angular/http';
-// import 'rxjs/add/operator/map';
 
-import { ProviderConstants } from './provider-constants';
 import { OrderModel } from "../../models/order.model";
-import {LoggerService} from "../logger/logger-service";
+import { LoggerService } from "../logger/logger-service";
+
 import {InMemoryDataService} from './in-memory-data-service';
 
 /*
@@ -44,7 +42,7 @@ export class OrderService extends InMemoryDataService<OrderModel, string> {
   }
 
   deleteOrder(id: string) {
-    this.delete(id);;
+    this.delete(id);
   }
 
   // updateOrder(order: OrderModel): Promise<OrderModel> {

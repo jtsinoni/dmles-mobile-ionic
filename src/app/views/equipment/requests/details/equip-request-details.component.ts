@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 
-import { NavController, NavParams } from 'ionic-angular';
+import {NavController, NavParams, ModalController} from 'ionic-angular';
 import {LoggerService} from "../../../../services/logger/logger-service";
+import {EditEquipmentRequestDetailsComponent} from "../edit/edit-equip-request-details.component";
 
 
 @Component({
@@ -13,7 +14,8 @@ export class EquipmentRequestDetailsComponent {
 
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
-                private log: LoggerService) {
+                private log: LoggerService,
+                private modalController: ModalController) {
         // If we navigated to this page, we will have an item available as a nav param
         this.selectedItem = navParams.get('item');
     }
@@ -26,6 +28,9 @@ export class EquipmentRequestDetailsComponent {
         if(event) {
             event.stopPropagation();
         }
+
+        let modal = this.modalController.create(EditEquipmentRequestDetailsComponent, {selectedItem: this.selectedItem});
+        modal.present();
 
         this.log.debug(`EquipmentRequestDetailsComponent:editEquipmentDetails()`);
     }

@@ -6,7 +6,7 @@
             <ion-row>
                 <ion-col item-left>Equipment Details</ion-col>
                 <ion-col item-right text-right>
-                    <button (click)="editEquipmentDetails($event); $event.stopPropagation();" ion-button color="primary" clear small>
+                    <button (click)="editEquipmentDetails($event);" ion-button color="primary" clear small>
                         <ion-icon name="create"></ion-icon>
                     </button>
                 </ion-col>
@@ -16,25 +16,25 @@
         <ion-card-content class="ripple">
             <ion-row>Request Title: {{selectedItem.requestInformation.requestTitle}}</ion-row>
             <ion-row>Request Number: {{selectedItem.requestInformation.requestNumber}}</ion-row>
-            <ion-row>Total Price:  <span *ngIf="selectedItem.totalRequisitionCost">{{selectedItem.totalRequisitionCost}}</span></ion-row>
+            <ion-row>Total Price:  <span *ngIf="selectedItem.totalPrice">{{selectedItem.totalPrice}}</span></ion-row>
             <ion-row>Critical Code: {{selectedItem.requestInformation.criticalCode}}</ion-row>
         </ion-card-content>
         <mb-ion-row></mb-ion-row>
     </ion-card>
 
-    <ion-card>
+    <ion-card *ngIf="selectedItem.requestInformation.requestReason">
         <ion-card-header>Request Reason</ion-card-header>
         <ion-card-content class="ripple">
-            <ion-row *ngIf="selectedItem.requestInformation.requestReason">Code: {{selectedItem.requestInformation.requestReason.code}} <span *ngIf="selectedItem.requestInformation.customer">{{selectedItem.requestInformation.customer.custodianLastName}}</span></ion-row>
-            <ion-row *ngIf="selectedItem.requestInformation.requestReason">Mask: {{selectedItem.requestInformation.requestReason.mask}}</ion-row>
-            <ion-row *ngIf="selectedItem.requestInformation.requestReason">Name: {{selectedItem.requestInformation.requestReason.name}}</ion-row>
+            <ion-row>Code: {{selectedItem.requestInformation.requestReason.code}} <span *ngIf="selectedItem.requestInformation.customer">{{selectedItem.requestInformation.customer.custodianLastName}}</span></ion-row>
+            <ion-row>Mask: {{selectedItem.requestInformation.requestReason.mask}}</ion-row>
+            <ion-row>Name: {{selectedItem.requestInformation.requestReason.name}}</ion-row>
         </ion-card-content>
         <mb-ion-row></mb-ion-row>
     </ion-card>
 
-    <ion-card>
+    <ion-card *ngIf="selectedItem.requestInformation.submitter">
         <ion-card-header>Submitter</ion-card-header>
-        <ion-card-content class="ripple" *ngIf="selectedItem.requestInformation.submitter">
+        <ion-card-content class="ripple" >
             <ion-row>Email: {{selectedItem.requestInformation.submitter.email}}</ion-row>
             <ion-row>DODAAC: {{selectedItem.requestInformation.submitter.dodaac}}</ion-row>
             <ion-row>Service Code: {{selectedItem.requestInformation.submitter.serviceCode}}</ion-row>
@@ -53,11 +53,11 @@
         <mb-ion-row></mb-ion-row>
     </ion-card>
 
-    <ion-card>
+    <ion-card *ngIf="selectedItem.requestInformation.equipment">
         <ion-card-header>Equipment</ion-card-header>
         <ion-card-content class="ripple">
-            <ion-row>Description: <span *ngIf="selectedItem.requestInformation.equipment">{{selectedItem.requestInformation.equipment.description}}</span>  <span *ngIf="selectedItem.requestInformation.customer">{{selectedItem.requestInformation.customer.custodianLastName}}</span></ion-row>
-            <ion-row>Manufacturer: <span *ngIf="selectedItem.requestInformation.equipment">{{selectedItem.requestInformation.equipment.manufacturer}}</span></ion-row>
+            <ion-row>Description: {{selectedItem.requestInformation.equipment.description}}  <span *ngIf="selectedItem.requestInformation.customer">{{selectedItem.requestInformation.customer.custodianLastName}}</span></ion-row>
+            <ion-row>Manufacturer: {{selectedItem.requestInformation.equipment.manufacturer}}</ion-row>
         </ion-card-content>
         <mb-ion-row></mb-ion-row>
     </ion-card>

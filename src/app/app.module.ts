@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {HttpModule} from '@angular/http';
+import {FormsModule} from "@angular/forms";
 import {IonicApp, IonicModule} from 'ionic-angular';
 import {DMLESMobile} from './app.component';
 
@@ -25,6 +26,7 @@ import {LoggerService} from "./services/logger/logger-service";
 import {FileLoggerService} from "./services/logger/file-logger-service";
 import {SecurityModule} from "./views/security/security.module";
 
+
 @NgModule({
     declarations: [
         DMLESMobile,
@@ -44,7 +46,8 @@ import {SecurityModule} from "./views/security/security.module";
         ServicesModule,
         LogViewerModule,
         CommonDirectivesModule,
-        SecurityModule
+        SecurityModule,
+        FormsModule,
     ],
     bootstrap: [IonicApp],
     entryComponents: [

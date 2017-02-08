@@ -31,8 +31,8 @@ export class InMemoryDataService implements InMemoryDbService {
     ];
 
     let equipmentRequests = [
-      { id: 1125, requestNumber: 1125, requestTitle: 'Test1', quantityRequested: 1, totalPrice: 100.00, submitter: 'LISA MORALES', organization: 'W33DME', customer: 'Y06AAF', currentStatus: 'Submitted', level: 'X', updatedDate: '2016-12-13 22:31:28.120Z' },
-      { id: 1155, requestNumber: 1155, requestTitle: 'Test2', quantityRequested: 10, totalPrice: 5000.00, submitter: 'LISA MORALES', organization: 'W33DME', customer: 'Y06AAF', currentStatus: 'Submitted', level: 'X', updatedDate: '2016-12-14 14:36:42.482Z' }
+      { id: 1125, requestNumber: 1125, requestTitle: 'Test1', quantityRequested: 1, totalRequisitionCost: 100.00, submitter: 'LISA MORALES', organization: 'W33DME', customer: 'Y06AAF', currentStatus: 'Submitted', level: 'X', updatedDate: '2016-12-13 22:31:28.120Z' },
+      { id: 1155, requestNumber: 1155, requestTitle: 'Test2', quantityRequested: 10, totalRequisitionCost: 5000.00, submitter: 'LISA MORALES', organization: 'W33DME', customer: 'Y06AAF', currentStatus: 'Submitted', level: 'X', updatedDate: '2016-12-14 14:36:42.482Z' }
 
     ];
 

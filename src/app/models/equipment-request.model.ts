@@ -1,10 +1,10 @@
 import { DataItemModel } from './data-item.model';
 
-export class EquipmentRequestModel extends DataItemModel<number> {  
+export class EquipmentRequestModel extends DataItemModel<number> {
     requestNumber: number;
     requestTitle: string;
     quantityRequested: number;
-    totalPrice: number;
+    totalRequisitionCost: number;
     submitter: string;
     organization: string;
     customer: string;

@@ -16,7 +16,7 @@
         <ion-card-content class="ripple">
             <ion-row>Request Title: {{selectedItem.requestInformation.requestTitle}}</ion-row>
             <ion-row>Request Number: {{selectedItem.requestInformation.requestNumber}}</ion-row>
-            <ion-row>Total Price:  <span *ngIf="selectedItem.totalPrice">{{selectedItem.totalPrice}}</span></ion-row>
+            <ion-row>Total Price:  <span *ngIf="selectedItem.totalRequisitionCost">{{selectedItem.totalRequisitionCost}}</span></ion-row>
             <ion-row>Critical Code: {{selectedItem.requestInformation.criticalCode}}</ion-row>
         </ion-card-content>
         <mb-ion-row></mb-ion-row>

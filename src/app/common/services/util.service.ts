@@ -3,7 +3,8 @@ import { Platform } from "ionic-angular";
 
 @Injectable()
 export class UtilService {
-    constructor(private platform: Platform) { }
+    constructor(private platform: Platform) {
+    }
 
     public deepCopy(oldObj: any): any {
         let newObj = oldObj;

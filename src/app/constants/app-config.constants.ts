@@ -31,7 +31,8 @@ export class AppConfigConstants {
         host:"localhost",
         port:"61616",
         topic:"dmles-mobile",
-        reconnectAttempts:10
+        reconnectAttempts:10,
+        connect:false
     }
 
     public static topicComponent: any = {

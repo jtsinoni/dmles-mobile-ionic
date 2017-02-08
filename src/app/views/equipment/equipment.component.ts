@@ -23,7 +23,6 @@ export class EquipmentComponent {
     setAreas() {
         this.areas.push(new AreaModel('Equipment Requests', 'document', EquipmentRequestsComponent, 'light'));
         this.areas.push(new AreaModel('Equipment Records', 'cog', EquipmentRecordsComponent, 'gray'));
-        //this.areas.push(new AreaModel('Equipment Search MEC', 'cog', InputTextComponent, 'gray'));
     }
 
     goTo(area: AreaModel) {
@@ -33,8 +32,7 @@ export class EquipmentComponent {
             let prefix = "searchValue=";
             let aggregations = "(deleteInd:N)";
 
-            //mec...was: this.navCtrl.push(area.component, {searchValue: searchValue, aggregations: aggregations, pushNav: area.component});
-            //mec... redirection through search.component to area.component, so, NOW area.component is passed to the callee, which will open that page (with the collected search criteria)
+            // mec: redirection through search.component to area.component, so, NOW area.component is passed to the callee, which will open that page (with the collected search criteria)
             this.navCtrl.push(InputTextComponent, {
                 pushNav: area.component,
                 navTitle: title,

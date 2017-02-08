@@ -75,6 +75,7 @@
     <preference name="SplashScreenBackgroundColor" value="0xFFFFFFFF" />
     <preference name="SplashScreen" value="screen" />
     <preference name="loadUrlTimeoutValue" value="700000" />
+    <preference name="KeyboardDisplayRequiresUserAction" value="false" />
     <feature name="StatusBar">
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
@@ -92,4 +93,5 @@
     <plugin name="cordova-plugin-file" spec="~4.3.1" />
     <plugin name="cordova-plugin-inappbrowser" spec="~1.6.1" />
     <plugin name="de.appplant.cordova.plugin.local-notification" spec="https://github.com/katzer/cordova-plugin-local-notifications#ios10" />
+    <plugin name="phonegap-plugin-barcodescanner" spec="~6.0.5" />
 </widget>

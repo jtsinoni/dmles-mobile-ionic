@@ -48,7 +48,8 @@ export class InputTextComponent extends Search {
 
     public saveTheData(value: string) {
         let searchValue = this.prefix + "'" + value + "'";
-        this.log.info('You entered (' + value + ', ' + searchValue + ', ' + this.aggregations + '), lets call: (' + this.navTitle + ', hintText=' + this.hintText + ')');
+        let message = 'You entered (' + value + ', ' + searchValue + ', ' + this.aggregations + '), lets call: (' + this.navTitle + ', hintText=' + this.hintText + ')';
+        this.addLogDebugMessage(message);
 
         // MAGIC - we receive the destination page as a parm that this page will "push", or navigate too, making this page a 'pass-thru' page acquiring user input
         this.navCtrl.push(this.pushNav, {
@@ -73,7 +74,7 @@ export class InputTextComponent extends Search {
                         }
                         else {
                             let message = 'Barcode Scan request Cancelled';
-                            this.addLogMessage(message);
+                            this.addLogDebugMessage(message);
                         }
                     })
                     .catch((err) => {
@@ -91,13 +92,13 @@ export class InputTextComponent extends Search {
 
     scanDetails(details) {
         let message = 'You scanned (' + details.text + '), \nFormat = (' + details.format + ')';
-        this.addLogMessage(message);
+        this.addLogDebugMessage(message);
         //alert('mec...bag this alert\r\n' + message);
         this.saveTheData(details.text);
     }
 
-    private addLogMessage(message: string) {
-        this.log.info(message);
+    private addLogDebugMessage(message: string) {
+        this.log.debug(message);
     }
 
     private logErrorMessage(error: string) {

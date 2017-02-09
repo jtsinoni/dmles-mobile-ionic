@@ -21,7 +21,7 @@ export class EditEquipmentRequestDetailsComponent {
         this.log.debug(`Updating Equipment Request ... ${JSON.stringify(form)}`);
 
         this.selectedItem.requestInformation.requestNumber = form.requestNumber;
-        this.selectedItem.totalPrice = form.totalPrice;
+        this.selectedItem.totalRequisitionCost = form.totalRequisitionCost;
         this.selectedItem.requestInformation.criticalCode = form.criticalCode;
 
         this.upstreamService.sendData(this.selectedItem)

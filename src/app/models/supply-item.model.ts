@@ -7,6 +7,7 @@ export class SupplyItemModel extends DataItemModel<string> {
     public unitOfPurchasePrice: number;
     public onHandBalance: number;
     id:string = this.itemId; 
-    imgUrl: string;
+    imageUrl: string;
+    isStocked:boolean;
 
 }

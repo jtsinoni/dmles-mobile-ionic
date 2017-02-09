@@ -1,9 +1,14 @@
+<!--<mb-header-page remove-parent-element [title]="'Login'"></mb-header-page>-->
 <ion-header>
-    <ion-toolbar>
-        <ion-title>LogiCole Mobile</ion-title>
-    </ion-toolbar>
+    <ion-navbar>
+        <ion-title item-center text-wrap>Login</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="cancel()">
+      <ion-icon name="close-circle" left ></ion-icon>
+     </button>
+        </ion-buttons>
+    </ion-navbar>
 </ion-header>
-
 <ion-content>
     <ion-card>
         <ion-card-content>
@@ -13,8 +18,7 @@
 
     <ion-list>
         <ion-item>
-            <ion-input type="text" #input placeholder="User DN" [(ngModel)]="loginModel.username" name="loginInput"
-                       id="loginInputField"></ion-input>
+            <ion-input type="text" #input placeholder="User DN" [(ngModel)]="loginModel.username" name="loginInput" id="loginInputField"></ion-input>
         </ion-item>
         <!--<ion-item>
           <ion-input type="password" placeholder="Password">{{user.password}}</ion-input>

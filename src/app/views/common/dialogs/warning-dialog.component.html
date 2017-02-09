@@ -3,14 +3,13 @@
         Attention
     </ion-card-header>
     <ion-card-content>
-        <p>The server encountered the following error:
+        <p>Please review the following error:
             <span>{{text}}</span>
         </p>
-        <p>Would you like to work off-line in disconnected mode?</p>
+        <p>{{message}}</p>
         <ion-grid>
             <ion-row>
-                <ion-col width-50><button ion-button block (click)="cancel()">No</button></ion-col>
-                <ion-col width-50><button ion-button block (click)="continue()">Yes</button></ion-col>
+                <ion-col width-100><button ion-button block (click)="continue()">Ok</button></ion-col>
             </ion-row>
         </ion-grid>
     </ion-card-content>

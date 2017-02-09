@@ -1,0 +1,20 @@
+<mb-header-page remove-parent-element [title]="'Settings'"></mb-header-page>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      Group 1
+    </ion-list-header>
+
+    <ion-item>
+      <ion-label>Enable Scanner</ion-label>
+      <ion-toggle value="enableScanner" checked="true"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Default Server</ion-label>
+      <ion-input name="serverAddress" type="text"  spellcheck="false" autocapitalize="off">
+      </ion-input>
+    </ion-item>
+  </ion-list>  
+ 
+</ion-content>

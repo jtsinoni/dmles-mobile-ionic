@@ -45,6 +45,12 @@ export class NetworkServiceMock {
     }
 }
 
+export class AuthServiceMock {
+    public checkConnection(): boolean {
+        return true;
+    }
+}
+
 export class UpstreamServiceMock {
     sendData(param: any): Promise<any> {
         return Promise.resolve();
@@ -148,6 +154,13 @@ export class MenuControllerMock {
   }
 }
 
+export class PopoverControllerMock {
+  public close(): any {
+    return new Promise((resolve: Function) => {
+      resolve();
+    });
+  }
+}
 
 export class ActionSheetControllerMock {
     public close(): any {
@@ -177,3 +190,12 @@ export class AppMock {
     });
   }
 }
+
+export class LoginModalServiceMock {
+  public close(): any {
+    return new Promise((resolve: Function) => {
+      resolve();
+    });
+  }
+}
+

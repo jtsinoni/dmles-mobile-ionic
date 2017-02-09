@@ -79,7 +79,7 @@ export class TopicMessagingService {
              */
             this.client.stream.socket.onerror = (event) => {
                 if (this.client.stream.socket.readyState == 1) {
-                    this.log.debug(`ws normal error =>  ${event.type}`);
+                    this.log.debug(`WebSocket normal error =>  ${event.type}`);
                 }
             }
 
@@ -89,9 +89,9 @@ export class TopicMessagingService {
              */
             this.client.stream.socket.onclose = (event) => {
                 if (event.code == 3001) {
-                    this.log.debug(`ws closed => ${event.code}`);
+                    this.log.debug(`WebSocket closed => ${event.code}`);
                 } else {
-                    this.log.debug(`ws connection error code => ${event.code}`);
+                    this.log.debug(`WebSocket connection error code => ${event.code}`);
                 }
                 this.client.stream.socket = null;
             }
@@ -118,7 +118,7 @@ export class TopicMessagingService {
                 if(tries == this.dataModel.reconnectAttempts) {
                     this.disconnect();
                     let message = `Stopped retrying to get a connection after ${this.dataModel.reconnectAttempts} attempts`;
-                    this.log.info(message);
+                    this.log.log(message);
 
                     TopicMessagingService.onTryToConnectSubject.next(true);
                     TopicMessagingService.onServiceAvailableSubject.next(false);

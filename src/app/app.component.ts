@@ -24,11 +24,8 @@ export class DMLESMobile implements OnInit {
     rootPage: any = LoginComponent;
     areas = new Array<AreaModel>();
 
-    isMobility: boolean = false;
-
     constructor(public platform: Platform,
                 menu: MenuController,
-                // private networkService: NetworkService,
                 private utilService: UtilService,
                 private app: App,
                 private upstreamService: UpstreamService,
@@ -36,11 +33,8 @@ export class DMLESMobile implements OnInit {
     }
 
     ngOnInit(): void {
-        this.isMobility = this.utilService.isMobility();
         this.initializeApp();
-        this.setAreas();
     }
-
 
     setAreas() {
         this.areas.push(new AreaModel('Messaging', 'git-network', TopicComponent, 'light'));
@@ -56,10 +50,13 @@ export class DMLESMobile implements OnInit {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
-            if (this.isMobility) {
+
+            if (this.utilService.isMobility()) {
                 // todo always show this
                 this.areas.push(new AreaModel('Logs', 'logo-android', LogsModalComponent, 'light'));
             }
+
+            this.setAreas();
 
             // Attempt to connect to messaging server if connect flag is true
             if(AppConfigConstants.messagingServer.connect) {

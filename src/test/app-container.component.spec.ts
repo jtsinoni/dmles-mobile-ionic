@@ -6,10 +6,9 @@ let instance: AppContainerComponent = null;
 describe('dmles-mobile-ionic-app-container', () => {
 
   beforeEach(() => {
-    instance = new AppContainerComponent((<any> new NavMock), 
-    (<any> new AlertControllerMock), 
-    (<any> new LoggerServiceMock), 
-    //(<any> new UpstreamServiceMock),
+    instance = new AppContainerComponent((<any> new NavMock),
+    (<any> new AlertControllerMock),
+    (<any> new LoggerServiceMock),
      (<any> new AppMock), (<any> new MenuControllerMock));
     instance['nav'] = (<any>new NavMock());
   });
@@ -17,6 +16,6 @@ describe('dmles-mobile-ionic-app-container', () => {
   // it('initialises with six possible areas', () => {
   //   expect(instance['areas'].length).toEqual(6);
   // });
-  
+
 
 });

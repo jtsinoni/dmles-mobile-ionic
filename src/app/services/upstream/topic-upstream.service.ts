@@ -76,8 +76,6 @@ export class TopicUpstreamService extends UpstreamService {
     }
 
     public pushLocalChanges(): Promise<any> {
-        //let self = this;
-        //return this.clientConnection()
         return Promise.resolve(this.serviceAvailable)
             .then((connected) => {
                 if(!connected) {
@@ -99,7 +97,7 @@ export class TopicUpstreamService extends UpstreamService {
                 if(reason.message === "NoItems") {
                     this.log.debug("The are no items in local storage");
                 } else if(reason.message === "NotConnected") {
-                    this.log.warn("Client not connected");
+                    this.log.warn("Client not connected to Messaging Server");
                 } else {
                     this.log.error(reason);
                 }

@@ -6,6 +6,7 @@ import {LoggerService} from "../../services/logger/logger-service";
 import {AreaModel} from '../../models/area.model';
 import {EquipmentRecordsComponent} from "./records/equipment-records.component";
 import {EquipmentRequestsComponent} from "./requests/equipment-requests.component";
+import {InputTextComponent} from "../common/input/input-text.component"; //mec... Added search criteria screen
 
 @Component({
     selector: 'equipment-view',
@@ -26,10 +27,19 @@ export class EquipmentComponent {
 
     goTo(area: AreaModel) {
         if (area.title == 'Equipment Records') {
-            let enteredValue = "123"; //mec...yoyo... TODO bag HARDCODE...
-            let searchValue = "searchValue='" + enteredValue + "'";
+            let title = 'Search';
+            let hintText = 'Equipment Record Search';
+            let prefix = "searchValue=";
             let aggregations = "(deleteInd:N)";
-            this.navCtrl.push(area.component, {searchValue: searchValue, aggregations: aggregations});
+
+            // mec: redirection through search.component to area.component, so, NOW area.component is passed to the callee, which will open that page (with the collected search criteria)
+            this.navCtrl.push(InputTextComponent, {
+                pushNav: area.component,
+                navTitle: title,
+                hintText: hintText,
+                prefix: prefix,
+                aggregations: aggregations
+            });
         }
         else {
             this.navCtrl.push(area.component);

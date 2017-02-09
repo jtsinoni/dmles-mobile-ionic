@@ -1,0 +1,35 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Editing {{selectedItem.requestInformation.requestTitle}}</ion-title>
+        <ion-buttons start>
+            <button ion-button form="requestForm" [disabled]="!requestForm.form.valid">
+                <span ion-text color="primary">Update</span>
+            </button>
+        </ion-buttons>
+        <ion-buttons end>
+            <button ion-button (click)="dismiss();">
+                <span ion-text color="primary">Cancel</span>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <form (ngSubmit)="update(requestForm.value)" #requestForm="ngForm" id="requestForm">
+        <ion-item>
+            <ion-label>Request Number</ion-label>
+            <ion-input type="text" [ngModel]="selectedItem.requestInformation.requestNumber" name="requestNumber" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>Total Price</ion-label>
+            <ion-input type="text" [ngModel]="selectedItem.totalPrice" name="totalPrice" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>Critical Code</ion-label>
+            <ion-input type="text" [ngModel]="selectedItem.requestInformation.criticalCode" name="criticalCode" required></ion-input>
+        </ion-item>
+
+    </form>
+</ion-content>

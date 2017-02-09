@@ -142,11 +142,12 @@ export class TopicUpstreamService extends UpstreamService {
     /**
      * Sends data to local cache
      * @param message
-     * @returns {Promise<U|R>|Observable<R>|Promise<undefined|R>}
+     * @returns Promise<number>
      */
     private sendDataLocal(message: any): Promise<number> {
         return this.databaseService.add(message)
             .then((id)=> {
+                this.log.debug(`Added => ${message} with id => ${id} to IndexedDB`)
                 return id;
             })
             .catch((error) => {

@@ -73,6 +73,29 @@ export class TopicMessagingService {
                 resolve(this.client);
             });
 
+            /**
+             * This works in Chrome browser
+             * @param event
+             */
+            this.client.stream.socket.onerror = (event) => {
+                if (this.client.stream.socket.readyState == 1) {
+                    this.log.debug(`ws normal error =>  ${event.type}`);
+                }
+            }
+
+            /**
+             * This works in Safari iOS
+             * @param event
+             */
+            this.client.stream.socket.onclose = (event) => {
+                if (event.code == 3001) {
+                    this.log.debug(`ws closed => ${event.code}`);
+                } else {
+                    this.log.debug(`ws connection error code => ${event.code}`);
+                }
+                this.client.stream.socket = null;
+            }
+
 
             //stop trying to reconnect after 10 (default) attempts
             //TODO: Use RXJS interval Observables

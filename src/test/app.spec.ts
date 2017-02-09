@@ -1,20 +1,24 @@
-import { DMLESMobile }                      from '../app/app.component';
-import {NavMock, PlatformMock, 
-  AppMock, UtilServiceMock, 
-  AuthServiceMock, LoggerServiceMock, 
-  LoginModalServiceMock} from './mocks';
+import { DMLESMobile } from '../app/app.component';
+import {
+  NavMock, PlatformMock, UtilServiceMock,
+  AppMock, AuthServiceMock, LoginModalServiceMock,
+  UpstreamServiceMock, LoggerServiceMock,
+} from './mocks';
+
 
 let instance: DMLESMobile = null;
-
 describe('dmles-mobile-ionic-app', () => {
 
   beforeEach(() => {
     instance = new DMLESMobile(
-      (<any> new UtilServiceMock),
-      (<any> new PlatformMock), 
-    (<any> new UtilServiceMock), (<any> new AppMock), 
-    (<any> new AuthServiceMock), (<any> new LoginModalServiceMock),
-    (<any> new LoggerServiceMock));
+      (<any>new PlatformMock),
+      (<any>new UtilServiceMock),
+      (<any>new AppMock),
+      (<any>new AuthServiceMock),
+      (<any>new LoginModalServiceMock),
+      (<any>new UpstreamServiceMock),
+      (<any>new LoggerServiceMock));
+
     instance['nav'] = (<any>new NavMock());
   });
 
@@ -35,6 +39,6 @@ describe('dmles-mobile-ionic-app', () => {
   //   spyOn(instance['nav'], 'setRoot');
   //   instance.openPage(instance['pages'][1]);
   //   expect(instance['menu']['close']).toHaveBeenCalled();
-    //expect(instance['nav'].setRoot).toHaveBeenCalledWith(Page2);
+  //expect(instance['nav'].setRoot).toHaveBeenCalledWith(Page2);
   //});
 });

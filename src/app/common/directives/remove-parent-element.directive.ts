@@ -18,6 +18,8 @@ export class RemoveParentElementDirective {
         }
 
         // remove the empty element(the host)
-        parentElement.removeChild(nativeElement);
+        if (parentElement) {
+            parentElement.removeChild(nativeElement);
+        }
     }
 }

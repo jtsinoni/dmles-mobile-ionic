@@ -3,23 +3,23 @@
 
 export class ConfigMock {
 
-  public get(): any {
-    return '';
-  }
+    public get(): any {
+        return '';
+    }
 
-  public getBoolean(): boolean {
-    return true;
-  }
+    public getBoolean(): boolean {
+        return true;
+    }
 
-  public getNumber(): number {
-    return 1;
-  }
+    public getNumber(): number {
+        return 1;
+    }
 }
 
 export class FormMock {
-  public register(): any {
-    return true;
-  }
+    public register(): any {
+        return true;
+    }
 }
 
 export class LoggerServiceMock {
@@ -77,69 +77,69 @@ export class UtilServiceMock {
 
 export class NavMock {
 
-  public pop(): any {
-    return new Promise(function(resolve: Function): void {
-      resolve();
-    });
-  }
+    public pop(): any {
+        return new Promise(function(resolve: Function): void {
+            resolve();
+        });
+    }
 
-  public push(): any {
-    return new Promise(function(resolve: Function): void {
-      resolve();
-    });
-  }
+    public push(): any {
+        return new Promise(function(resolve: Function): void {
+            resolve();
+        });
+    }
 
-  public getActive(): any {
-    return {
-      'instance': {
-        'model': 'something',
-      },
-    };
-  }
+    public getActive(): any {
+        return {
+            'instance': {
+                'model': 'something',
+            },
+        };
+    }
 
-  public setRoot(): any {
-    return true;
-  }
+    public setRoot(): any {
+        return true;
+    }
 }
 
 export class NavParamMock {
-   public get(param: string): any {
-    return new Promise((resolve: Function) => {
-      resolve();
-    });
-  }
+    public get(param: string): any {
+        return new Promise((resolve: Function) => {
+            resolve();
+        });
+    }
 }
 
 export class PlatformMock {
-  public ready(): any {
-    return new Promise((resolve: Function) => {
-      resolve();
-    });
-  }
+    public ready(): any {
+        return new Promise((resolve: Function) => {
+            resolve();
+        });
+    }
 }
 
 export class MenuMock {
-  public close(): any {
-    return new Promise((resolve: Function) => {
-      resolve();
-    });
-  }
+    public close(): any {
+        return new Promise((resolve: Function) => {
+            resolve();
+        });
+    }
 }
 
 export class AlertControllerMock {
-  public close(): any {
-    return new Promise((resolve: Function) => {
-      resolve();
-    });
-  }
+    public close(): any {
+        return new Promise((resolve: Function) => {
+            resolve();
+        });
+    }
 }
 
 export class ModalControllerMock {
-  public close(): any {
-    return new Promise((resolve: Function) => {
-      resolve();
-    });
-  }
+    public close(): any {
+        return new Promise((resolve: Function) => {
+            resolve();
+        });
+    }
 }
 
 export class MenuControllerMock {
@@ -163,11 +163,24 @@ export class PopoverControllerMock {
 }
 
 export class ActionSheetControllerMock {
-  public close(): any {
-    return new Promise((resolve: Function) => {
-      resolve();
-    });
-  }
+    public close(): any {
+        return new Promise((resolve: Function) => {
+            resolve();
+        });
+    }
+}
+export class AuthenticationServiceMock {
+    public getToken(args: any): void {
+    }
+
+    public isLoggedIn(args: any): void {
+    }
+
+    public logout(args: any): void {
+    }
+
+    public saveToken(args: any): void {
+    }
 }
 
 export class AppMock {

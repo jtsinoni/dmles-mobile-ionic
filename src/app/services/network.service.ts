@@ -29,6 +29,8 @@ export class NetworkService {
             this.log.debug('network connected');
             this.isConnected = true;
         });
+
+        this.isConnected = this.checkConnection();
     }
 
     public checkConnection(): boolean {

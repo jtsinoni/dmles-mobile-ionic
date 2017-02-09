@@ -3,7 +3,19 @@ import { Platform } from "ionic-angular";
 
 @Injectable()
 export class UtilService {
-    constructor(private platform: Platform) { }
+    constructor(private platform: Platform) {
+    }
+
+    public deepCopy(oldObj: any): any {
+        let newObj = oldObj;
+        if (oldObj && typeof oldObj === "object") {
+            newObj = Object.prototype.toString.call(oldObj) === "[object Array]" ? [] : {};
+            for (let i in oldObj) {
+                newObj[i] = this.deepCopy(oldObj[i]);
+            }
+        }
+        return newObj;
+    }
 
     public isProd(): boolean {
         return (IONIC_ENV_MB === 'prod')? true : false;

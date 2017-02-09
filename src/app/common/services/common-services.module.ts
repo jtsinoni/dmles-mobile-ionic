@@ -17,6 +17,8 @@ import {NotificationService} from "../../services/notification.service";
 import {LogViewerService} from "../../services/log-viewer.service";
 import {LocalFileStorageService} from "../../services/local-file-storage.service";
 import {JSONWebTokenService} from "../../services/jason-web-token.service";
+import {LoginModalService} from "../../services/login-modal.service";
+
 
 @NgModule({
 })
@@ -30,6 +32,7 @@ export class CommonServicesModule {
                         DatabaseService, CommonDataService, NetworkService, NotificationService,
                         TopicUpstreamService, TopicMessagingService,
                         LogViewerService, LocalFileStorageService, JSONWebTokenService,
+                        LoginModalService,
                         { provide: UpstreamService, useClass: TopicUpstreamService },]
         };
     }

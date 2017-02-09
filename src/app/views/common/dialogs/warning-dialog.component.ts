@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController, App } from 'ionic-angular';
-import { AppContainerComponent } from '../../../app-container.component';
 
 
 @Component({
@@ -10,20 +9,16 @@ import { AppContainerComponent } from '../../../app-container.component';
 export class WarningDialogComponent {
 
   text: string;
-  component: Component;
+  message: string;
+  
 
   constructor(public navCtrl: NavController, params: NavParams, public viewController: ViewController, private app: App) {
-     this.text = params.get('txt');         
+     this.text = params.get('txt');
+     this.message = params.get('message');
   }  
 
   continue() {
-      this.viewController.dismiss();   
-      //this.navCtrl.setRoot(AppContainerComponent);  
-      this.app.getRootNav().setRoot(AppContainerComponent);
-      
+      this.viewController.dismiss();         
   }
 
-  cancel() {
-    this.viewController.dismiss();
-  }
 }

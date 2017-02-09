@@ -1,12 +1,20 @@
 import { DMLESMobile }                      from '../app/app.component';
-import {MenuMock, NavMock, PlatformMock, NetworkServiceMock, AppMock, UtilServiceMock} from './mocks';
+import {NavMock, PlatformMock, 
+  AppMock, UtilServiceMock, 
+  AuthServiceMock, LoggerServiceMock, 
+  LoginModalServiceMock} from './mocks';
 
 let instance: DMLESMobile = null;
 
 describe('dmles-mobile-ionic-app', () => {
 
   beforeEach(() => {
-    instance = new DMLESMobile((<any> new PlatformMock), (<any> new MenuMock), (<any> new NetworkServiceMock), (<any> new UtilServiceMock), (<any> new AppMock));
+    instance = new DMLESMobile(
+      (<any> new UtilServiceMock),
+      (<any> new PlatformMock), 
+    (<any> new UtilServiceMock), (<any> new AppMock), 
+    (<any> new AuthServiceMock), (<any> new LoginModalServiceMock),
+    (<any> new LoggerServiceMock));
     instance['nav'] = (<any>new NavMock());
   });
 

@@ -2,10 +2,6 @@
 
 <ion-content padding>
     <div [ngSwitch]="page">
-        <div *ngSwitchCase="'start'">
-            <start-view></start-view>
-        </div>
-
         <div *ngSwitchCase="'store'">
             <store-view></store-view>
         </div>
@@ -20,9 +16,6 @@
 <ion-footer>
     <ion-toolbar>
         <ion-segment [(ngModel)]="page">
-            <ion-segment-button value="start">
-                Start
-            </ion-segment-button>
             <ion-segment-button value="store">
                 Store
                 <ion-badge>{{storeDataModel.badgeCount}}</ion-badge>

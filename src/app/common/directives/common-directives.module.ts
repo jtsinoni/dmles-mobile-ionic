@@ -10,12 +10,13 @@ import {HelpComponent} from "../../views/help/help.component";
 import {SettingsComponent} from "../../views/settings/settings.component";
 
 import {IonicModule} from "ionic-angular";
+import {NavDrawerHeaderComponent} from "../../views/common/header/nav-drawer-header.component";
 
 @NgModule({
-    declarations: [HeaderPageComponent, RemoveParentElementDirective, AppMenuComponent, WarningDialogComponent, 
+    declarations: [NavDrawerHeaderComponent, HeaderPageComponent, RemoveParentElementDirective, AppMenuComponent, WarningDialogComponent,
     HelpComponent, SettingsComponent],
     imports: [IonicModule],
-    exports: [HeaderPageComponent, RemoveParentElementDirective],
+    exports: [NavDrawerHeaderComponent, HeaderPageComponent, RemoveParentElementDirective],
     entryComponents: [AppMenuComponent, WarningDialogComponent, HelpComponent, SettingsComponent]
 })
 export class CommonDirectivesModule{}

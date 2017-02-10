@@ -5,11 +5,6 @@ import { LoginComponent } from './views/login/login.component';
 import { AreaModel } from './models/area.model';
 import { AppContainerComponent } from "./app-container.component";
 import { UtilService } from "./common/services/util.service";
-// import { TopicComponent } from './views/topic/topic.component';
-// import { EquipmentComponent } from './views/equipment/equipment.component';
-// import { InventoryComponent } from './views/inventory/inventory.component';
-// import { SupplyComponent } from './views/supply/supply.component';
-// import { AdminComponent } from "./views/admin/admin.component";
 import { HelpComponent } from "./views/help/help.component";
 import { LogsModalComponent } from "./views/logs/modal/logs-modal.component";
 import { UpstreamService } from "./services/upstream/upstream.service";
@@ -37,7 +32,6 @@ export class DMLESMobile implements OnInit {
     exit = 'Exit';
     //isLoggedIn: boolean = false;
 
-
     constructor(
         public platform: Platform,
         private utilService: UtilService,
@@ -46,20 +40,17 @@ export class DMLESMobile implements OnInit {
         private loginModalService: LoginModalService,
         private upstreamService: UpstreamService,
         private log: LoggerService) {
-
     }
 
     ngOnInit(): void {
-        this.isMobility = this.utilService.isMobility();
         this.initializeApp();
-        this.setLoggedInOutAreas();
     }
 
     initializeApp() {
-        this.isMobility = this.utilService.isMobility();
         this.platform.ready().then(() => {
             StatusBar.styleDefault();
 
+            this.isMobility = this.utilService.isMobility();
 
             // Attempt to connect to messaging server if connect flag is true
             if (AppConfigConstants.messagingServer.connect) {
@@ -73,6 +64,8 @@ export class DMLESMobile implements OnInit {
                         this.log.error(error);
                     })
             }
+
+            this.setLoggedInOutAreas();
         });
     }
     setLoggedInOutAreas() {
@@ -132,7 +125,9 @@ export class DMLESMobile implements OnInit {
     }
 
     exitApp() {
-        // todo this doesn't work as expected on the device...
+        // TODO: this doesn't work as expected on the device...
+        // are there any cordova plugins that do this?
+        // we may need to create one
         this.log.info('exiting app')
         this.authService.logout();
         if (this.isMobility) {

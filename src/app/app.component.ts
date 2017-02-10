@@ -82,7 +82,8 @@ export class DMLESMobile implements OnInit {
         areas.push(new AreaModel('Login', 'log-in', LoginComponent, 'gray'));
         //}
 
-        if (this.isMobility) {
+        //this.isMobility && !this.isProd
+        if (this.isMobility && !this.utilService.isProd()) {
             // todo always show this?
             areas.push(new AreaModel('Logs', 'logo-android', LogsModalComponent, 'light'));
         }

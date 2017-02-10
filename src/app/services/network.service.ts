@@ -21,12 +21,12 @@ export class NetworkService {
         // this.isConnected = this.checkConnection();
         //
         Network.onDisconnect().subscribe(() => {
-            this.log.debug('network disconnected');
+            this.log.debug(`network disconnected`);
             this.isConnected = false;
         });
 
         Network.onConnect().subscribe(() => {
-            this.log.debug('network connected');
+            this.log.debug(`network connected`);
             this.isConnected = true;
         });
 
@@ -34,12 +34,13 @@ export class NetworkService {
     }
 
     public checkConnection(): boolean {
-        let networkState = Network.connection;
-        let states = {};
         let connected: boolean = false;
 
         // Connection object only exists on device, or if using ionics browser platform
         if(typeof Connection !== "undefined") {
+            let networkState = Network.type;
+            let states = {};
+
             states[Connection.UNKNOWN] = 'Unknown connection';
             states[Connection.ETHERNET] = 'Ethernet connection';
             states[Connection.WIFI] = 'WiFi connection';
@@ -48,13 +49,16 @@ export class NetworkService {
             states[Connection.CELL_4G] = 'Cell 4G connection';
             states[Connection.NONE] = 'No network connection';
 
-            this.log.debug('Connection type: ' + states[networkState]);
-            if (states[Connection.NONE] == states[networkState]) {
-                connected = false;
-            } else {
-                connected = true;
+            if(networkState !== "undefined") {
+                this.log.debug(`Connection type => ${states[networkState]}`);
+
+                if (states[Connection.NONE] == states[networkState]) {
+                    connected = false;
+                } else {
+                    connected = true;
+                }
             }
-        // This only occurs if running in browser i.e. ionic serve, assuming always connected
+            // This only occurs if running in browser i.e. ionic serve, assuming always connected
         } else {
             connected = true;
         }

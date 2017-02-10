@@ -57,9 +57,7 @@ export class StartComponent implements OnInit {
         });
 
         TopicMessagingService.onReconnectAttempts().subscribe((results) => {
-            //console.log(`TopicMessagingService.onTryToConnect() => ${results}`);
-            //this.isConnected = results;
-            this.addLogMessage(results.message);
+            this.log.log(results.message);
         });
 
         TopicMessagingService.onServiceAvailable().subscribe((connected) => {

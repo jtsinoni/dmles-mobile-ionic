@@ -37,7 +37,7 @@ export class LocalFileStorageService {
                 if(component) {
                     component.logData = fileContents;
                 }
-                console.debug(`readFile() => ${fileContents}`);
+                //console.debug(`readFile() => ${fileContents}`);
             })
             .catch((error) => {
                 if(error.code == 1) {
@@ -62,7 +62,7 @@ export class LocalFileStorageService {
     private writeFile(data: string): Promise<any> {
         return File.writeFile(cordova.file.dataDirectory, FILE_NAME, data, {replace: false, create: true, append: true})
             .then((results) => {
-                console.debug(`writeFile(): Data written to client.log => ${data}`);
+                //console.debug(`writeFile(): Data written to client.log => ${data}`);
             })
             .catch((error) => {
                 console.error(`writeFile(): ${error.message}`)
@@ -79,7 +79,7 @@ export class LocalFileStorageService {
             })
             .catch((error) => {
                 if(error.code == 12) {  //PATH_EXISTS_ERR
-                    console.warn(`${FILE_NAME} already exists`);
+                    //console.warn(`${FILE_NAME} already exists`);
 
                     return false;
                 } else {
@@ -92,12 +92,12 @@ export class LocalFileStorageService {
     private checkFile(): Promise<any> {
         return File.checkFile(cordova.file.dataDirectory, FILE_NAME)
             .then((results) => {
-                console.debug(`Successfully found file => ${FILE_NAME}`);
+                //console.debug(`Successfully found file => ${FILE_NAME}`);
                 return results;
             })
             .catch((error) => {
                 if(error.code == 1) { //NOT_FOUND_ERR
-                    console.debug(`Did not find file => ${FILE_NAME}`);
+                    //console.debug(`Did not find file => ${FILE_NAME}`);
 
                     return false;
                 }

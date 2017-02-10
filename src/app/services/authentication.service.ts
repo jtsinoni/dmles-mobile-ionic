@@ -7,9 +7,12 @@ import { JSONWebTokenService } from "./jason-web-token.service";
 @Injectable()
 export class AuthenticationService {
     private serviceName = "Authentication Service";
+    
 
-    constructor(private log: LoggerService, private localStorageService: LocalStorageService, private jwtService: JSONWebTokenService) {
+    constructor(private log: LoggerService, private localStorageService: LocalStorageService, 
+    private jwtService: JSONWebTokenService) {
         this.log.debug(`${this.serviceName} - Start`);
+      
     }
 
     public getToken() {
@@ -18,8 +21,8 @@ export class AuthenticationService {
     
     public logout() {
         this.localStorageService.removeData(ApiConstants.DMLES_TOKEN);
-        // todo should we clear data...?
-        this.localStorageService.clearData();
+        // todo should we clear all data...?
+        //this.localStorageService.clearData();   
     }
 
     public saveToken(token) {
@@ -31,11 +34,10 @@ export class AuthenticationService {
         let token = this.localStorageService.getData(ApiConstants.DMLES_TOKEN);
         if (token) {
             this.log.debug(`${this.serviceName} - Token found locally`);
-            isValid = !this.jwtService.isTokenExpired(token);
+            isValid = !this.jwtService.isTokenExpired(token);        
         }
         return isValid;
-
-    }
+    }  
 
     
 }

@@ -4,21 +4,15 @@
       <ion-icon name='menu'></ion-icon>     
         </button>
         <ion-title>LogiCole Mobile</ion-title>
-
-        <ion-buttons end>
-            <button ion-button icon-only (click)="showAppMenu()">
-        <ion-icon name="more"></ion-icon>
-      </button>
-        </ion-buttons>
+       
     </ion-navbar>
 </ion-header>
 
 <ion-content>
-
-    <ion-header>
-       <p>We could put notifications, or messages based on roles or user here. Or based on a role or preference navigate to the area most used</p>
-    </ion-header>
-   
+      <button menuClose ion-item icon-left color="{{area.color}}" *ngFor="let area of demoAreas" (click)="goTo(area)">
+        <ion-icon name="{{area.iconName}}"></ion-icon>
+         {{area.title}}
+      </button>
     <ion-fab right bottom>
         <button id="findSomethingButton" ion-fab (click)="showFindItem()"><ion-icon name="search" >
       </ion-icon></button>

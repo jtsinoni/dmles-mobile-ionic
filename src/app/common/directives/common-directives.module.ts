@@ -6,14 +6,15 @@ import {RemoveParentElementDirective} from './remove-parent-element.directive';
 import {HeaderPageComponent} from "../../views/common/header/header-page.component";
 import {AppMenuComponent} from "../../views/common/header/app-menu.component";
 import {WarningDialogComponent} from "../../views/common/dialogs/warning-dialog.component";
+import {GrowlDialogComponent} from "../../views/common/dialogs/growl-dialog.component";
 import {HelpComponent} from "../../views/help/help.component";
 
 import {IonicModule} from "ionic-angular";
 
 @NgModule({
-    declarations: [HeaderPageComponent, RemoveParentElementDirective, AppMenuComponent, WarningDialogComponent, HelpComponent],
+    declarations: [HeaderPageComponent, RemoveParentElementDirective, AppMenuComponent, WarningDialogComponent, GrowlDialogComponent, HelpComponent],
     imports: [IonicModule],
     exports: [HeaderPageComponent, RemoveParentElementDirective],
-    entryComponents: [AppMenuComponent, WarningDialogComponent, HelpComponent]
+    entryComponents: [AppMenuComponent, WarningDialogComponent, GrowlDialogComponent, HelpComponent]
 })
 export class CommonDirectivesModule{}

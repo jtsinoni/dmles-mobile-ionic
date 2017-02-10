@@ -1,11 +1,13 @@
 import {Component, ViewChild} from '@angular/core';
-import {NavController, NavParams, Platform} from 'ionic-angular';
+import {NavController, NavParams, Platform, ModalController} from 'ionic-angular';
 import {Search} from "../../common/search";
 import {LoadingController} from 'ionic-angular';
 import {LoggerService} from "../../../services/logger/logger-service";
 import {BarcodeScanner, Keyboard} from 'ionic-native';
 import {BarcodeData} from "./barcode-data";
 import {UtilService} from "../../../common/services/util.service";
+import {Level as LoggerLevel} from "../../../services/logger/level";
+import {GrowlDialogComponent} from "../dialogs/growl-dialog.component";
 
 @Component({
   selector: 'equipment-search',
@@ -25,9 +27,15 @@ export class InputTextComponent extends Search {
                 public loadingCtrl: LoadingController,
                 public navParams: NavParams,
                 private log: LoggerService,
+                private modalController: ModalController,
                 private util: UtilService,
                 public platform: Platform) {
         super(loadingCtrl);
+    }
+
+    showGrowl(level: LoggerLevel, message, duration?: number, position?) {
+        //mec...bobo...this.growl.presentGrowl(level, message, duration, position);
+        this.showGrowlModal(message); //mec...bobo...
     }
 
     ngOnInit() {
@@ -41,15 +49,23 @@ export class InputTextComponent extends Search {
 
     ionViewDidLoad() {
         setTimeout(() => {
-            this.myInput.setFocus();
             Keyboard.show();
+            //this.myInput.setFocus();
+        }, 500); // increased timeout from 150ms, seemed too short
+
+        setTimeout(() => {
+            //Keyboard.show();
+            this.myInput.setFocus();
         }, 500); // increased timeout from 150ms, seemed too short
     }
 
     public saveTheData(value: string) {
         let searchValue = this.prefix + "'" + value + "'";
-        let message = 'You entered (' + value + ', ' + searchValue + ', ' + this.aggregations + '), lets call: (' + this.navTitle + ', hintText=' + this.hintText + ')';
-        this.addLogDebugMessage(message);
+        //let message = 'Entered (' + value + ', ' + searchValue + ', ' + this.aggregations + '), lets call: (' + this.navTitle + ', hintText=' + this.hintText + ')';
+        let message = 'Entered (' + value + ')';
+        this.showGrowl(LoggerLevel.INFO, message); //mec..., 3000, 'middle');
+
+        //this.addLogDebugMessage(message);
 
         // MAGIC - we receive the destination page as a parm that this page will "push", or navigate too, making this page a 'pass-thru' page acquiring user input
         this.navCtrl.push(this.pushNav, {
@@ -71,16 +87,18 @@ export class InputTextComponent extends Search {
                         if (!result.cancelled) {
                             let barcodeData = new BarcodeData(result.text, result.format);
                             this.scanDetails(barcodeData);
+                            // let message = 'Scanned (' + barcodeData.text + '), \nFormat = (' + barcodeData.format + ')';
+                            // this.showGrowl(LoggerLevel.INFO, message); //mec..., 3000, 'middle');
                         }
                         else {
-                            let message = 'Barcode Scan request Cancelled';
-                            this.addLogDebugMessage(message);
+                            let message = 'Scan request Cancelled';
+                            this.showGrowl(LoggerLevel.INFO, message); //mec..., 3000, 'middle');
+                            //this.addLogDebugMessage(message);
                         }
                     })
                     .catch((err) => {
                         let message = `Error => ${err}`;
-                        //mec... growl everywhere?
-                        this.logErrorMessage(message);
+                        this.showGrowl(LoggerLevel.ERROR, message); //mec..., 3000, 'middle');
                     })
             }
             else {
@@ -90,19 +108,16 @@ export class InputTextComponent extends Search {
         });
     }
 
-    scanDetails(details) {
-        let message = 'You scanned (' + details.text + '), \nFormat = (' + details.format + ')';
-        this.addLogDebugMessage(message);
-        //alert('mec...bag this alert\r\n' + message);
+    private scanDetails(details) {
+        // let message = 'Scanned (' + details.text + '), \nFormat = (' + details.format + ')';
+        // this.showGrowl(LoggerLevel.INFO, message); //mec..., 3000, 'middle');
+
         this.saveTheData(details.text);
     }
 
-    private addLogDebugMessage(message: string) {
-        this.log.debug(message);
-    }
-
-    private logErrorMessage(error: string) {
-        this.log.error(error);
+    private showGrowlModal(message) {
+        let errorModal = this.modalController.create(GrowlDialogComponent, {txt: message});
+        errorModal.present();
     }
 
 }

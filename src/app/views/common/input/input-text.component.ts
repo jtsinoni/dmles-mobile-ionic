@@ -33,11 +33,6 @@ export class InputTextComponent extends Search {
         super(loadingCtrl);
     }
 
-    showGrowl(level: LoggerLevel, message, duration?: number, position?) {
-        //mec...bobo...this.growl.presentGrowl(level, message, duration, position);
-        this.showGrowlModal(message); //mec...bobo...
-    }
-
     ngOnInit() {
         // If we navigated to this page, we will have an item available as a nav param
         this.pushNav = this.navParams.get('pushNav');
@@ -62,8 +57,8 @@ export class InputTextComponent extends Search {
     public saveTheData(value: string) {
         let searchValue = this.prefix + "'" + value + "'";
         //let message = 'Entered (' + value + ', ' + searchValue + ', ' + this.aggregations + '), lets call: (' + this.navTitle + ', hintText=' + this.hintText + ')';
-        let message = 'Entered (' + value + ')';
-        this.showGrowl(LoggerLevel.INFO, message); //mec..., 3000, 'middle');
+        let message = '(' + value + ')';
+        this.showGrowl(LoggerLevel.INFO, 'Entered: ', message);
 
         //this.addLogDebugMessage(message);
 
@@ -87,18 +82,15 @@ export class InputTextComponent extends Search {
                         if (!result.cancelled) {
                             let barcodeData = new BarcodeData(result.text, result.format);
                             this.scanDetails(barcodeData);
-                            // let message = 'Scanned (' + barcodeData.text + '), \nFormat = (' + barcodeData.format + ')';
-                            // this.showGrowl(LoggerLevel.INFO, message); //mec..., 3000, 'middle');
                         }
                         else {
                             let message = 'Scan request Cancelled';
-                            this.showGrowl(LoggerLevel.INFO, message); //mec..., 3000, 'middle');
-                            //this.addLogDebugMessage(message);
+                            this.showGrowl(LoggerLevel.INFO, '', message);
                         }
                     })
                     .catch((err) => {
                         let message = `Error => ${err}`;
-                        this.showGrowl(LoggerLevel.ERROR, message); //mec..., 3000, 'middle');
+                        this.showGrowl(LoggerLevel.ERROR, 'ERROR', message);
                     })
             }
             else {
@@ -109,14 +101,11 @@ export class InputTextComponent extends Search {
     }
 
     private scanDetails(details) {
-        // let message = 'Scanned (' + details.text + '), \nFormat = (' + details.format + ')';
-        // this.showGrowl(LoggerLevel.INFO, message); //mec..., 3000, 'middle');
-
         this.saveTheData(details.text);
     }
 
-    private showGrowlModal(message) {
-        let errorModal = this.modalController.create(GrowlDialogComponent, {txt: message});
+    public showGrowl(level: LoggerLevel, title, message, duration?: number, position?) {
+        let errorModal = this.modalController.create(GrowlDialogComponent, {growlTitle: title, growlMessage: message});
         errorModal.present();
     }
 

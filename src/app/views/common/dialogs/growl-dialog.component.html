@@ -1,16 +1,14 @@
-<ion-card>
+<ion-card (swipe)="growlSwiped($event)">
     <ion-card-header>
-        Attention
+        <span>{{growlTitle}}</span>
     </ion-card-header>
     <ion-card-content>
-        <p>mec...mec...mec...mec...The server encountered the following error:
-            <span>{{text}}</span>
-        </p>
-        <p>mec...whould this be a question?</p>
+        <p><span>{{growlMessage}}</span></p>
         <ion-grid>
             <ion-row>
-                <ion-col width-50><button ion-button block (click)="cancel()">No</button></ion-col>
-                <ion-col width-50><button ion-button block (click)="continue()">Yes</button></ion-col>
+                <ion-col width-50>
+                    <button ion-button block (click)="cancel()">X</button>
+                </ion-col>
             </ion-row>
         </ion-grid>
     </ion-card-content>

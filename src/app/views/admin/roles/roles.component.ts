@@ -31,7 +31,7 @@ export class RolesComponent {
             .map(results => results.json())
             .subscribe((results) => {
                 this.items = results;
-                this.log.debug(`getAllRoles => ${JSON.stringify(results)}`);
+                this.log.info(`getAllRoles => ${JSON.stringify(results)}`);
             });
 
     }

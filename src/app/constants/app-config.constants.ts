@@ -32,10 +32,11 @@ export class AppConfigConstants {
         port:"61616",
         topic:"dmles-mobile",
         reconnectAttempts:10,
-        connect:false
+        connect:false,
+        showStats: false
     }
 
     public static topicComponent: any = {
-        page:"start"
+        page:"store"
     }
 }

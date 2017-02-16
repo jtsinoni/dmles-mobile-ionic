@@ -1,0 +1,28 @@
+.growl-dialog {
+    opacity: .85;
+    color: white;
+    background-color: #333333;
+    text-align: center;
+    font-size: large;
+    padding-right: 5px;
+    margin-top: 100px;
+
+    border-radius: 10px;
+    border: 2px solid #565050;
+    border-color: map-get($colors, primary);
+    box-shadow: 8px 8px 4px #888888;
+
+    ion-card-header {
+        color: map-get($colors, primary);
+        color: white;
+        -webkit-align-items: center;
+        text-align: left;
+        font-size: large;
+        margin-top: -20px;
+    }
+
+    ion-card-content {
+        -webkit-align-items: center;
+        font-size: large;
+    }
+}

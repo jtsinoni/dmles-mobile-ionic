@@ -47,11 +47,11 @@ export class InputTextComponent extends Search {
         this.platform.ready().then(() => {
             setTimeout(() => {
                 Keyboard.show();
-            }, 1000); // increased timeout from 150ms, seemed too short
+            }, 300); // increased timeout from 150ms, seemed too short
 
             setTimeout(() => {
                 this.selectAll(this.myInput);
-            }, 1000); // increased timeout from 150ms, seemed too short
+            }, 300); // increased timeout from 150ms, seemed too short
         });
     }
 
@@ -60,7 +60,7 @@ export class InputTextComponent extends Search {
         this.platform.ready().then(() => {
             setTimeout(() => {
                 Keyboard.close();
-            }, 1000); // increased timeout from 150ms, seemed too short
+            }, 300); // increased timeout from 150ms, seemed too short
         });
     }
 

@@ -37,25 +37,33 @@ export class OAuthService extends ApiService {
         return this.getTokenViaOAuth("token", encodedDn);
     }
 
-    public getToken(dn):Observable<any> {
-        let token = this.localStorageService.getData(ApiConstants.DMLES_TOKEN);
-        if(token){
-            this.log.debug(`${this.serviceName} - Token found locally`);
-
-            // Check if token is expired
-            if(this.jwtService.isTokenExpired(token)) {
-                this.log.debug(`Token expired => ${this.jwtService.getTokenExpirationDate(token)}`);
+    public getToken(dn): Observable<any> {
+        return Observable.fromPromise(
+            this.localStorageService.getData(ApiConstants.DMLES_TOKEN)
+                .then((token) => {
+                    return token;
+                })
+                .catch((error) => {
+                    this.log.error(`${this.serviceName} => ${error}`)
+                })
+        )
+        .flatMap((token) => {
+            if(token) {
+                this.log.debug(`${this.serviceName} - Token found locally`);
+                if(this.jwtService.isTokenExpired(token)) {
+                    this.log.debug(`Token expired => ${this.jwtService.getTokenExpirationDate(token)}`);
+                    return this.getNewToken(dn);
+                } else {
+                    return Observable.of(token);
+                }
+            } else {
+                this.log.debug(`${this.serviceName} - Token not found locally`);
                 return this.getNewToken(dn);
             }
-
-            return Observable.of(token);
-        }else{
-            this.log.debug(`${this.serviceName} - Token not found locally`);
-            return this.getNewToken(dn);
-        }
+        });
     }
 
-    public getNewToken(dn): Observable<any> {
+    private getNewToken(dn): Observable<any> {
         return this.apiGetToken(dn)
             .map((response) => {
                 if(response) {
@@ -65,7 +73,7 @@ export class OAuthService extends ApiService {
                     return results.authctoken;
 
                 } else {
-                    return Observable.of(null)
+                    return null;
                 }
             });
     }

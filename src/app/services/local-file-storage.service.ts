@@ -89,6 +89,22 @@ export class LocalFileStorageService {
 
     }
 
+    public readDataFile(filename: string): any {
+        let data: any;
+        File.readAsText(cordova.file.dataDirectory, filename)
+            .then((fileContents) => {
+                data = fileContents;
+            })
+            .catch((error) => {
+                if (error.code == 1) {
+                    console.warn(`Unable to read file, file ${filename} not found.`);
+                } else {
+                    console.error(`readFile() => ${error.message}`);
+                }
+            });
+        return data;
+    } 
+
     private checkFile(): Promise<any> {
         return File.checkFile(cordova.file.dataDirectory, FILE_NAME)
             .then((results) => {

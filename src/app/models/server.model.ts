@@ -1,18 +1,30 @@
-import {DataTableModel} from './data-table.model';
+import { BaseDataTableModel } from './base-data-table.model';
 
-export class ServerModel extends DataTableModel {
+export interface IServerModel {
+    serverName: string;
+    port: number;
+    isDefault: boolean;
+    settingsId?: number;
+    toString(): string;
+}
+
+
+export class ServerModel extends BaseDataTableModel implements IServerModel {
 
     serverName: string;
-    port:number;
+    port: number;
+    isDefault: boolean;
+    settingsId?: number;
 
     constructor(name: string, port: number, id?: number) {
-        super(name, id);
+        super(id);
         this.serverName = name;
         this.port = port;
 
     }
 
-    toString() : string {
+    toString(): string {
         return this.serverName + ':' + this.port;
-    }
+    }    
+
 }

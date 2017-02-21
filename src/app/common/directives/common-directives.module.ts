@@ -8,14 +8,15 @@ import {AppMenuComponent} from "../../views/common/header/app-menu.component";
 import {WarningDialogComponent} from "../../views/common/dialogs/warning-dialog.component";
 import {HelpComponent} from "../../views/help/help.component";
 import {SettingsComponent} from "../../views/settings/settings.component";
+import {AddSettingComponent} from "../../views/settings/add-setting/add-setting.component";
 
 import {IonicModule} from "ionic-angular";
 
 @NgModule({
     declarations: [HeaderPageComponent, RemoveParentElementDirective, AppMenuComponent, WarningDialogComponent, 
-    HelpComponent, SettingsComponent],
+    HelpComponent, SettingsComponent, AddSettingComponent],
     imports: [IonicModule],
     exports: [HeaderPageComponent, RemoveParentElementDirective],
-    entryComponents: [AppMenuComponent, WarningDialogComponent, HelpComponent, SettingsComponent]
+    entryComponents: [AppMenuComponent, WarningDialogComponent, HelpComponent, SettingsComponent, AddSettingComponent]
 })
 export class CommonDirectivesModule{}

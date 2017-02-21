@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "settingName": "Enable Scanner",
+        "setting": true,
+        "dataType": "boolean"
+    },
+    {
+        "id": 2,
+        "settingName": "Work Area",
+        "setting": "Inventory",
+        "dataType": "text"
+    },
+    {
+        "id": 3,
+        "settingName": "Device Pin",
+        "setting": 0,
+        "dataType": "number"
+    },
+    {
+        "id": 4,
+        "settingName": "Allow Offline",
+        "setting": true,
+        "dataType": "boolean"
+    },
+    {
+        "id": 5,
+        "settingName": "Theme",
+        "setting": "light",
+        "dataType": "text"
+    },
+    {
+        "id": 6,
+        "settingName": "Colors",
+        "setting": "default",
+        "dataType": "text"
+    }
+]

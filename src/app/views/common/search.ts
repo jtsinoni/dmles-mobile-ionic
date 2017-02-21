@@ -1,4 +1,3 @@
-
 import { LoadingController } from 'ionic-angular';
 
 export class Search {
@@ -7,10 +6,9 @@ export class Search {
 
     constructor (public loadingCtrl: LoadingController) {
         this.searchValue = '';
-
     }
 
-    public showLoadingData(value: string) {    
+    public showLoadingData(value: string) {
         let loader = this.loadingCtrl.create( {
             content: "Searching for " + value,
             duration: 3000

@@ -32,7 +32,6 @@ export class DMLESMobile implements OnInit {
     exit = 'Exit';
     //isLoggedIn: boolean = false;
 
-
     constructor(
         public platform: Platform,
         private utilService: UtilService,
@@ -41,20 +40,17 @@ export class DMLESMobile implements OnInit {
         private loginModalService: LoginModalService,
         private upstreamService: UpstreamService,
         private log: LoggerService) {
-
     }
 
     ngOnInit(): void {
-        this.isMobility = this.utilService.isMobility();
         this.initializeApp();
-        this.setLoggedInOutAreas();
     }
 
     initializeApp() {
-        this.isMobility = this.utilService.isMobility();
         this.platform.ready().then(() => {
             StatusBar.styleDefault();
 
+            this.isMobility = this.utilService.isMobility();
 
             // Attempt to connect to messaging server if connect flag is true
             if (AppConfigConstants.messagingServer.connect) {
@@ -68,6 +64,8 @@ export class DMLESMobile implements OnInit {
                         this.log.error(error);
                     })
             }
+
+            this.setLoggedInOutAreas();
         });
     }
     setLoggedInOutAreas() {
@@ -84,7 +82,8 @@ export class DMLESMobile implements OnInit {
         areas.push(new AreaModel('Login', 'log-in', LoginComponent, 'gray'));
         //}
 
-        if (this.isMobility) {
+        //this.isMobility && !this.isProd
+        if (this.isMobility && !this.utilService.isProd()) {
             // todo always show this?
             areas.push(new AreaModel('Logs', 'logo-android', LogsModalComponent, 'light'));
         }
@@ -127,7 +126,9 @@ export class DMLESMobile implements OnInit {
     }
 
     exitApp() {
-        // todo this doesn't work as expected on the device...
+        // TODO: this doesn't work as expected on the device...
+        // are there any cordova plugins that do this?
+        // we may need to create one
         this.log.info('exiting app')
         this.authService.logout();
         if (this.isMobility) {

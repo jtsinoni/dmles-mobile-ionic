@@ -28,7 +28,7 @@ export class StoreComponent implements OnInit {
     }
 
     public itemTapped(event, item) {
-        this.log.info(`Store Event: ${event} Item: ${item.data}`);
+        this.log.log(`Store Event: ${event} Item: ${item.data}`);
         // this.navCtrl.push(RoleDetailsComponent, {
         //   item: item
         // });

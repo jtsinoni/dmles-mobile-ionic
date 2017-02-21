@@ -1,9 +1,9 @@
-<mb-header-page remove-parent-element [title]="'My Settings'"></mb-header-page>
+<mb-nav-drawer-header remove-parent-element [title]="'Settings'"></mb-nav-drawer-header>
 
 <ion-content>
   <ion-navbar>
-    <ion-buttons end ng-if="isMobility == false">
-
+    <header>Allowing add here since getting from a file requires a device</header>
+        <ion-buttons end ng-if="isMobility == false">
       <button ion-button icon-only (click)="addSetting()">
       <ion-icon name="add" right ></ion-icon>
      </button>

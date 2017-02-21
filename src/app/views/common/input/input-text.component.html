@@ -7,10 +7,10 @@
                    (keyup.enter)="saveTheData(searchValue)"></ion-input>
     </ion-item>
     <div padding>
-        <button ion-button color="primary" block (click)="saveTheData(searchValue)">
+        <button ion-button class="ripple" color="primary" block (click)="saveTheData(searchValue)">
             <ion-icon name="search"></ion-icon>
         </button>
-        <button ion-button color="primary" block (click)="barcodeScanClick(searchValue)">
+        <button ion-button class="ripple" color="primary" block (click)="barcodeScanClick(searchValue)">
             <ion-icon name="barcode"></ion-icon>
         </button>
     </div>

@@ -25,6 +25,7 @@ import {Level as LoggerLevel} from "./services/logger/level";
 import {LoggerService} from "./services/logger/logger-service";
 import {FileLoggerService} from "./services/logger/file-logger-service";
 import {SecurityModule} from "./views/security/security.module";
+import {LocalStorageModule} from "./services/local-storage/local-storage.module";
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import {SecurityModule} from "./views/security/security.module";
         IonicModule.forRoot(DMLESMobile),
         CommonServicesModule.forRoot(),
         CommonEndpointsModule.forRoot(),
+        LocalStorageModule.forRoot(),
         TopicModule,
         InventoryModule,
         EquipmentModule,

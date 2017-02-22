@@ -71,7 +71,7 @@ export class OAuthService extends ApiService {
 
                     // FIX: The below method is promise based, we are treating this as sequential which is incorrect
                     this.authenticationService.saveToken(results.authctoken);
-                    
+
                     this.log.debug(`${this.serviceName} - New token received and saved`);
                     return results.authctoken;
 

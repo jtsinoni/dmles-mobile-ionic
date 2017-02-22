@@ -33,6 +33,7 @@ export class NotificationsComponent {
   }
 
   notificationSwiped(event, notice) {
+    console.log('deleting a notice');
     this.notificationService.delete(notice.id);
     this.getNotifications();   
   }

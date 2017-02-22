@@ -1,0 +1,30 @@
+<ion-content>
+  <ion-header>
+    Add Setting
+  </ion-header>
+  <form name="createSettingForm" [formGroup]="addSettingForm" (ngSubmit)="saveSetting()">
+    <ion-grid>
+      <ion-row>
+        <ion-col width-33>
+          <ion-input id="settingName" formControlName="nameInput" type="text" [(ngModel)]="model.settingName" placeholder="Name"></ion-input>
+        </ion-col>
+        <ion-col width-33>
+          <ion-input id="settingValue" formControlName="valueInput" type="text" [(ngModel)]="model.setting" placeholder="Setting Value"></ion-input>
+        </ion-col>
+        <ion-col width-33>
+          <ion-input id="settingDataType" formControlName="dataTypeInput" type="text" [(ngModel)]="model.dataType" placeholder="Data Type"></ion-input>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid>
+      <ion-row>
+        <ion-col width-50>
+          <button ion-button type="button" block (click)="dismiss()">Cancel</button>
+        </ion-col>
+        <ion-col width-50>
+          <button ion-button type="submit" block>Save</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

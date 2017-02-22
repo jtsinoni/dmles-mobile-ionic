@@ -18,6 +18,9 @@ import {LogViewerService} from "../../services/log-viewer.service";
 import {LocalFileStorageService} from "../../services/local-file-storage.service";
 import {JSONWebTokenService} from "../../services/jason-web-token.service";
 import {LoginModalService} from "../../services/login-modal.service";
+import {HostServerService} from "../../services/host-server.service";
+import {SettingsService} from "../../services/settings.service";
+import {DexieDatabaseService} from "../../services/dexie-database.service";
 
 
 @NgModule({
@@ -32,7 +35,7 @@ export class CommonServicesModule {
                         DatabaseService, CommonDataService, NetworkService, NotificationService,
                         TopicUpstreamService, TopicMessagingService,
                         LogViewerService, LocalFileStorageService, JSONWebTokenService,
-                        LoginModalService,
+                        LoginModalService, SettingsService, HostServerService, DexieDatabaseService,
                         { provide: UpstreamService, useClass: TopicUpstreamService },]
         };
     }

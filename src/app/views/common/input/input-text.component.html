@@ -3,7 +3,7 @@
 <ion-content padding>
     <div class="top-spacer-div"></div>
     <ion-item>
-        <ion-input #focusInput type="text" placeholder={{hintText}} [(ngModel)]="searchValue" name="searchInput" id="myInputField" clearInput="true"
+        <ion-input focuser type="text" placeholder={{hintText}} [(ngModel)]="searchValue" name="searchInput" id="myInputField" clearInput="true"
                    (keyup.enter)="saveTheData(searchValue)"></ion-input>
     </ion-item>
     <div padding>

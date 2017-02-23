@@ -9,15 +9,16 @@ import {WarningDialogComponent} from "../../views/common/dialogs/warning-dialog.
 import {GrowlDialogComponent} from "../../views/common/dialogs/growl-dialog.component";
 import {HelpComponent} from "../../views/help/help.component";
 import {SettingsComponent} from "../../views/settings/settings.component";
+import {Focuser} from "./focuser.directive";
 
 import {IonicModule} from "ionic-angular";
 import {NavDrawerHeaderComponent} from "../../views/common/header/nav-drawer-header.component";
 
 @NgModule({
     declarations: [NavDrawerHeaderComponent, HeaderPageComponent, RemoveParentElementDirective, AppMenuComponent, WarningDialogComponent, GrowlDialogComponent,
-    HelpComponent, SettingsComponent],
+    HelpComponent, SettingsComponent, Focuser],
     imports: [IonicModule],
-    exports: [NavDrawerHeaderComponent, HeaderPageComponent, RemoveParentElementDirective],
+    exports: [NavDrawerHeaderComponent, HeaderPageComponent, RemoveParentElementDirective, Focuser],
     entryComponents: [AppMenuComponent, WarningDialogComponent, GrowlDialogComponent, HelpComponent, SettingsComponent]
 })
 export class CommonDirectivesModule{}

@@ -9,8 +9,8 @@
 </ion-header>
 
 <ion-content>
-      <button menuClose ion-item icon-left color="{{area.color}}" *ngFor="let area of demoAreas" (click)="goTo(area)">
-        <ion-icon name="{{area.iconName}}"></ion-icon>
+      <button ion-item menuClose color="{{area.color}}" *ngFor="let area of demoAreas" (click)="goTo(area)">
+        <ion-icon item-left name="{{area.iconName}}"></ion-icon>
          {{area.title}}
       </button>
     <ion-fab right bottom>

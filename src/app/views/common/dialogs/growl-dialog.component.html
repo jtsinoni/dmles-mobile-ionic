@@ -1,4 +1,4 @@
-<ion-card class="growl-dialog" (swipe)="growlSwiped($event)">
+<ion-card class="ripple" class="growl-dialog" (swipe)="growlSwiped($event)">
     <ion-card-header>
         <ion-grid>
             <ion-row>
@@ -9,8 +9,8 @@
                 <ion-col width-25>
                     <ion-row>
                         <ion-buttons end>
-                            <button ion-button (click)="pauseTimer()">{{countDown}}</button>
-                            <button ion-button icon-only (click)="cancel()">
+                            <button ion-button class="ripple" (click)="pauseTimer()">{{countDown}}</button>
+                            <button ion-button class="ripple" icon-only (click)="cancel()">
                                 <ion-icon name="close"></ion-icon>
                             </button>
                         </ion-buttons>

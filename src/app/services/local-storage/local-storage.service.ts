@@ -6,14 +6,10 @@ import {LoggerService} from "../logger/logger-service";
  */
 @Injectable()
 export class LocalStorageService {
-    private serviceName = "LocalStorage Service";
+    protected serviceName = "LocalStorage Service";
 
-    constructor(private log: LoggerService) {
-        this.init();
-    }
-
-    private init() {
-        this.log.debug(`${this.serviceName} - Start`);
+    constructor(protected log: LoggerService) {
+        //this.log.debug(`${this.serviceName} - Start`);
     }
 
     public clearData(): Promise<any> {

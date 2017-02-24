@@ -131,7 +131,7 @@ export class DMLESMobile implements OnInit {
         // we may need to create one
         this.log.info('exiting app')
         this.authService.logout();
-        if (this.isMobility) {
+        if (this.isMobility && !this.platform.is('ios')) {
             this.platform.exitApp();
         }
     }

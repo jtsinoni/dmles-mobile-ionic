@@ -1,23 +1,19 @@
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
+import {Observable} from "rxjs";
 
 import {ApiService} from "./api.service";
-import {CurrentUserProfile} from "../models/current-user-profile.model";
 import {ApiConstants} from "../constants/api.constants";
 import {AuthenticationService} from "./authentication.service";
 import {AppService} from "./app.service";
 import {Base64Service} from "../common/services/base64.service";
-import {Observable} from "rxjs";
-import {LocalStorageService} from "./local-storage.service";
 import {LoggerService} from "./logger/logger-service";
 import {AppConfigConstants} from "../constants/app-config.constants";
 import {JSONWebTokenService} from "./jason-web-token.service";
-
-declare var window: any;
+import {LocalStorageService} from "./local-storage/local-storage.service";
 
 @Injectable()
 export class OAuthService extends ApiService {
-    public currentUser: CurrentUserProfile;
     private serviceName: string = "OAuth Service";
 
     constructor(http: Http,

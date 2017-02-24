@@ -95,4 +95,5 @@
     <plugin name="de.appplant.cordova.plugin.local-notification" spec="https://github.com/katzer/cordova-plugin-local-notifications#ios10" />
     <plugin name="phonegap-plugin-barcodescanner" spec="~6.0.5" />
     <plugin name="cordova-plugin-nativestorage" spec="~2.2.1" />
+    <plugin name="cordova-plugin-secure-storage" spec="~2.6.3" />
 </widget>

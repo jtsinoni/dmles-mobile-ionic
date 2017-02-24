@@ -26,7 +26,7 @@ import {LoggerService} from "./services/logger/logger-service";
 import {FileLoggerService} from "./services/logger/file-logger-service";
 import {SecurityModule} from "./views/security/security.module";
 import {LocalStorageModule} from "./services/local-storage/local-storage.module";
-
+import {ServerSelectorModule} from "./views/utilities/server-selector.module";
 
 @NgModule({
     declarations: [
@@ -39,6 +39,7 @@ import {LocalStorageModule} from "./services/local-storage/local-storage.module"
         CommonServicesModule.forRoot(),
         CommonEndpointsModule.forRoot(),
         LocalStorageModule.forRoot(),
+        ServerSelectorModule,
         TopicModule,
         InventoryModule,
         EquipmentModule,

@@ -1,13 +1,14 @@
 import {Injectable} from "@angular/core";
 import {NativeStorage} from 'ionic-native';
 import {LoggerService} from "../logger/logger-service";
-import {UtilService} from "../../common/services/util.service";
+import {LocalStorageService} from "./local-storage.service";
 
 @Injectable()
-export class LocalNativeStorageService {
-    private serviceName = "LocalNativeStorage Service";
+export class LocalNativeStorageService extends LocalStorageService {
+    serviceName = "LocalNativeStorage Service";
 
-    constructor(private log: LoggerService, private utilService: UtilService) {
+    constructor(log: LoggerService) {
+        super(log);
         this.log.debug(`${this.serviceName} - Start`);
     }
 
@@ -15,6 +16,7 @@ export class LocalNativeStorageService {
         return NativeStorage.clear()
             .then(() => {
                 this.log.debug(`${this.serviceName} - Cache data cleared`);
+                return true;
             })
             .catch((error) => {
                 this.log.error(`${this.serviceName} => ${error}`)
@@ -29,8 +31,7 @@ export class LocalNativeStorageService {
                 return data;
             })
             .catch((error) => {
-                // Do nothing, this occurs when the key is not found
-                //this.log.error(`${this.serviceName} => ${error}`)
+                this.log.warn(`Key ${key} not found is SecureStorage`);
             });
     }
 
@@ -38,22 +39,19 @@ export class LocalNativeStorageService {
         return NativeStorage.remove(key)
             .then(() => {
                 this.log.debug(`${this.serviceName} - Cache data removed: ${key}`);
+
+                return true;
             })
             .catch((error) => {
-                this.log.error(`${this.serviceName} => ${error}`)
+                this.log.warn(`Key ${key} not found is SecureStorage`);
             })
     }
 
-    public storeData(key:string, data:any, stringify:boolean): Promise<any> {
-        if(stringify && !this.utilService.isObjectEmpty(data)){
-            data = JSON.stringify(data);
-            this.log.debug(`${this.serviceName} - Stringified data to be cached`);
-        }
-
+    public storeData(key:string, data:any): Promise<any> {
         return NativeStorage.setItem(key, data)
-            .then(() => {
-                this.log.debug(`${this.serviceName} - Stored data => ${key} => ${JSON.stringify(data)}`);
-                return data;
+            .then((results) => {
+                this.log.debug(`${this.serviceName} - Stored data => ${key} => ${JSON.stringify(results)}, results => ${results}`);
+                return results;
             })
             .catch((error) => {
                 this.log.error(`${this.serviceName} => ${error}`)

@@ -1,60 +1,58 @@
 import {Injectable} from "@angular/core";
 import {LoggerService} from "../logger/logger-service";
-import {UtilService} from "../../common/services/util.service";
-
-declare var window: any;
+import {WindowService} from "../window.service";
+import {LocalStorageService} from "./local-storage.service";
 
 @Injectable()
-export class LocalDevStorageService {
-    private serviceName = "LocalDevStorageService";
+export class LocalDevStorageService extends LocalStorageService {
+    serviceName = "LocalDevStorageService";
 
-    constructor(private log: LoggerService, private utilService: UtilService) {
+    constructor(log: LoggerService, private windowService: WindowService) {
+        super(log);
         this.log.debug(`${this.serviceName} - Start`);
     }
 
-/*
- public clearData(): Promise<any>
+    public clearData(): Promise<any>{
+        return Promise.resolve()
+            .then(() => {
+                this.windowService.window.localStorage.clear();
+                this.log.debug(`${this.serviceName} - Cache data cleared`);
 
- public getData(key:string): Promise<any>
-
- public removeData(key:string): Promise<any>
-
- public storeData(key:string, data:any): Promise<any>
-     */
-    public clearData(){
-        window.localStorage.clear();
-        this.log.debug(`${this.serviceName} - Cache data cleared`);
+                return true;
+            })
     }
 
-    public getData(key:string){
-        var value:any = window.localStorage.getItem(key);
+    public getData(key:string): Promise<any> {
+        return Promise.resolve()
+            .then(() => {
+                let value:any = this.windowService.window.localStorage.getItem(key);
+                this.log.debug(`${this.serviceName} - Get cache data: ${key} => ${value}`);
 
-        if (!value || "undefined" == value || "null" == value) {
-            return null;
-        }
+                if (!value || "undefined" == value || "null" == value) {
+                    return null;
+                }
 
-        // assume it is an object that has been stringified
-        if (value[0] === "{") {
-            value = JSON.parse(value);
-        }
-
-        this.log.debug(`${this.serviceName} - Get cache data: ${key} => ${value}`);
-        return value;
+                return value;
+            });
     }
 
-    public removeData(key:string){
-        window.localStorage.removeItem(key);
-        this.log.debug(`${this.serviceName} - Cache data removed: ${key}`);
+    public removeData(key:string): Promise<any> {
+        return Promise.resolve()
+            .then(() => {
+                this.windowService.window.localStorage.removeItem(key);
+                this.log.debug(`${this.serviceName} - Cache data removed: ${key}`);
+
+                return true;
+            });
     }
 
-    public storeData(key:string, data:any, stringify:boolean){
-        this.log.debug(`${this.serviceName} - Store cache data: ${key} => ${JSON.stringify(data)}`);
+    public storeData(key:string, data:any){
+        return Promise.resolve()
+            .then(() => {
+                this.windowService.window.localStorage[key] = data;
+                this.log.debug(`${this.serviceName} - Store cache data: ${key} => ${JSON.stringify(data)}`);
 
-        if(stringify && !this.utilService.isObjectEmpty(data)){
-            data = JSON.stringify(data);
-            this.log.debug(`${this.serviceName} - Stringified cached data`);
-        }
-
-        window.localStorage[key] = data;
+                return data;
+            });
     }
 }

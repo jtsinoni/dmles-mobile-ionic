@@ -1,8 +1,8 @@
 import {ApiConstants} from "../constants/api.constants";
 import {Injectable} from "@angular/core";
-import {LocalStorageService} from "./local-storage.service";
 import {LoggerService} from "./logger/logger-service";
 import { JSONWebTokenService } from "./jason-web-token.service";
+import {LocalStorageService} from "./local-storage/local-storage.service";
 
 @Injectable()
 export class AuthenticationService {
@@ -26,7 +26,7 @@ export class AuthenticationService {
     }
 
     public saveToken(token):Promise<any> {
-        return this.localStorageService.storeData(ApiConstants.DMLES_TOKEN, token, false);
+        return this.localStorageService.storeData(ApiConstants.DMLES_TOKEN, token);
     }
 
     public isTokenValid(): Promise<boolean> {

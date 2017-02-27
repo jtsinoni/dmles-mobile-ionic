@@ -9,6 +9,7 @@ import {WarningDialogComponent} from "../../views/common/dialogs/warning-dialog.
 import {GrowlDialogComponent} from "../../views/common/dialogs/growl-dialog.component";
 import {IonicModule} from "ionic-angular";
 import {NavDrawerHeaderComponent} from "../../views/common/header/nav-drawer-header.component";
+import {Focuser} from "./focuser.directive";
 
 @NgModule({
     declarations: [
@@ -18,9 +19,10 @@ import {NavDrawerHeaderComponent} from "../../views/common/header/nav-drawer-hea
         AppMenuComponent, 
         WarningDialogComponent, 
         GrowlDialogComponent,
+        Focuser
     ],
     imports: [IonicModule],
-    exports: [NavDrawerHeaderComponent, HeaderPageComponent, RemoveParentElementDirective],
+    exports: [NavDrawerHeaderComponent, HeaderPageComponent, RemoveParentElementDirective, Focuser],
     entryComponents: [AppMenuComponent, WarningDialogComponent, GrowlDialogComponent]
 })
 export class CommonDirectivesModule{}

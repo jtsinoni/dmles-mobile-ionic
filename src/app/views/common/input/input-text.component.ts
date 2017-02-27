@@ -1,5 +1,6 @@
-import {Component, ViewChild} from '@angular/core';
-import {NavController, NavParams, Platform, ModalController, TextInput} from 'ionic-angular';
+import {Component} from '@angular/core';
+//import {Component, ViewChild} from '@angular/core';
+import {NavController, NavParams, Platform, ModalController} from 'ionic-angular';
 import {Search} from "../../common/search";
 import {LoadingController} from 'ionic-angular';
 import {LoggerService} from "../../../services/logger/logger-service";
@@ -8,6 +9,7 @@ import {BarcodeData} from "./barcode-data";
 import {UtilService} from "../../../common/services/util.service";
 import {Level as LoggerLevel, Level} from "../../../services/logger/level";
 import {GrowlDialogComponent} from "../dialogs/growl-dialog.component";
+import {Focuser} from "../../../common/directives/focuser.directive";
 
 @Component({
   selector: 'input-text',
@@ -15,7 +17,8 @@ import {GrowlDialogComponent} from "../dialogs/growl-dialog.component";
 })
 
 export class InputTextComponent extends Search {
-    @ViewChild('focusInput') myInput; //: HTMLInputElement; or : TextInput;  // actually this is TextInput
+    // NOTE: this is a working alternate approach for renderer
+    //@ViewChild('focusInput') myInput; //: HTMLInputElement; or : TextInput;  // actually this is TextInput
 
     pushNav: any;
     navTitle: string;
@@ -50,7 +53,8 @@ export class InputTextComponent extends Search {
             }, 300); // increased timeout from 150ms, seemed too short
 
             setTimeout(() => {
-                this.selectAll(this.myInput);
+                //this.selectAll(this.myInput); // NOTE: This is a working alternative to renderer, however renderer approach is preferred
+                Focuser.refocus();
             }, 300); // increased timeout from 150ms, seemed too short
         });
     }
@@ -65,7 +69,7 @@ export class InputTextComponent extends Search {
     }
 
     public saveTheData(value: string) {
-        let searchValue = this.prefix + "'" + value + "'";
+        let searchCriteria = this.prefix + "'" + value + "'";
         let message = '(' + value + ')';
         this.showGrowl(LoggerLevel.INFO, 'Entered: ', message);
 
@@ -73,22 +77,35 @@ export class InputTextComponent extends Search {
         this.navCtrl.push(this.pushNav, {
             navTitle: this.navTitle,
             hintText: this.hintText,
-            searchValue: searchValue,
+            searchValue: searchCriteria,
             aggregations: this.aggregations
         });
     }
 
-    public barcodeScanClick(searchValue: string) {
+    public barcodeScanClick(searchVal: string) {
         this.platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
 
             if (this.util.isMobility()) {
+                // Camera barcode scan
                 BarcodeScanner.scan()
                     .then((result) => {
                         if (!result.cancelled) {
-                            let barcodeData = new BarcodeData(result.text, result.format);
-                            this.scanDetails(barcodeData);
+                            let barcodeData: BarcodeData = new BarcodeData(result.text, result.format);
+
+                            if (barcodeData) {
+                                // TODO: should we use renderer approach via DOM two-way data bind, initially I used the renderer Focuser.setText() below, but it didn't update the DOM
+                                // Without two-way data binding, the side effect was enter a value to search, then use camera to scan barcode, which worked, but even though the
+                                // scanned value was put into the input textbox, but when regular non-camera, non-scanner input was input again (the search button selected),
+                                // the OLD search value was used, hmmm
+                                this.searchValue = result.text; //NOTE: MAGIC: This performs two-way data bind back to the DOM
+                                searchVal = this.searchValue;
+
+                                //Focuser.setText(result.text); // This approach did not update the DOM as advertised (bug in renderer?)
+
+                                this.scanDetails(searchVal);
+                            }
                         }
                         else {
                             let message = 'Scan request Cancelled';
@@ -101,31 +118,29 @@ export class InputTextComponent extends Search {
                     })
             }
             else {
-                let barcodeData = new BarcodeData(searchValue, 'n/a');
-                this.scanDetails(barcodeData);
+                this.scanDetails(searchVal);
             }
         });
     }
 
-    public selectAll(field: TextInput) {
-        field.setFocus(); // field._native.element().autofocus = true; // latter doesn't work
-        // field._clearOnEdit = true; // WORKS kinda, but clears when user starts typing even though text is not highlighted
+    // NOTE: This 'working' approach is manipulating the DOM directly and we switched to the renderer approach
+    // public selectAll(field: TextInput) {
+    //     field.setFocus(); // field._native.element().autofocus = true; // latter doesn't work
+    //     // field._clearOnEdit = true; // WORKS kinda, but clears when user starts typing even though text is not highlighted
+    //
+    //     if (field.value && field.value.length > 0) {
+    //         // MAGIC: this highlighted the field!
+    //         field._native.element().setSelectionRange(0, field.value.length);
+    //
+    //         // Would prefer to .select() or .setSelectionRange() rather than .clearTextInput() or the above ._clearOnEdit
+    //         //field.select();
+    //         //field.setSelectionRange(0, field.value.length);
+    //         //field.clearTextInput();
+    //     }
+    // }
 
-        if (field.value && field.value.length > 0) {
-            //alert('mec...got field Name (' + field._componentName + '), Value=(' + field.value + '), Len=(' + field.value.length + '), Type=(' + field.type + ')');
-
-            // MAGIC: this highlighted the field!
-            field._native.element().setSelectionRange(0, field.value.length);
-
-            // Would prefer to .select() or .setSelectionRange() rather than .clearTextInput() or the above ._clearOnEdit
-            //field.select();
-            //field.setSelectionRange(0, field.value.length);
-            //field.clearTextInput();
-        }
-    }
-
-    private scanDetails(details) {
-        this.saveTheData(details.text);
+    private scanDetails(scannedValue: string) {
+        this.saveTheData(scannedValue);
     }
 
     public showGrowl(level: LoggerLevel, title, message, duration?: number, position?) {

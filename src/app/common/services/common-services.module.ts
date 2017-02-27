@@ -5,7 +5,6 @@ import {BaseSelectFilterService} from "./base-select-filter.service";
 import {Base64Service} from "./base64.service";
 import {OAuthService} from "../../services/oauth.service";
 import {AuthenticationService} from "../../services/authentication.service";
-import {LocalStorageService} from "../../services/local-storage.service";
 import {AppService} from "../../services/app.service";
 import {DatabaseService} from "../../services/database.service";
 import {CommonDataService} from "../../services/common-data.service";
@@ -21,6 +20,7 @@ import {LoginModalService} from "../../services/login-modal.service";
 import {HostServerService} from "../../services/host-server.service";
 import {SettingsService} from "../../services/settings.service";
 import {DexieDatabaseService} from "../../services/dexie-database.service";
+import {WindowService} from "../../services/window.service";
 
 
 @NgModule({
@@ -30,7 +30,7 @@ export class CommonServicesModule {
         return {
             ngModule: CommonServicesModule,
             providers: [Base64Service, BaseSelectFilterService, UtilService,
-                        LocalStorageService, AuthenticationService,
+                        AuthenticationService, WindowService,
                         AppService, OAuthService,
                         DatabaseService, CommonDataService, NetworkService, NotificationService,
                         TopicUpstreamService, TopicMessagingService,

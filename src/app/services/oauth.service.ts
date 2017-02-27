@@ -1,23 +1,19 @@
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
+import {Observable} from "rxjs";
 
 import {ApiService} from "./api.service";
-import {CurrentUserProfile} from "../models/current-user-profile.model";
 import {ApiConstants} from "../constants/api.constants";
 import {AuthenticationService} from "./authentication.service";
 import {AppService} from "./app.service";
 import {Base64Service} from "../common/services/base64.service";
-import {Observable} from "rxjs";
-import {LocalStorageService} from "./local-storage.service";
 import {LoggerService} from "./logger/logger-service";
 import {AppConfigConstants} from "../constants/app-config.constants";
 import {JSONWebTokenService} from "./jason-web-token.service";
-
-declare var window: any;
+import {LocalStorageService} from "./local-storage/local-storage.service";
 
 @Injectable()
 export class OAuthService extends ApiService {
-    public currentUser: CurrentUserProfile;
     private serviceName: string = "OAuth Service";
 
     constructor(http: Http,
@@ -37,35 +33,46 @@ export class OAuthService extends ApiService {
         return this.getTokenViaOAuth("token", encodedDn);
     }
 
-    public getToken(dn):Observable<any> {
-        let token = this.localStorageService.getData(ApiConstants.DMLES_TOKEN);
-        if(token){
-            this.log.debug(`${this.serviceName} - Token found locally`);
-
-            // Check if token is expired
-            if(this.jwtService.isTokenExpired(token)) {
-                this.log.debug(`Token expired => ${this.jwtService.getTokenExpirationDate(token)}`);
+    public getToken(dn): Observable<any> {
+        return Observable.fromPromise(
+            this.localStorageService.getData(ApiConstants.DMLES_TOKEN)
+                .then((token) => {
+                    return token;
+                })
+                .catch((error) => {
+                    this.log.error(`${this.serviceName} => ${error}`)
+                })
+        )
+        .flatMap((token) => {
+            if(token) {
+                this.log.debug(`${this.serviceName} - Token found locally`);
+                if(this.jwtService.isTokenExpired(token)) {
+                    this.log.debug(`Token expired => ${this.jwtService.getTokenExpirationDate(token)}`);
+                    return this.getNewToken(dn);
+                } else {
+                    return Observable.of(token);
+                }
+            } else {
+                this.log.debug(`${this.serviceName} - Token not found locally`);
                 return this.getNewToken(dn);
             }
-
-            return Observable.of(token);
-        }else{
-            this.log.debug(`${this.serviceName} - Token not found locally`);
-            return this.getNewToken(dn);
-        }
+        });
     }
 
-    public getNewToken(dn): Observable<any> {
+    private getNewToken(dn): Observable<any> {
         return this.apiGetToken(dn)
             .map((response) => {
                 if(response) {
                     let results = response.json();
+
+                    // FIX: The below method is promise based, we are treating this as sequential which is incorrect
                     this.authenticationService.saveToken(results.authctoken);
+
                     this.log.debug(`${this.serviceName} - New token received and saved`);
                     return results.authctoken;
 
                 } else {
-                    return Observable.of(null)
+                    return null;
                 }
             });
     }

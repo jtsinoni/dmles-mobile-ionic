@@ -56,23 +56,41 @@ export class ApiService {
         let url: string = this.determineUrl(action);
         this.log.debug(`${this.apiServiceName} - BT Get URL: ${url}`);
 
-        let headers = new Headers();
-        headers.append('Authorization', 'Token ' + this.Authentication.getToken());
-        headers.append('ClientId', 'dmles');
+        return this.getLocalToken()
+            .flatMap((token) => {
+                let headers = new Headers();
+                headers.append('Authorization', 'Token ' + token);
+                headers.append('ClientId', 'dmles');
 
-        return this.http.get(url, {headers: headers});
+                return this.http.get(url, {headers: headers});
+            });
     };
 
     public post(action: string, data: any): Observable<any> {
         let url: string = this.determineUrl(action);
         this.log.debug(`${this.apiServiceName} - BT Post URL: ${url}`);
 
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', 'Token ' + this.Authentication.getToken());
-        headers.append('ClientId', 'dmles');
+        return this.getLocalToken()
+            .flatMap((token) => {
+                let headers = new Headers();
+                headers.append('Content-Type', 'application/json');
+                headers.append('Authorization', 'Token ' + token);
+                headers.append('ClientId', 'dmles');
 
-        return this.http.post(url, data, {headers: headers});
+                return this.http.post(url, data, {headers: headers});
+            });
     };
+
+    private getLocalToken(): Observable<any> {
+        return Observable.fromPromise(
+            this.Authentication.getToken()
+                .then((token) => {
+                    return token;
+                })
+                .catch((error) => {
+                    this.log.error(`${this.apiServiceName} - ${error}`);
+                })
+        )
+    }
 
 }

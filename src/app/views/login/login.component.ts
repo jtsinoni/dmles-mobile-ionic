@@ -42,7 +42,6 @@ export class LoginComponent {
                 this.OAuthService.getToken(loginModel.username)
                     .subscribe(
                     (token) => {
-
                         let decodedToken = this.jwtService.decodeToken(token);
                         let message = `OAuth Token Decoded => ${JSON.stringify(decodedToken)}`;
                         this.addLogMessage(message);
@@ -87,6 +86,6 @@ export class LoginComponent {
         this.viewController.dismiss();
     }
 
-   
+
 
 }

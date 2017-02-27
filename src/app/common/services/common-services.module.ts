@@ -18,6 +18,7 @@ import {LogViewerService} from "../../services/log-viewer.service";
 import {LocalFileStorageService} from "../../services/local-file-storage.service";
 import {JSONWebTokenService} from "../../services/jason-web-token.service";
 import {LoginModalService} from "../../services/login-modal.service";
+import {BluetoothModalService} from "../../services/bluetooth-modal.service";
 import {HostServerService} from "../../services/host-server.service";
 import {SettingsService} from "../../services/settings.service";
 import {DexieDatabaseService} from "../../services/dexie-database.service";
@@ -26,17 +27,32 @@ import {DexieDatabaseService} from "../../services/dexie-database.service";
 @NgModule({
 })
 export class CommonServicesModule {
-    static forRoot():ModuleWithProviders {
+    static forRoot(): ModuleWithProviders {
         return {
             ngModule: CommonServicesModule,
-            providers: [Base64Service, BaseSelectFilterService, UtilService,
-                        LocalStorageService, AuthenticationService,
-                        AppService, OAuthService,
-                        DatabaseService, CommonDataService, NetworkService, NotificationService,
-                        TopicUpstreamService, TopicMessagingService,
-                        LogViewerService, LocalFileStorageService, JSONWebTokenService,
-                        LoginModalService, SettingsService, HostServerService, DexieDatabaseService,
-                        { provide: UpstreamService, useClass: TopicUpstreamService },]
+            providers: [
+                Base64Service,
+                BaseSelectFilterService,
+                UtilService,
+                LocalStorageService,
+                AuthenticationService,
+                AppService,
+                OAuthService,
+                DatabaseService,
+                CommonDataService,
+                NetworkService,
+                NotificationService,
+                TopicUpstreamService,
+                TopicMessagingService,
+                LogViewerService,
+                LocalFileStorageService,
+                JSONWebTokenService,
+                LoginModalService,
+                BluetoothModalService,
+                SettingsService,
+                HostServerService,
+                DexieDatabaseService,
+                {provide: UpstreamService, useClass: TopicUpstreamService},]
         };
     }
 

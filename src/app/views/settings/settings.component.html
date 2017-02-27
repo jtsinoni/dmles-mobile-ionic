@@ -1,20 +1,30 @@
 <mb-nav-drawer-header remove-parent-element [title]="'Settings'"></mb-nav-drawer-header>
 
 <ion-content>
-  <ion-navbar>
-    <header>Allowing add here since getting from a file requires a device</header>
+    <ion-navbar>
+        <header>Allowing add here since getting from a file requires a device</header>
         <ion-buttons end ng-if="isMobility == false">
-      <button ion-button icon-only (click)="addSetting()">
-      <ion-icon name="add" right ></ion-icon>
-     </button>
-    </ion-buttons>
-  </ion-navbar>
+            <button ion-button icon-only (click)="addSetting()">
+                <ion-icon name="add" right></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
 
-  <ion-list>
-    <ion-item *ngFor="let item of settings" (press)="itemSelected(item)">
-      <ion-label>{{item.settingName}}</ion-label>
-      <ion-label>{{item.setting}}</ion-label>     
-    </ion-item>
-  </ion-list>
+    <ion-list>
+        <ion-item *ngFor="let item of settings" (press)="itemSelected(item)">
+            <ion-label>{{item.settingName}}</ion-label>
+            <ion-label>{{item.setting}}</ion-label>
+        </ion-item>
+    </ion-list>
+
+    <div padding>
+        <button ion-button color="primary" id="bluetoothButton" block (click)="presentBluetoothModal()">
+            <ion-col>
+                <ion-icon name="bluetooth"></ion-icon>
+                <span>Bluetooth Settings</span>
+            </ion-col>
+        </button>
+
+    </div>
 
 </ion-content>

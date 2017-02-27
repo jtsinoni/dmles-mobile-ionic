@@ -94,4 +94,5 @@
     <plugin name="cordova-plugin-inappbrowser" spec="~1.6.1" />
     <plugin name="de.appplant.cordova.plugin.local-notification" spec="https://github.com/katzer/cordova-plugin-local-notifications#ios10" />
     <plugin name="phonegap-plugin-barcodescanner" spec="~6.0.5" />
+    <plugin name="cordova-plugin-bluetooth-serial" spec="~0.4.6"/>
 </widget>

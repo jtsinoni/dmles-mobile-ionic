@@ -16,11 +16,34 @@ import {IonicModule} from "ionic-angular";
 import {NavDrawerHeaderComponent} from "../../views/common/header/nav-drawer-header.component";
 
 @NgModule({
-    declarations: [NavDrawerHeaderComponent, HeaderPageComponent, RemoveParentElementDirective, AppMenuComponent, WarningDialogComponent, GrowlDialogComponent,
-        HelpComponent, SettingsComponent, AddSettingComponent, Focuser],
+    declarations: [
+        NavDrawerHeaderComponent,
+        HeaderPageComponent,
+        RemoveParentElementDirective,
+        AppMenuComponent,
+        WarningDialogComponent,
+        GrowlDialogComponent,
+        HelpComponent,
+        SettingsComponent,
+        AddSettingComponent,
+        Focuser
+    ],
     imports: [IonicModule],
-    exports: [NavDrawerHeaderComponent, HeaderPageComponent, RemoveParentElementDirective, Focuser],
-    entryComponents: [AppMenuComponent, WarningDialogComponent, GrowlDialogComponent, HelpComponent, SettingsComponent, AddSettingComponent]
+    exports: [
+        NavDrawerHeaderComponent,
+        HeaderPageComponent,
+        RemoveParentElementDirective,
+        Focuser
+    ],
+    entryComponents: [
+        AppMenuComponent,
+        WarningDialogComponent,
+        GrowlDialogComponent,
+        HelpComponent,
+        SettingsComponent,
+        AddSettingComponent
+    ]
 })
+
 export class CommonDirectivesModule{}
 

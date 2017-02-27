@@ -5,6 +5,7 @@ import { SettingsModel } from "../../models/settings.model";
 import { ModalController } from 'ionic-angular';
 import { AddSettingComponent } from "./add-setting/add-setting.component";
 import { UtilService } from "./../../common/services/util.service";
+import { BluetoothModalService } from "../../services/bluetooth-modal.service";
 
 @Component({
   selector: 'settings',
@@ -23,7 +24,9 @@ export class SettingsComponent {
     private settingService: SettingsService,
     public modalController: ModalController,
     private log: LoggerService,
-    private utilService: UtilService) {
+    private utilService: UtilService,
+    private bluetoothModalService: BluetoothModalService
+      ) {
   }
 
   ionViewWillEnter() {
@@ -31,7 +34,7 @@ export class SettingsComponent {
     //   this.isMobility = true;
       this.setSettingsCount();
       this.log.debug('settings count is: ' + this.settingsCount);
-     
+
       if (this.settingsCount < 1) {
         // add settings to the db from asset file
         this.log.debug('getting asset file');
@@ -86,4 +89,7 @@ export class SettingsComponent {
   //   }
   // }
 
+    presentBluetoothModal() {
+        this.bluetoothModalService.presentModal();
+    }
 }

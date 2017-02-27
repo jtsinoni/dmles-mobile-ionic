@@ -1,6 +1,9 @@
+import {UtilService} from "../common/services/util.service";
 export class AppConfigConstants {
     constructor() {
     }
+
+    private static host: string = UtilService.getHost();
 
     public static clientLogFileName: string = "client.log";
 
@@ -14,7 +17,7 @@ export class AppConfigConstants {
 
 
         //"btBaseUrl"   : "https:/140.139.35.29:8443/"  // Dev New
-        "btBaseUrl": "http://localhost:8080/"
+        "btBaseUrl": (AppConfigConstants.host)?`http://${AppConfigConstants.host}:8080/`:`http://localhostXX:8080/`
     };
 
     //TODO: get from UserForm, derived credentials, etc

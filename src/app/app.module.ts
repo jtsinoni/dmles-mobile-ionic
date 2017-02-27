@@ -11,6 +11,8 @@ import {SupplyComponent} from './views/supply/supply.component';
 import {InventoryModule} from "./views/inventory/inventory.module";
 import {SupplyModule} from "./views/supply/supply.module";
 import {ServicesModule} from "./services/services.module";
+import {SettingsModule} from './views/settings/settings.module'
+import {HelpModule} from './views/help/help.module'
 
 import {EquipmentModule} from "./views/equipment/equipment.module";
 import {TopicModule} from "./views/topic/topic.module";
@@ -48,6 +50,8 @@ import {SecurityModule} from "./views/security/security.module";
         CommonDirectivesModule,
         SecurityModule,
         FormsModule,
+        SettingsModule,
+        HelpModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [

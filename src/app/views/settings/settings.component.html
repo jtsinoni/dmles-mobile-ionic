@@ -9,17 +9,27 @@
      </button>
     </ion-buttons>
   </ion-navbar>
-
+  <ion-list-header>
+    My Settings
+  </ion-list-header>
   <ion-list>
-    <ion-item *ngFor="let item of settings" (press)="itemSelected(item)">
+    <ion-item *ngFor="let setting of settings" (press)="itemSelected(setting)">
 
-      <ion-label>{{item.settingName}}</ion-label>
-      <ion-toggle [hidden]="isHidden(item, 'boolean')" [(ngModel)]="item.setting"></ion-toggle>
-      <ion-input [hidden]="isHidden(item, 'number')" type="number" [(ngModel)]="item.setting"></ion-input>
-      <ion-input [hidden]="isHidden(item, 'text')" type="text" [(ngModel)]="item.setting"></ion-input>
-      <settings-display item-content [setting]="item"></settings-display> 
+      <ion-label>{{setting.settingName}}</ion-label>
+      <ion-toggle [hidden]="isHidden(setting, 'boolean')" [(ngModel)]="setting.setting"></ion-toggle>
+      <ion-input [hidden]="isHidden(setting, 'number')" type="number" [(ngModel)]="setting.setting"></ion-input>
+      <ion-input [hidden]="isHidden(setting, 'text')" type="text" [(ngModel)]="setting.setting"></ion-input>
+
     </ion-item>
-    
+    <ion-item-divider>Bluetooth Printers</ion-item-divider>
+    <ion-item>
+      <settings-display item-content [title]="'Bluetooth Printers'"></settings-display>
+    </ion-item>
+    <ion-item>
+      <ion-item-divider>Host Servers</ion-item-divider>
+    </ion-item>
+    <ion-item>
+      <settings-display item-content [title]="'Host Servers'"></settings-display>
+    </ion-item>
   </ion-list>
-  
 </ion-content>

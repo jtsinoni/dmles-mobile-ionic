@@ -1,17 +1,14 @@
 import { Component } from '@angular/core';
-//import { CommonModule } from '@angular/common';
 import { SettingsService } from '../../services/settings.service';
 import { LoggerService } from "../../services/logger/logger-service";
 import { SettingsModel } from "../../models/settings.model";
 import { ModalController } from 'ionic-angular';
 import { AddSettingComponent } from "./add-setting/add-setting.component";
 import { UtilService } from "./../../common/services/util.service";
-//import { SettingsDisplayComponent } from './settings-display.component';
 
 @Component({
   selector: 'settings',
   templateUrl: './settings.component.html',
-  //entryComponents: [SettingsDisplayComponent]
 })
 export class SettingsComponent {
 
@@ -27,6 +24,10 @@ export class SettingsComponent {
     public modalController: ModalController,
     private log: LoggerService,
     private utilService: UtilService) {
+
+   
+
+
   }
 
   ionViewWillEnter() {
@@ -34,7 +35,7 @@ export class SettingsComponent {
       this.isMobility = true;
       this.setSettingsCount();
       this.log.debug('settings count is: ' + this.settingsCount);
-     
+
       if (this.settingsCount < 1) {
         // add settings to the db from asset file
         this.log.debug('getting asset file');
@@ -80,6 +81,7 @@ export class SettingsComponent {
     this.log.debug('you selected setting: ' + setting.settingName);
     this.selectedItem = setting;
   }
+
 
   isHidden(item: SettingsModel, datatype: string) {
     if (datatype != item.dataType) {

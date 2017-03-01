@@ -17,6 +17,10 @@ export class UtilService {
         return newObj;
     }
 
+    public static getHost(): string {
+        return (HOST_MB)? HOST_MB : undefined;
+    }
+
     public isProd(): boolean {
         return (IONIC_ENV_MB === 'prod')? true : false;
     }

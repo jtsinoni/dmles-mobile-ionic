@@ -21,6 +21,8 @@ import {HostServerService} from "../../services/host-server.service";
 import {SettingsService} from "../../services/settings.service";
 import {DexieDatabaseService} from "../../services/dexie-database.service";
 import {WindowService} from "../../services/window.service";
+import {BluetoothModalService} from "../../services/bluetooth-modal.service";
+
 
 
 @NgModule({
@@ -29,14 +31,29 @@ export class CommonServicesModule {
     static forRoot():ModuleWithProviders {
         return {
             ngModule: CommonServicesModule,
-            providers: [Base64Service, BaseSelectFilterService, UtilService,
-                        AuthenticationService, WindowService,
-                        AppService, OAuthService,
-                        DatabaseService, CommonDataService, NetworkService, NotificationService,
-                        TopicUpstreamService, TopicMessagingService,
-                        LogViewerService, LocalFileStorageService, JSONWebTokenService,
-                        LoginModalService, SettingsService, HostServerService, DexieDatabaseService,
-                        { provide: UpstreamService, useClass: TopicUpstreamService },]
+            providers: [
+                Base64Service,
+                BaseSelectFilterService,
+                UtilService,
+                AuthenticationService,
+                WindowService,
+                AppService,
+                OAuthService,
+                DatabaseService,
+                CommonDataService,
+                NetworkService,
+                NotificationService,
+                TopicUpstreamService,
+                TopicMessagingService,
+                LogViewerService,
+                LocalFileStorageService,
+                JSONWebTokenService,
+                LoginModalService,
+                SettingsService,
+                HostServerService,
+                DexieDatabaseService,
+                BluetoothModalService,
+                { provide: UpstreamService, useClass: TopicUpstreamService },]
         };
     }
 

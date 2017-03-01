@@ -1,0 +1,32 @@
+<mb-nav-drawer-header remove-parent-element [title]="Bluetooth"></mb-nav-drawer-header>
+
+<ion-header (swipe)="cancel()">
+    <ion-navbar>
+        <ion-title item-center text-wrap>{{bluetoothText}}</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="cancel()">
+                <ion-icon name="close-circle" left></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content class="ripple" (swipe)="cancel()">
+    <div padding>
+        <button ion-button color="primary" id="bluetoothButton" block (click)="bluetooth(bluetoothModel)">
+            <ion-col>
+                <ion-icon name="bluetooth"></ion-icon>
+                <span>{{bluetoothText}} (System Settings)</span>
+            </ion-col>
+        </button>
+
+    </div>
+
+    <div padding>
+        <button ion-button *ngIf="showEnableBluetoothButton" color="primary" id="enableBluetoothButton" block
+                (click)="enableBluetooth()">Enable {{bluetoothText}}
+        </button>
+    </div>
+</ion-content>
+

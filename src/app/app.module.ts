@@ -6,6 +6,7 @@ import {DMLESMobile} from './app.component';
 
 import {AppContainerComponent} from './app-container.component';
 import {LoginComponent} from  './views/login/login.component';
+import {BluetoothComponent} from  './views/bluetooth/bluetooth.component';
 import {InventoryComponent} from './views/inventory/inventory.component';
 import {SupplyComponent} from './views/supply/supply.component';
 import {InventoryModule} from "./views/inventory/inventory.module";
@@ -34,7 +35,8 @@ import {ServerSelectorModule} from "./views/utilities/server-selector.module";
     declarations: [
         DMLESMobile,
         AppContainerComponent,
-        LoginComponent
+        LoginComponent,
+        BluetoothComponent
     ],
     imports: [
         IonicModule.forRoot(DMLESMobile),
@@ -62,7 +64,8 @@ import {ServerSelectorModule} from "./views/utilities/server-selector.module";
         InventoryComponent,
         SupplyComponent,
         AppContainerComponent,
-        LoginComponent
+        LoginComponent,
+        BluetoothComponent
     ],
     providers: [
         { provide: LoggerService, useClass: FileLoggerService },

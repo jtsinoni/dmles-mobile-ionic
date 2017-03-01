@@ -2,9 +2,11 @@ import { Component } from '@angular/core';
 import { SettingsService } from '../../services/settings.service';
 import { LoggerService } from "../../services/logger/logger-service";
 import { SettingsModel } from "../../models/settings.model";
+import { ServerModel } from "../../models/server.model";
 import { ModalController } from 'ionic-angular';
 import { AddSettingComponent } from "./add-setting/add-setting.component";
 import { UtilService } from "./../../common/services/util.service";
+import { BluetoothModalService } from "../../services/bluetooth-modal.service";
 
 @Component({
   selector: 'settings',
@@ -12,25 +14,22 @@ import { UtilService } from "./../../common/services/util.service";
 })
 export class SettingsComponent {
 
-
   settings: Array<SettingsModel> = new Array<SettingsModel>();
   settingsCount: number = 0;
   selectedItem: SettingsModel;
   isMobility: boolean = false;
-
+  defaultServer: ServerModel;
 
   constructor(
     private settingService: SettingsService,
     public modalController: ModalController,
     private log: LoggerService,
-    private utilService: UtilService) {
-
-   
-
-
+    private utilService: UtilService,
+    private bluetoothModalService: BluetoothModalService) {
   }
 
   ionViewWillEnter() {
+
     if (this.utilService.isMobility()) {
       this.isMobility = true;
       this.setSettingsCount();
@@ -100,4 +99,7 @@ export class SettingsComponent {
   //   }
   // }
 
+  presentBluetoothModal() {
+    this.bluetoothModalService.presentModal();
+  }
 }

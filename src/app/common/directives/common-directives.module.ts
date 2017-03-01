@@ -7,22 +7,34 @@ import {HeaderPageComponent} from "../../views/common/header/header-page.compone
 import {AppMenuComponent} from "../../views/common/header/app-menu.component";
 import {WarningDialogComponent} from "../../views/common/dialogs/warning-dialog.component";
 import {GrowlDialogComponent} from "../../views/common/dialogs/growl-dialog.component";
+import {Focuser} from "./focuser.directive";
+
 import {IonicModule} from "ionic-angular";
 import {NavDrawerHeaderComponent} from "../../views/common/header/nav-drawer-header.component";
-import {Focuser} from "./focuser.directive";
 
 @NgModule({
     declarations: [
-        NavDrawerHeaderComponent, 
-        HeaderPageComponent, 
-        RemoveParentElementDirective, 
-        AppMenuComponent, 
-        WarningDialogComponent, 
+        NavDrawerHeaderComponent,
+        HeaderPageComponent,
+        RemoveParentElementDirective,
+        AppMenuComponent,
+        WarningDialogComponent,
         GrowlDialogComponent,
         Focuser
     ],
     imports: [IonicModule],
-    exports: [NavDrawerHeaderComponent, HeaderPageComponent, RemoveParentElementDirective, Focuser],
-    entryComponents: [AppMenuComponent, WarningDialogComponent, GrowlDialogComponent]
+    exports: [
+        NavDrawerHeaderComponent,
+        HeaderPageComponent,
+        RemoveParentElementDirective,
+        Focuser
+    ],
+    entryComponents: [
+        AppMenuComponent,
+        WarningDialogComponent,
+        GrowlDialogComponent,
+    ]
 })
+
 export class CommonDirectivesModule{}
+

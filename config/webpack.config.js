@@ -7,7 +7,8 @@ function getPlugins() {
     var plugins = [
         ionicWebpackFactory.getIonicEnvironmentPlugin(),
         new webpack.DefinePlugin({
-            'IONIC_ENV_MB': JSON.stringify(env)
+            'IONIC_ENV_MB': JSON.stringify(env),
+            'HOST_MB': JSON.stringify(process.env.HOST)
         })
     ];
 
@@ -15,6 +16,7 @@ function getPlugins() {
         // This helps ensure the builds are consistent if source hasn't changed:
         plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
     }
+
     return plugins;
 }
 

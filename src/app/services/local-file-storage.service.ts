@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {File, RemoveResult, FileEntry} from 'ionic-native';
 import {AppConfigConstants} from "../constants/app-config.constants";
+import {Platform} from "ionic-angular";
 
 declare var cordova: any;
 const FILE_NAME = AppConfigConstants.clientLogFileName;
@@ -9,8 +10,18 @@ const FILE_NAME = AppConfigConstants.clientLogFileName;
 export class LocalFileStorageService {
     private serviceName = "LocalFileStorageService";
 
-    constructor() {
-        console.debug(`Debug: ${this.serviceName} - Start`);
+    constructor(private platform: Platform) {
+        this.init();
+    }
+
+    private init() {
+        this.platform.ready()
+            .then(() => {
+                console.debug(`Debug: ${this.serviceName} - Start`);
+            })
+            .catch((error) => {
+                console.error(`${error}`);
+            });
     }
 
     public writeToFile(data: string) {
@@ -103,7 +114,7 @@ export class LocalFileStorageService {
                 }
             });
         return data;
-    } 
+    }
 
     private checkFile(): Promise<any> {
         return File.checkFile(cordova.file.dataDirectory, FILE_NAME)

@@ -1,35 +1,30 @@
 <mb-nav-drawer-header remove-parent-element [title]="'Settings'"></mb-nav-drawer-header>
 
 <ion-content>
-  <ion-navbar>
-    <header>Allowing add here since getting from a file requires a device</header>
-    <ion-buttons end ng-if="isMobility == false">
-      <button ion-button icon-only (click)="addSetting()">
-      <ion-icon name="add" right ></ion-icon>
-     </button>
-    </ion-buttons>
-  </ion-navbar>
+  
   <ion-list>
-    <ion-item-divider>My Settings</ion-item-divider>
+    <ion-item-divider class="ripple" (click)="addSetting()">
+      <ion-label>My Settings</ion-label>
+      <ion-icon item-right name="add"></ion-icon>
+    </ion-item-divider>
     <ion-item *ngFor="let setting of settings" (press)="itemSelected(setting)">
       <ion-label>{{setting.settingName}}</ion-label>
       <ion-toggle [hidden]="isHidden(setting, 'boolean')" [(ngModel)]="setting.setting"></ion-toggle>
       <ion-input [hidden]="isHidden(setting, 'number')" type="number" [(ngModel)]="setting.setting"></ion-input>
       <ion-input [hidden]="isHidden(setting, 'text')" type="text" [(ngModel)]="setting.setting"></ion-input>
     </ion-item>
-    <ion-item-divider ion-item>Bluetooth Settings
-      <button ion-button id="bluetoothButton" icon-only item-right (click)="presentBluetoothModal()">        
-                <ion-icon name="bluetooth"></ion-icon>               
-        </button>
+    <ion-item-divider class="ripple" ion-item (click)="presentBluetoothModal()">
+      <ion-label>Bluetooth Settings</ion-label>
+      <ion-icon item-right name="bluetooth"></ion-icon>
     </ion-item-divider>
-    <ion-item-divider ion-item>
-      Host Servers
-      <button ion-button icon-only item-right>
-        <ion-icon name="add"></ion-icon>
-      </button>
+    <ion-item-divider class="ripple" ion-item (click)="presentAddServer()">
+      <ion-label>Selected Host Server</ion-label>
+      <ion-icon item-right name="add"></ion-icon>
     </ion-item-divider>
-    <ion-item *ngIf="defaultServer" >
-      
+    <ion-item *ngIf="defaultServer">
+      <ion-label>{{defaultServer.serverName}}</ion-label>
+      <ion-label>{{defaultServer.port}}</ion-label>
+      <ion-badge item-right>Default</ion-badge>
     </ion-item>
   </ion-list>
 </ion-content>

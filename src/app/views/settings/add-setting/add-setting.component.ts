@@ -42,8 +42,4 @@ export class AddSettingComponent {
     this.viewCtrl.dismiss();
   }
 
-  selectDataType() {
-
-  }
-
 }

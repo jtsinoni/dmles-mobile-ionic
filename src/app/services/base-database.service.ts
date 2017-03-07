@@ -37,4 +37,9 @@ export abstract class BaseDatabaseService<M extends BaseDataTableModel> {
         return Promise.resolve(this.dbTable.count());
     }
 
+    delete(model: M) {
+        return Promise.resolve(this.dbTable.delete(model.id));
+    }
+   
+
 }

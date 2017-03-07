@@ -11,10 +11,12 @@ import {Focuser} from "./focuser.directive";
 
 import {IonicModule} from "ionic-angular";
 import {NavDrawerHeaderComponent} from "../../views/common/header/nav-drawer-header.component";
+import {ModalHeaderComponent} from "../../views/common/header/modal-header.component";
 
 @NgModule({
     declarations: [
         NavDrawerHeaderComponent,
+        ModalHeaderComponent,
         HeaderPageComponent,
         RemoveParentElementDirective,
         AppMenuComponent,
@@ -25,6 +27,7 @@ import {NavDrawerHeaderComponent} from "../../views/common/header/nav-drawer-hea
     imports: [IonicModule],
     exports: [
         NavDrawerHeaderComponent,
+        ModalHeaderComponent,
         HeaderPageComponent,
         RemoveParentElementDirective,
         Focuser

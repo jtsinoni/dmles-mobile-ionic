@@ -82,9 +82,9 @@ export class LoginComponent {
         errorModal.present();
     }
 
-    cancel() {
-        this.viewController.dismiss();
-    }
+    // cancel() {
+    //     this.viewController.dismiss();
+    // }
 
 
 

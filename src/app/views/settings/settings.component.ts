@@ -7,6 +7,8 @@ import { ModalController } from 'ionic-angular';
 import { AddSettingComponent } from "./add-setting/add-setting.component";
 import { UtilService } from "./../../common/services/util.service";
 import { BluetoothModalService } from "../../services/bluetooth-modal.service";
+import { AddServerComponent } from "./add-server/add-server.component";
+import { HostServerService } from "../../services/host-server.service";
 
 @Component({
   selector: 'settings',
@@ -19,13 +21,15 @@ export class SettingsComponent {
   selectedItem: SettingsModel;
   isMobility: boolean = false;
   defaultServer: ServerModel;
+  servers: Array<ServerModel>;
 
   constructor(
     private settingService: SettingsService,
     public modalController: ModalController,
     private log: LoggerService,
     private utilService: UtilService,
-    private bluetoothModalService: BluetoothModalService) {
+    private bluetoothModalService: BluetoothModalService,
+    private hostServerService: HostServerService) {
   }
 
   ionViewWillEnter() {
@@ -59,6 +63,32 @@ export class SettingsComponent {
       .catch((error) => {
         this.log.error(error);
       });
+
+      this.hostServerService.getAll().then((s) => {
+      this.servers = s;
+
+    }).catch((error) => {
+      this.log.error(error);
+    });
+
+
+    this.setDefaultServer();
+
+  }
+
+  private setDefaultServer() {
+
+    Promise.resolve().then(() => {
+      return this.hostServerService.getWhere('isDefault', 1); 
+    }).then((tt) => {
+      tt.first().then((dServer) => {
+        this.log.debug('what is dServer: ' + dServer);
+        this.defaultServer = dServer;
+      });
+    })
+  }
+
+  getSettings() {
 
   }
 
@@ -101,5 +131,10 @@ export class SettingsComponent {
 
   presentBluetoothModal() {
     this.bluetoothModalService.presentModal();
+  }
+
+  presentAddServer() {
+    let addServerModal = this.modalController.create(AddServerComponent);
+    addServerModal.present();
   }
 }

@@ -1,7 +1,5 @@
+<modal-header remove-parent-element [title]="'Add Setting'"></modal-header>
 <ion-content>
-  <ion-header>
-    Add Setting
-  </ion-header>
   <form name="createSettingForm" [formGroup]="addSettingForm" (ngSubmit)="saveSetting()">
     <ion-grid>
       <ion-row>
@@ -13,15 +11,9 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-item>
-            <ion-input id="settingValue" formControlName="valueInput" type="text" [(ngModel)]="model.setting" placeholder="Setting Value"></ion-input>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
           <ion-item item-right>
-            <ion-select [(ngModel)]="model.dataType" formControlName="dataTypeInput">
+          <ion-label>Select Type</ion-label>
+            <ion-select placeholder="Type" [(ngModel)]="model.dataType" formControlName="dataTypeInput">
               <ion-option value="text">Text</ion-option>
               <ion-option value="number">Numeric</ion-option>
               <ion-option value="boolean">Boolean</ion-option>
@@ -29,13 +21,17 @@
           </ion-item>
         </ion-col>
       </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-input id="settingValue" formControlName="valueInput" type="text" [(ngModel)]="model.setting" placeholder="Setting Value"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
     </ion-grid>
     <ion-grid>
       <ion-row>
-        <ion-col width-50>
-          <button ion-button type="button" block (click)="dismiss()">Cancel</button>
-        </ion-col>
-        <ion-col width-50>
+        <ion-col width-100>
           <button ion-button type="submit" block>Save</button>
         </ion-col>
       </ion-row>

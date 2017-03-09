@@ -1,4 +1,4 @@
-package logicole-plugin-cac;
+package logicole.plugin.cac;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;

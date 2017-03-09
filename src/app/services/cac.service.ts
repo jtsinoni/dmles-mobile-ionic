@@ -4,6 +4,8 @@ import {WindowService} from "./window.service";
 import {Platform} from "ionic-angular";
 import {UtilService} from "../common/services/util.service";
 
+declare var cordova: any;
+
 @Injectable()
 export class CACService {
     private serviceName = "CAC Service";
@@ -22,10 +24,12 @@ export class CACService {
                 this.log.debug(`${this.serviceName} - Start`);
 
                 if(this.utilService.isMobility()) {
-                    (<any>window).CACPlugin.coolMethod(
-                            "",
+                    cordova.plugins.CACPlugin.coolMethod(
+                            9,
                             (results) => {this.log.debug(`Results => ${results}`)},
                             (error) => {this.log.error(`${error}`)});
+
+                    // cordova.plugins.CACPlugin.coolMethod(9,function(e){console.log("success: " + e)},function(e){console.log("error: " + e)});
                 }
             })
             .catch((error) => {

@@ -1,3 +1,15 @@
 bluetooth {
+    select {
+        background-color: map-get($colors, primary);
+    }
+    ion-item {
+        text-align: center;
+        select-icon {
+            color: white;
+        }
+    }
+    ion-label {
+        color: white !important;
+    }
 
 }

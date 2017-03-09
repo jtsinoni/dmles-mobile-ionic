@@ -20,13 +20,56 @@
                 <span>{{bluetoothText}} (System Settings)</span>
             </ion-col>
         </button>
-
     </div>
 
     <div padding>
-        <button ion-button *ngIf="showEnableBluetoothButton" color="primary" id="enableBluetoothButton" block
+        <button ion-button [disabled]="!showEnableBluetoothButton" color="primary" id="enableBluetoothButton" block
                 (click)="enableBluetooth()">Enable {{bluetoothText}}
         </button>
     </div>
-</ion-content>
 
+    <!--<div padding>-->
+        <!--<button ion-button color="primary" id="listBluetoothDevicesButton" block-->
+                <!--(click)="listBluetoothDevices(bluetoothModel)">-->
+            <!--<ion-col>-->
+                <!--<ion-icon name="bluetooth"></ion-icon>-->
+                <!--<span>List Paired Devices</span>-->
+            <!--</ion-col>-->
+        <!--</button>-->
+    <!--</div>-->
+
+    <!-- NOTE: Chrome and Firefox, etc DO work with ion-select and ion-option -->
+    <span *ngIf="!isMsie()">
+        <div padding>
+            <ion-item color="primary">
+                <ion-label>Select Bluetooth Printer</ion-label>
+                <ion-select [(ngModel)]="selectedPrinter" placeholder="{{selectedPrinter}}" (ionChange)="itemTapped(selectedPrinter)">
+                    <ion-option *ngFor="let printer of btPrinters">{{printer.name}}</ion-option>
+                </ion-select>
+            </ion-item>
+        </div>
+    </span>
+
+    <!-- NOTE: IE does NOT work with ion-select and ion-option, so we are using HTML5 select and option -->
+    <span *ngIf="isMsie()">
+        <div padding>
+            <ion-item color="primary">
+                <ion-label>Select Bluetooth Printer
+                    <select [(ngModel)]="selectedPrinter">
+                        <option *ngFor="let printer of btPrinters" (click)="itemTapped(printer.name)" [ngValue]="printer.name" >{{printer.name}}</option>
+                    </select>
+                </ion-label>
+            </ion-item>
+        </div>
+    </span>
+
+    <div padding>
+        <button ion-button color="primary" id="printTestLabel" block (click)="printTestLabel()">
+            <ion-col>
+                <ion-icon name="printer"></ion-icon>
+                <span>Print Test Label</span>
+            </ion-col>
+        </button>
+    </div>
+
+</ion-content>

@@ -13,6 +13,7 @@ import { AppConfigConstants } from "./constants/app-config.constants";
 import { AuthenticationService } from "./services/authentication.service";
 import { SettingsComponent } from "./views/settings/settings.component";
 import { LoginModalService } from "./services/login-modal.service";
+import {CACService} from "./services/cac.service";
 
 
 @Component({
@@ -39,7 +40,8 @@ export class DMLESMobile implements OnInit {
         private authService: AuthenticationService,
         private loginModalService: LoginModalService,
         private upstreamService: UpstreamService,
-        private log: LoggerService) {
+        private log: LoggerService,
+        private cacService: CACService) {
     }
 
     ngOnInit(): void {

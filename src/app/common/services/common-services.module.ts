@@ -22,6 +22,7 @@ import {SettingsService} from "../../services/settings.service";
 import {DexieDatabaseService} from "../../services/dexie-database.service";
 import {WindowService} from "../../services/window.service";
 import {BluetoothModalService} from "../../services/bluetooth-modal.service";
+import {CACService} from "../../services/cac.service";
 
 
 
@@ -53,6 +54,7 @@ export class CommonServicesModule {
                 HostServerService,
                 DexieDatabaseService,
                 BluetoothModalService,
+                CACService,
                 { provide: UpstreamService, useClass: TopicUpstreamService },]
         };
     }

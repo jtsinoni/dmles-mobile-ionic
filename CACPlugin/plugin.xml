@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="logicole-plugin-cac" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>CACPlugin</name>
+    <js-module name="CACPlugin" src="www/CACPlugin.js">
+        <clobbers target="cordova.plugins.CACPlugin"/>
+    </js-module>
+    <platform name="android">
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="CACPlugin">
+                <param name="android-package" value="logicole.plugin.cac"/>
+            </feature>
+        </config-file>
+        <config-file parent="/*" target="AndroidManifest.xml"/>
+        <source-file src="src/android/CACPlugin.java" target-dir="src/logicole/plugin/cac"/>
+    </platform>
+    <platform name="ios">
+        <config-file parent="/*" target="config.xml">
+            <feature name="CACPlugin">
+                <param name="ios-package" value="CACPlugin"/>
+            </feature>
+        </config-file>
+        <source-file src="src/ios/CACPlugin.m"/>
+    </platform>
+</plugin>

@@ -14,6 +14,7 @@ import { AuthenticationService } from "./services/authentication.service";
 import { SettingsComponent } from "./views/settings/settings.component";
 import { LoginModalService } from "./services/login-modal.service";
 import { SecurityComponent } from  "./views/security/security.component";
+import {CACService} from "./services/cac.service";
 
 @Component({
     templateUrl: './app.html'
@@ -39,7 +40,8 @@ export class DMLESMobile implements OnInit {
         private authService: AuthenticationService,
         private loginModalService: LoginModalService,
         private upstreamService: UpstreamService,
-        private log: LoggerService) {
+        private log: LoggerService,
+        private cacService: CACService) {
             // todo for ionic serve - remove for prod
             if (this.utilService.isMobility() === false) {
                 this.rootPage = AppContainerComponent;

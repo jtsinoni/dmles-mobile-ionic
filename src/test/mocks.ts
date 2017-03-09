@@ -142,6 +142,9 @@ export class ModalControllerMock {
     }
 }
 
+export class CACServiceMock {
+}
+
 export class MenuControllerMock {
   public close(): any {
     return new Promise((resolve: Function) => {
@@ -150,7 +153,7 @@ export class MenuControllerMock {
   }
 
   public enable(shouldEnable: boolean, menuId?: string) {
-    
+
   }
 }
 

@@ -1,8 +1,8 @@
 import { DMLESMobile } from '../app/app.component';
 import {
-  NavMock, PlatformMock, UtilServiceMock,
-  AppMock, AuthServiceMock, LoginModalServiceMock,
-  UpstreamServiceMock, LoggerServiceMock,
+    NavMock, PlatformMock, UtilServiceMock,
+    AppMock, AuthServiceMock, LoginModalServiceMock,
+    UpstreamServiceMock, LoggerServiceMock, CACServiceMock,
 } from './mocks';
 
 
@@ -17,7 +17,8 @@ describe('dmles-mobile-ionic-app', () => {
       (<any>new AuthServiceMock),
       (<any>new LoginModalServiceMock),
       (<any>new UpstreamServiceMock),
-      (<any>new LoggerServiceMock));
+      (<any>new LoggerServiceMock),
+      (<any>new CACServiceMock));
 
     instance['nav'] = (<any>new NavMock());
   });

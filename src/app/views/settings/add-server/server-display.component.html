@@ -2,7 +2,7 @@
     <ion-item *ngFor="let server of servers">
         <ion-label>{{server.serverName}}</ion-label>
         <ion-label>{{server.port}}</ion-label>
-        <ion-checkbox item-right [(ngModel)]="server.localIsDefault" (click)="setDefault(server)"></ion-checkbox>
+        <ion-checkbox item-right [(ngModel)]="server.isDefault" (click)="setDefault(server)"></ion-checkbox>
         <button (click)="deleteServer(server)" ion-button color="danger" clear icon-only item-right>
             <ion-icon name='trash' is-active="true"></ion-icon>
           </button>

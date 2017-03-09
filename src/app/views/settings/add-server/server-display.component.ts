@@ -27,13 +27,6 @@ export class ServerDisplayComponent implements OnInit {
 
     this.hostServerService.getAll().then((s) => {
       this.servers = s;
-
-      this.servers.forEach((sr) => {
-        if (sr.isDefault === 1) {
-          sr.localIsDefault = true;
-        }
-      })
-
     }).catch((error) => {
       this.log.error(error);
     });
@@ -41,11 +34,11 @@ export class ServerDisplayComponent implements OnInit {
 
   deleteServer(server: ServerModel) {
     this.hostServerService.delete(server);
-    //this.ngOnInit();
+    this.ngOnInit();
   }
 
   setDefault(server: ServerModel) {
-    if (server.localIsDefault) {
+    if (server.isDefault) {
       this.log.debug("setting " + server.serverName + " to default");      
       this.hostServerService.setDefaultServer(server);
       this.ngOnInit();

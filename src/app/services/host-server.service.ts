@@ -27,4 +27,14 @@ export class HostServerService extends BaseDatabaseService<ServerModel> {
         // return this.dbTable.update(server.id, server);
     }
 
+
+   defaultServerCallBack = (s: ServerModel) : boolean => {
+       return s.isDefault === true;
+   } 
+
+   getDefaultServer() {
+       return this.dbTable.filter(this.defaultServerCallBack).first();  
+   }
+   
+
 }

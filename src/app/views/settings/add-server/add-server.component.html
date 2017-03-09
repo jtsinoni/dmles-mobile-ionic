@@ -1,0 +1,37 @@
+<modal-header remove-parent-element [title]="'Add or Select a Host Server'"></modal-header>
+<ion-content>
+  <server-display item-content></server-display>
+  <form name="createServerForm" [formGroup]="addServerForm" (ngSubmit)="saveHostServer()">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-input id="serverName" formControlName="nameInput" type="text" [(ngModel)]="model.serverName" placeholder="Host Server"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-input id="serverPort" formControlName="portInput" type="number" [(ngModel)]="model.port" placeholder="Port"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item item-right>
+            <ion-label>Default</ion-label>
+            <ion-checkbox id="defaultServerCb" formControlName="defaultServerCheck" [(ngModel)]="model.isDefault" ></ion-checkbox>         
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid>
+      <ion-row>      
+        <ion-col width-100>
+          <button ion-button type="submit" block>Add</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

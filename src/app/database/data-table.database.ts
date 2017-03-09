@@ -12,10 +12,11 @@ export class DataTableDatabase extends Dexie {
 
     constructor(databaseName: string, private log: LoggerService) {
         super(databaseName);
+        //this.delete();
         this.version(1).stores({data: "++id,data"});
         this.version(2).stores({data: "++id,data"});
         this.version(3).stores({
-            servers: '++id, serverName, settingsId, port',
+            servers: '++id, serverName, settingsId, port, &isDefault',
             settings: '++id, settingsName, setting, dataType'            
         });      
 

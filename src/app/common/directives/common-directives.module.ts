@@ -7,30 +7,27 @@ import {HeaderPageComponent} from "../../views/common/header/header-page.compone
 import {AppMenuComponent} from "../../views/common/header/app-menu.component";
 import {WarningDialogComponent} from "../../views/common/dialogs/warning-dialog.component";
 import {GrowlDialogComponent} from "../../views/common/dialogs/growl-dialog.component";
-import {HelpComponent} from "../../views/help/help.component";
-import {SettingsComponent} from "../../views/settings/settings.component";
-import {AddSettingComponent} from "../../views/settings/add-setting/add-setting.component";
 import {Focuser} from "./focuser.directive";
 
 import {IonicModule} from "ionic-angular";
 import {NavDrawerHeaderComponent} from "../../views/common/header/nav-drawer-header.component";
+import {ModalHeaderComponent} from "../../views/common/header/modal-header.component";
 
 @NgModule({
     declarations: [
         NavDrawerHeaderComponent,
+        ModalHeaderComponent,
         HeaderPageComponent,
         RemoveParentElementDirective,
         AppMenuComponent,
         WarningDialogComponent,
         GrowlDialogComponent,
-        HelpComponent,
-        SettingsComponent,
-        AddSettingComponent,
         Focuser
     ],
     imports: [IonicModule],
     exports: [
         NavDrawerHeaderComponent,
+        ModalHeaderComponent,
         HeaderPageComponent,
         RemoveParentElementDirective,
         Focuser
@@ -39,9 +36,6 @@ import {NavDrawerHeaderComponent} from "../../views/common/header/nav-drawer-hea
         AppMenuComponent,
         WarningDialogComponent,
         GrowlDialogComponent,
-        HelpComponent,
-        SettingsComponent,
-        AddSettingComponent
     ]
 })
 

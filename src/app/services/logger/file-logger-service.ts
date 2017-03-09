@@ -23,10 +23,17 @@ export class FileLoggerService extends LoggerService implements ILogger  {
     }
 
     private init() {
-        this.debug(`${this.serviceName} - Start`);
+        this.platform.ready()
+            .then(() => {
+                this.debug(`${this.serviceName} - Start`);
 
-        this.isMobility = this.util.isMobility();
-        this.isProd = this.util.isProd();
+                this.isMobility = this.util.isMobility();
+                this.isProd = this.util.isProd();
+
+            })
+            .catch((error) => {
+                console.error(`${error}`);
+            });
     }
 
     private writeFile(message: string) {

@@ -1,27 +1,37 @@
+<modal-header remove-parent-element [title]="'Add Setting'"></modal-header>
 <ion-content>
-  <ion-header>
-    Add Setting
-  </ion-header>
   <form name="createSettingForm" [formGroup]="addSettingForm" (ngSubmit)="saveSetting()">
     <ion-grid>
       <ion-row>
-        <ion-col width-33>
-          <ion-input id="settingName" formControlName="nameInput" type="text" [(ngModel)]="model.settingName" placeholder="Name"></ion-input>
+        <ion-col>
+          <ion-item>
+            <ion-input id="settingName" formControlName="nameInput" type="text" [(ngModel)]="model.settingName" placeholder="Name"></ion-input>
+          </ion-item>
         </ion-col>
-        <ion-col width-33>
-          <ion-input id="settingValue" formControlName="valueInput" type="text" [(ngModel)]="model.setting" placeholder="Setting Value"></ion-input>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item item-right>
+          <ion-label>Select Type</ion-label>
+            <ion-select placeholder="Type" [(ngModel)]="model.dataType" formControlName="dataTypeInput">
+              <ion-option value="text">Text</ion-option>
+              <ion-option value="number">Numeric</ion-option>
+              <ion-option value="boolean">Boolean</ion-option>
+            </ion-select>
+          </ion-item>
         </ion-col>
-        <ion-col width-33>
-          <ion-input id="settingDataType" formControlName="dataTypeInput" type="text" [(ngModel)]="model.dataType" placeholder="Data Type"></ion-input>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-input id="settingValue" formControlName="valueInput" type="text" [(ngModel)]="model.setting" placeholder="Setting Value"></ion-input>
+          </ion-item>
         </ion-col>
       </ion-row>
     </ion-grid>
     <ion-grid>
       <ion-row>
-        <ion-col width-50>
-          <button ion-button type="button" block (click)="dismiss()">Cancel</button>
-        </ion-col>
-        <ion-col width-50>
+        <ion-col width-100>
           <button ion-button type="submit" block>Save</button>
         </ion-col>
       </ion-row>

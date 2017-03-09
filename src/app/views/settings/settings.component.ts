@@ -2,36 +2,40 @@ import { Component } from '@angular/core';
 import { SettingsService } from '../../services/settings.service';
 import { LoggerService } from "../../services/logger/logger-service";
 import { SettingsModel } from "../../models/settings.model";
+import { ServerModel } from "../../models/server.model";
 import { ModalController } from 'ionic-angular';
 import { AddSettingComponent } from "./add-setting/add-setting.component";
 import { UtilService } from "./../../common/services/util.service";
 import { BluetoothModalService } from "../../services/bluetooth-modal.service";
+import { AddServerComponent } from "./add-server/add-server.component";
+import { HostServerService } from "../../services/host-server.service";
 
 @Component({
   selector: 'settings',
-  templateUrl: './settings.component.html'
+  templateUrl: './settings.component.html',
 })
 export class SettingsComponent {
-
 
   settings: Array<SettingsModel> = new Array<SettingsModel>();
   settingsCount: number = 0;
   selectedItem: SettingsModel;
   isMobility: boolean = false;
-
+  defaultServer: ServerModel;
+  servers: Array<ServerModel>;
 
   constructor(
     private settingService: SettingsService,
     public modalController: ModalController,
     private log: LoggerService,
     private utilService: UtilService,
-    private bluetoothModalService: BluetoothModalService
-      ) {
+    private bluetoothModalService: BluetoothModalService,
+    private hostServerService: HostServerService) {
   }
 
   ionViewWillEnter() {
-    // if (this.utilService.isMobility()) {
-    //   this.isMobility = true;
+
+    if (this.utilService.isMobility()) {
+      this.isMobility = true;
       this.setSettingsCount();
       this.log.debug('settings count is: ' + this.settingsCount);
 
@@ -49,7 +53,7 @@ export class SettingsComponent {
         this.log.debug("added settings from asset file");
 
       }
-    //}
+    }
     this.settingService.getAll().then((s) => {
       this.settings = s;
       if (s) {
@@ -59,6 +63,32 @@ export class SettingsComponent {
       .catch((error) => {
         this.log.error(error);
       });
+
+      this.hostServerService.getAll().then((s) => {
+      this.servers = s;
+
+    }).catch((error) => {
+      this.log.error(error);
+    });
+
+
+    this.setDefaultServer();
+
+  }
+
+  private setDefaultServer() {
+
+    Promise.resolve().then(() => {
+      return this.hostServerService.getWhere('isDefault', 1); 
+    }).then((tt) => {
+      tt.first().then((dServer) => {
+        this.log.debug('what is dServer: ' + dServer);
+        this.defaultServer = dServer;
+      });
+    })
+  }
+
+  getSettings() {
 
   }
 
@@ -81,6 +111,16 @@ export class SettingsComponent {
     this.selectedItem = setting;
   }
 
+
+  isHidden(item: SettingsModel, datatype: string) {
+    if (datatype != item.dataType) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+
   // updateSetting() {
   //   if (this.selectedItem) {
   //     // set editor visible on datatype
@@ -89,7 +129,12 @@ export class SettingsComponent {
   //   }
   // }
 
-    presentBluetoothModal() {
-        this.bluetoothModalService.presentModal();
-    }
+  presentBluetoothModal() {
+    this.bluetoothModalService.presentModal();
+  }
+
+  presentAddServer() {
+    let addServerModal = this.modalController.create(AddServerComponent);
+    addServerModal.present();
+  }
 }

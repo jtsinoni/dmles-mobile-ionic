@@ -12,6 +12,8 @@ import {SupplyComponent} from './views/supply/supply.component';
 import {InventoryModule} from "./views/inventory/inventory.module";
 import {SupplyModule} from "./views/supply/supply.module";
 import {ServicesModule} from "./services/services.module";
+import {SettingsModule} from './views/settings/settings.module'
+import {HelpModule} from './views/help/help.module'
 
 import {EquipmentModule} from "./views/equipment/equipment.module";
 import {TopicModule} from "./views/topic/topic.module";
@@ -27,7 +29,6 @@ import {LoggerService} from "./services/logger/logger-service";
 import {FileLoggerService} from "./services/logger/file-logger-service";
 import {SecurityModule} from "./views/security/security.module";
 import {LocalStorageModule} from "./services/local-storage/local-storage.module";
-import {ServerSelectorModule} from "./views/utilities/server-selector.module";
 
 @NgModule({
     declarations: [
@@ -41,7 +42,6 @@ import {ServerSelectorModule} from "./views/utilities/server-selector.module";
         CommonServicesModule.forRoot(),
         CommonEndpointsModule.forRoot(),
         LocalStorageModule.forRoot(),
-        ServerSelectorModule,
         TopicModule,
         InventoryModule,
         EquipmentModule,
@@ -53,6 +53,8 @@ import {ServerSelectorModule} from "./views/utilities/server-selector.module";
         CommonDirectivesModule,
         SecurityModule,
         FormsModule,
+        SettingsModule,
+        HelpModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [

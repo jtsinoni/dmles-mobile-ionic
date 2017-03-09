@@ -7,34 +7,29 @@ import { DexieDatabaseService } from '../services/dexie-database.service'
 @Injectable()
 export class HostServerService extends BaseDatabaseService<ServerModel> {
 
-    constructor(databaseService: DexieDatabaseService, log: LoggerService) {
+    constructor(private databaseService: DexieDatabaseService, log: LoggerService) {
         super("Host Server Service", databaseService.getServersDataTable(), log);
 
     }
 
 
     setDefaultServer(server: ServerModel) {
-        // unset all       TODO test this 
-
-        this.dbTable.where("isDefault").equals(1).modify({ isDefault: 0 }).then((t) => {
-            this.log.debug('what is t: ' + t);
-
+        this.dbTable.toCollection().modify({ isDefault: false }).then(() => {
+            server.isDefault = true;
+            this.update(server);
         }).catch((error) => {
-            this.log.error(error.toString());
+            this.log.error(error);
         });
-        // set the default to this one
-        // server.isDefault = 1;
-        // return this.dbTable.update(server.id, server);
     }
 
 
-   defaultServerCallBack = (s: ServerModel) : boolean => {
-       return s.isDefault === true;
-   } 
+    defaultServerCallBack = (s: ServerModel): boolean => {
+        return s.isDefault === true;
+    }
 
-   getDefaultServer() {
-       return this.dbTable.filter(this.defaultServerCallBack).first();  
-   }
-   
+    getDefaultServer() {
+        return this.dbTable.filter(this.defaultServerCallBack).first();
+    }
+
 
 }

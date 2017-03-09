@@ -81,8 +81,8 @@ export class SettingsComponent {
   }
 
   getSettings() {
-    this.hostServerService.getAll().then((s) => {
-      this.servers = s;
+    this.settingService.getAll().then((s) => {
+      this.settings = s;
 
     }).catch((error) => {
       this.log.error(error);
@@ -101,6 +101,11 @@ export class SettingsComponent {
   //TODO remove for prod
   addSetting() {
     let addSettingModal = this.modalController.create(AddSettingComponent);  
+    addSettingModal.onDidDismiss(model => {
+      if (model) {       
+        this.getSettings();
+      }
+    })
     addSettingModal.present();    
    
   }

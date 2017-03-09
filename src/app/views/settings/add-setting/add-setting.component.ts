@@ -30,16 +30,18 @@ export class AddSettingComponent {
   }
 
   saveSetting() {
-    this.settingsService.add(this.model).then(() => {
+    this.settingsService.add(this.model).then(() => {  
+      this.dismiss(this.model);
+
     }).catch((error) => {
       this.log.error(error);
     });
-    this.dismiss();
+    
 
   }
 
-  dismiss() {
-    this.viewCtrl.dismiss();
+  dismiss(model?: SettingsModel) {
+    this.viewCtrl.dismiss(model);
   }
 
 }

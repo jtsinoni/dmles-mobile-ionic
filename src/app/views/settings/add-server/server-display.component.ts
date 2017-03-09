@@ -33,8 +33,9 @@ export class ServerDisplayComponent implements OnInit {
   }
 
   deleteServer(server: ServerModel) {
-    this.hostServerService.delete(server);
-    this.ngOnInit();
+    this.hostServerService.delete(server).then(() => {
+      this.ngOnInit();
+    });
   }
 
   setDefault(server: ServerModel) {

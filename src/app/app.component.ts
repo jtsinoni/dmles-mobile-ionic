@@ -41,11 +41,14 @@ export class DMLESMobile implements OnInit {
         private loginModalService: LoginModalService,
         private upstreamService: UpstreamService,
         private log: LoggerService,
-        private cacService: CACService) {
-            // todo for ionic serve - remove for prod
-            if (this.utilService.isMobility() === false) {
+        private cacService: CACService) {            
+            if (this.utilService.isProd() == false) {
                 this.rootPage = AppContainerComponent;
-            }
+            } 
+            // if you want to see it in DEV / ionic serve --lab - use this block
+            // if (this.utilService.isMobility() === false) {
+            //     this.rootPage = AppContainerComponent;
+            // }
     }
 
     ngOnInit(): void {

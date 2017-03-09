@@ -5,7 +5,22 @@ export class BluetoothModel {
     address: string;
     name: string; // common name
 
-    constructor () {
+    // constructor () {
+    // }
+
+    constructor(cls?: string, id?: string, address?: string, name?: string) {
+        if (cls) {
+            this.class = cls;
+        }
+        if (id) {
+            this.id = id;
+        }
+        if (address) {
+            this.address = address;
+        }
+        if (name) {
+            this.name = name;
+        }
     }
 
 }

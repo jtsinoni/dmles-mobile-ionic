@@ -1,48 +1,51 @@
-<ion-content class="animated zoomIn" >
-	<div class="container-fluid rounded-corner-div">
-		<div id="security" >
-			<div class="col-sm-8">
-				<h1 class="text-center">
-					DEFENSE MEDICAL LOGISTICS<br>MOBILE SOLUTION
-				</h1>
-			</div>
-			<div>
-				<div class="col-sm-12 text-center">
-					<p>NOTICE AND CONSENT LOG-ON BANNER <br>
-						<span class="bold">THIS IS A DEPARTMENT OF DEFENSE DEVICE.</span></p>
-				</div>
-			</div>
-			<div>
-				You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
-				<br/>
-				<br/>By using this IS (which includes any device attached to this IS), you consent to the following conditions:
-			</div>
-			<div>
-				<ul class="consent-listing">
-					<li>The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration
-						testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counter
-						intelligence (CI) investigations.
-					</li>
-					<li>At any time, the USG may inspect and seize data stored on this IS.</li>
-					<li>Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and
-						search, and may be disclosed or used for any USG-authorized purpose.
-					</li>
-					<li>This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your
-						personal benefit or privacy.
-					</li>
-					<li>Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring
-						of the content of privileged communications, or work product, related to personal representation or services by attorneys,
-						psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential.
-						<a href="http://www.w3schools.com" target="_blank">See User Agreement
+<ion-header>
+	<ion-toolbar>
+		<ion-title>
+			LogiCole Mobile
+		</ion-title>
+	</ion-toolbar>
+</ion-header>
+<ion-content class="ripple">
+	<ion-list>
+		<ion-list-header text-wrap>
+			<ion-item no-lines>
+				NOTICE AND CONSENT LOG-ON BANNER
+			</ion-item>
+			<ion-item no-lines>
+				THIS IS A DEPARTMENT OF DEFENSE DEVICE
+			</ion-item>
+			You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only. By using
+			this IS (which includes any device attached to this IS), you consent to the following conditions:
+		</ion-list-header>
+		<ion-item text-wrap no-lines>
+			The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration
+			testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counter
+			intelligence (CI) investigations.
+		</ion-item>
+		<ion-item text-wrap no-lines>
+			At any time, the USG may inspect and seize data stored on this IS.
+		</ion-item>
+		<ion-item text-wrap no-lines>
+			Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search,
+			and may be disclosed or used for any USG-authorized purpose.
+		</ion-item>
+		<ion-item text-wrap no-lines>
+			This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal
+			benefit or privacy.
+		</ion-item>
+		<ion-item text-wrap no-lines>
+			Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring
+			of the content of privileged communications, or work product, related to personal representation or services by attorneys,
+			psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential.
+			<a href="http://www.w3schools.com" target="_blank">See User Agreement
                                                     for details</a>.
-					</li>
-				</ul>
-			</div>
-			<div class="accept-button-container">
-				<div >
-					<button ion-button (click)="startApp()" color="primary">OK</button>
-				</div>
-			</div>
-		</div>
-	</div>
+		</ion-item>
+	</ion-list>
+	<ion-grid>
+		<ion-row>
+			<ion-col width-100>
+				<button ion-button block (click)="startApp()" block>Ok</button>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
 </ion-content>

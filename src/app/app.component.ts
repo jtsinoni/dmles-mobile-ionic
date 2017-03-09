@@ -13,7 +13,7 @@ import { AppConfigConstants } from "./constants/app-config.constants";
 import { AuthenticationService } from "./services/authentication.service";
 import { SettingsComponent } from "./views/settings/settings.component";
 import { LoginModalService } from "./services/login-modal.service";
-
+import { SecurityComponent } from  "./views/security/security.component";
 
 @Component({
     templateUrl: './app.html'
@@ -21,7 +21,7 @@ import { LoginModalService } from "./services/login-modal.service";
 export class DMLESMobile implements OnInit {
     @ViewChild(Nav) nav: Nav;
 
-    rootPage: any = AppContainerComponent;
+    rootPage: any = SecurityComponent;
     loggedOutAreas = new Array<AreaModel>();
     //loggedInAreas = new Array<AreaModel>();
 
@@ -40,6 +40,10 @@ export class DMLESMobile implements OnInit {
         private loginModalService: LoginModalService,
         private upstreamService: UpstreamService,
         private log: LoggerService) {
+            // todo for ionic serve - remove for prod
+            if (this.utilService.isMobility() === false) {
+                this.rootPage = AppContainerComponent;
+            }
     }
 
     ngOnInit(): void {
@@ -116,6 +120,10 @@ export class DMLESMobile implements OnInit {
 
     goToHome() {
         this.app.getRootNav().setRoot(AppContainerComponent);
+    }
+
+    goToDoDConfirmationPage() {
+        this.app.getRootNav().setRoot(SecurityComponent);
     }
 
     logout() {

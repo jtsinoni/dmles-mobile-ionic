@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
-//import { Login } from "../login/login";
+import { AppContainerComponent } from "../../app-container.component";
 
 @Component({
   selector: 'security',
@@ -9,12 +9,12 @@ import { NavController } from 'ionic-angular';
 })
 export class SecurityComponent {
 
-  constructor(public navCtrl: NavController) {    
+  constructor(public navCtrl: NavController) {
   }
 
 
-   startApp() {
-        //this.navCtrl.setRoot(Login);
-    }
+  startApp() {
+    this.navCtrl.setRoot(AppContainerComponent);
+  }
 
 }

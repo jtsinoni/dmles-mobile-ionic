@@ -16,15 +16,23 @@ export class ServerDisplayComponent implements OnInit {
 
   hostGroup: string;
 
+
   @Input() servers: Array<ServerModel>;
 
   constructor(private hostServerService: HostServerService, private log: LoggerService) {
+
   }
 
   ngOnInit() {
-    
+
     this.hostServerService.getAll().then((s) => {
       this.servers = s;
+
+      this.servers.forEach((sr) => {
+        if (sr.isDefault === 1) {
+          sr.localIsDefault = true;
+        }
+      })
 
     }).catch((error) => {
       this.log.error(error);
@@ -35,5 +43,16 @@ export class ServerDisplayComponent implements OnInit {
     this.hostServerService.delete(server);
     //this.ngOnInit();
   }
-  
+
+  setDefault(server: ServerModel) {
+    if (server.localIsDefault) {
+      this.log.debug("setting " + server.serverName + " to default");      
+      this.hostServerService.setDefaultServer(server);
+      this.ngOnInit();
+    } else {
+      //do nothing user needs to set another or there is only one
+      //this.log.debug("UN-setting " + server.serverName + " to default");
+    }
+  }
+
 }

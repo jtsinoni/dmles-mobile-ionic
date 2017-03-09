@@ -12,29 +12,19 @@ export class HostServerService extends BaseDatabaseService<ServerModel> {
 
     }
 
-    // getDefaultServer(): ServerModel {
-    //     let defaultServer: ServerModel;
-        
-    //    Promise.resolve().then(() => {
-    //         return this.getWhere('isDefault', 1); // id -- where requires an indexed 'column'
-    //     }).then((tt) => {
-    //         tt.first().then((dd) => {
-    //             this.log.debug('what is dd: ' + dd);
-    //             defaultServer = dd;
-    //         });
-
-    //     })
-
-
-    //     return defaultServer;
-    // }  
 
     setDefaultServer(server: ServerModel) {
-        // unset all        
-        this.dbTable.where("isDefault").equals(1).modify({ isDefault: 0 });
+        // unset all       TODO test this 
+
+        this.dbTable.where("isDefault").equals(1).modify({ isDefault: 0 }).then((t) => {
+            this.log.debug('what is t: ' + t);
+
+        }).catch((error) => {
+            this.log.error(error.toString());
+        });
         // set the default to this one
-        server.isDefault = 1;
-        return this.dbTable.update(server.id, server);
+        // server.isDefault = 1;
+        // return this.dbTable.update(server.id, server);
     }
 
 }

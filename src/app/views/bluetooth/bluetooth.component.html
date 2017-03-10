@@ -14,7 +14,7 @@
 
 <ion-content class="ripple" (swipe)="cancel()">
     <div padding>
-        <button ion-button color="primary" id="bluetoothButton" block (click)="bluetooth(bluetoothModel)">
+        <button ion-button color="primary" id="bluetoothButton" block (click)="bluetooth()">
             <ion-col>
                 <ion-icon name="bluetooth"></ion-icon>
                 <span>{{bluetoothText}} (System Settings)</span>
@@ -30,7 +30,7 @@
 
     <!--<div padding>-->
         <!--<button ion-button color="primary" id="listBluetoothDevicesButton" block-->
-                <!--(click)="listBluetoothDevices(bluetoothModel)">-->
+                <!--(click)="listBluetoothDevices()">-->
             <!--<ion-col>-->
                 <!--<ion-icon name="bluetooth"></ion-icon>-->
                 <!--<span>List Paired Devices</span>-->

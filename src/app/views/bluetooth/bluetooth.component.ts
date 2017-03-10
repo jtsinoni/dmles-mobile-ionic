@@ -5,6 +5,7 @@ import {LoggerService} from "../../services/logger/logger-service";
 import {GrowlDialogComponent} from "../common/dialogs/growl-dialog.component";
 import {BluetoothSerial} from "ionic-native";
 import {Level as LoggerLevel, Level} from "../../services/logger/level";
+import {GenerateBarcodeLabelService} from '../../services/generate-barcode-label.service';
 import {Subscription} from "rxjs";
 
 // mec... TODO: fix the device error:
@@ -54,10 +55,9 @@ import {Subscription} from "rxjs";
 
 export class BluetoothComponent {
     bluetoothText: string;
-    bluetoothModel: BluetoothModel;
     showEnableBluetoothButton: boolean = true;
     private bt: any; // local class instance, use this one
-    mecConnection: Subscription = null;
+    myConnection: Subscription = null;
     selectedDevice: BluetoothModel = null;
     printStatus: boolean = false;
     selectedPrinter: string = "No printer";
@@ -68,19 +68,18 @@ export class BluetoothComponent {
                 private modalController: ModalController,
                 private viewController: ViewController) {
         this.bluetoothText = "Bluetooth";
-        this.bluetoothModel = new BluetoothModel();
 
         this.bt = BluetoothSerial;
     }
 
     ionViewDidLoad() { // ionViewDidEnter() - recursion?
         this.refreshStatus();
-        this.listBluetoothDevices(this.bluetoothModel);
+        this.listBluetoothDevices();
     }
 
-    public bluetooth(bluetoothModel: BluetoothModel) {
+    public bluetooth() {
         let message = '';
-        this.myLogger(Level.INFO, 'Bluetooth device name: ' + bluetoothModel.name);
+        this.myLogger(Level.INFO, 'Show System Bluetooth Settings');
         this.platform.ready()
             .then(() => {
                 this.bt.showBluetoothSettings()
@@ -127,9 +126,9 @@ export class BluetoothComponent {
         this.refreshStatus();
     }
 
-    public listBluetoothDevices(bluetoothModel: BluetoothModel) {
+    public listBluetoothDevices() {
         let message = '';
-        this.myLogger(Level.INFO, 'Bluetooth device name: ' + bluetoothModel.name);
+        this.myLogger(Level.INFO, 'List Bluetooth Devices');
 
         this.platform.ready()
             .then(() => {
@@ -150,9 +149,7 @@ export class BluetoothComponent {
                             let inx: number = 0;
                             let found: boolean = false;
                             for (inx = 0; this.btPrinters.length > inx; inx++) {
-                                //alert('mec... device (' + this.btPrinters[inx].name + ')');
                                 if (this.btPrinters[inx].name === tempDevice.name) {
-                                    //alert('mec... FOUND (' + tempDevice.name + ')');
                                     found = true;
                                     break;
                                 }
@@ -161,7 +158,6 @@ export class BluetoothComponent {
                             // Add the device to our list (if it is not already in our list)
                             if (!found) {
                                 this.btPrinters.push(new BluetoothModel(tempDevice.class, tempDevice.id, tempDevice.address, tempDevice.name));
-                                //alert('mec... PUSHED onto list (' + tempDevice.name + ')');
                             }
                             //mec...this.selectedDevice = device;
                             //mec...this.selectedPrinter = device.name; //mec... TODO: We need to check to see if this printer is the saved printer
@@ -173,7 +169,6 @@ export class BluetoothComponent {
                                 this.selectedDevice = tempDevice;
                                 this.selectedPrinter = this.selectedDevice.name;
                                 this.myLogger(Level.INFO, 'Using one and only Paired Device: (' + this.selectedPrinter + ', ' + this.selectedDevice.id + ')');
-                                //alert('mec...cool SELECTED DEVICE (' + this.selectedPrinter + ') (' + this.selectedDevice.id + ')');
                             }
                         }
                         else if (count > 1) {
@@ -197,67 +192,45 @@ export class BluetoothComponent {
         this.refreshStatus();
     }
 
-    public printTestLabel() { //mec... TODO: pass in device???
-        let message = '';
+    public printTestLabel() {
+        let message = "";
 
-        //this.myLogger(Level.INFO, 'Print Test Label: ' + bluetoothModel.name);
         let device = this.selectedDevice;
+        //TESTING Windows: device = new BluetoothModel('class_mec...','id_mec...','address_mec...','Zebra');
+
+        let labelContent: Array<string> = [];
+        labelContent.push('[ECN:012345 Org ID:ABCDEF]');
+        labelContent.push('[Org Name:MIKE AA ARMY ME]');
+        labelContent.push('[Item ID: SAMPLE label 12]');
+        labelContent.push('[Nomen:               ABC]');
+        labelContent.push(GenerateBarcodeLabelService.BARCODE_SYMBOL + '012345 ABCDEF');
+        labelContent.push('   012345 ABCDEF   ');
 
         if (device != null) {
-            //alert('mec...cool lets print to (' + device.name + ') (' + device.id + ')');
+            let theLabel = GenerateBarcodeLabelService.makeBarcodeLabel(this.log, device, 1, labelContent);
+            this.printLabel(device, theLabel);
+        }
+        else {
+            message = `Target printer has not been selected`;
+            this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
+        }
+    }
 
+    public printLabel(device, theLabel) {
+        let message = '';
+
+        if (device != null) {
             this.platform.ready()
                 .then(() => {
+                    this.myLogger(Level.INFO, 'Connect to: (' + device.name + ', ' + device.id + ')');
 
                     // Print to selected device, but let's connect first
-                    this.myLogger(Level.INFO, 'Print to: (' + device.name + ', ' + device.id + ')');
-
-                    //mec...alert('before connect (' + device.name + ', ' + device.id + ')');
-
                     this.btConnect(device)
                         .then(() => {
-                            //alert('mec... is connected, now print???');
-                            let testLabel =
-                                '<STX><ESC>C<ETX><STX><ESC>P;E3;F3;<ETX>' +
-                                '<STX>H1;o2,360;f1;c20;h1;w1;d3,[ECN:012345 Org ID:ABCDEF];<ETX>' +
-                                '<STX>H2;o26,360;f1;c20;h1;w1;d3,[Org Name:MIKE AA ARMY ME];<ETX>' +
-                                '<STX>H3;o50,360;f1;c20;h1;w1;d3,[Item ID: SAMPLE label 12];<ETX>' +
-                                '<STX>H4;o74,360;f1;c20;h1;w1;d3,[Nomen:               ABC];<ETX>' +
-                                '<STX>H5;o98,360;f1;c20;h1;w1;d3,[SN:---------x--------123];<ETX>' +
-                                '<STX>B6;o127,360;f1;c6;h40;w2;d3,012345ABCDEF;<ETX>' +
-                                '<STX>R<ETX><STX><ESC>E3<ETX><STX><CAN><ETX><STX><ETB><ETX>';
+                            this.myLogger(Level.INFO, 'Print to: (' + device.name + ', ' + device.id + ')');
 
-                            if (device.name.toLowerCase().indexOf("zebra".toLowerCase()) >= 0) {
-                                message = 'mec... I AM ZEBRA (' + device.name + ',' + device.name.toLowerCase().indexOf("zebra".toLowerCase()) + ')';
-                                this.myLogger(Level.INFO, message);
-                                //mec...alert(message);
-
-                                testLabel =
-                                    '! 0 200 200 374 1' + '\r\n' +
-                                    'LABEL' + '\r\n' +
-                                    'CONTRAST 0' + '\r\n' +
-                                    'TONE 0' + '\r\n' +
-                                    'SPEED 3' + '\r\n' +
-                                    'IN-DOTS' + '\r\n' +
-                                    'BARCODE-TEXT OFF' + '\r\n' +
-                                    'SETFF 10 10' + '\r\n' +
-                                    'PAGE-WIDTH 400' + '\r\n' +
-                                    'TEXT 7 0 20 10 ~~~ Mike Sample ~~~' + '\r\n' +
-                                    'TEXT 7 0 20 33 ~~~             ~~~' + '\r\n' +
-                                    'TEXT 7 0 20 56 ~~~~~~~~~~~~~~~~~~~' + '\r\n' +
-                                    'TEXT 7 0 20 79 The Stuff' + '\r\n' +
-                                    'BARCODE 128 1 0 41 20 102 Bar code' + '\r\n' +
-                                    'TEXT 7 0 20 148 Barcode' + '\r\n' +
-                                    'FORM' + '\r\n' +
-                                    'PRINT' + '\r\n' +
-                                    // 26 +  // NOTE: Original code has EOF character, control-Z = 26, '\032', or x1A - NOTE: hardcoding octal value here causes compile error while in strict mode
-                                    ''
-                                ;
-                            }
-
-                            this.printStatus = this.btPrint(device, testLabel);
+                            this.printStatus = this.btPrint(device, theLabel);
                             //mec...TODO: react to success/failure of print? (maybe put put status on page?)
-
                         })
                         .catch((err) => {
                             message = `Print Label Error => ${err}`;
@@ -292,28 +265,24 @@ export class BluetoothComponent {
                 })
                 .catch((err) => { // Not really an error, but we are not connected.
                         message = 'Not connected, lets attempt to connect to (' + device.name + ') (' + err + ')';
-                        //mec...alert(message);
                         this.myLogger(Level.INFO, message);
 
                         // NOTE: This is a long running process, so let's wait
                         // Added timeout to Account for Bluetooth Plugin BUG: BluetoothSerialService: disconnected --- BluetoothSerialService: java.io.IOException: bt socket closed, read return: -1
                         setTimeout(() => {
                             // Attempt to connect - the MAGIC to disconnect is that we save the Observable (Subscription) so we can 'unsubscribe' later
-                            this.mecConnection = this.bt.connect(device.id)
+                            this.myConnection = this.bt.connect(device.id)
                                 .subscribe(
                                     (resp) => {
                                         message = 'Printer (' + device.name + ') Connection (' + resp + ')';
                                         this.myLogger(Level.INFO, message);
-                                        //mec...alert(message);
                                         resolve(resp);
                                     },
                                     (error) => {
                                         message = `Printer (` + device.name + `) Connection Error => ${error}`;
                                         this.myLogger(Level.ERROR, message);
-                                        //mec...alert(message);
                                         reject(error);
                                     });
-                            //mec... alert('mec...yoyo...madit here... with observable (' + this.mecConnection + ')');
                         }, 250); //mec... Question our timeout, maybe use async await?
                     }
                 )
@@ -328,7 +297,6 @@ export class BluetoothComponent {
             // BUG: .disconnect() does not work, but Subscription.unsubscribe() does!
             this.bt.isConnected()
                 .then(() => {
-                    //mec... alert('Attempt to disconnect from Printer (' + device.name + ')');
                     this.myLogger(Level.INFO, 'Am connected, attempt to disconnect from Printer (' + device.name + ')');
 
                     try {
@@ -336,7 +304,7 @@ export class BluetoothComponent {
                         // Added throttling to Account for Bluetooth Plugin BUG: BluetoothSerialService: disconnected --- BluetoothSerialService: java.io.IOException: bt socket closed, read return: -1
                         setTimeout(() => {
                             // MAGIC how to disconnect (Subscription.unsubscribe())
-                            this.mecConnection.unsubscribe();
+                            this.myConnection.unsubscribe();
                         }, 250); //mec... Question our timeout, maybe use async await?
                         this.myLogger(Level.INFO, 'Successful disconnect from Printer (' + device.name + ')');
                     }
@@ -414,16 +382,13 @@ export class BluetoothComponent {
     }
 
     itemTapped(itemName) {
-        //alert('mec...item tapped = (' + itemName + ')');
         this.selectedPrinter = itemName;
 
         // check to see is we already have our device in our btPrinter list
         let inx: number = 0;
         for (inx = 0; this.btPrinters.length > inx; inx++) {
-            //alert('mec... device (' + this.btPrinters[inx].name + ')');
             if (this.btPrinters[inx].name === itemName) {
                 this.selectedDevice = this.btPrinters[inx];
-                //alert('mec... Setting SELECTED printer to (' + this.selectedDevice.name + ')');
                 break;
             }
         }

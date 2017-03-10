@@ -1,8 +1,8 @@
-<ion-list radio-group [(ngModel)]="hostGroup">
+<ion-list >
     <ion-item *ngFor="let server of servers">
         <ion-label>{{server.serverName}}</ion-label>
         <ion-label>{{server.port}}</ion-label>
-        <ion-radio >{{server.localIsDefault}}</ion-radio>
+        <ion-checkbox item-right [(ngModel)]="server.isDefault" (click)="setDefault(server)"></ion-checkbox>
         <button (click)="deleteServer(server)" ion-button color="danger" clear icon-only item-right>
             <ion-icon name='trash' is-active="true"></ion-icon>
           </button>

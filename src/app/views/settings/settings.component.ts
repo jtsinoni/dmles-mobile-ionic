@@ -64,31 +64,29 @@ export class SettingsComponent {
         this.log.error(error);
       });
 
-      this.hostServerService.getAll().then((s) => {
-      this.servers = s;
+    
 
-    }).catch((error) => {
-      this.log.error(error);
-    });
-
-
+    this.getSettings();
     this.setDefaultServer();
 
   }
 
-  private setDefaultServer() {
-
+  private setDefaultServer()  {
     Promise.resolve().then(() => {
-      return this.hostServerService.getWhere('isDefault', 1); 
-    }).then((tt) => {
-      tt.first().then((dServer) => {
-        this.log.debug('what is dServer: ' + dServer);
-        this.defaultServer = dServer;
-      });
-    })
+      return this.hostServerService.getDefaultServer();
+    }).then((tt) => {  
+        this.log.debug('what is tt: ' + tt);
+        this.defaultServer = tt;
+    });
   }
 
   getSettings() {
+    this.settingService.getAll().then((s) => {
+      this.settings = s;
+
+    }).catch((error) => {
+      this.log.error(error);
+    });
 
   }
 
@@ -100,10 +98,16 @@ export class SettingsComponent {
 
   }
 
+  //TODO remove for prod
   addSetting() {
-    let addSettingModal = this.modalController.create(AddSettingComponent);
-    addSettingModal.present();
-    this.log.debug('showing add settings for DEV ionic serve in browser');
+    let addSettingModal = this.modalController.create(AddSettingComponent);  
+    addSettingModal.onDidDismiss(model => {
+      if (model) {       
+        this.getSettings();
+      }
+    })
+    addSettingModal.present();    
+   
   }
 
   itemSelected(setting: SettingsModel) {
@@ -120,14 +124,6 @@ export class SettingsComponent {
     }
 
   }
-
-  // updateSetting() {
-  //   if (this.selectedItem) {
-  //     // set editor visible on datatype
-  //     this.log.debug('updating setting: ' + this.selectedItem.settingName);
-  //     this.selectedItem = null;
-  //   }
-  // }
 
   presentBluetoothModal() {
     this.bluetoothModalService.presentModal();

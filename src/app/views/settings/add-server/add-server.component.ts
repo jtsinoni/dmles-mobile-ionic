@@ -51,12 +51,7 @@ export class AddServerComponent {
   }
 
 
-  saveHostServer() {
-    if (this.model.isDefault) {
-      this.model.isDefault = 1;
-    } else {
-      this.model.isDefault = 0;
-    }
+  saveHostServer() {   
     this.serverService.add(this.model).then(() => {
     }).catch((error) => {
       this.log.error(error);

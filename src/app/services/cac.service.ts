@@ -1,6 +1,5 @@
 import {Injectable} from "@angular/core";
 import {LoggerService} from "./logger/logger-service";
-import {WindowService} from "./window.service";
 import {Platform} from "ionic-angular";
 import {UtilService} from "../common/services/util.service";
 
@@ -12,7 +11,6 @@ export class CACService {
 
     constructor(private log: LoggerService,
                 private platform: Platform,
-                private windowService: WindowService,
                 private utilService: UtilService) {
         this.init();
 
@@ -25,16 +23,13 @@ export class CACService {
 
                 if(this.utilService.isMobility()) {
                     cordova.plugins.CACPlugin.coolMethod(
-                            9,
-                            (results) => {this.log.debug(`Results => ${results}`)},
-                            (error) => {this.log.error(`${error}`)});
-
-                    // cordova.plugins.CACPlugin.coolMethod(9,function(e){console.log("success: " + e)},function(e){console.log("error: " + e)});
+                        "Hello Plugin World",
+                        (results) => {this.log.debug(`Results => ${results}`)},
+                        (error) => {this.log.error(`${error}`)});
                 }
             })
             .catch((error) => {
                 console.error(`${error}`);
             });
     }
-
 }

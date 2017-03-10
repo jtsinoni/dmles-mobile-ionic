@@ -13,8 +13,8 @@ import { AppConfigConstants } from "./constants/app-config.constants";
 import { AuthenticationService } from "./services/authentication.service";
 import { SettingsComponent } from "./views/settings/settings.component";
 import { LoginModalService } from "./services/login-modal.service";
+import { SecurityComponent } from  "./views/security/security.component";
 import {CACService} from "./services/cac.service";
-
 
 @Component({
     templateUrl: './app.html'
@@ -22,7 +22,7 @@ import {CACService} from "./services/cac.service";
 export class DMLESMobile implements OnInit {
     @ViewChild(Nav) nav: Nav;
 
-    rootPage: any = AppContainerComponent;
+    rootPage: any = SecurityComponent;
     loggedOutAreas = new Array<AreaModel>();
     //loggedInAreas = new Array<AreaModel>();
 
@@ -41,7 +41,14 @@ export class DMLESMobile implements OnInit {
         private loginModalService: LoginModalService,
         private upstreamService: UpstreamService,
         private log: LoggerService,
-        private cacService: CACService) {
+        private cacService: CACService) {            
+            if (this.utilService.isProd() == false) {
+                this.rootPage = AppContainerComponent;
+            } 
+            // if you want to see it in DEV / ionic serve --lab - use this block
+            // if (this.utilService.isMobility() === false) {
+            //     this.rootPage = AppContainerComponent;
+            // }
     }
 
     ngOnInit(): void {
@@ -118,6 +125,10 @@ export class DMLESMobile implements OnInit {
 
     goToHome() {
         this.app.getRootNav().setRoot(AppContainerComponent);
+    }
+
+    goToDoDConfirmationPage() {
+        this.app.getRootNav().setRoot(SecurityComponent);
     }
 
     logout() {

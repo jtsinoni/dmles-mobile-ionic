@@ -4,7 +4,7 @@ import { LoggerService } from "../../services/logger/logger-service";
 import { SettingsModel } from "../../models/settings.model";
 import { ServerModel } from "../../models/server.model";
 import { ModalController } from 'ionic-angular';
-import { AddSettingComponent } from "./add-setting/add-setting.component";
+//import { AddSettingComponent } from "./add-setting/add-setting.component";
 import { UtilService } from "./../../common/services/util.service";
 import { BluetoothModalService } from "../../services/bluetooth-modal.service";
 import { AddServerComponent } from "./add-server/add-server.component";
@@ -30,53 +30,36 @@ export class SettingsComponent {
     private utilService: UtilService,
     private bluetoothModalService: BluetoothModalService,
     private hostServerService: HostServerService) {
+       this.setSettingsCount();
   }
 
   ionViewWillEnter() {
 
     if (this.utilService.isMobility()) {
       this.isMobility = true;
-      this.setSettingsCount();
+     
       this.log.debug('settings count is: ' + this.settingsCount);
 
       if (this.settingsCount < 1) {
         // add settings to the db from asset file
-        this.log.debug('getting asset file');
-        this.settingService.getAssetFile().map(results => results.json())
-          .subscribe((results) => {
-            this.settings = results;
-            this.log.debug(`getAssetFile data => ${JSON.stringify(results)}`);
-          });
-        for (let s of this.settings) {
-          this.settingService.add(s);
-        }
-        this.log.debug("added settings from asset file");
-
+        this.settingService.getAssetFile(); 
+        
       }
     }
-    this.settingService.getAll().then((s) => {
-      this.settings = s;
-      if (s) {
-        this.log.debug(`Got => ${s.length} from IndexedDB`)
-      }
-    })
-      .catch((error) => {
-        this.log.error(error);
-      });
+   
 
-    
 
     this.getSettings();
     this.setDefaultServer();
 
   }
 
-  private setDefaultServer()  {
+  private setDefaultServer() {
     Promise.resolve().then(() => {
       return this.hostServerService.getDefaultServer();
-    }).then((tt) => {  
-        this.log.debug('what is tt: ' + tt);
-        this.defaultServer = tt;
+    }).then((tt) => {
+      this.log.debug('what is tt: ' + tt);
+      this.defaultServer = tt;
     });
   }
 
@@ -93,6 +76,7 @@ export class SettingsComponent {
 
   private setSettingsCount() {
     this.settingService.getCount().then((c) => {
+      this.log.info('settings count is: ' + c);  
       this.settingsCount = c;
     })
 
@@ -100,14 +84,18 @@ export class SettingsComponent {
 
   //TODO remove for prod
   addSetting() {
-    let addSettingModal = this.modalController.create(AddSettingComponent);  
-    addSettingModal.onDidDismiss(model => {
-      if (model) {       
-        this.getSettings();
-      }
-    })
-    addSettingModal.present();    
-   
+    // let addSettingModal = this.modalController.create(AddSettingComponent);
+    // addSettingModal.onDidDismiss(model => {
+    //   if (model) {
+       
+    //     this.getSettings();
+        
+
+    //   }
+    // });
+    // addSettingModal.present();
+    this.log.debug('no more adding of settings');
+
   }
 
   itemSelected(setting: SettingsModel) {
@@ -131,6 +119,9 @@ export class SettingsComponent {
 
   presentAddServer() {
     let addServerModal = this.modalController.create(AddServerComponent);
-    addServerModal.present();
+    addServerModal.onDidDismiss(model => {     
+       this.setDefaultServer();      
+    });
+    addServerModal.present();    
   }
 }

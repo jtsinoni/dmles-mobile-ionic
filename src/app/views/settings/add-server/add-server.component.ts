@@ -51,11 +51,10 @@ export class AddServerComponent {
   }
 
 
-  saveHostServer() {   
-    this.serverService.add(this.model).then(() => {
-    }).catch((error) => {
-      this.log.error(error);
-    });
+  saveHostServer() {
+   
+    this.serverService.addHostServer(this.model);
+    
     this.dismiss();
 
   }
@@ -64,9 +63,6 @@ export class AddServerComponent {
     this.viewCtrl.dismiss();
   }
 
-  setDefault(server: ServerModel) {
-    this.serverService.setDefaultServer(server);
-  }
-
+  
 
 }

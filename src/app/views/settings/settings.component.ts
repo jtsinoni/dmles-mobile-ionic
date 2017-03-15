@@ -4,7 +4,7 @@ import { LoggerService } from "../../services/logger/logger-service";
 import { SettingsModel } from "../../models/settings.model";
 import { ServerModel } from "../../models/server.model";
 import { ModalController } from 'ionic-angular';
- // // uncomment to add settings manually in dev 
+// // uncomment to add settings manually in dev 
 //import { AddSettingComponent } from "./add-setting/add-setting.component";
 import { UtilService } from "./../../common/services/util.service";
 import { BluetoothModalService } from "../../services/bluetooth-modal.service";
@@ -99,5 +99,17 @@ export class SettingsComponent {
       this.setDefaultServer();
     });
     addServerModal.present();
+  }
+
+  boolChanged(setting: SettingsModel) {
+    this.settingService.update(setting);
+  }
+
+  numberChanged(setting: SettingsModel) {
+    this.settingService.update(setting);
+  }
+
+  textChanged(setting: SettingsModel) {
+    this.settingService.update(setting);
   }
 }

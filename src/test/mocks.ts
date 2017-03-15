@@ -145,6 +145,9 @@ export class ModalControllerMock {
 export class CACServiceMock {
 }
 
+export class SettingsServiceMock {    
+}
+
 export class MenuControllerMock {
   public close(): any {
     return new Promise((resolve: Function) => {

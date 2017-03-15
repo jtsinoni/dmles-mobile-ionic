@@ -4,6 +4,7 @@ import { LoggerService } from "../../services/logger/logger-service";
 import { SettingsModel } from "../../models/settings.model";
 import { ServerModel } from "../../models/server.model";
 import { ModalController } from 'ionic-angular';
+ // // uncomment to add settings manually in dev 
 //import { AddSettingComponent } from "./add-setting/add-setting.component";
 import { UtilService } from "./../../common/services/util.service";
 import { BluetoothModalService } from "../../services/bluetooth-modal.service";
@@ -17,7 +18,6 @@ import { HostServerService } from "../../services/host-server.service";
 export class SettingsComponent {
 
   settings: Array<SettingsModel> = new Array<SettingsModel>();
-  settingsCount: number = 0;
   selectedItem: SettingsModel;
   isMobility: boolean = false;
   defaultServer: ServerModel;
@@ -30,24 +30,9 @@ export class SettingsComponent {
     private utilService: UtilService,
     private bluetoothModalService: BluetoothModalService,
     private hostServerService: HostServerService) {
-       this.setSettingsCount();
   }
 
   ionViewWillEnter() {
-
-    if (this.utilService.isMobility()) {
-      this.isMobility = true;
-     
-      this.log.debug('settings count is: ' + this.settingsCount);
-
-      if (this.settingsCount < 1) {
-        // add settings to the db from asset file
-        this.settingService.getAssetFile(); 
-        
-      }
-    }
-   
-
 
     this.getSettings();
     this.setDefaultServer();
@@ -73,29 +58,20 @@ export class SettingsComponent {
 
   }
 
-
-  private setSettingsCount() {
-    this.settingService.getCount().then((c) => {
-      this.log.info('settings count is: ' + c);  
-      this.settingsCount = c;
-    })
-
-  }
-
   //TODO remove for prod
   addSetting() {
+    // // uncomment to add settings manually in dev 
     // let addSettingModal = this.modalController.create(AddSettingComponent);
     // addSettingModal.onDidDismiss(model => {
     //   if (model) {
-       
+
     //     this.getSettings();
-        
+
 
     //   }
     // });
     // addSettingModal.present();
-    this.log.debug('no more adding of settings');
-
+    //this.log.debug('no more adding of settings');  
   }
 
   itemSelected(setting: SettingsModel) {
@@ -119,9 +95,9 @@ export class SettingsComponent {
 
   presentAddServer() {
     let addServerModal = this.modalController.create(AddServerComponent);
-    addServerModal.onDidDismiss(model => {     
-       this.setDefaultServer();      
+    addServerModal.onDidDismiss(model => {
+      this.setDefaultServer();
     });
-    addServerModal.present();    
+    addServerModal.present();
   }
 }

@@ -40,6 +40,13 @@ export abstract class BaseDatabaseService<M extends BaseDataTableModel> {
     delete(model: M) {
         return Promise.resolve(this.dbTable.delete(model.id));
     }
-   
+
+    getFilteredCount(filterCallback: (model:M) => boolean): Promise<number> {
+        return Promise.resolve(this.dbTable.filter(filterCallback).count());
+    }
+
+    deleteFilteredCollection(filterCallback: (model:M) => boolean): Promise<number> {
+        return Promise.resolve(this.dbTable.filter(filterCallback).delete());
+    }
 
 }

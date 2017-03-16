@@ -7,6 +7,9 @@ import {BluetoothSerial} from "ionic-native";
 import {Level as LoggerLevel, Level} from "../../services/logger/level";
 import {GenerateBarcodeLabelService} from '../../services/generate-barcode-label.service';
 import {Subscription} from "rxjs";
+import {SettingsService} from '../../services/settings.service';
+import {SettingsModel} from "../../models/settings.model";
+import {ServerModel} from "../../models/server.model";
 
 // mec... TODO: fix the device error:
 //     W PluginManager: THREAD WARNING: exec() call to BluetoothSerial.showBluetoothSettings blocked the main thread for 31ms. Plugin should use CordovaInterface.getThreadPool().
@@ -62,9 +65,11 @@ export class BluetoothComponent {
     printStatus: boolean = false;
     selectedPrinter: string = "No printer";
     btPrinters: Array<BluetoothModel> = new Array<BluetoothModel>();
+    settings: Array<SettingsModel> = new Array<SettingsModel>();
 
     constructor(private platform: Platform,
                 private log: LoggerService,
+                private settingService: SettingsService,
                 private modalController: ModalController,
                 private viewController: ViewController) {
         this.bluetoothText = "Bluetooth";
@@ -75,7 +80,128 @@ export class BluetoothComponent {
     ionViewDidLoad() { // ionViewDidEnter() - recursion?
         this.refreshStatus();
         this.listBluetoothDevices();
+        this.getSettings(); //mec...bobo...
     }
+
+    getSettings() {
+        this.settingService.getBluetoothBarcodePrinterSettingsCount().then((s) => {
+            alert('mec...BluetoothBarcodePrinter settings count (' + s +')');
+            this.settingService.deleteBluetoothBarcodePrinterSettings().then((s) => {
+                alert('mec...BluetoothBarcodePrinter settings DELETED (' + s +')');
+                this.settingService.getBluetoothBarcodePrinterSettingsCount().then((s) => {
+                    alert('mec...BluetoothBarcodePrinter settings count (' + s +')');
+                });
+            });
+        });
+
+        /*mec...
+         this.settingService.getBooleanSettingsCount().then((s) => {
+         y=s;
+         alert('mec...boolean settings count (' + y +')');
+         });
+
+        // mec...BOBO...
+        let temp: SettingsModel = new SettingsModel("BluetoothBarcodePrinter", "Zebra", "");
+        this.settingService.add(temp).then(() => {
+            alert('mec....good ADD');
+        }).then(() => {
+            this.settingService.filter2(this.filterCallBack(temp)).then((aaa) => {
+                alert('mec...INSIDE1 (' + aaa[0].settingName + ')');
+            }).catch((error) => {
+                alert('mec...ERROR1 (' + error + ')');
+            });
+        }).catch((error) => {
+            alert('mec...ERROR2 (' + error + ')');
+        });
+
+        alert('mec....BEFORE1');
+        this.settingService.filter2(this.filterCallBack(temp)).then((aaa) => {
+            alert('mec...INSIDE1 (' + aaa + ')');
+        }).catch((error) => {
+            alert('mec...ERROR1 (' + error + ')');
+        });
+        alert('mec...AFTER1');
+
+        alert('mec....BEFORE');
+        this.settingService.filter(this.filterCallBack(temp)).then((aaa) => {
+            alert('mec...INSIDE (' + aaa + ')');
+        }).catch((error) => {
+            alert('mec...ERROR (' + error + ')');
+        });
+        alert('mec...AFTER');
+
+        // aaa.each((element) => {
+        //     alert('mec...1o1o... with (' + element.settingName + ',' + element.setting + ')');
+        // });
+        // alert('mec...AFTER each');
+
+
+        this.settingService.getWhere("settingName", "BluetoothBarcodePrinter").then((s) => {
+            alert('mec...getWhere Returned ~~~~~~~~~~~~~~~~~~~~~~~~~~~ ' + JSON.stringify(s));
+
+            // let ccc = this.settingService.getCountYYY("settingName", "BluetoothBarcodePrinter");
+            // alert('mec...AFTER COUNT!!! ~~~~~~~~~~~~~~~~~~~~~~~~~~~ ' + ccc);
+
+            this.settingService.getCountZZZ("settingName", "BluetoothBarcodePrinter").then((cnt) => {
+                alert('mec... cooooool (' + cnt + ')');
+            });
+
+            alert('OUCH~~~~~~~~~~~~~~~~~~~~~~~');
+            s.each((element) => {
+                alert('mec...aoao... with (' + element.settingName + ',' + element.setting + ')');
+            });
+
+            this.settingService.add(temp).then(() => {
+                alert('mec...HMMM...' + JSON.stringify(this.settingService.getWhere("settingName", "BluetoothBarcodePrinter")));
+                return this.settingService.getWhere("settingName", "BluetoothBarcodePrinter");//.toArray();
+            }).then((friends) => {
+                alert("Found bobo friends: " + JSON.stringify(friends));
+                //mec...return this.settingService.add(temp);
+                return (friends);
+            }).then((friends) => {
+                friends.each((element) => {
+                    alert('mec...coco... with (' + element.settingName + ',' + element.setting + ')');
+                });
+
+                this.settingService.getAll().then((friends) => {
+                    //this.settings = friends;
+                    friends.forEach((element) => {
+                        alert('mec...dodo... with (' + element.settingName + ',' + element.setting + ')');
+                    });
+
+                    alert('mec...after getAll()');
+
+                }).catch((error) => {
+                    this.log.error(error);
+                    alert('mec...yoyo...CRAP error (' + error + ')');
+                });
+            }).then((friends) => {
+                alert("Friends in reverse age order: " + JSON.stringify(friends));
+            }).catch((e) => {
+                alert("Whoops!: " + e.stack);
+            });
+            ;
+
+            // this.settingService.getAll().then((s) => {
+            //     this.settings = s;
+            //     s.forEach((element) => {
+            //         alert('mec...bobo... with (' + element.settingName + ',' + element.setting + ')');
+            //     });
+            //
+            //     alert('mec...after getAll()');
+            //
+            // }).catch((error) => {
+            //     this.log.error(error);
+            //     alert('mec...yoyo...CRAP error (' + error + ')');
+            // });
+        }).catch((error) => {
+            this.log.error(error);
+            alert('mec...yoyo...CRAP error (' + error + ')');
+        });
+
+        /*mec.../**/
+    }
+
 
     public bluetooth() {
         let message = '';

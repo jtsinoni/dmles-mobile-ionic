@@ -35,6 +35,10 @@ export abstract class BaseDatabaseService<M extends BaseDataTableModel> {
 
     getCount(): Promise<number> {
         return Promise.resolve(this.dbTable.count());
+    }    
+   
+    getFilteredCount(filterCallback: (model: M) => boolean): Promise<number> {
+        return Promise.resolve(this.dbTable.filter(filterCallback).count());
     }
 
     delete(model: M) {

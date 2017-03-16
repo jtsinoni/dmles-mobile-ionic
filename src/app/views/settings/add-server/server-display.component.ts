@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ServerModel } from "../../../models/server.model";
 import { HostServerService } from "../../../services/host-server.service";
 import { LoggerService } from "../../../services/logger/logger-service";
+import { ViewController } from "ionic-angular";
 
 @Component({
   selector: 'server-display',
@@ -19,7 +20,7 @@ export class ServerDisplayComponent implements OnInit {
 
   @Input() servers: Array<ServerModel>;
 
-  constructor(private hostServerService: HostServerService, private log: LoggerService) {
+  constructor(private hostServerService: HostServerService, private log: LoggerService, private viewCtrl: ViewController) {
 
   }
 
@@ -42,7 +43,7 @@ export class ServerDisplayComponent implements OnInit {
     if (server.isDefault) {
       this.log.debug("setting " + server.serverName + " to default");      
       this.hostServerService.setDefaultServer(server);
-      this.ngOnInit();
+      this.viewCtrl.dismiss();
     } else {
       //do nothing user needs to set another or there is only one
       //this.log.debug("UN-setting " + server.serverName + " to default");

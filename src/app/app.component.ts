@@ -13,8 +13,9 @@ import { AppConfigConstants } from "./constants/app-config.constants";
 import { AuthenticationService } from "./services/authentication.service";
 import { SettingsComponent } from "./views/settings/settings.component";
 import { LoginModalService } from "./services/login-modal.service";
-import { SecurityComponent } from  "./views/security/security.component";
-import {CACService} from "./services/cac.service";
+import { SecurityComponent } from "./views/security/security.component";
+import { CACService } from "./services/cac.service";
+import { SettingsService } from "./services/settings.service";
 
 @Component({
     templateUrl: './app.html'
@@ -31,6 +32,7 @@ export class DMLESMobile implements OnInit {
     home = 'Home';
     logOut = 'Logout';
     exit = 'Exit';
+    settingsCount: number = 0;
     //isLoggedIn: boolean = false;
 
     constructor(
@@ -41,14 +43,15 @@ export class DMLESMobile implements OnInit {
         private loginModalService: LoginModalService,
         private upstreamService: UpstreamService,
         private log: LoggerService,
-        private cacService: CACService) {            
-            if (this.utilService.isProd() == false) {
-                this.rootPage = AppContainerComponent;
-            } 
-            // if you want to see it in DEV / ionic serve --lab - use this block
-            // if (this.utilService.isMobility() === false) {
-            //     this.rootPage = AppContainerComponent;
-            // }
+        private cacService: CACService,
+        private settingService: SettingsService) {
+        if (this.utilService.isProd() == false) {
+            this.rootPage = AppContainerComponent;
+        }
+        // if you want to see the DoD warning in DEV / ionic serve --lab - use this block
+        // if (this.utilService.isMobility() === false) {
+        //     this.rootPage = AppContainerComponent;
+        // }
     }
 
     ngOnInit(): void {
@@ -56,10 +59,18 @@ export class DMLESMobile implements OnInit {
     }
 
     initializeApp() {
+        this.setSettingsCount();
         this.platform.ready().then(() => {
             StatusBar.styleDefault();
 
+
             this.isMobility = this.utilService.isMobility();
+
+            if (this.settingsCount < 1 && this.isMobility) {
+                // add settings to the db from asset file
+                this.settingService.getAssetFile();
+
+            }
 
             // Attempt to connect to messaging server if connect flag is true
             if (AppConfigConstants.messagingServer.connect) {
@@ -147,6 +158,14 @@ export class DMLESMobile implements OnInit {
         if (this.isMobility && !this.platform.is('ios')) {
             this.platform.exitApp();
         }
+    }
+
+    private setSettingsCount() {
+        this.settingService.getCount().then((c) => {
+            this.log.info('settings count is: ' + c);
+            this.settingsCount = c;
+        })
+
     }
 
 

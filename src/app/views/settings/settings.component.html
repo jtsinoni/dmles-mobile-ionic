@@ -1,16 +1,19 @@
 <mb-nav-drawer-header remove-parent-element [title]="'Settings'"></mb-nav-drawer-header>
 
 <ion-content>
-  
+
   <ion-list>
     <ion-item-divider class="ripple" (click)="addSetting()">
-      <ion-label>My Settings</ion-label>      
+      <ion-label>My Settings</ion-label>
     </ion-item-divider>
     <ion-item *ngFor="let setting of settings" (press)="itemSelected(setting)">
       <ion-label>{{setting.settingName}}</ion-label>
       <ion-toggle [hidden]="isHidden(setting, 'boolean')" [(ngModel)]="setting.setting" (ionChange)="boolChanged(setting)"></ion-toggle>
       <ion-input [hidden]="isHidden(setting, 'number')" type="number" [(ngModel)]="setting.setting" (blur)="numberChanged(setting)"></ion-input>
       <ion-input [hidden]="isHidden(setting, 'text')" type="text" [(ngModel)]="setting.setting" (blur)="textChanged(setting)"></ion-input>
+      <ion-select item-right [hidden]="isHidden(setting, 'select')" [(ngModel)]="setting.selectedValue" (ionChange)="selectChanged(setting)">
+        <ion-option *ngFor="let value of setting.values" [value]="value">{{value}}</ion-option>
+      </ion-select>
     </ion-item>
     <ion-item-divider class="ripple" ion-item (click)="presentBluetoothModal()">
       <ion-label>Bluetooth Settings</ion-label>

@@ -38,6 +38,7 @@ export class SettingsService extends BaseDatabaseService<SettingsModel> {
                     }, () => {
                         for (let s of items) {
                             this.log.info(s.settingName);
+                            s.selectedValue = s.setting;                           
                             this.add(s);
                         }
                     });

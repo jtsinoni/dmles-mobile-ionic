@@ -112,4 +112,9 @@ export class SettingsComponent {
   textChanged(setting: SettingsModel) {
     this.settingService.update(setting);
   }
+
+  selectChanged(setting: SettingsModel) {
+    setting.setting = setting.selectedValue;
+    this.settingService.update(setting);
+  }
 }

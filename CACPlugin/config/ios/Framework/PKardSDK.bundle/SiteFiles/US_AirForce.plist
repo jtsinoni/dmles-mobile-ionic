@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>title</key>
+	<string>U.S. Air Force</string>
+	<key>URLs</key>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>AF Portal (1 of 3)</string>
+			<key>URL</key>
+			<string>https://www.my.af.mil</string>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>AF Portal (2 of 3)</string>
+			<key>URL</key>
+			<string>https://www.my.af.mil/EAI_JUNCTION/eai/</string>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>AF Portal (3 of 3)</string>
+			<key>URL</key>
+			<string>https://www.my.af.mil/EAI_JUNCTION/eai/auth</string>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Air Force Portal Virtual MPF Site</string>
+			<key>URL</key>
+			<string>https://w20.afpc.randolph.af.mil/afpcsecurenet20/</string>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Air Force Jag WebFLITE (1 of 2)</string>
+			<key>URL</key>
+			<string>https://logon.jag.af.mil</string>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Air Force Jag WebFLITE (2 of 2)</string>
+			<key>URL</key>
+			<string>https://aflsa.jag.af.mil/</string>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Air Force Education Exchange</string>
+			<key>URL</key>
+			<string>https://cacwebmail.afit.edu/Exchange</string>
+			<key>certAssertions</key>
+			<integer>10</integer>
+		</dict>
+	</array>
+</dict>
+</plist>

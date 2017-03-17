@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>title</key>
+	<string>U.S. Navy</string>
+	<key>URLs</key>
+	<array>
+		<dict>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+			<key>name</key>
+			<string>Navy Webmail</string>
+			<key>URL</key>
+			<string>https://webmail.nmci.navy.mil</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>10</integer>
+			<key>name</key>
+			<string>Reserve Portal</string>
+			<key>URL</key>
+			<string>https://private.navyreserve.navy.mil/</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>10</integer>
+			<key>name</key>
+			<string>NADSUSEA (Navy East OWA)</string>
+			<key>URL</key>
+			<string>https://webmail.east.nmci.navy.mil</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>10</integer>
+			<key>name</key>
+			<string>NADSUSWE (Navy West OWA)</string>
+			<key>URL</key>
+			<string>https://webmail.west.nmci.navy.mil</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>10</integer>
+			<key>name</key>
+			<string>NADSUSEA NCIS COI (Navy NCIS OWA)</string>
+			<key>URL</key>
+			<string>https://webmail.ncis.nmci.navy.mil</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>10</integer>
+			<key>name</key>
+			<string>NMCI-ISF (Navy ISF OWA)</string>
+			<key>URL</key>
+			<string>https://webmail.isf.nmci.navy.mil</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>10</integer>
+			<key>name</key>
+			<string>PADS (Navy PADS OWA)</string>
+			<key>URL</key>
+			<string>https://webmail.pacom.mil</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>10</integer>
+			<key>name</key>
+			<string>PADS (Navy PACOM SMR Users OWA)</string>
+			<key>URL</key>
+			<string>https://webmail.exceptions.pacom.mil</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+			<key>name</key>
+			<string>Navy InfoSec</string>
+			<key>URL</key>
+			<string>https://infosec.navy.mil</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+			<key>name</key>
+			<string>Navy Medical (1 of 3)</string>
+			<key>URL</key>
+			<string>http://www.med.navy.mil:80</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+			<key>name</key>
+			<string>Navy Medical (2 of 3)</string>
+			<key>URL</key>
+			<string>https://nmo.med.navy.mil/</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+			<key>name</key>
+			<string>Navy Medical (3 of 3)</string>
+			<key>URL</key>
+			<string>https://nmo.med.navy.mil/pki/default.cfm</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>10</integer>
+			<key>name</key>
+			<string>Navy Medical Outlook Web Access</string>
+			<key>URL</key>
+			<string>https://sscc-fe-03.med.navy.mil/EXCHANGE</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>10</integer>
+			<key>name</key>
+			<string>JTF-GNO / Cybercom</string>
+			<key>URL</key>
+			<string>https://www.cybercom.mil</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>10</integer>
+			<key>name</key>
+			<string>NRRM</string>
+			<key>URL</key>
+			<string>https://nrrm.navyreserve.navy.mil</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+			<key>name</key>
+			<string>BUPERS</string>
+			<key>URL</key>
+			<string>https://pki.bol.navy.mil/</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>0</integer>
+			<key>name</key>
+			<string>NSIPS (1 of 2)</string>
+			<key>URL</key>
+			<string>https://nsips.nmci.navy.mil</string>
+			<key>update</key>
+			<dict>
+				<key>URL</key>
+				<string>https://nsipsprod.nmci.navy.mil/nsipsclo/jsp/index.jsp</string>
+				<key>name</key>
+				<string>NSIPS</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>0</integer>
+			<key>name</key>
+			<string>NSIPS (2 of 2)</string>
+			<key>URL</key>
+			<string>https://nsipsweb.nmci.navy.mil/nsipsclo/logon</string>
+			<key>update</key>
+			<dict>
+				<key>remove</key>
+				<true/>
+			</dict>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>0</integer>
+			<key>name</key>
+			<string>NSIPS</string>
+			<key>URL</key>
+			<string>https://nsipsprod.nmci.navy.mil/nsipsclo/jsp/index.jsp</string>
+		</dict>
+		<dict>
+			<key>User-Agent</key>
+			<string>Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0</string>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+			<key>name</key>
+			<string>NROWS</string>
+			<key>URL</key>
+			<string>https://nrows.sscno.nmci.navy.mil</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+			<key>name</key>
+			<string>Navy Reserve Portal (1 of 2)</string>
+			<key>URL</key>
+			<string>https://private.navyreserve.navy.mil/</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+			<key>name</key>
+			<string>Navy Reserve Portal (2 of 2)</string>
+			<key>URL</key>
+			<string>https://private.navyreserve.navy.mil/pages/default.aspx</string>
+		</dict>
+	</array>
+</dict>
+</plist>

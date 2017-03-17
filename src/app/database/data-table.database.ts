@@ -17,7 +17,7 @@ export class DataTableDatabase extends Dexie {
         this.version(2).stores({data: "++id,data"});
         this.version(3).stores({
             servers: '++id, serverName, settingsId, port, isDefault',
-            settings: '++id, settingsName, setting, dataType'            
+            settings: '++id, settingsName, setting, dataType, *values'            
         });      
 
         // Open it

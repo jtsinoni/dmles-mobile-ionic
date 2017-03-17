@@ -7,26 +7,30 @@
     {
         "settingName": "Work Area",
         "setting": "Inventory",
-        "dataType": "text"
+        "dataType": "select",
+         "values": ["Inventory", "Ordering", "Item Mgmt", "Issue Mgmt"]
+
     },
     {
-        "settingName": "Device Pin",
+        "settingName": "Pin Code",
         "setting": 0,
         "dataType": "number"
     },
     {
         "settingName": "Allow Offline",
-        "setting": true,
+        "setting": "true",
         "dataType": "boolean"
     },
     {
         "settingName": "Theme",
-        "setting": "light",
-        "dataType": "text"
+        "setting": "Light",
+        "dataType": "select",
+        "values": ["Light", "Dark", "Creamy", "Dystopian"]
     },
     {
         "settingName": "Colors",
-        "setting": "default",
-        "dataType": "text"
+        "setting": "Standard",
+        "dataType": "select",
+        "values": ["Standard", "Fuchsia", "Mauve", "NuttyCaCa"]
     }
 ]

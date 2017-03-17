@@ -10,6 +10,7 @@ import {Subscription} from "rxjs";
 import {SettingsService} from '../../services/settings.service';
 import {SettingsModel} from "../../models/settings.model";
 import {ServerModel} from "../../models/server.model";
+import {AppConfigConstants} from "../../constants/app-config.constants";
 
 // mec... TODO: fix the device error:
 //     W PluginManager: THREAD WARNING: exec() call to BluetoothSerial.showBluetoothSettings blocked the main thread for 31ms. Plugin should use CordovaInterface.getThreadPool().
@@ -80,126 +81,94 @@ export class BluetoothComponent {
     ionViewDidLoad() { // ionViewDidEnter() - recursion?
         this.refreshStatus();
         this.listBluetoothDevices();
-        this.getSettings(); //mec...bobo...
+        //this.setSelectedPrinter("Zeb...mec"); //mec...bobo...
+        this.getSelectedPrinter(); //mec...bobo...
     }
 
-    getSettings() {
+    // this method 'sets' the selected printer and stores into local user aettings and the class instance variable this.selectedPrinter
+    // attempt to add the printer into user settings, this is usually done either if there is one and only one printer, or if user selects one from the available printers
+    setSelectedPrinter(printer:string) {
+        let message = "";
+        let temp: SettingsModel = new SettingsModel(AppConfigConstants.printer.bluetoothBarcodeKey, printer, "");
+
+        // Theory: We count number of barcode printers, delete all of them, recount them, then add the desired printer
+        // HMMM... Really all we need to do is delete all, then add desired
         this.settingService.getBluetoothBarcodePrinterSettingsCount().then((s) => {
-            alert('mec...BluetoothBarcodePrinter settings count (' + s +')');
+            alert('mec...BluetoothBarcodePrinter settings count (' + s + ')');
             this.settingService.deleteBluetoothBarcodePrinterSettings().then((s) => {
-                alert('mec...BluetoothBarcodePrinter settings DELETED (' + s +')');
-                this.settingService.getBluetoothBarcodePrinterSettingsCount().then((s) => {
-                    alert('mec...BluetoothBarcodePrinter settings count (' + s +')');
-                });
-            });
-        });
-
-        /*mec...
-         this.settingService.getBooleanSettingsCount().then((s) => {
-         y=s;
-         alert('mec...boolean settings count (' + y +')');
-         });
-
-        // mec...BOBO...
-        let temp: SettingsModel = new SettingsModel("BluetoothBarcodePrinter", "Zebra", "");
-        this.settingService.add(temp).then(() => {
-            alert('mec....good ADD');
-        }).then(() => {
-            this.settingService.filter2(this.filterCallBack(temp)).then((aaa) => {
-                alert('mec...INSIDE1 (' + aaa[0].settingName + ')');
-            }).catch((error) => {
-                alert('mec...ERROR1 (' + error + ')');
-            });
-        }).catch((error) => {
-            alert('mec...ERROR2 (' + error + ')');
-        });
-
-        alert('mec....BEFORE1');
-        this.settingService.filter2(this.filterCallBack(temp)).then((aaa) => {
-            alert('mec...INSIDE1 (' + aaa + ')');
-        }).catch((error) => {
-            alert('mec...ERROR1 (' + error + ')');
-        });
-        alert('mec...AFTER1');
-
-        alert('mec....BEFORE');
-        this.settingService.filter(this.filterCallBack(temp)).then((aaa) => {
-            alert('mec...INSIDE (' + aaa + ')');
-        }).catch((error) => {
-            alert('mec...ERROR (' + error + ')');
-        });
-        alert('mec...AFTER');
-
-        // aaa.each((element) => {
-        //     alert('mec...1o1o... with (' + element.settingName + ',' + element.setting + ')');
-        // });
-        // alert('mec...AFTER each');
-
-
-        this.settingService.getWhere("settingName", "BluetoothBarcodePrinter").then((s) => {
-            alert('mec...getWhere Returned ~~~~~~~~~~~~~~~~~~~~~~~~~~~ ' + JSON.stringify(s));
-
-            // let ccc = this.settingService.getCountYYY("settingName", "BluetoothBarcodePrinter");
-            // alert('mec...AFTER COUNT!!! ~~~~~~~~~~~~~~~~~~~~~~~~~~~ ' + ccc);
-
-            this.settingService.getCountZZZ("settingName", "BluetoothBarcodePrinter").then((cnt) => {
-                alert('mec... cooooool (' + cnt + ')');
-            });
-
-            alert('OUCH~~~~~~~~~~~~~~~~~~~~~~~');
-            s.each((element) => {
-                alert('mec...aoao... with (' + element.settingName + ',' + element.setting + ')');
-            });
-
-            this.settingService.add(temp).then(() => {
-                alert('mec...HMMM...' + JSON.stringify(this.settingService.getWhere("settingName", "BluetoothBarcodePrinter")));
-                return this.settingService.getWhere("settingName", "BluetoothBarcodePrinter");//.toArray();
-            }).then((friends) => {
-                alert("Found bobo friends: " + JSON.stringify(friends));
-                //mec...return this.settingService.add(temp);
-                return (friends);
-            }).then((friends) => {
-                friends.each((element) => {
-                    alert('mec...coco... with (' + element.settingName + ',' + element.setting + ')');
-                });
-
-                this.settingService.getAll().then((friends) => {
-                    //this.settings = friends;
-                    friends.forEach((element) => {
-                        alert('mec...dodo... with (' + element.settingName + ',' + element.setting + ')');
+                alert('mec...BluetoothBarcodePrinter settings DELETED (' + s + ')');
+                this.settingService.add(temp).then(() => {
+                    alert('mec....good ADD');
+                    this.settingService.getBluetoothBarcodePrinterSettingsCount().then((s) => {
+                        alert('mec...BluetoothBarcodePrinter settings count (' + s + ')');
+                        this.selectedPrinter = printer; // Save out printer into class instance variable
+                    }).catch((error) => {
+                        message = `Failed to recount Bluetooth Printer Setting, Error => ${error}`;
+                        this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
                     });
-
-                    alert('mec...after getAll()');
-
                 }).catch((error) => {
-                    this.log.error(error);
-                    alert('mec...yoyo...CRAP error (' + error + ')');
+                    message = `Failed to add Bluetooth Printer Setting, Error => ${error}`;
+                    this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
                 });
-            }).then((friends) => {
-                alert("Friends in reverse age order: " + JSON.stringify(friends));
-            }).catch((e) => {
-                alert("Whoops!: " + e.stack);
+            }).catch((error) => {
+                message = `Failed to remove Bluetooth Printer Setting, Error => ${error}`;
+                this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
             });
-            ;
-
-            // this.settingService.getAll().then((s) => {
-            //     this.settings = s;
-            //     s.forEach((element) => {
-            //         alert('mec...bobo... with (' + element.settingName + ',' + element.setting + ')');
-            //     });
-            //
-            //     alert('mec...after getAll()');
-            //
-            // }).catch((error) => {
-            //     this.log.error(error);
-            //     alert('mec...yoyo...CRAP error (' + error + ')');
-            // });
         }).catch((error) => {
-            this.log.error(error);
-            alert('mec...yoyo...CRAP error (' + error + ')');
+            message = `Failed to count Bluetooth Printer Setting, Error => ${error}`;
+            this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
         });
+    }
 
-        /*mec.../**/
+    // this method retrieves the selected printer from local user settings and stores into the class instance variable this.selectedPrinter
+    getSelectedPrinter() {
+        let message = "";
+        //let temp: SettingsModel = new SettingsModel(AppConfigConstants.printer.bluetoothBarcodeKey, "Zebra", "");
+
+        this.settingService.getWhereUnindexed("settingName", AppConfigConstants.printer.bluetoothBarcodeKey).then((s) => {
+            alert('mec...after getWhereUnindexed() (' + JSON.stringify(s) + ')');
+            //walk this list looking for 'where' with 'value'
+            s.forEach((row) => {
+                alert('mec...FOUND (' + row.id + ',' + row.settingName + ',' + row.setting + ')');
+            });
+
+        }).catch((error) => {
+            message = `Failed to getWhereUnindexed(settingName, ` + AppConfigConstants.printer.bluetoothBarcodeKey + `), Error => ${error}`;
+            this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
+        });
+    }
+
+    // this method retrieves the selected printer from local user settings and stores into the class instance variable this.selectedPrinter
+    getSelectedPrinterXXX() {
+        let message = "";
+        let temp: SettingsModel = new SettingsModel(AppConfigConstants.printer.bluetoothBarcodeKey, "Zebra", "");
+
+        this.settingService.getBluetoothBarcodePrinterSettingsCount().then((s) => {
+            alert('mec...BluetoothBarcodePrinter settings count (' + s + ')');
+            this.settingService.deleteBluetoothBarcodePrinterSettings().then((s) => {
+                alert('mec...BluetoothBarcodePrinter settings DELETED (' + s + ')');
+
+                this.settingService.add(temp).then(() => {
+                    alert('mec....good ADD');
+                    this.settingService.getBluetoothBarcodePrinterSettingsCount().then((s) => {
+                        alert('mec...BluetoothBarcodePrinter settings count (' + s + ')');
+                        this.selectedPrinter = "mec...Zebra"; //mec... yoyo... this is the magic
+                    }).catch((error) => {
+                        message = `Failed to recount Bluetooth Printer Setting, Error => ${error}`;
+                        this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
+                    });
+                }).catch((error) => {
+                    message = `Failed to add Bluetooth Printer Setting, Error => ${error}`;
+                    this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
+                });
+            }).catch((error) => {
+                message = `Failed to remove Bluetooth Printer Setting, Error => ${error}`;
+                this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
+            });
+        }).catch((error) => {
+            message = `Failed to count Bluetooth Printer Setting, Error => ${error}`;
+            this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
+        });
     }
 
 

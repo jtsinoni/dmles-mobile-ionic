@@ -11,14 +11,14 @@ import { LocalFileStorageService } from '../services/local-file-storage.service'
 export class SettingsService extends BaseDatabaseService<SettingsModel> {
     assetFilename: string = "app-settings.json";
     assetDirectory: string = "assets/files";
-    
+
     constructor(
         databaseService: DexieDatabaseService,
         private localFileStorageService: LocalFileStorageService,
         log: LoggerService,
         private http: Http) {
         super('Settings Service', databaseService.getSettingsDataTable(), log);
-        
+
     }
 
     public getAssetFile() {
@@ -44,6 +44,18 @@ export class SettingsService extends BaseDatabaseService<SettingsModel> {
             }
         });
 
+    }
+
+    isBluetoothBarcodePrinterSettingsCallback = (s: SettingsModel): boolean => {
+        return s.settingName === 'BluetoothBarcodePrinter';
+    }
+
+    getBluetoothBarcodePrinterSettingsCount():Promise<number> {
+        return this.getFilteredCount(this.isBluetoothBarcodePrinterSettingsCallback);
+    }
+
+    deleteBluetoothBarcodePrinterSettings():Promise<number> {
+        return this.deleteFilteredCollection(this.isBluetoothBarcodePrinterSettingsCallback);
     }
 
 

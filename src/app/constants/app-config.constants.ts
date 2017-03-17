@@ -42,4 +42,9 @@ export class AppConfigConstants {
     public static topicComponent: any = {
         page:"store"
     }
+
+    public static printer: any = {
+        bluetoothBarcodeKey: "BluetoothBarcodePrinter",
+        defaultPaperKey: "DefaultPaperPrinter"
+    }
 }

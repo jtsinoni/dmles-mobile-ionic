@@ -5,20 +5,21 @@ import { SettingsModel } from '../models/settings.model'
 import { BaseDatabaseService } from '../services/base-database.service';
 import { DexieDatabaseService } from '../services/dexie-database.service';
 import { LocalFileStorageService } from '../services/local-file-storage.service';
+import {AppConfigConstants} from "../constants/app-config.constants";
 
 
 @Injectable()
 export class SettingsService extends BaseDatabaseService<SettingsModel> {
     assetFilename: string = "app-settings.json";
     assetDirectory: string = "assets/files";
-    
+
     constructor(
         databaseService: DexieDatabaseService,
         private localFileStorageService: LocalFileStorageService,
         log: LoggerService,
         private http: Http) {
         super('Settings Service', databaseService.getSettingsDataTable(), log);
-        
+
     }
 
     public getAssetFile() {
@@ -38,13 +39,25 @@ export class SettingsService extends BaseDatabaseService<SettingsModel> {
                     }, () => {
                         for (let s of items) {
                             this.log.info(s.settingName);
-                            s.selectedValue = s.setting;                           
+                            s.selectedValue = s.setting;
                             this.add(s);
                         }
                     });
             }
         });
 
+    }
+
+    isBluetoothBarcodePrinterSettingsCallback = (s: SettingsModel): boolean => {
+        return s.settingName === AppConfigConstants.printer.bluetoothBarcodeKey;
+    }
+
+    getBluetoothBarcodePrinterSettingsCount():Promise<number> {
+        return this.getFilteredCount(this.isBluetoothBarcodePrinterSettingsCallback);
+    }
+
+    deleteBluetoothBarcodePrinterSettings():Promise<number> {
+        return this.deleteFilteredCollection(this.isBluetoothBarcodePrinterSettingsCallback);
     }
 
 

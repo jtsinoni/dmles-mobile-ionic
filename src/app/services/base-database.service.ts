@@ -27,11 +27,11 @@ export abstract class BaseDatabaseService<M extends BaseDataTableModel> {
 
     getWhereUnindexed(where: string, value: any) :Promise<any> {
         return (new Promise((resolve, reject) => {
-            this.dbTable.toArray().then((mec2) => {
+            this.dbTable.toArray().then((rows) => {
                 let newList = [];
 
                 //walk this list looking for 'where' with 'value'
-                mec2.forEach((row) => {
+                rows.forEach((row) => {
                     let str =  JSON.stringify(row) ;
                     let parsed = JSON.parse(str);
 

@@ -5,6 +5,7 @@ import { SettingsModel } from '../models/settings.model'
 import { BaseDatabaseService } from '../services/base-database.service';
 import { DexieDatabaseService } from '../services/dexie-database.service';
 import { LocalFileStorageService } from '../services/local-file-storage.service';
+import {AppConfigConstants} from "../constants/app-config.constants";
 
 
 @Injectable()
@@ -38,7 +39,7 @@ export class SettingsService extends BaseDatabaseService<SettingsModel> {
                     }, () => {
                         for (let s of items) {
                             this.log.info(s.settingName);
-                            s.selectedValue = s.setting;                           
+                            s.selectedValue = s.setting;
                             this.add(s);
                         }
                     });
@@ -48,7 +49,7 @@ export class SettingsService extends BaseDatabaseService<SettingsModel> {
     }
 
     isBluetoothBarcodePrinterSettingsCallback = (s: SettingsModel): boolean => {
-        return s.settingName === 'BluetoothBarcodePrinter';
+        return s.settingName === AppConfigConstants.printer.bluetoothBarcodeKey;
     }
 
     getBluetoothBarcodePrinterSettingsCount():Promise<number> {

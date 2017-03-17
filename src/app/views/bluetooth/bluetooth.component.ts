@@ -9,7 +9,6 @@ import {GenerateBarcodeLabelService} from '../../services/generate-barcode-label
 import {Subscription} from "rxjs";
 import {SettingsService} from '../../services/settings.service';
 import {SettingsModel} from "../../models/settings.model";
-import {ServerModel} from "../../models/server.model";
 import {AppConfigConstants} from "../../constants/app-config.constants";
 
 // mec... TODO: fix the device error:
@@ -81,26 +80,26 @@ export class BluetoothComponent {
     ionViewDidLoad() { // ionViewDidEnter() - recursion?
         this.refreshStatus();
         this.listBluetoothDevices();
-        //this.setSelectedPrinter("Zeb...mec"); //mec...bobo...
-        this.getSelectedPrinter(); //mec...bobo...
+
+        // snag the previous selected printer while we are here
+        this.getSelectedPrinter();
     }
 
     // this method 'sets' the selected printer and stores into local user aettings and the class instance variable this.selectedPrinter
     // attempt to add the printer into user settings, this is usually done either if there is one and only one printer, or if user selects one from the available printers
-    setSelectedPrinter(printer:string) {
+    setSelectedPrinter(printer: string) {
         let message = "";
         let temp: SettingsModel = new SettingsModel(AppConfigConstants.printer.bluetoothBarcodeKey, printer, "");
+
+        // unset the printer, in the case that we have an inappropriate one set
+        this.selectedPrinter = "None";
 
         // Theory: We count number of barcode printers, delete all of them, recount them, then add the desired printer
         // HMMM... Really all we need to do is delete all, then add desired
         this.settingService.getBluetoothBarcodePrinterSettingsCount().then((s) => {
-            alert('mec...BluetoothBarcodePrinter settings count (' + s + ')');
             this.settingService.deleteBluetoothBarcodePrinterSettings().then((s) => {
-                alert('mec...BluetoothBarcodePrinter settings DELETED (' + s + ')');
                 this.settingService.add(temp).then(() => {
-                    alert('mec....good ADD');
                     this.settingService.getBluetoothBarcodePrinterSettingsCount().then((s) => {
-                        alert('mec...BluetoothBarcodePrinter settings count (' + s + ')');
                         this.selectedPrinter = printer; // Save out printer into class instance variable
                     }).catch((error) => {
                         message = `Failed to recount Bluetooth Printer Setting, Error => ${error}`;
@@ -126,11 +125,31 @@ export class BluetoothComponent {
         //let temp: SettingsModel = new SettingsModel(AppConfigConstants.printer.bluetoothBarcodeKey, "Zebra", "");
 
         this.settingService.getWhereUnindexed("settingName", AppConfigConstants.printer.bluetoothBarcodeKey).then((s) => {
-            alert('mec...after getWhereUnindexed() (' + JSON.stringify(s) + ')');
-            //walk this list looking for 'where' with 'value'
-            s.forEach((row) => {
-                alert('mec...FOUND (' + row.id + ',' + row.settingName + ',' + row.setting + ')');
-            });
+            message = 'after getWhereUnindexed() (' + JSON.stringify(s) + ')'
+            this.myLogger(Level.DEBUG, message);
+
+            // unset the printer, in the case that we have an inappropriate one set
+            this.selectedPrinter = "None";
+
+            if (s.length == 1) {
+                //walk this list (which is a list of 1) looking for 'where' with 'value'
+                s.forEach((row) => {
+                    message = 'FOUND (' + row.id + ',' + row.settingName + ',' + row.setting + ')';
+                    this.myLogger(Level.DEBUG, message);
+                    this.selectedPrinter = row.setting;
+                    this.itemTapped(this.selectedPrinter); // note: this will set the .selectedDevice
+                });
+            }
+            // either we have more than or less than 1, so attempt to delete them and leave this.selectPrinter UNSET
+            else {
+                this.settingService.deleteBluetoothBarcodePrinterSettings().then((s) => {
+                    message = 'BluetoothBarcodePrinter settings DELETED (' + s + ')';
+                    this.myLogger(Level.DEBUG, message);
+                }).catch((error) => {
+                    message = `Failed to remove Bluetooth Printer Setting, Error => ${error}`;
+                    this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
+                });
+            }
 
         }).catch((error) => {
             message = `Failed to getWhereUnindexed(settingName, ` + AppConfigConstants.printer.bluetoothBarcodeKey + `), Error => ${error}`;
@@ -138,48 +157,15 @@ export class BluetoothComponent {
         });
     }
 
-    // this method retrieves the selected printer from local user settings and stores into the class instance variable this.selectedPrinter
-    getSelectedPrinterXXX() {
-        let message = "";
-        let temp: SettingsModel = new SettingsModel(AppConfigConstants.printer.bluetoothBarcodeKey, "Zebra", "");
-
-        this.settingService.getBluetoothBarcodePrinterSettingsCount().then((s) => {
-            alert('mec...BluetoothBarcodePrinter settings count (' + s + ')');
-            this.settingService.deleteBluetoothBarcodePrinterSettings().then((s) => {
-                alert('mec...BluetoothBarcodePrinter settings DELETED (' + s + ')');
-
-                this.settingService.add(temp).then(() => {
-                    alert('mec....good ADD');
-                    this.settingService.getBluetoothBarcodePrinterSettingsCount().then((s) => {
-                        alert('mec...BluetoothBarcodePrinter settings count (' + s + ')');
-                        this.selectedPrinter = "mec...Zebra"; //mec... yoyo... this is the magic
-                    }).catch((error) => {
-                        message = `Failed to recount Bluetooth Printer Setting, Error => ${error}`;
-                        this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
-                    });
-                }).catch((error) => {
-                    message = `Failed to add Bluetooth Printer Setting, Error => ${error}`;
-                    this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
-                });
-            }).catch((error) => {
-                message = `Failed to remove Bluetooth Printer Setting, Error => ${error}`;
-                this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
-            });
-        }).catch((error) => {
-            message = `Failed to count Bluetooth Printer Setting, Error => ${error}`;
-            this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
-        });
-    }
-
-
     public bluetooth() {
-        let message = '';
-        this.myLogger(Level.INFO, 'Show System Bluetooth Settings');
+        let message = 'Show System Bluetooth Settings';
+        this.myLogger(Level.INFO, message);
         this.platform.ready()
             .then(() => {
                 this.bt.showBluetoothSettings()
                     .then(() => {
-                        this.myLogger(Level.INFO, 'Bluetooth settings successfully shown');
+                        message = 'Bluetooth settings successfully shown';
+                        this.myLogger(Level.INFO, message);
                     }, (err) => {
                         message = `Bluetooth Settings Unavailable Error => ${err}`;
                         this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
@@ -205,7 +191,8 @@ export class BluetoothComponent {
                 //if (!this.showEnableBluetoothButton) {
                 this.bt.enable()
                     .then(() => {
-                        this.myLogger(Level.INFO, 'Bluetooth successfully enabled');
+                        message = 'Bluetooth successfully enabled';
+                        this.myLogger(Level.INFO, message);
                     }, (err) => {
                         message = `Bluetooth Enable Error => ${err}`;
                         this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
@@ -222,8 +209,8 @@ export class BluetoothComponent {
     }
 
     public listBluetoothDevices() {
-        let message = '';
-        this.myLogger(Level.INFO, 'List Bluetooth Devices');
+        let message = 'List Bluetooth Devices';
+        this.myLogger(Level.INFO, message);
 
         this.platform.ready()
             .then(() => {
@@ -236,7 +223,8 @@ export class BluetoothComponent {
                         // load up all of the 'paired' devices
                         devices.forEach((device) => {
                             count++;
-                            this.myLogger(Level.INFO, 'Found Paired Device: (' + device.name + ', ' + device.id + ')');
+                            message = 'Found Paired Device: (' + device.name + ', ' + device.id + ')';
+                            this.myLogger(Level.INFO, message);
 
                             tempDevice = device;
 
@@ -254,25 +242,26 @@ export class BluetoothComponent {
                             if (!found) {
                                 this.btPrinters.push(new BluetoothModel(tempDevice.class, tempDevice.id, tempDevice.address, tempDevice.name));
                             }
-                            //mec...this.selectedDevice = device;
-                            //mec...this.selectedPrinter = device.name; //mec... TODO: We need to check to see if this printer is the saved printer
                         });
 
                         // We found our one (and only) device, let's set it to the default
                         if (count == 1) {
                             if (tempDevice) {
                                 this.selectedDevice = tempDevice;
-                                this.selectedPrinter = this.selectedDevice.name;
-                                this.myLogger(Level.INFO, 'Using one and only Paired Device: (' + this.selectedPrinter + ', ' + this.selectedDevice.id + ')');
+                                this.setSelectedPrinter(this.selectedDevice.name); // note this sets this.selectedPrinter globally
+                                message = 'Using one and only Paired Device: (' + this.selectedPrinter + ', ' + this.selectedDevice.id + ')';
+                                this.myLogger(Level.INFO, message);
                             }
                         }
                         else if (count > 1) {
-                            //mec... TODO: fix... need to account for a DEFAULT printer in the 'User Settings' (see Pauls routine)
-                            message = 'We have more than one printer, lets use the DEFAULT printer (if there is one). If there is NO default printer, then the user will need to select one';
-                            this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
+                            // //mec... TODO: fix... need to account for a DEFAULT printer in the 'User Settings' (see Pauls routine)
+                            // message = 'We have more than one printer, lets use the DEFAULT printer (if there is one). If there is NO default printer, then the user will need to select one';
+                            // this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
                         }
+                        //mec... TODO: We need to check to see if our 'saved' (this.selectedPrinter) is in THIS list - if not remove it
 
-                        this.myLogger(Level.INFO, 'Paired Bluetooth devices successfully listed');
+                        message = 'Paired Bluetooth devices successfully listed';
+                        this.myLogger(Level.INFO, message);
                     }, (err) => {
                         message = `List Paired Bluetooth Devices Error => ${err}`;
                         this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
@@ -317,12 +306,14 @@ export class BluetoothComponent {
         if (device != null) {
             this.platform.ready()
                 .then(() => {
-                    this.myLogger(Level.INFO, 'Connect to: (' + device.name + ', ' + device.id + ')');
+                    message = 'Connect to: (' + device.name + ', ' + device.id + ')';
+                    this.myLogger(Level.INFO, message);
 
                     // Print to selected device, but let's connect first
                     this.btConnect(device)
                         .then(() => {
-                            this.myLogger(Level.INFO, 'Print to: (' + device.name + ', ' + device.id + ')');
+                            message = 'Print to: (' + device.name + ', ' + device.id + ')';
+                            this.myLogger(Level.INFO, message);
 
                             this.printStatus = this.btPrint(device, theLabel);
                             //mec...TODO: react to success/failure of print? (maybe put put status on page?)
@@ -392,7 +383,8 @@ export class BluetoothComponent {
             // BUG: .disconnect() does not work, but Subscription.unsubscribe() does!
             this.bt.isConnected()
                 .then(() => {
-                    this.myLogger(Level.INFO, 'Am connected, attempt to disconnect from Printer (' + device.name + ')');
+                    let message = 'Am connected, attempt to disconnect from Printer (' + device.name + ')';
+                    this.myLogger(Level.INFO, message);
 
                     try {
 
@@ -401,10 +393,11 @@ export class BluetoothComponent {
                             // MAGIC how to disconnect (Subscription.unsubscribe())
                             this.myConnection.unsubscribe();
                         }, 250); //mec... Question our timeout, maybe use async await?
-                        this.myLogger(Level.INFO, 'Successful disconnect from Printer (' + device.name + ')');
+                        message = 'Successful disconnect from Printer (' + device.name + ')';
+                        this.myLogger(Level.INFO, message);
                     }
                     catch (e) {
-                        let message = 'Error disconnecting from Printer (' + device.name + ') (' + e + ')';
+                        message = 'Error disconnecting from Printer (' + device.name + ') (' + e + ')';
                         this.myLogger(Level.ERROR, message);
                         resolve(message); // mec... TODO: Reconsider what to resolve
                     }
@@ -420,7 +413,8 @@ export class BluetoothComponent {
 
     public btPrint(device: any, data: any): boolean {
         let success: boolean = false;
-        this.myLogger(Level.INFO, 'Attempt to Print to: (' + device.name + ', ' + device.id + ') (' + data + ')');
+        let message = 'Attempt to Print to: (' + device.name + ', ' + device.id + ') (' + data + ')'
+        this.myLogger(Level.INFO, message);
 
         // NOTE: This is a long running process, so let's wait
         // Added timeout to Account for Bluetooth Plugin BUG: BluetoothSerialService: disconnected --- BluetoothSerialService: java.io.IOException: bt socket closed, read return: -1
@@ -428,7 +422,8 @@ export class BluetoothComponent {
             this.bt.write(data)
                 .then(() => {
                     success = true;
-                    this.myLogger(Level.INFO, 'Successful Print to: (' + device.name + ', ' + device.id + ') (' + data + ')');
+                    message = 'Successful Print to: (' + device.name + ', ' + device.id + ') (' + data + ')';
+                    this.myLogger(Level.INFO, message);
 
                     // attempt to disconnect after successful print - THEORY: This disconnect only works here because we only connect when we ATTEMPT to print
                     this.btDisconnect(device);
@@ -484,6 +479,7 @@ export class BluetoothComponent {
         for (inx = 0; this.btPrinters.length > inx; inx++) {
             if (this.btPrinters[inx].name === itemName) {
                 this.selectedDevice = this.btPrinters[inx];
+                this.setSelectedPrinter(this.selectedPrinter); // note this sets this.selectedPrinter globally
                 break;
             }
         }

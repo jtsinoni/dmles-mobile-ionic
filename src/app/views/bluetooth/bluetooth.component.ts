@@ -96,27 +96,23 @@ export class BluetoothComponent {
 
         // Theory: We count number of barcode printers, delete all of them, recount them, then add the desired printer
         // HMMM... Really all we need to do is delete all, then add desired
-        this.settingService.getBluetoothBarcodePrinterSettingsCount().then((s) => {
-            this.settingService.deleteBluetoothBarcodePrinterSettings().then((s) => {
-                this.settingService.add(temp).then(() => {
-                    this.settingService.getBluetoothBarcodePrinterSettingsCount().then((s) => {
-                        this.selectedPrinter = printer; // Save out printer into class instance variable
-                    }).catch((error) => {
-                        message = `Failed to recount Bluetooth Printer Setting, Error => ${error}`;
-                        this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
-                    });
-                }).catch((error) => {
-                    message = `Failed to add Bluetooth Printer Setting, Error => ${error}`;
-                    this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
-                });
-            }).catch((error) => {
-                message = `Failed to remove Bluetooth Printer Setting, Error => ${error}`;
+        this.settingService.getBluetoothBarcodePrinterSettingsCount()
+            .then(() => {
+                this.settingService.deleteBluetoothBarcodePrinterSettings();
+            })
+            .then(() => {
+                this.settingService.add(temp)
+            })
+            .then(() => {
+                this.settingService.getBluetoothBarcodePrinterSettingsCount();
+            })
+            .then(() => {
+                this.selectedPrinter = printer; // Save out printer into class instance variable
+            })
+            .catch((error) => {
+                message = `Failed Bluetooth Printer Setting, Error => ${error}`;
                 this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
-            });
-        }).catch((error) => {
-            message = `Failed to count Bluetooth Printer Setting, Error => ${error}`;
-            this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
-        });
+            })
     }
 
     // this method retrieves the selected printer from local user settings and stores into the class instance variable this.selectedPrinter

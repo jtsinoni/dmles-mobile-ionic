@@ -7,6 +7,14 @@
         <clobbers target="window.CACPlugin"/>
     </js-module>
 
+    <hook type="before_compile" src="./hooks/ios/addDirs.js" />
+    <hook type="before_compile" src="./hooks/ios/copyConfigs.js" />
+
+    <!--<hook type="after_platform_add" src="./hooks/ios/addDirs.js" />-->
+    <!--<hook type="after_platform_add" src="./hooks/ios/copyConfigs.js" />-->
+    <!--<hook type="after_platform_add" src="./hooks/ios/copyConfigs.js" />-->
+    <!--<hook type="after_build" src="./hooks/ios/fingerprintForFIPS140.js" />-->
+
     <!-- anroid -->
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
@@ -20,6 +28,17 @@
 
     <!-- ios -->
     <platform name="ios">
+        <!--<resource-file src="./config/ios/fips_premain.c" target="/fips_premain.c" />-->
+        <!--<resource-file src="./config/ios/PKardSDK.bundle" target="/PKardSDK.bundle" />-->
+        <!--<resource-file src="./tools/ios/incore_macho" target="/incore_macho" />-->
+
+        <!--<framework src="./config/ios/Framework/Debug/PKardSDK.framework" embed="true" custom="true" />-->
+        <framework src="CFNetwork.framework" />
+        <framework src="SystemConfiguration.framework" />
+        <framework src="MessageUI.framework" />
+        <framework src="libc++.tbd" />
+        <framework src="libstdc++.tbd" />
+        <framework src="libz.tbd" />
         <config-file parent="/*" target="config.xml">
             <feature name="CACPlugin">
                 <param name="ios-package" value="CACPlugin"/>

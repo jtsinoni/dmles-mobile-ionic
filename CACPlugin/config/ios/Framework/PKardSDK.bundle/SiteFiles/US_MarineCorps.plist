@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>title</key>
+	<string>U.S. Marine Corps</string>
+	<key>URLs</key>
+	<array>
+		<dict>
+			<key>certAssertions</key>
+			<integer>10</integer>
+			<key>name</key>
+			<string>Marine Corps Webmail</string>
+			<key>URL</key>
+			<string>https://webmail.us.usmc.mil/</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+			<key>name</key>
+			<string>MarineNet</string>
+			<key>URL</key>
+			<string>https://www.marinenet.usmc.mil/MarineNet/Default.aspx</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+			<key>name</key>
+			<string>Marine Online</string>
+			<key>URL</key>
+			<string>https://www.mol.usmc.mil</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+			<key>name</key>
+			<string>Manpower</string>
+			<key>URL</key>
+			<string>https://www.manpower.usmc.mil</string>
+		</dict>
+		<dict>
+			<key>certAssertions</key>
+			<integer>2097154</integer>
+			<key>name</key>
+			<string>SLDCADA</string>
+			<key>URL</key>
+			<string>https://www.sldcada.disa.mil</string>
+		</dict>
+	</array>
+</dict>
+</plist>

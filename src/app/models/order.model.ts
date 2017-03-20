@@ -1,7 +1,7 @@
 
-import { DataItemModel } from './data-item.model';
+import { BaseDataTableModel } from './base-data-table.model';
 
-export class OrderModel extends DataItemModel<string> {
+export class OrderModel extends BaseDataTableModel {
     public documentNumber: string;
     public orderQuantity: number;
     public itemId: string;
@@ -10,6 +10,11 @@ export class OrderModel extends DataItemModel<string> {
     public requiredDate: string
     public requestor: string;
     public orderState: number;
-    id:string; 
+    public referenceId: string;
+    //id:string; 
+
+    constructor(id?: number) {
+        super(id);
+    }
 
 }

@@ -1,0 +1,18 @@
+[
+    {
+        "documentNumber": "W560JL6062J011",
+        "itemId": "00 2500 1",
+        "issueDate": "new Date().toJSON()",
+        "issueState": 1,
+        "quantityIssued": 6,
+        "requestor": "Billy"
+    },
+    {
+        "documentNumber": "W560JL6060J012",
+        "itemId": "00 876 980 01",
+        "issueDate": "new Date().toJSON()",
+        "issueState": 1,
+        "quantityIssued": 2,
+        "requestor": "Ted"
+    }
+]

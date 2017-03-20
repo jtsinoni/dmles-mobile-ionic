@@ -10,7 +10,7 @@ import { AddOrderComponent } from '../orders/add-order/add-order.component';
 
 import { Search } from "../../common/search";
 import { LoadingController } from 'ionic-angular';
-import {LoggerService} from "../../../services/logger/logger-service";
+import { LoggerService } from "../../../services/logger/logger-service";
 
 @Component({
   selector: 'page-supplyItems',
@@ -52,7 +52,7 @@ export class SupplyItemsComponent extends Search {
         {
           text: 'Cancel',
           handler: data => {
-              this.log.info('Cancel clicked');
+            this.log.info('Cancel clicked');
           }
         },
         {
@@ -70,7 +70,17 @@ export class SupplyItemsComponent extends Search {
   }
 
   getSupplyItems() {
-    this.supplyItemService.getAllSupplyItems().then(supplyItems => this.supplyItemList = supplyItems);    
+    this.supplyItemService.getAllSupplyItems()
+    .map(results => results.json())
+      .subscribe(
+      (results) => {
+        this.supplyItemList = results;
+        this.log.log(`results => ${JSON.stringify(results)}`);
+      },
+      (error) => {
+        this.log.error(`Error => ${error}`);
+      });
+
   }
 
   itemSelected(item) {
@@ -84,7 +94,7 @@ export class SupplyItemsComponent extends Search {
             this.orderItem(item);
           }
         },
-         {
+        {
           text: 'Detail',
           role: 'all',
           handler: () => {
@@ -98,7 +108,7 @@ export class SupplyItemsComponent extends Search {
           role: 'all',
           icon: !this.platform.is('ios') ? 'close' : null,
           handler: () => {
-              this.log.info('Close clicked');
+            this.log.info('Close clicked');
           }
         }
       ]
@@ -107,14 +117,14 @@ export class SupplyItemsComponent extends Search {
 
   }
 
-  orderItem(item : SupplyItemModel) {
-    let orderModal = this.modalController.create(AddOrderComponent, { supplyItem: item});
+  orderItem(item: SupplyItemModel) {
+    let orderModal = this.modalController.create(AddOrderComponent, { supplyItem: item });
     orderModal.present();
 
   }
 
 
-  showItemDetail(item : SupplyItemModel) {
+  showItemDetail(item: SupplyItemModel) {
 
 
   }

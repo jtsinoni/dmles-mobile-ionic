@@ -205,6 +205,16 @@ export class UtilService {
         return i;
     }
 
+    public padLeft(value: string | number, padding: string | number) {
+        if (typeof padding === "number") {
+            return Array(padding + 1).join(" " ) + value;
+        }
+        if (typeof padding === "string") {
+            return padding + value;
+        }
+        
+    }
+
 
 
 }

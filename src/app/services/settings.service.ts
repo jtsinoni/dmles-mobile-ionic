@@ -3,8 +3,7 @@ import { Injectable } from "@angular/core";
 import { LoggerService } from "./logger/logger-service";
 import { SettingsModel } from '../models/settings.model'
 import { BaseDatabaseService } from '../services/base-database.service';
-import { DexieDatabaseService } from '../services/dexie-database.service';
-import { LocalFileStorageService } from '../services/local-file-storage.service';
+import { DatabaseService } from '../services/database.service';
 
 
 @Injectable()
@@ -13,8 +12,7 @@ export class SettingsService extends BaseDatabaseService<SettingsModel> {
     assetDirectory: string = "assets/files";
     
     constructor(
-        databaseService: DexieDatabaseService,
-        private localFileStorageService: LocalFileStorageService,
+        databaseService: DatabaseService,
         log: LoggerService,
         private http: Http) {
         super('Settings Service', databaseService.getSettingsDataTable(), log);

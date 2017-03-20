@@ -30,7 +30,19 @@ public issuesList: Array<IssueModel>;
   }
 
   getIssues() {
-    this.issueService.getAllIssues().then(issues => this.issuesList = issues);
+    this.issueService.getAllIssues()
+     .map(results => results.json())
+      .subscribe(
+      (results) => {
+        this.issuesList = results;
+        this.log.log(`results => ${JSON.stringify(results)}`);
+      },
+      (error) => {
+        this.log.error(`Error => ${error}`);
+      });
+    
+    
+    //.then(issues => this.issuesList = issues);
 
   }
 

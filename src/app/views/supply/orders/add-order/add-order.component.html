@@ -1,27 +1,30 @@
-<ion-card>
-  <ion-card-header>
-    Order Item
-  </ion-card-header>
-  <ion-card-content>
-    <form name="createOrderForm" [formGroup]="orderForm" (ngSubmit)="saveOrder()">
-      <ion-item><span>Item Id:</span><span *ngIf="supplyItem">{{supplyItem.itemId}}</span>
-      </ion-item>
-      <ion-item><span *ngIf="supplyItem">{{supplyItem.itemDescription}}</span></ion-item>
-      <ion-item>
-        <ion-input id="orderQuantity" formControlName="orderQuantityInput" type="number" [(ngModel)]="model.orderQuantity" placeholder="Qty"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-input id="requestor" formControlName="requestorInput" type="text" [(ngModel)]="model.requestor" placeholder="Requested By"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Required Date</ion-label>
-        <ion-datetime id="requiredDate" formControlName="requiredDateInput" displayFormat="MMM DD YYYY" [(ngModel)]="model.requiredDate" [max]="futureDate" ></ion-datetime>
-      </ion-item>
-      <div class="image-div">
-        <img class="item-image" alt="item image" *ngIf="supplyItem" src="{{ supplyItem.imageUrl }}">
-      </div>
-      <button ion-button type="submit" block>Create Order</button>
-      <button ion-button type="button" block (click)="dismiss()">Cancel</button>
-    </form>
-  </ion-card-content>
-</ion-card>
+<modal-header remove-parent-element [title]="'Order Item'"></modal-header>
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <form name="createOrderForm" [formGroup]="orderForm" (ngSubmit)="saveOrder()">
+        <div>
+          <ion-label><span>Item Id:</span><span *ngIf="supplyItem">{{supplyItem.itemId}}</span></ion-label>
+        </div>
+        <div>
+          <ion-label *ngIf="supplyItem">{{supplyItem.itemDescription}}</ion-label>
+        </div>
+        <div>
+          <ion-input id="orderQuantity" formControlName="orderQuantityInput" type="number" [(ngModel)]="model.orderQuantity" placeholder="Qty"></ion-input>
+        </div>
+        <div>
+          <ion-input id="requestor" formControlName="requestorInput" type="text" [(ngModel)]="model.requestor" placeholder="Requested By"></ion-input>
+        </div>
+        <div>
+          <ion-label>Required Date</ion-label>
+          <ion-datetime id="requiredDate" formControlName="requiredDateInput" displayFormat="MMM DD YYYY" [(ngModel)]="model.requiredDate"
+            [max]="futureDate"></ion-datetime>
+        </div>
+        <div>
+          <img alt="your item image" class="item-image" *ngIf="supplyItem" src="{{ supplyItem.imageUrl }}">
+        </div>
+        <button ion-button type="submit" block>Create Order</button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -6,7 +6,7 @@ import { Injectable }    from '@angular/core';
 import { UpstreamService } from './upstream.service'
 import {TopicMessagingService} from "../topic-messaging.service";
 import {NetworkService} from "../network.service";
-import {DatabaseService} from "../database.service";
+import {StoreDatabaseService} from "../store-database.service";
 import {CommonDataService} from "../common-data.service";
 import {ForwardDataModel} from "../../models/forward-data.model";
 import {StoreDataModel} from "../../models/store-data.model";
@@ -20,7 +20,7 @@ export class TopicUpstreamService extends UpstreamService {
 
     constructor(private topicMessagingService: TopicMessagingService,
                 private networkService: NetworkService,
-                private databaseService: DatabaseService,
+                private databaseService: StoreDatabaseService,
                 public commonDataService: CommonDataService,
                 public log: LoggerService) {
         super(commonDataService, log);

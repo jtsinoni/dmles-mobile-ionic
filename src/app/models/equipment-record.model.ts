@@ -1,6 +1,6 @@
-import { DataItemModel } from './data-item.model';
+import { BaseDataTableModel } from './base-data-table.model';
 
-export class EquipmentRecordModel extends DataItemModel<string> {
+export class EquipmentRecordModel extends BaseDataTableModel {
     itemId: string;
     orgId: string;
     meECNId: string; //mec...
@@ -10,6 +10,9 @@ export class EquipmentRecordModel extends DataItemModel<string> {
     ecn:string;
     deviceClass:string;
 
-    id: string = this.itemId;
+    //id: string = this.itemId;
+    constructor(id?: number) {
+        super(id);
+    }
 
 }

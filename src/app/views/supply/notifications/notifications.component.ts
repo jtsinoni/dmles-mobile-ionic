@@ -5,6 +5,7 @@ import { NavController } from 'ionic-angular';
 import { NotificationModel } from '../../../models/notification.model';
 
 import { NotificationService } from "../../../services/supply/notification-service";
+import { LoggerService } from "../../../services/logger/logger-service";
 
 
 @Component({
@@ -16,7 +17,10 @@ export class NotificationsComponent {
 
   notifications = new Array<NotificationModel>();
 
-  constructor(public navController: NavController, public notificationService: NotificationService) {     
+  constructor(
+    public navController: NavController, 
+    public notificationService: NotificationService,
+    public log: LoggerService) {     
 
   }
 
@@ -25,7 +29,15 @@ export class NotificationsComponent {
   }
 
   getNotifications() {
-    this.notificationService.getNotifications().then(n => this.notifications = n);
+    this.notificationService.getNotifications()
+      .map(results => results.json())
+      .subscribe(
+      (results) => {
+        this.notifications = results;     
+      },
+      (error) => {
+        this.log.error(`Error => ${error}`);
+      });
   }
 
   notificationSelected(event, notice) {
@@ -33,9 +45,9 @@ export class NotificationsComponent {
   }
 
   notificationSwiped(event, notice) {
-    console.log('deleting a notice');
-    this.notificationService.delete(notice.id);
-    this.getNotifications();   
+    // todo delete
+    //this.notificationService.delete(notice.id);
+    //this.getNotifications();   
   }
 
   addNotification(notice) {

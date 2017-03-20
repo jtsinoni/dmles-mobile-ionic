@@ -7,7 +7,7 @@ import { OrderModel } from '../../../models/order.model';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 
 import { OrderService } from "../../../services/supply/order-service";
-import {LoggerService} from "../../../services/logger/logger-service";
+import { LoggerService } from "../../../services/logger/logger-service";
 
 @Component({
   selector: 'page-orders',
@@ -28,12 +28,29 @@ export class OrdersComponent {
   }
 
   ionViewWillEnter() {
+    this.ordersList = new Array<OrderModel>();
     this.getOrders();
 
   }
 
   getOrders() {
-    this.orderService.getAllOrders().then(orders => this.ordersList = orders);
+    this.orderService.getAllOrders()
+      .map(results => results.json())
+      .subscribe(
+      (results) => {
+        this.ordersList = results;
+        //get locally stored orders for example
+        this.orderService.getAll().then(orders => {
+          for (let o of orders) {
+            // add them to the collection
+            this.ordersList.push(o);
+          }
+        });
+      },
+      (error) => {
+        this.log.error(`Error => ${error}`);
+      });
+
 
   }
 
@@ -55,7 +72,7 @@ export class OrdersComponent {
             //todo process receipt
           }
         },
-         {
+        {
           text: 'Detail',
           role: 'all',
           handler: () => {
@@ -79,7 +96,7 @@ export class OrdersComponent {
   }
 
   presentDetailModal(order: OrderModel) {
-    let detailModal = this.modalController.create(OrderDetailComponent, { orderItem: order});
+    let detailModal = this.modalController.create(OrderDetailComponent, { orderItem: order });
     detailModal.present();
   }
 

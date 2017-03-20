@@ -4,7 +4,7 @@
   <ion-list>
     <ion-item *ngFor="let order of ordersList" (press)="orderSelected(order)">
       <ion-icon name="medical" item-left></ion-icon>
-      <div>{{order.documentNumber ? order.documentNumber : order.id}}</div>
+      <div>{{order.documentNumber ? order.documentNumber : order.referenceId}}</div>
       <div>{{order.itemId}}</div>
       <div><span>Order Qty:</span>{{order.orderQuantity}}</div>
     </ion-item>

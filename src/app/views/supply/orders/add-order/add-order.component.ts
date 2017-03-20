@@ -50,7 +50,8 @@ export class AddOrderComponent {
     this.model.orderDate = new Date();
 
     this.model.orderState = 1;
-    this.model.id = this.model.itemId;
+    
+    //this.model.id = this.model.itemId;
     //set other defaults here
 
   }

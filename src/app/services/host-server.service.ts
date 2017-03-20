@@ -2,12 +2,12 @@ import { Injectable } from "@angular/core";
 import { LoggerService } from "./logger/logger-service";
 import { ServerModel } from '../models/server.model'
 import { BaseDatabaseService } from '../services/base-database.service';
-import { DexieDatabaseService } from '../services/dexie-database.service'
+import { DatabaseService } from '../services/database.service'
 
 @Injectable()
 export class HostServerService extends BaseDatabaseService<ServerModel> {
 
-    constructor(private databaseService: DexieDatabaseService, log: LoggerService) {
+    constructor(private databaseService: DatabaseService, log: LoggerService) {
         super("Host Server Service", databaseService.getServersDataTable(), log);
 
     }
@@ -39,7 +39,7 @@ export class HostServerService extends BaseDatabaseService<ServerModel> {
     }
 
     getDefaultServer() {
-        return this.dbTable.filter(this.defaultServerCallBack).first();
+        return this.findFirst(this.defaultServerCallBack);
     }
 
 

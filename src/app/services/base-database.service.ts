@@ -20,9 +20,10 @@ export abstract class BaseDatabaseService<M extends BaseDataTableModel> {
     get(id: number) {
         return Promise.resolve(this.dbTable.where("id").equals(id));
     }
-
-    getWhere(where: string, value: any) {
-        return Promise.resolve(this.dbTable.where(where).equals(value));
+    
+    // where column must be indexed
+    getWhere(column: string, value: any) {
+        return Promise.resolve(this.dbTable.where(column).equals(value));
     }
 
     add(model: M) {
@@ -43,6 +44,14 @@ export abstract class BaseDatabaseService<M extends BaseDataTableModel> {
 
     delete(model: M) {
         return Promise.resolve(this.dbTable.delete(model.id));
+    }
+
+    find(filterCallback: (model: M) => boolean) {
+         return Promise.resolve(this.dbTable.filter(filterCallback));
+    }
+
+    findFirst(filterCallback: (model: M) => boolean) {
+         return Promise.resolve(this.dbTable.filter(filterCallback).first());
     }
    
 

@@ -1,0 +1,17 @@
+[
+    {
+        "message": "You have 1 pending inventory",
+        "title": "Inventory",
+        "noticeType": 1
+    },
+    {
+        "message": "You have 4 active due ins",
+        "title": "Active Due Ins",
+        "noticeType": 1
+    },
+    {
+        "message": "You have 3 orders pending submission",
+        "title": "Working Orders",
+        "noticeType": 1
+    }
+]

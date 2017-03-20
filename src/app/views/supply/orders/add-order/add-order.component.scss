@@ -1,14 +1,8 @@
 add-order {
-      .image-div {
-        display: flex;
-    }
-
-    .item-image {
-        max-height:40%;
-        position: relative;
-        margin: 0 auto;
-        left: 10;
-        right: 10;
+       .item-image {
+       height: 20% !important;
+       display: block;
+       width: auto !important;
     }
 
 }

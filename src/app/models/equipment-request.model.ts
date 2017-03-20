@@ -1,6 +1,6 @@
-import { DataItemModel } from './data-item.model';
+import { BaseDataTableModel } from './base-data-table.model';
 
-export class EquipmentRequestModel extends DataItemModel<number> {
+export class EquipmentRequestModel extends BaseDataTableModel {
     requestNumber: number;
     requestTitle: string;
     quantityRequested: number;
@@ -11,6 +11,9 @@ export class EquipmentRequestModel extends DataItemModel<number> {
     currentStatus: string;
     level : string;
     updatedDate: Date;
-    id: number = this.requestNumber;
+    //id: number = this.requestNumber;
+    constructor(id?: number) {
+        super(id);
+    }
 
 }

@@ -7,13 +7,19 @@
         <clobbers target="window.CACPlugin"/>
     </js-module>
 
-    <hook type="before_compile" src="./hooks/ios/addDirs.js" />
-    <hook type="before_compile" src="./hooks/ios/copyConfigs.js" />
+    <hook type="after_build" src="./hooks/ios/addDirs.js" />
+    <hook type="after_build" src="./hooks/ios/copyConfigs.js" />
+    <hook type="after_build" src="./hooks/ios/copyTools.js" />
+    <hook type="after_build" src="./hooks/ios/copyFrameworks.js" />
+    <hook type="after_build" src="./hooks/ios/modifyBuildSettings.js" />
+
+    <!--<hook type="after_build" src="./hooks/ios/addOtherLinkerFlags.js" />-->
 
     <!--<hook type="after_platform_add" src="./hooks/ios/addDirs.js" />-->
     <!--<hook type="after_platform_add" src="./hooks/ios/copyConfigs.js" />-->
     <!--<hook type="after_platform_add" src="./hooks/ios/copyConfigs.js" />-->
     <!--<hook type="after_build" src="./hooks/ios/fingerprintForFIPS140.js" />-->
+    <!--<hook type="before_compile" src="./hooks/ios/copyFrameworks.js" />-->
 
     <!-- anroid -->
     <platform name="android">
@@ -28,11 +34,12 @@
 
     <!-- ios -->
     <platform name="ios">
-        <!--<resource-file src="./config/ios/fips_premain.c" target="/fips_premain.c" />-->
-        <!--<resource-file src="./config/ios/PKardSDK.bundle" target="/PKardSDK.bundle" />-->
-        <!--<resource-file src="./tools/ios/incore_macho" target="/incore_macho" />-->
+        <!--<source-file src="./config/ios/fips_premain.c" target="/fips_premain.c" />-->
+        <resource-file src="./config/ios/PKardSDK.bundle" target="/PKardSDK.bundle" />
+        <resource-file src="./config/ios/certs/trusted_cas.pem" target="/trusted_cas.pem" />
+        <resource-file src="./config/ios/certs/trusted_certs.pem" target="/trusted_certs.pem" />
+        <resource-file src="./config/ios/certs/untrusted_cas.pem" target="/untrusted_cas.pem" />
 
-        <!--<framework src="./config/ios/Framework/Debug/PKardSDK.framework" embed="true" custom="true" />-->
         <framework src="CFNetwork.framework" />
         <framework src="SystemConfiguration.framework" />
         <framework src="MessageUI.framework" />
@@ -44,6 +51,28 @@
                 <param name="ios-package" value="CACPlugin"/>
             </feature>
         </config-file>
+
+        <config-file target="*-Info.plist" parent="LSApplicationQueriesSchemes">
+            <array>
+                <string>pkardsdk</string>
+                <string>pkardpin</string>
+            </array>
+        </config-file>
+
+        <config-file target="*-Info.plist" parent="CFBundleURLTypes">
+            <array>
+                <dict>
+                    <key>CFBundleURLName</key>
+                    <string>com.thursby.pkard.sdk</string>
+                    <key>CFBundleURLSchemes</key>
+                    <array>
+                        <string>pkardsample</string>
+                    </array>
+                </dict>
+            </array>
+        </config-file>
+
+
         <source-file src="src/ios/CACPlugin.m"/>
     </platform>
 

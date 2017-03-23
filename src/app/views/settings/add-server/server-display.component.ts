@@ -41,12 +41,20 @@ export class ServerDisplayComponent implements OnInit {
 
   setDefault(server: ServerModel) {
     if (server.isDefault) {
-      this.log.debug("setting " + server.serverName + " to default");      
+      this.log.debug("setting " + server.serverName + " to default");
       this.hostServerService.setDefaultServer(server);
       this.viewCtrl.dismiss();
     } else {
       //do nothing user needs to set another or there is only one
       //this.log.debug("UN-setting " + server.serverName + " to default");
+    }
+  }
+
+  showHideSecureProtocol(serverModel: ServerModel, protocol: string) {
+    if (protocol != serverModel.protocol) {
+      return true;
+    } else {
+      return false;
     }
   }
 

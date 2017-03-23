@@ -1,7 +1,9 @@
 <ion-list >
     <ion-item *ngFor="let server of servers">
+        <ion-icon [hidden]="showHideSecureProtocol(server, 'https')" item-left name='lock'></ion-icon>
+        <ion-icon [hidden]="showHideSecureProtocol(server, 'http')" item-left name='unlock'></ion-icon>
         <ion-label>{{server.serverName}}</ion-label>
-        <ion-label>{{server.port}}</ion-label>
+        <ion-label item-right>{{server.port}}</ion-label>
         <ion-checkbox item-right [(ngModel)]="server.isDefault" (click)="setDefault(server)"></ion-checkbox>
         <button (click)="deleteServer(server)" ion-button color="danger" clear icon-only item-right>
             <ion-icon name='trash' is-active="true"></ion-icon>

@@ -3,7 +3,7 @@
 <ion-content>
 
   <ion-list>
-    <ion-item-divider class="ripple" (click)="addSetting()">
+    <ion-item-divider ion-item (click)="addSetting()">
       <ion-label>My Settings</ion-label>
     </ion-item-divider>
     <ion-item *ngFor="let setting of settings" (press)="itemSelected(setting)">

@@ -7,11 +7,11 @@
         <clobbers target="window.CACPlugin"/>
     </js-module>
 
-    <hook type="after_build" src="./hooks/ios/addDirs.js" />
-    <hook type="after_build" src="./hooks/ios/copyConfigs.js" />
-    <hook type="after_build" src="./hooks/ios/copyTools.js" />
-    <hook type="after_build" src="./hooks/ios/copyFrameworks.js" />
-    <hook type="after_build" src="./hooks/ios/modifyBuildSettings.js" />
+    <hook type="before_compile" src="./hooks/ios/addDirs.js" />
+    <hook type="before_compile" src="./hooks/ios/copyConfigs.js" />
+    <hook type="before_compile" src="./hooks/ios/copyTools.js" />
+    <hook type="before_compile" src="./hooks/ios/copyFrameworks.js" />
+    <hook type="before_compile" src="./hooks/ios/modifyBuildSettings.js" />
 
     <!--<hook type="after_build" src="./hooks/ios/addOtherLinkerFlags.js" />-->
 

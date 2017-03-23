@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoggerService } from "../../../services/logger/logger-service";
-import { ViewController } from "ionic-angular";
+import { ViewController, AlertController } from "ionic-angular";
 import { ServerModel } from "../../../models/server.model";
 
 import { HostServerService } from "../../../services/host-server.service";
@@ -21,11 +21,13 @@ export class AddServerComponent {
     private serverService: HostServerService,
     private formBuilder: FormBuilder,
     private log: LoggerService,
-    private viewCtrl: ViewController) {
+    private viewCtrl: ViewController,
+    private alertCtrl: AlertController) {
     this.addServerForm = formBuilder.group({
-      nameInput: ['', Validators.required],
-      portInput: ['', Validators.required],
-      defaultServerCheck: ['', Validators.required]
+      'nameInput': ['', Validators.required],
+      'portInput': ['', Validators.required],
+      'protocolInput': ['http', Validators.required],   
+      'defaultServerCheck' : ['true', Validators.nullValidator]  
     });
 
   }
@@ -52,10 +54,45 @@ export class AddServerComponent {
 
 
   saveHostServer() {
-   
-    this.serverService.addHostServer(this.model);
-    
-    this.dismiss();
+    if (this.validate()) {
+
+      this.serverService.addHostServer(this.model);
+
+      this.dismiss();
+    }
+
+  }
+
+  validate(): boolean {
+    if (this.addServerForm.valid) {
+      return true;
+    }
+    let errorMessage = "<ul>";
+    let name = this.addServerForm.controls['nameInput'];
+    let port = this.addServerForm.controls['portInput'];
+    let protocol = this.addServerForm.controls['protocolInput'];
+    if (!protocol.valid) {
+      errorMessage += "<li>Protocol must be selected</li>"
+    }
+
+    if (!name.valid) {
+      errorMessage += "<li>Host Server required</li>"
+    }
+
+    if (!port.valid) {
+      errorMessage += "<li>Port is required</li>"
+    }
+
+    errorMessage += "</ul>"
+
+    let alert = this.alertCtrl.create({
+      title: "Error",
+      message: errorMessage,
+      buttons: ['Ok']
+
+
+    });
+    alert.present();
 
   }
 
@@ -63,6 +100,6 @@ export class AddServerComponent {
     this.viewCtrl.dismiss();
   }
 
-  
+
 
 }

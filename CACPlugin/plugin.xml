@@ -13,6 +13,8 @@
     <hook type="before_compile" src="./hooks/ios/copyFrameworks.js" />
     <hook type="before_compile" src="./hooks/ios/modifyBuildSettings.js" />
 
+    <!--<preference name="HOST" default="192.168.1.10" />-->
+
     <!--<hook type="after_build" src="./hooks/ios/addOtherLinkerFlags.js" />-->
 
     <!--<hook type="after_platform_add" src="./hooks/ios/addDirs.js" />-->
@@ -59,6 +61,21 @@
             </array>
         </config-file>
 
+        <config-file target="*-Info.plist" parent="NSAppTransportSecurity">
+            <key>NSExceptionDomains</key>
+            <dict>
+                <key>localhost</key>
+                <dict>
+                    <key>NSIncludesSubdomains</key>
+                    <true/>
+                    <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+                    <true/>
+                    <key>NSTemporaryExceptionMinimumTLSVersion</key>
+                    <string>TLSv1.1</string>
+                </dict>
+            </dict>
+        </config-file>
+
         <config-file target="*-Info.plist" parent="CFBundleURLTypes">
             <array>
                 <dict>
@@ -71,6 +88,7 @@
                 </dict>
             </array>
         </config-file>
+
 
 
         <source-file src="src/ios/CACPlugin.m"/>

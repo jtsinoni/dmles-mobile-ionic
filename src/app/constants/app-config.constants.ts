@@ -14,7 +14,7 @@ export class AppConfigConstants {
         //   > set HOST_MB=dmedpx3005      // Dev - NEW
         //   > set HOST_MB=dmetpx4007      // Test - NEW
 
-        "btBaseUrl": (AppConfigConstants.host)?`http://${AppConfigConstants.host}:8080/`:`http://localhost:8080/`
+        "btBaseUrl": (AppConfigConstants.host)?`${AppConfigConstants.host}`:`http://localhost:8080/`
     };
 
     //TODO: get from UserForm, derived credentials, etc

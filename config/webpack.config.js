@@ -8,7 +8,7 @@ function getPlugins() {
         ionicWebpackFactory.getIonicEnvironmentPlugin(),
         new webpack.DefinePlugin({
             'IONIC_ENV_MB': JSON.stringify(env),
-            'HOST_MB': JSON.stringify(process.env.HOST)
+            'HOST_MB': JSON.stringify(process.env.HOST_MB)
         })
     ];
 

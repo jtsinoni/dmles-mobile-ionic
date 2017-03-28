@@ -3,26 +3,26 @@
   <ion-card>
     <ion-card-content>
       <form name="createOrderForm" [formGroup]="orderForm" (ngSubmit)="saveOrder()">
-        <div>
+        <ion-item>
           <ion-label><span>Item Id:</span><span *ngIf="supplyItem">{{supplyItem.itemId}}</span></ion-label>
-        </div>
-        <div>
+        </ion-item>
+        <ion-item>
           <ion-label *ngIf="supplyItem">{{supplyItem.itemDescription}}</ion-label>
-        </div>
-        <div>
+        </ion-item>
+        <ion-item>
           <ion-input id="orderQuantity" formControlName="orderQuantityInput" type="number" [(ngModel)]="model.orderQuantity" placeholder="Qty"></ion-input>
-        </div>
-        <div>
+        </ion-item>
+        <ion-item>
           <ion-input id="requestor" formControlName="requestorInput" type="text" [(ngModel)]="model.requestor" placeholder="Requested By"></ion-input>
-        </div>
-        <div>
+        </ion-item>
+        <ion-item>
           <ion-label>Required Date</ion-label>
           <ion-datetime id="requiredDate" formControlName="requiredDateInput" displayFormat="MMM DD YYYY" [(ngModel)]="model.requiredDate"
             [max]="futureDate"></ion-datetime>
-        </div>
-        <div>
-          <img alt="your item image" class="item-image" *ngIf="supplyItem" src="{{ supplyItem.imageUrl }}">
-        </div>
+        </ion-item>
+        <ion-item>
+          <img alt="image not available" class="item-image" *ngIf="supplyItem" src="{{ supplyItem.imageUrl }}">
+        </ion-item>
         <button ion-button type="submit" block>Create Order</button>
       </form>
     </ion-card-content>

@@ -11,8 +11,8 @@ export class AppConfigConstants {
         //"btBaseUrl"   : "http://jw8cui04:8080/"  // OLD Test
 
         // From command prompt:
-        //   > set HOST=dmedpx3005.jmlfdc.mil      // Dev - NEW
-        //   > set HOST=dmetpx4007.jmlfdc.mil      // Test - NEW
+        //   > set HOST_MB=dmedpx3005      // Dev - NEW
+        //   > set HOST_MB=dmetpx4007      // Test - NEW
 
         "btBaseUrl": (AppConfigConstants.host)?`http://${AppConfigConstants.host}:8080/`:`http://localhost:8080/`
     };

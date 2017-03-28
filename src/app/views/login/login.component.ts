@@ -4,7 +4,7 @@ import { Platform, ModalController, ViewController } from 'ionic-angular';
 //import { AppContainerComponent } from '../../app-container.component';
 import { OAuthService } from "../../services/oauth.service";
 import { LoggerService } from "../../services/logger/logger-service";
-import { AppService } from "../../services/app.service";
+import { UrlService } from "../../services/url.service";
 import { JSONWebTokenService } from "../../services/jason-web-token.service";
 import { WarningDialogComponent } from "../common/dialogs/warning-dialog.component";
 
@@ -21,14 +21,16 @@ export class LoginComponent {
         //public navCtrl: NavController,
         private OAuthService: OAuthService,
         private log: LoggerService,
-        private appService: AppService,
+        //private appService: AppService,
+        private urlService: UrlService,
         private jwtService: JSONWebTokenService,
         private modalController: ModalController,
         private viewController: ViewController
         //private menuController: MenuController,
         //private app: App
         ) {
-        this.loginModel = new LoginModel(this.appService.getBtBaseUrl());
+            //this.apiService.getServer()
+        this.loginModel = new LoginModel(this.urlService.getServerUrl());
         //this.menuController.enable(false, "mainMenu");
 
     }

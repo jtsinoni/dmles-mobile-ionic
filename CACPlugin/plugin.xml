@@ -81,7 +81,7 @@
                     <string>com.thursby.pkard.sdk</string>
                     <key>CFBundleURLSchemes</key>
                     <array>
-                        <string>https://johns-macbook-pro.local/</string>
+                        <string>logicolemobile</string>
                     </array>
                 </dict>
             </array>

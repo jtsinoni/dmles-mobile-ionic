@@ -13,10 +13,6 @@
     <hook type="before_compile" src="./hooks/ios/copyFrameworks.js" />
     <hook type="before_compile" src="./hooks/ios/modifyBuildSettings.js" />
 
-    <preference name="BT_URLScheme" default="johns-macbook-pro.local" />
-
-    <!--<preference name="HOST" default="192.168.1.10" />-->
-
     <!--<hook type="after_build" src="./hooks/ios/addOtherLinkerFlags.js" />-->
 
     <!--<hook type="after_platform_add" src="./hooks/ios/addDirs.js" />-->
@@ -66,7 +62,7 @@
         <config-file target="*-Info.plist" parent="NSAppTransportSecurity">
             <key>NSExceptionDomains</key>
             <dict>
-                <key>localhost</key>
+                <key>johns-macbook-pro.local</key>
                 <dict>
                     <key>NSIncludesSubdomains</key>
                     <true/>
@@ -85,7 +81,7 @@
                     <string>com.thursby.pkard.sdk</string>
                     <key>CFBundleURLSchemes</key>
                     <array>
-                        <string>$BT_URLScheme</string>
+                        <string>https://johns-macbook-pro.local/</string>
                     </array>
                 </dict>
             </array>

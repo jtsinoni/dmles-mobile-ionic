@@ -13,14 +13,6 @@
     <hook type="before_compile" src="./hooks/ios/copyFrameworks.js" />
     <hook type="before_compile" src="./hooks/ios/modifyBuildSettings.js" />
 
-    <!--<hook type="after_build" src="./hooks/ios/addOtherLinkerFlags.js" />-->
-
-    <!--<hook type="after_platform_add" src="./hooks/ios/addDirs.js" />-->
-    <!--<hook type="after_platform_add" src="./hooks/ios/copyConfigs.js" />-->
-    <!--<hook type="after_platform_add" src="./hooks/ios/copyConfigs.js" />-->
-    <!--<hook type="after_build" src="./hooks/ios/fingerprintForFIPS140.js" />-->
-    <!--<hook type="before_compile" src="./hooks/ios/copyFrameworks.js" />-->
-
     <!-- anroid -->
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
@@ -34,7 +26,6 @@
 
     <!-- ios -->
     <platform name="ios">
-        <!--<source-file src="./config/ios/fips_premain.c" target="/fips_premain.c" />-->
         <resource-file src="./config/ios/PKardSDK.bundle" target="/PKardSDK.bundle" />
         <resource-file src="./config/ios/certs/trusted_cas.pem" target="/trusted_cas.pem" />
         <resource-file src="./config/ios/certs/trusted_certs.pem" target="/trusted_certs.pem" />
@@ -59,21 +50,6 @@
             </array>
         </config-file>
 
-        <config-file target="*-Info.plist" parent="NSAppTransportSecurity">
-            <key>NSExceptionDomains</key>
-            <dict>
-                <key>johns-macbook-pro.local</key>
-                <dict>
-                    <key>NSIncludesSubdomains</key>
-                    <true/>
-                    <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-                    <true/>
-                    <key>NSTemporaryExceptionMinimumTLSVersion</key>
-                    <string>TLSv1.1</string>
-                </dict>
-            </dict>
-        </config-file>
-
         <config-file target="*-Info.plist" parent="CFBundleURLTypes">
             <array>
                 <dict>
@@ -86,8 +62,6 @@
                 </dict>
             </array>
         </config-file>
-
-
 
         <source-file src="src/ios/CACPlugin.m"/>
     </platform>

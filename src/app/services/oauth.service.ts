@@ -6,7 +6,6 @@ import {ApiService} from "./api.service";
 import {ApiConstants} from "../constants/api.constants";
 import {AuthenticationService} from "./authentication.service";
 import {AppService} from "./app.service";
-import {HostServerService} from "./host-server.service";
 import {Base64Service} from "../common/services/base64.service";
 import {LoggerService} from "./logger/logger-service";
 import {AppConfigConstants} from "../constants/app-config.constants";
@@ -23,10 +22,9 @@ export class OAuthService extends ApiService {
                 private app: AppService,
                 private Base64Service: Base64Service,
                 private localStorageService: LocalStorageService,
-                private jwtService: JSONWebTokenService,
-                protected hostServerService: HostServerService) {
+                private jwtService: JSONWebTokenService) {
 
-        super(http, log, authenticationService, app, hostServerService, "OAuth");
+        super(http, log, authenticationService, app, "OAuth");
         this.log.debug(`${this.serviceName} - Start`);
     }
 

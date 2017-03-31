@@ -11,7 +11,6 @@ import { PermState } from "../../models/roles/perm-state.model";
 import { PermEndpoint } from "../../models/roles/perm-endpoint.model";
 import { AuthenticationService } from "../../services/authentication.service";
 import { AppService } from "../../services/app.service";
-import { HostServerService } from "../../services/host-server.service";
 import { LoggerService } from "../../services/logger/logger-service";
 
 @Injectable()
@@ -21,10 +20,9 @@ export class RoleService extends ApiService {
     constructor(http: Http,
         public log: LoggerService,
         protected authenticationService: AuthenticationService,
-        private app: AppService,
-        protected hostServerService: HostServerService) {
+        private app: AppService) {
 
-        super(http, log, authenticationService, app, hostServerService, "Role");
+        super(http, log, authenticationService, app, "Role");
         this.log.debug(`${this.serviceName} - Start`);
     }
 

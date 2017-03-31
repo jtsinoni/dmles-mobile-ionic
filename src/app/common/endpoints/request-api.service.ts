@@ -6,7 +6,6 @@ import {ApiService} from "../../services/api.service";
 import {AppService} from "../../services/app.service";
 import {AuthenticationService} from "../../services/authentication.service";
 import {LoggerService} from "../../services/logger/logger-service";
-import {HostServerService} from "../../services/host-server.service";
 
 import { Platform } from 'ionic-angular';
 
@@ -18,9 +17,8 @@ export class RequestApiService extends ApiService {
                 public platform: Platform,
                 public log: LoggerService,
                 protected authenticationService: AuthenticationService,
-                private app: AppService, 
-                protected hostServerService: HostServerService) {
-        super(http, log, authenticationService, app, hostServerService, "EquipmentManagement");
+                private app: AppService) {
+        super(http, log, authenticationService, app, "EquipmentManagement");
     }
 
     public buildWeighIns(requestId) {

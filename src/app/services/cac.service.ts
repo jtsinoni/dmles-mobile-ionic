@@ -21,15 +21,17 @@ export class CACService {
             .then(() => {
                 this.log.debug(`${this.serviceName} - Start`);
 
+                console.debug(`${this.serviceName}: IsMobility => ${this.utilService.isMobility()}: Cordova => ${cordova.plugins.CacReader}`);
+
                 if(this.utilService.isMobility()) {
-                    cordova.plugins.CACPlugin.coolMethod(
-                        "Hello Plugin World",
+
+                    cordova.plugins.CacReader.version(
                         (results) => {this.log.debug(`Results => ${results}`)},
                         (error) => {this.log.error(`${error}`)});
                 }
             })
             .catch((error) => {
-                console.error(`${error}`);
+                this.log.debug(`${error}`);
             });
     }
 }

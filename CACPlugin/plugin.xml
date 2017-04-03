@@ -1,11 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="logicole-plugin-cac" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0"
+<plugin id="logicole-plugin-cac" version="0.0.2" xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android">
-    <name>CACPlugin</name>
-    <js-module name="CACPlugin" src="www/CACPlugin.js">
-        <clobbers target="cordova.plugins.CACPlugin"/>
-        <clobbers target="window.CACPlugin"/>
-    </js-module>
+    <name>CACReaderPlugin</name>
+    <description>CAC Reader Plugin</description>
+    <!--<js-module name="CACPlugin" src="www/CACPlugin.js">-->
+        <!--<clobbers target="cordova.plugins.CACPlugin"/>-->
+        <!--<clobbers target="window.CACPlugin"/>-->
+    <!--</js-module>-->
 
     <hook type="before_compile" src="./hooks/ios/addDirs.js" />
     <hook type="before_compile" src="./hooks/ios/copyConfigs.js" />
@@ -13,30 +14,32 @@
     <hook type="before_compile" src="./hooks/ios/copyFrameworks.js" />
     <hook type="before_compile" src="./hooks/ios/modifyBuildSettings.js" />
 
-    <!--<preference name="HOST" default="192.168.1.10" />-->
-
-    <!--<hook type="after_build" src="./hooks/ios/addOtherLinkerFlags.js" />-->
-
-    <!--<hook type="after_platform_add" src="./hooks/ios/addDirs.js" />-->
-    <!--<hook type="after_platform_add" src="./hooks/ios/copyConfigs.js" />-->
-    <!--<hook type="after_platform_add" src="./hooks/ios/copyConfigs.js" />-->
-    <!--<hook type="after_build" src="./hooks/ios/fingerprintForFIPS140.js" />-->
-    <!--<hook type="before_compile" src="./hooks/ios/copyFrameworks.js" />-->
-
     <!-- anroid -->
     <platform name="android">
+        <js-module src="www/android/CacReader.js" name="CacReader">
+            <runs/>
+            <clobbers target="cordova.plugins.CacReader" />
+            <clobbers target="window.CacReader" />
+        </js-module>
+
         <config-file parent="/*" target="res/xml/config.xml">
-            <feature name="CACPlugin">
-                <param name="android-package" value="logicole.plugin.cac.CACPlugin"/>
+            <feature name="CDVCacReader">
+                <param name="android-package" value="logicole.plugin.cac.CDVCacReader"/>
+                <param name="onload" value="true" />
             </feature>
         </config-file>
         <config-file parent="/*" target="AndroidManifest.xml"/>
-        <source-file src="src/android/CACPlugin.java" target-dir="src/logicole/plugin/cac"/>
+        <source-file src="src/android/CDVCacReader.java" target-dir="src/logicole/plugin/cac"/>
     </platform>
 
     <!-- ios -->
     <platform name="ios">
-        <!--<source-file src="./config/ios/fips_premain.c" target="/fips_premain.c" />-->
+        <js-module src="www/ios/CacReader.js" name="CacReader">
+            <runs/>
+            <clobbers target="cordova.plugins.CacReader" />
+            <clobbers target="window.CacReader" />
+        </js-module>
+
         <resource-file src="./config/ios/PKardSDK.bundle" target="/PKardSDK.bundle" />
         <resource-file src="./config/ios/certs/trusted_cas.pem" target="/trusted_cas.pem" />
         <resource-file src="./config/ios/certs/trusted_certs.pem" target="/trusted_certs.pem" />
@@ -49,8 +52,8 @@
         <framework src="libstdc++.tbd" />
         <framework src="libz.tbd" />
         <config-file parent="/*" target="config.xml">
-            <feature name="CACPlugin">
-                <param name="ios-package" value="CACPlugin"/>
+            <feature name="CDVCacReader">
+                <param name="ios-package" value="CDVCacReader" onload="true"/>
             </feature>
         </config-file>
 
@@ -61,21 +64,6 @@
             </array>
         </config-file>
 
-        <config-file target="*-Info.plist" parent="NSAppTransportSecurity">
-            <key>NSExceptionDomains</key>
-            <dict>
-                <key>localhost</key>
-                <dict>
-                    <key>NSIncludesSubdomains</key>
-                    <true/>
-                    <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-                    <true/>
-                    <key>NSTemporaryExceptionMinimumTLSVersion</key>
-                    <string>TLSv1.1</string>
-                </dict>
-            </dict>
-        </config-file>
-
         <config-file target="*-Info.plist" parent="CFBundleURLTypes">
             <array>
                 <dict>
@@ -83,27 +71,28 @@
                     <string>com.thursby.pkard.sdk</string>
                     <key>CFBundleURLSchemes</key>
                     <array>
-                        <string>pkardsample</string>
+                        <string>logicolemobile</string>
                     </array>
                 </dict>
             </array>
         </config-file>
 
+        <header-file src="src/ios/CDVCacReader.h"/>
+        <source-file src="src/ios/CDVCacReader.m"/>
 
-
-        <source-file src="src/ios/CACPlugin.m"/>
     </platform>
 
     <!-- browser -->
     <platform name="browser">
+        <js-module src="src/browser/CDVCacReaderProxy.js" name="CacReader">
+            <runs/>
+            <clobbers target="cordova.plugins.CacReader" />
+        </js-module>
+
         <config-file target="config.xml" parent="/*">
-            <feature name="CACPlugin">
-                <param name="browser-package" value="CACPlugin" />
+            <feature name="CacReader">
+                <param name="browser-package" value="CacReader" />
             </feature>
         </config-file>
-
-        <js-module src="src/browser/CACPluginProxy.js" name="CACPluginProxy">
-            <runs />
-        </js-module>
     </platform>
 </plugin>

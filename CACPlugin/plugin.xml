@@ -3,10 +3,6 @@
         xmlns:android="http://schemas.android.com/apk/res/android">
     <name>CACReaderPlugin</name>
     <description>CAC Reader Plugin</description>
-    <!--<js-module name="CACPlugin" src="www/CACPlugin.js">-->
-        <!--<clobbers target="cordova.plugins.CACPlugin"/>-->
-        <!--<clobbers target="window.CACPlugin"/>-->
-    <!--</js-module>-->
 
     <hook type="before_compile" src="./hooks/ios/addDirs.js" />
     <hook type="before_compile" src="./hooks/ios/copyConfigs.js" />
@@ -19,7 +15,6 @@
         <js-module src="www/android/CacReader.js" name="CacReader">
             <runs/>
             <clobbers target="cordova.plugins.CacReader" />
-            <clobbers target="window.CacReader" />
         </js-module>
 
         <config-file parent="/*" target="res/xml/config.xml">
@@ -37,7 +32,6 @@
         <js-module src="www/ios/CacReader.js" name="CacReader">
             <runs/>
             <clobbers target="cordova.plugins.CacReader" />
-            <clobbers target="window.CacReader" />
         </js-module>
 
         <resource-file src="./config/ios/PKardSDK.bundle" target="/PKardSDK.bundle" />

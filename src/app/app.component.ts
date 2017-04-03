@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { Platform, Nav, App } from 'ionic-angular';
-import { StatusBar } from 'ionic-native';
+import { StatusBar, Splashscreen } from 'ionic-native';
 import { LoginComponent } from './views/login/login.component';
 import { AreaModel } from './models/area.model';
 import { AppContainerComponent } from "./app-container.component";
@@ -61,6 +61,7 @@ export class DMLESMobile implements OnInit {
     initializeApp() {
         this.setSettingsCount();
         this.platform.ready().then(() => {
+            Splashscreen.hide();
             StatusBar.styleDefault();
 
 

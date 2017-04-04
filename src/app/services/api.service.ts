@@ -1,41 +1,50 @@
-import {Http, Headers} from "@angular/http";
-import {Observable} from "rxjs";
+import { Http, Headers } from "@angular/http";
+import { Observable } from "rxjs";
 
-import {ApiConstants} from "../constants/api.constants";
-import {AppService} from "./app.service";
-import {AuthenticationService} from "./authentication.service";
-import {LoggerService} from "./logger/logger-service";
+import { ApiConstants } from "../constants/api.constants";
+import { AppService } from "./app.service";
+import { AuthenticationService } from "./authentication.service";
+import { LoggerService } from "./logger/logger-service";
+import { ServerModel } from "../models/server.model";
+
 
 export class ApiService {
     private apiServiceName: string = "Api Service";
+    private defaultServer: ServerModel;
 
-    constructor(private http: Http, public log: LoggerService, protected Authentication: AuthenticationService, private App: AppService, private managerName: string) {
+    constructor(
+        private http: Http,
+        public log: LoggerService,
+        protected Authentication: AuthenticationService,
+        private App: AppService,
+        private managerName: string) {
         this.log.debug(`${this.apiServiceName} - Start`);
     }
 
+
     private determineUrl(action: string) {
-        let url: string = '';
+        let url: string = this.getServer();
         switch (this.managerName) {
             case "User":
-                url = this.App.getBtBaseUrl() + ApiConstants.USER_API + action;
+                url += ApiConstants.USER_API + action;
                 break;
             case "Role":
-                url = this.App.getBtBaseUrl() + ApiConstants.ROLE_API + action;
+                url += ApiConstants.ROLE_API + action;
                 break;
             case "EquipmentManagement":
-                url = this.App.getBtBaseUrl() + ApiConstants.EQUIPMENT_API + action;
+                url += ApiConstants.EQUIPMENT_API + action;
                 break;
             case "Site":
-                url = this.App.getBtBaseUrl() + ApiConstants.SITE_API + action;
+                url += ApiConstants.SITE_API + action;
                 break;
             case "System":
-                url = this.App.getBtBaseUrl() + ApiConstants.SYSTEM_API + action;
+                url += ApiConstants.SYSTEM_API + action;
                 break;
             case "OAuth":
-                url = this.App.getBtBaseUrl() + ApiConstants.OAUTH_API + action;
+                url += ApiConstants.OAUTH_API + action;
                 break;
             default:
-                url = this.App.getBtBaseUrl() + this.managerName + '/Api/' + action;
+                url += this.managerName + '/Api/' + action;
         }
         return url;
     };
@@ -49,7 +58,7 @@ export class ApiService {
         headers.append('Authorization', 'Basic ' + encodedDn);
         headers.append('ClientId', 'dmles');
 
-        return this.http.post(url, {}, {headers:headers});
+        return this.http.post(url, {}, { headers: headers });
     };
 
     public get(action: string): Observable<any> {
@@ -62,7 +71,7 @@ export class ApiService {
                 headers.append('Authorization', 'Token ' + token);
                 headers.append('ClientId', 'dmles');
 
-                return this.http.get(url, {headers: headers});
+                return this.http.get(url, { headers: headers });
             });
     };
 
@@ -77,7 +86,7 @@ export class ApiService {
                 headers.append('Authorization', 'Token ' + token);
                 headers.append('ClientId', 'dmles');
 
-                return this.http.post(url, data, {headers: headers});
+                return this.http.post(url, data, { headers: headers });
             });
     };
 
@@ -91,6 +100,18 @@ export class ApiService {
                     this.log.error(`${this.apiServiceName} - ${error}`);
                 })
         )
+    }
+
+    public setServer(server: ServerModel) {     
+        this.defaultServer = server;        
+    }
+
+    getServer() {
+        if (this.defaultServer === null || this.defaultServer === undefined) {           
+            return this.App.getBtBaseUrl();
+        } else {
+            return this.defaultServer.toString();            
+        }
     }
 
 }

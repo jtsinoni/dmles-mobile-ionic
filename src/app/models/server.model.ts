@@ -29,7 +29,7 @@ export class ServerModel extends BaseDataTableModel implements IServerModel {
 
     toString(): string {
         let proto = this.protocol ? this.protocol : 'https';
-        return proto + '://' + this.serverName + ':' + this.port; 
+        return proto + '://' + this.serverName + ':' + this.port + '/'; 
     }    
 
 }

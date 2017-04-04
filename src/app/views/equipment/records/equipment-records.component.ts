@@ -1,9 +1,12 @@
-import {Component, Input} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
-import {LoggerService} from "../../../services/logger/logger-service";
+import { Component, Input } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
+import { LoggerService } from "../../../services/logger/logger-service";
 
-import {EquipmentRecordDetailsComponent} from './details/equip-record-details.component';
-import {RequestApiService} from "../../../common/endpoints/request-api.service";
+import { EquipmentRecordDetailsComponent } from './details/equip-record-details.component';
+import { RequestApiService } from "../../../common/endpoints/request-api.service";
+import { HostServerService } from "../../../services/host-server.service";
+import { ServerModel } from "../../../models/server.model";
+
 
 @Component({
     templateUrl: './equipment-records.component.html'
@@ -18,9 +21,10 @@ export class EquipmentRecordsComponent {
     items: Array<any>;
 
     constructor(public navCtrl: NavController,
-                public navParams: NavParams,
-                private RequestApiService: RequestApiService,
-                private log: LoggerService) {
+        public navParams: NavParams,
+        private RequestApiService: RequestApiService,
+        private hostServerService: HostServerService,
+        private log: LoggerService) {
     }
 
     ngOnInit() {
@@ -28,15 +32,21 @@ export class EquipmentRecordsComponent {
         this.selectedItem = this.navParams.get('item');
         this.searchValue = this.navParams.get('searchValue');
         this.aggregations = this.navParams.get('aggregations');
+        this.getEquipmentRecords(); 
 
-        this.getEquipmentRecords();
+       
     }
 
     private getEquipmentRecords() {
-        this.log.debug('In getEquipmentRecords with (' + this.searchValue + ', ' + this.aggregations + ')');
-        this.RequestApiService.getEquipmentRecords(this.searchValue, this.aggregations)
-            .map(results => results.json())
-            .subscribe(
+
+        let server: ServerModel;
+        this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
+            this.RequestApiService.setServer(server);
+
+            this.log.debug('In getEquipmentRecords with (' + this.searchValue + ', ' + this.aggregations + ')');
+            this.RequestApiService.getEquipmentRecords(this.searchValue, this.aggregations)
+                .map(results => results.json())
+                .subscribe(
                 (results) => {
                     this.items = results.hits.hits; //mec: NOTE: MAGIC - We are 2 layers deep in results
                     this.log.debug(`results => ${JSON.stringify(results)}`);
@@ -44,6 +54,7 @@ export class EquipmentRecordsComponent {
                 (error) => {
                     this.log.error(`Error => ${error}`);
                 });
+        });
     }
 
     itemTapped(item) {

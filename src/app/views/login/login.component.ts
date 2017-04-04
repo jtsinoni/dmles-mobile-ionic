@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { LoginModel } from "../../models/login.model";
 import { Platform, ModalController, ViewController } from 'ionic-angular';
-//import { AppContainerComponent } from '../../app-container.component';
 import { OAuthService } from "../../services/oauth.service";
 import { LoggerService } from "../../services/logger/logger-service";
 import { AppService } from "../../services/app.service";
+import { HostServerService } from "../../services/host-server.service";
+import { ServerModel } from "../../models/server.model";
 import { JSONWebTokenService } from "../../services/jason-web-token.service";
 import { WarningDialogComponent } from "../common/dialogs/warning-dialog.component";
 
@@ -18,19 +19,28 @@ export class LoginComponent {
     loginModel: LoginModel;
 
     constructor(private platform: Platform,
-        //public navCtrl: NavController,
         private OAuthService: OAuthService,
         private log: LoggerService,
         private appService: AppService,
         private jwtService: JSONWebTokenService,
+        private hostServerService: HostServerService,
         private modalController: ModalController,
-        private viewController: ViewController
-        //private menuController: MenuController,
-        //private app: App
-        ) {
-        this.loginModel = new LoginModel(this.appService.getBtBaseUrl());
-        //this.menuController.enable(false, "mainMenu");
+        private viewController: ViewController) {
+        this.loginModel = new LoginModel('');
+        this.setLoginServer();
 
+    }
+
+
+    setLoginServer() {
+        let server: ServerModel;
+        this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
+            if (server) {
+                this.loginModel.serverName = server.toString();
+            } else {
+                this.loginModel.serverName = this.appService.getBtBaseUrl();
+            }
+        });
     }
 
     public login(loginModel: LoginModel) {
@@ -55,8 +65,6 @@ export class LoginComponent {
                     () => {
                         message = `Authentication Complete`;
                         this.addLogMessage(message);
-                        //this.navCtrl.setRoot(AppContainerComponent, );
-                        //this.app.getRootNav().setRoot(AppContainerComponent);
                         this.viewController.dismiss();
                     })
             })
@@ -81,11 +89,5 @@ export class LoginComponent {
         let errorModal = this.modalController.create(WarningDialogComponent, { txt: error, message: msg });
         errorModal.present();
     }
-
-    // cancel() {
-    //     this.viewController.dismiss();
-    // }
-
-
 
 }

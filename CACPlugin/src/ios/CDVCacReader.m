@@ -22,6 +22,8 @@
 @synthesize identity = _identity;
 @synthesize userMessage = _userMessage;
 @synthesize emailAddress;
+@synthesize fipsMode;
+
 
 - (id)init
 {
@@ -40,9 +42,20 @@
                 self.challengeData = (TSS_PKI_Signature*)accountObject;
         }
 
+        // configure defaults for ScreenLock behavior  (probably in your app's delegate)
+        if(!PKPOLICY_enableScreenLock.isValid)
+            PKPOLICY_enableScreenLock.boolValue = YES;
+        if(!PKPOLICY_screenLockDelay.isValid)
+            PKPOLICY_screenLockDelay.doubleValue = 5.0;
+
         //[self setEnabled:YES];
     }
     return self;
+}
+
+- (void)FIPSModeController:(PKFIPSModeController*)controller didFinishWithSuccess:(BOOL)success andState:(BOOL)enabled {
+    LogDebug("FIPS Mode set: %d", enabled);
+    self.fipsMode = enabled;
 }
 
 - (void)dealloc {
@@ -150,12 +163,24 @@
         PKardSDK_RegisterHTTPS();
 
         // Allows PKard SDK to put up user interface dialogs or views such as the PIN entry view
-        PKardSDK_MayDisplayUserInterface(YES);
+        //PKardSDK_MayDisplayUserInterface(YES);
 
         // TODO: first check to see if reader and CAC inserted
-        [self establishLockSignature];
+        //[self establishLockSignature];
 
-        //[self setEnabled:YES];
+        // Set delegate so the user can be prompted to delete files (reset)
+        // and reeive error callback
+        [PKScreenLockController sharedScreenLockController].delegate = self;
+
+
+        #ifdef USE_FIPS_MODE
+        BOOL isOn = YES;
+        PKFIPSModeController* FIPSModeController = [[[PKFIPSModeController alloc] init] autorelease];
+        FIPSModeController.delegate = self;
+        [FIPSModeController setMode: isOn ? PKFIPSModeEnable : PKFIPSModeDisable];
+        #endif
+
+        [self setEnabled:YES];
 
 
     } else {
@@ -425,7 +450,7 @@
                 //[self establishLockSignature];
             } else {
                 NSLog(@"Please insert your smart card.");
-                [self showAlert:@"Please insert your smart card"];
+                //[self showAlert:@"Please insert your smart card"];
 
                 /*
                 NSDictionary* identityProof = [[NSUserDefaults standardUserDefaults] valueForKey:@"lockSignature"];
@@ -439,7 +464,7 @@
                 //[self lockScreen];
             }
         } else {
-            [self showAlert:@"Please attach your card reader."];
+            //[self showAlert:@"Please attach your card reader."];
             NSLog(@"Please attach your card reader.");
             //[self updateMessage:@"Please attach your card reader."];
         }

@@ -17,7 +17,7 @@ enum {
 
 @class TSS_PKI_Signature;
 
-@interface CDVCacReader : CDVPlugin {
+@interface CDVCacReader : CDVPlugin <PKFIPSModeControllerDelegate, PKScreenLockControllerDelegate> {
     // Member variables go here.
     // Card User Info
     //
@@ -27,5 +27,6 @@ enum {
 @property (nonatomic, readonly) NSString          *userMessage;
 @property (assign, readonly)    UserAccountState_t state;
 @property (nonatomic, readonly) NSString          *emailAddress;
+@property (nonatomic, assign) BOOL fipsMode;
 - (void)version:(CDVInvokedUrlCommand*)command;
 @end

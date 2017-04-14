@@ -1,0 +1,28 @@
+<modal-header remove-parent-element [title]="'PKard Settings'"></modal-header>
+<ion-content>
+    <ion-list>
+        <ion-item>
+            <span>Version</span>
+            <ion-note item-right>
+                {{version}}
+            </ion-note>
+        </ion-item>
+        <ion-item>
+            <span>Reader Attached</span>
+            <ion-note item-right>
+                {{readerAttached}}
+            </ion-note>
+        </ion-item>
+        <ion-item>
+            <span>CAC Inserted</span>
+            <ion-note item-right>
+                {{cacInserted}}
+            </ion-note>
+        </ion-item>
+        <ion-item>
+            <ion-label>FIPS 140</ion-label>
+            <ion-toggle [(ngModel)]="fipsMode"></ion-toggle>
+        </ion-item>
+
+    </ion-list>
+</ion-content>

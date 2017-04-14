@@ -8,11 +8,11 @@
 @interface CDVCacReader ()
 {
     id  tokenObserver;
+    NSString *retainedCallbackId;
 }
-@property (nonatomic, strong) TSS_PKI_Signature *challengeData;
 
+@property (nonatomic, strong) TSS_PKI_Signature *challengeData;
 - (void)tokenChanged:(NSNotification*)notification;
-- (void)establishLockSignature;
 @end
 
 @implementation CDVCacReader
@@ -20,8 +20,6 @@
 @synthesize state = _state;
 @synthesize challengeData;
 @synthesize identity = _identity;
-@synthesize userMessage = _userMessage;
-@synthesize emailAddress;
 @synthesize fipsMode;
 
 
@@ -46,9 +44,8 @@
         if(!PKPOLICY_enableScreenLock.isValid)
             PKPOLICY_enableScreenLock.boolValue = YES;
         if(!PKPOLICY_screenLockDelay.isValid)
-            PKPOLICY_screenLockDelay.doubleValue = 5.0;
+            PKPOLICY_screenLockDelay.doubleValue = 0.0;
 
-        //[self setEnabled:YES];
     }
     return self;
 }
@@ -77,8 +74,6 @@
                          usingBlock:^(NSNotification *note) {
                              [self tokenChanged:note];
                          }];
-        // kick things off
-        [self tokenChanged:nil];
     } else {
         if(tokenObserver) {
             [[NSNotificationCenter defaultCenter] removeObserver:tokenObserver];
@@ -88,17 +83,110 @@
     }
 }
 
-// String to describe this object
-- (NSString*)description
-{
-    return [NSString stringWithFormat:@"UserAccount: Email - %@",
-            self.emailAddress];
+#pragma mark - Cordova Methods
+- (void) version:(CDVInvokedUrlCommand *)command {
+    CDVPluginResult* pluginResult = nil;
+
+    NSString *version = PKardSDK_Version();
+    NSLog(@"PKard Version => '%@'", version);
+    //NSLog(@"CallBackID => '%@'", command.callbackId);
+    if(version != nil) {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:version];
+    } else {
+        pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR];
+    }
+
+    //[pluginResult setKeepCallbackAsBool:YES];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+
+}
+
+- (void) isReaderAttached:(CDVInvokedUrlCommand *)command {
+    CDVPluginResult* pluginResult = nil;
+
+    if(ReaderStateCurrent() == kReaderStateAttached) {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
+    } else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:NO];
+    }
+
+    //[pluginResult setKeepCallbackAsBool:YES];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void) isCardInserted:(CDVInvokedUrlCommand *)command {
+    NSLog(@"ReaderStateCurrent => %d", ReaderStateCurrent());
+    NSLog(@"TokenStateCurrent => %d", TokenStateCurrent());
+
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:NO];
+
+
+    // Check if Reader is attached
+    if(ReaderStateCurrent() == kReaderStateAttached) {
+
+        // Check if CAC is inserted
+        if(TokenStateCurrent() == kTokenStateReadyForUse) {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
+        } else {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:NO];
+        }
+    }
+
+    //[pluginResult setKeepCallbackAsBool:YES];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)pluginInitialize {
+    if (PKardSDK_IsInstalled()) {
+
+        // This is used to set FIPS Mode, no need since it's on by default.
+        PKardSDK_Initialize(NO);
+
+        // log all debug messages (7)
+        TSSLogLevelSet(7);
+
+        PKardSDK_RegisterHTTPS();
+
+        // Set delegate so the user can be prompted to delete files (reset)
+        // and reeive error callback
+        [PKScreenLockController sharedScreenLockController].delegate = self;
+
+        [self setEnabled:YES];
+
+        #ifdef USE_FIPS_MODE
+            BOOL isOn = YES;
+            PKFIPSModeController* FIPSModeController = [[[PKFIPSModeController alloc] init] autorelease];
+            FIPSModeController.delegate = self;
+            [FIPSModeController setMode: isOn ? PKFIPSModeEnable : PKFIPSModeDisable];
+        #endif
+    }
+}
+
+- (void)lockScreen:(CDVInvokedUrlCommand*)command {
+    CDVPluginResult* pluginResult = nil;
+
+    NSDictionary* identityProof = [[NSUserDefaults standardUserDefaults] valueForKey:@"UserAccount"];
+    if(identityProof) {
+        TSS_PKI_Signature* signature = [[TSS_PKI_Signature alloc] initWithProperties:identityProof];
+        [TSS_PKI_Identity recordScreenUnlockProof:signature];
+
+        [[PKScreenLockController sharedScreenLockController] userWantsLock];
+
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"Lock Screen Succesfull."];
+    } else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"No lock signature found, a crypto operation needs to occur for a lock signature to be saved."];
+    }
+
+    //[pluginResult setKeepCallbackAsBool:YES];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+
+
 }
 
 #pragma mark - UserAccount Properties
-
 - (TSS_PKI_Certificate*)challengeCertificate
 {
+    //[self showAlert:@"Challenge certificate ..."];
     TSS_PKI_Certificate* rval=nil;
     if( self.identity )
         rval = self.identity.certificate;
@@ -108,95 +196,6 @@
     return rval;
 }
 
-- (NSString*)emailAddress
-{
-    TSS_PKI_Certificate* userCert = [self challengeCertificate];
-
-    emailAddress = [[userCert subjectAltNames]
-                    objectForKey:X509SubjectAltNameRFC822];
-    return emailAddress;
-}
-
-- (void)establishLockSignature {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        TSS_PKI_Signature* signature = [TSS_PKI_Identity identityProofRecord:nil];
-        NSDictionary* signatureProperties = [signature properties];
-        [[NSUserDefaults standardUserDefaults] setObject:signatureProperties forKey:@"lockSignature"];
-
-        if(signature != nil) {
-            NSLog(@"signature => '%@'", signature);
-
-        } else {
-            NSLog(@"Signature is Null");
-        }
-    });
-
-
-}
-
-- (void) version:(CDVInvokedUrlCommand *)command {
-    CDVPluginResult* pluginResult = nil;
-
-    NSString *version = PKardSDK_Version();
-    NSLog(@"PKard Version => '%@'", version);
-    if(version != nil) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:version];
-    } else {
-        pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR];
-    }
-
-
-
-
-
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-
-}
-
-- (void)pluginInitialize {
-    if (PKardSDK_IsInstalled()) {
-        PKardSDK_Initialize(NO);
-
-        // log all debug messages (7)
-        TSSLogLevelSet(7);
-
-        PKardSDK_RegisterHTTPS();
-
-        // Allows PKard SDK to put up user interface dialogs or views such as the PIN entry view
-        //PKardSDK_MayDisplayUserInterface(YES);
-
-        // TODO: first check to see if reader and CAC inserted
-        //[self establishLockSignature];
-
-        // Set delegate so the user can be prompted to delete files (reset)
-        // and reeive error callback
-        [PKScreenLockController sharedScreenLockController].delegate = self;
-
-
-        #ifdef USE_FIPS_MODE
-        BOOL isOn = YES;
-        PKFIPSModeController* FIPSModeController = [[[PKFIPSModeController alloc] init] autorelease];
-        FIPSModeController.delegate = self;
-        [FIPSModeController setMode: isOn ? PKFIPSModeEnable : PKFIPSModeDisable];
-        #endif
-
-        [self setEnabled:YES];
-
-
-    } else {
-        // Show alert in cordova that the  "PKard Reader not installed"
-    }
-}
-
-
-- (void)lockScreen {
-    NSDictionary* identityProof = [[NSUserDefaults standardUserDefaults] valueForKey:@"lockSignature"];
-    if(identityProof) {
-        TSS_PKI_Signature* signature = [[TSS_PKI_Signature alloc] initWithProperties:identityProof];
-        [TSS_PKI_Identity recordScreenUnlockProof:signature];
-        [[PKScreenLockController sharedScreenLockController] userWantsLock];
-    }
-}
 
 - (void) showAlert:(NSString *)message {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"PKard Alert" message:message preferredStyle:UIAlertControllerStyleAlert];
@@ -236,17 +235,6 @@
     });
 }
 
-- (void)updateMessage:(NSString*)inMessage {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSString* newMessage = NSLocalizedString(inMessage, nil);
-        if( ![newMessage isEqualToString:_userMessage] ) {
-            [self willChangeValueForKey:@"userMessage"];
-            _userMessage = newMessage;
-            [self didChangeValueForKey:@"userMessage"];
-        }
-    });
-}
-
 - (void)nextState:(UserAccountState_t)newState
 {
     [self willChangeValueForKey:@"state"];
@@ -255,7 +243,6 @@
 }
 
 #pragma mark - Handle user login
-
 - (NSError*)makeError
 {
     NSError* rval;
@@ -311,7 +298,6 @@
             if( loginFailed )
             {
                 [self nextState:kUserLoginStateAuthenticateFailed];
-                [self updateMessage:@"Please re-insert your card."];
                 /*
                 if( [self.delegate conformsToProtocol:
                      @protocol(UserAccountDelegateProtocol)] )
@@ -322,20 +308,12 @@
             }
             else
             {
-                [[PKScreenLockController sharedScreenLockController]
-                 registerForSmartCardNotifications];
+                [[PKScreenLockController sharedScreenLockController] registerForSmartCardNotifications];
                 [self nextState:kUserLoginStateAuthenticated];
-                [self updateMessage:@"Authenticated."];
+
                 // activate screen lock
                 [TSS_PKI_Identity recordScreenUnlockProof:self.challengeData];
                 [self saveUserChallenge];
-                /*
-                if( [self.delegate conformsToProtocol:
-                     @protocol(UserAccountDelegateProtocol)] )
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.delegate UserAccountLoginComplete:self];
-                    });
-                 */
             }
         });
     }
@@ -348,29 +326,21 @@
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserAccount"];
         id accountObject = [NSKeyedArchiver
                             archivedDataWithRootObject:self.challengeData];
-        if( accountObject )
-            [[NSUserDefaults standardUserDefaults] setObject:accountObject
-                                                      forKey:@"UserAccount"];
-    }
-}
+        if(accountObject) {
+            [[NSUserDefaults standardUserDefaults] setObject:accountObject forKey:@"UserAccount"];
+            [self showAlert:@"User Challenge Saved."];
 
-- (void)removeUserChallenge
-{
-    id userAccount = [[NSUserDefaults standardUserDefaults]
-                      objectForKey:@"UserAccount"];
-    if( userAccount )
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"UserAccount"];
+        }
+    }
 }
 
 
 #pragma mark - Monitor smart card / tokens
-
 - (void)identityDoesNotMatchOriginal
 {
     NSString* errorMessage = NSLocalizedString(
                                                @"The current card does not match the user account.\n"
                                                "Please insert the card previously used to log in.", nil);
-    [self updateMessage:errorMessage];
     [self nextState:kUserLoginStateAuthenticateFailed];
     /*
     if( [self.delegate conformsToProtocol:
@@ -389,7 +359,7 @@
 - (void)lookForIdentities
 {
     [self nextState:kUserLoginStateLookingForCredentials];
-    [self updateMessage:@"Looking for credentials…"];
+
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         /*
          * We only look for identities that can do digital signatures
@@ -424,13 +394,7 @@
         if( _identity )
         {
             [self nextState:kUserLoginStateReadyToAuthenticate];
-            [self updateMessage:@"Ready to log in."];
             [self startLogin];
-            /*
-            if( [self.delegate conformsToProtocol:
-                 @protocol(UserAccountDelegateProtocol)] )
-                [self.delegate UserAccountReadyForLogin:self];
-             */
         }
     });
 }
@@ -445,29 +409,14 @@
             // Check if CAC is inserted
             if(TokenStateCurrent() == kTokenStateReadyForUse) {
                 NSLog(@"Looking for identities ...");
-                //[self showAlert:@"Looking for identities ..."];
                 [self lookForIdentities];
-                //[self establishLockSignature];
             } else {
                 NSLog(@"Please insert your smart card.");
-                //[self showAlert:@"Please insert your smart card"];
-
-                /*
-                NSDictionary* identityProof = [[NSUserDefaults standardUserDefaults] valueForKey:@"lockSignature"];
-                if(identityProof) {
-                    [self lockScreen];
-                } else {
-                    [self showAlert:@"Please insert your smart card."];
-                }
-                 */
-                //[self updateMessage:@"Please insert your smart card."];
-                //[self lockScreen];
             }
         } else {
-            //[self showAlert:@"Please attach your card reader."];
             NSLog(@"Please attach your card reader.");
-            //[self updateMessage:@"Please attach your card reader."];
         }
+
 }
 
 @end

@@ -4,12 +4,13 @@ import { LoggerService } from "../../services/logger/logger-service";
 import { SettingsModel } from "../../models/settings.model";
 import { ServerModel } from "../../models/server.model";
 import { ModalController } from 'ionic-angular';
-// // uncomment to add settings manually in dev 
+// // uncomment to add settings manually in dev
 //import { AddSettingComponent } from "./add-setting/add-setting.component";
 import { UtilService } from "./../../common/services/util.service";
 import { BluetoothModalService } from "../../services/bluetooth-modal.service";
 import { AddServerComponent } from "./add-server/add-server.component";
 import { HostServerService } from "../../services/host-server.service";
+import {CacSettingComponent} from "./cac/cac-setting.component";
 
 @Component({
   selector: 'settings',
@@ -59,7 +60,7 @@ export class SettingsComponent {
 
   //TODO remove for prod
   addSetting() {
-    // // uncomment to add settings manually in dev 
+    // // uncomment to add settings manually in dev
     // let addSettingModal = this.modalController.create(AddSettingComponent);
     // addSettingModal.onDidDismiss(model => {
     //   if (model) {
@@ -70,7 +71,7 @@ export class SettingsComponent {
     //   }
     // });
     // addSettingModal.present();
-    //this.log.debug('no more adding of settings');  
+    //this.log.debug('no more adding of settings');
   }
 
   itemSelected(setting: SettingsModel) {
@@ -98,6 +99,10 @@ export class SettingsComponent {
       this.setDefaultServer();
     });
     addServerModal.present();
+  }
+
+  presentPKardSettings() {
+    this.modalController.create(CacSettingComponent).present();
   }
 
   boolChanged(setting: SettingsModel) {

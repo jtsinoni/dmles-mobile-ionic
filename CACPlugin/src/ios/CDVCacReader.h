@@ -24,9 +24,11 @@ enum {
 }
 
 @property (nonatomic, readonly) TSS_PKI_Identity  *identity;
-@property (nonatomic, readonly) NSString          *userMessage;
 @property (assign, readonly)    UserAccountState_t state;
-@property (nonatomic, readonly) NSString          *emailAddress;
 @property (nonatomic, assign) BOOL fipsMode;
+
 - (void)version:(CDVInvokedUrlCommand*)command;
+- (void)isReaderAttached:(CDVInvokedUrlCommand *)command;
+- (void)isCardInserted:(CDVInvokedUrlCommand *)command;
+- (void)lockScreen:(CDVInvokedUrlCommand*)command;
 @end

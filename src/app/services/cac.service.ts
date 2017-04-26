@@ -60,4 +60,9 @@ export class CACService {
         });
     }
 
+    public setFipsMode(fipsMode): Promise<any> {
+        return new Promise((resolve, reject) => {
+            cordova.plugins.CacReader.setFipsMode(fipsMode, resolve, reject);
+        });
+    }
 }

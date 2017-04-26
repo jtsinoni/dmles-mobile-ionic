@@ -21,7 +21,7 @@
         </ion-item>
         <ion-item>
             <ion-label>FIPS 140</ion-label>
-            <ion-toggle [(ngModel)]="fipsMode"></ion-toggle>
+            <ion-toggle (ionChange)="setFipsMode()" [(ngModel)]="fipsMode"></ion-toggle>
         </ion-item>
 
     </ion-list>

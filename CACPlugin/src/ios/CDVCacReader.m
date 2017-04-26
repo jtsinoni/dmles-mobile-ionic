@@ -101,6 +101,22 @@
 
 }
 
+- (void)setFips140Mode:(CDVInvokedUrlCommand*)command {
+    //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        CDVPluginResult* pluginResult = nil;
+
+        BOOL fipsArgument = [[command argumentAtIndex:0] boolValue];
+        PKardSDK_Initialize(fipsArgument);
+
+        NSLog(@"Fips Mode 140  => %@", (fipsArgument ? @"YES" : @"NO"));
+
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:fipsArgument];
+
+        //[pluginResult setKeepCallbackAsBool:YES];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    //});
+}
+
 - (void) isReaderAttached:(CDVInvokedUrlCommand *)command {
     CDVPluginResult* pluginResult = nil;
 

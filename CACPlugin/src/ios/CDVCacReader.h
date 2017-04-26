@@ -31,4 +31,5 @@ enum {
 - (void)isReaderAttached:(CDVInvokedUrlCommand *)command;
 - (void)isCardInserted:(CDVInvokedUrlCommand *)command;
 - (void)lockScreen:(CDVInvokedUrlCommand*)command;
+- (void)setFips140Mode:(CDVInvokedUrlCommand*)command;
 @end

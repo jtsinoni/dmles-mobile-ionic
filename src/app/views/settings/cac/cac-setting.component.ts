@@ -61,4 +61,14 @@ export class CacSettingComponent {
             });
 
     }
+
+    public setFipsMode() {
+        this.cacService.setFipsMode(this.fipsMode)
+            .then((results) => {
+                this.log.debug(`FIPS Mode 140 set to => ${results}`);
+            })
+            .catch((error) => {
+                this.log.error(error);
+            });
+    }
 }

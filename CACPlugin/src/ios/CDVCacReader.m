@@ -344,7 +344,8 @@
                             archivedDataWithRootObject:self.challengeData];
         if(accountObject) {
             [[NSUserDefaults standardUserDefaults] setObject:accountObject forKey:@"UserAccount"];
-            [self showAlert:@"User Challenge Saved."];
+            NSLog(@"User Challenge Saved.");
+            //[self showAlert:@"User Challenge Saved."];
 
         }
     }

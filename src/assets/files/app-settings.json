@@ -8,7 +8,7 @@
         "settingName": "Work Area",
         "setting": "Inventory",
         "dataType": "select",
-         "values": ["Inventory", "Ordering", "Item Mgmt", "Issue Mgmt"]
+         "values": ["All", "Inventory", "Ordering", "Equipment"]
 
     },
     {

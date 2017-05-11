@@ -28,12 +28,17 @@ export class AppConfigConstants {
     }
 
     public static messagingServer: any = {
-        host:"localhost",
-        port:"61616",
+        host:"192.168.1.25",
+        port:"9001",
         topic:"dmles-mobile",
-        reconnectAttempts:10,
-        connect:false,
-        showStats: false
+        protocol:"ws",
+        reconnectAttempts:3,
+        reconnectPeriod:2000,
+        connect:true,
+        clean:true,
+        connectionTimeout:3000,
+        qos:0,
+        showStats: true
     }
 
     public static topicComponent: any = {

@@ -1,3 +1,4 @@
+import {AppConfigConstants} from "../constants/app-config.constants";
 export class CommonDataModel {
     topic: string;
     message: string;
@@ -5,14 +6,16 @@ export class CommonDataModel {
     client: any;
     host: string;
     port: number;
+    protocol: number;
     reconnectAttempts: number;
 
     constructor() {
-        this.topic = 'dmles-mobile-ionic';
+        this.topic = AppConfigConstants.messagingServer.topic;
         this.message = 'Hello DML-ES Mobile!';
         this.messages = '';
-        this.host = 'localhost';
-        this.port = 61616;
-        this.reconnectAttempts = 10;
+        this.host = AppConfigConstants.messagingServer.host;
+        this.port = AppConfigConstants.messagingServer.port;
+        this.protocol = AppConfigConstants.messagingServer.protocol;
+        this.reconnectAttempts = AppConfigConstants.messagingServer.reconnectAttempts;
     }
 }

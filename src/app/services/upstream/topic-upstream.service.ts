@@ -11,6 +11,7 @@ import {CommonDataService} from "../common-data.service";
 import {ForwardDataModel} from "../../models/forward-data.model";
 import {StoreDataModel} from "../../models/store-data.model";
 import {LoggerService} from "../logger/logger-service";
+import {StoreDataTableModel} from "../../models/store-data-table.model";
 
 @Injectable()
 export class TopicUpstreamService extends UpstreamService {
@@ -128,7 +129,7 @@ export class TopicUpstreamService extends UpstreamService {
     private sendDataServer(message: any): Promise<any> {
         return this.clientConnection()
             .then((client) => {
-                client.message = message;
+                client.message = JSON.stringify(message);
                 return client;
             })
             .then(this.publish)
@@ -143,7 +144,7 @@ export class TopicUpstreamService extends UpstreamService {
      * @returns Promise<number>
      */
     private sendDataLocal(message: any): Promise<number> {
-        return this.databaseService.add(message)
+        return this.databaseService.put(new StoreDataTableModel(JSON.stringify(message), message.id))
             .then((id)=> {
                 this.log.debug(`Added => ${message} with id => ${id} to IndexedDB`)
                 return id;
@@ -159,7 +160,7 @@ export class TopicUpstreamService extends UpstreamService {
      * @returns {Promise<any>|Thenable<any>|Promise<U>|Thenable<U>|PromiseLike<TResult>}
      */
     private findCachedData(client: any): Promise<any> {
-        return client.databaseService.find()
+        return client.databaseService.getAll()
             .then((items) => {
                 if (items.length > 0) {
                     client.items = items;
@@ -177,7 +178,7 @@ export class TopicUpstreamService extends UpstreamService {
      */
     private deleteCachedData(client: any): Promise<any> {
         // Remove items from local storage
-        return client.databaseService.delete()
+        return client.databaseService.deleteAll()
             .then(() => {
                 client.log.info(`Removed ${client.items.length} messages from local storage`);
                 return client;
@@ -229,7 +230,7 @@ export class TopicUpstreamService extends UpstreamService {
     private publish(client: any): Promise<any> {
         return client.topicMessagingService.publish(client.topic, client.message)
             .then(() => {
-                client.log.info(`Publishing message: ${client.message}  to Topic: ${client.topic}`);
+                client.log.log(`Publishing message: ${client.message}  to Topic: ${client.topic}`);
                 return client;
             })
             .catch((error) => {
@@ -284,6 +285,7 @@ export class TopicUpstreamService extends UpstreamService {
     private clientConnection(): Promise<any> {
         let host = this.data.host;
         let port = this.data.port;
+        let protocol = this.data.protocol;
 
         return new Promise((resolve, reject) => {
             // First check for network connectivity
@@ -294,7 +296,7 @@ export class TopicUpstreamService extends UpstreamService {
                 if(localClient && localClient.connected) {
                     resolve(localClient);
                 } else {
-                    this.topicMessagingService.connect(host, port)
+                    this.topicMessagingService.connect(protocol, host, port)
                         .then((client) => {
                             resolve(this.adornClient(client));
                         })

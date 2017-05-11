@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
-import {LoggerService} from "./logger/logger-service";
 import {Platform} from "ionic-angular";
 import {UtilService} from "../common/services/util.service";
+import {LoggerService} from "./logger/logger-service";
 
 declare var cordova: any;
 
@@ -21,17 +21,48 @@ export class CACService {
             .then(() => {
                 this.log.debug(`${this.serviceName} - Start`);
 
-                console.debug(`${this.serviceName}: IsMobility => ${this.utilService.isMobility()}: Cordova => ${cordova.plugins.CacReader}`);
-
                 if(this.utilService.isMobility()) {
-
-                    cordova.plugins.CacReader.version(
-                        (results) => {this.log.debug(`Results => ${results}`)},
-                        (error) => {this.log.error(`${error}`)});
+                    this.CACReaderVersion()
+                        .then((results) => {
+                            this.log.debug(`PKardSDK Version => ${results}`)
+                        })
+                        .catch((error) => {
+                            this.log.error(error);
+                        });
                 }
             })
             .catch((error) => {
                 this.log.debug(`${error}`);
             });
+    }
+
+    public CACReaderVersion(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            cordova.plugins.CacReader.version(resolve, reject);
+        });
+    }
+
+    public isReaderAttached(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            cordova.plugins.CacReader.isReaderAttached(resolve, reject);
+        });
+    }
+
+    public isCardInserted(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            cordova.plugins.CacReader.isCardInserted(resolve, reject);
+        });
+    }
+
+    public lockScreen(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            cordova.plugins.CacReader.lockScreen(resolve, reject);
+        });
+    }
+
+    public setFipsMode(fipsMode): Promise<any> {
+        return new Promise((resolve, reject) => {
+            cordova.plugins.CacReader.setFipsMode(fipsMode, resolve, reject);
+        });
     }
 }

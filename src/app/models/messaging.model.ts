@@ -1,3 +1,4 @@
+import {AppConfigConstants} from "../constants/app-config.constants";
 export class MessagingModel {
     topic: string;
     message: string;
@@ -9,12 +10,12 @@ export class MessagingModel {
     reconnectPeriod: number;
 
     constructor() {
-        this.topic = 'dmles-mobile-ionic';
+        this.topic = AppConfigConstants.messagingServer.topic;
         this.message = 'Hello DML-ES Mobile!';
         this.messages = '';
-        this.host = 'localhost';
-        this.port = 61616;
-        this.reconnectAttempts = 10; // in seconds
-        this.reconnectPeriod = 2000; // in milli-seconds
+        this.host = AppConfigConstants.messagingServer.host;
+        this.port = AppConfigConstants.messagingServer.port;
+        this.reconnectAttempts = AppConfigConstants.messagingServer.reconnectAttempts; // in seconds
+        this.reconnectPeriod = AppConfigConstants.messagingServer.reconnectPeriod; // in milli-seconds
     }
 }

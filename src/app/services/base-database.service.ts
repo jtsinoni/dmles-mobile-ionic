@@ -20,7 +20,7 @@ export abstract class BaseDatabaseService<M extends BaseDataTableModel> {
     get(id: number) {
         return Promise.resolve(this.dbTable.where("id").equals(id));
     }
-    
+
     // where column must be indexed
     getWhere(column: string, value: any) {
         return Promise.resolve(this.dbTable.where(column).equals(value));
@@ -52,14 +52,18 @@ export abstract class BaseDatabaseService<M extends BaseDataTableModel> {
         return Promise.resolve(this.dbTable.add(model));
     }
 
+    put(model: M) {
+        return Promise.resolve(this.dbTable.put(model));
+    }
+
     update(model: M) {
         return Promise.resolve(this.dbTable.update(model.id, model));
     }
 
     getCount(): Promise<number> {
         return Promise.resolve(this.dbTable.count());
-    }    
-   
+    }
+
     getFilteredCount(filterCallback: (model: M) => boolean): Promise<number> {
         return Promise.resolve(this.dbTable.filter(filterCallback).count());
     }
@@ -67,7 +71,11 @@ export abstract class BaseDatabaseService<M extends BaseDataTableModel> {
     delete(model: M) {
         return Promise.resolve(this.dbTable.delete(model.id));
     }
-    
+
+    deleteAll() {
+        return Promise.resolve(this.dbTable.clear());
+    }
+
     deleteFilteredCollection(filterCallback: (model:M) => boolean): Promise<number> {
         return Promise.resolve(this.dbTable.filter(filterCallback).delete());
     }
@@ -78,6 +86,6 @@ export abstract class BaseDatabaseService<M extends BaseDataTableModel> {
 
     findFirst(filterCallback: (model: M) => boolean) {
          return Promise.resolve(this.dbTable.filter(filterCallback).first());
-    }   
+    }
 
 }

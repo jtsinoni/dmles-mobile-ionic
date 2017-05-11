@@ -26,8 +26,11 @@ export class UpstreamService {
         this.log.debug(`${this.serviceName} - Start`);
 
         Network.onConnect().subscribe(() => {
-            this.log.info('Pushing local changes ... ');
-            this.pushLocalChanges();
+            this.connect()
+                .then(() => {
+                    this.log.info('Pushing local changes ... ');
+                    this.pushLocalChanges();
+                })
         });
     }
 

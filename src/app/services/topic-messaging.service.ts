@@ -6,6 +6,7 @@ import {CommonDataService} from "./common-data.service";
 import {Subject, Observable} from "rxjs";
 import {MessagingModel} from "../models/messaging.model";
 import {LoggerService} from "./logger/logger-service";
+import {AppConfigConstants} from "../constants/app-config.constants";
 
 @Injectable()
 export class TopicMessagingService {
@@ -45,11 +46,16 @@ export class TopicMessagingService {
      * @param port
      * @returns {Promise<T>|Promise}
      */
-    public connect(host: string, port: number): Promise<any> {
+    public connect(protocol: number, host: string, port: number): Promise<any> {
 
         return new Promise((resolve, reject) => {
+            let brokerURL = `${AppConfigConstants.messagingServer.protocol}://${AppConfigConstants.messagingServer.host}:${AppConfigConstants.messagingServer.port}`;
+            this.log.info(`messaging server => ${brokerURL}`);
+
             // reconnectPeriod: 2 (default), reconnect every 2 seconds until reconnectAttempts has reached
-            this.client = MQTT.connect(`mqtt://${host}:${port}`, {reconnectPeriod: this.messagingModel.reconnectPeriod});
+            //ws://localhost:9001/mqtt?clientId=123abc
+
+            this.client = MQTT.connect(`${brokerURL}`);
 
             this.client.on('connect', () => {
                 //console.log(`Received online event, Client ID: ${this.client.options.clientId}, connected: ${this.client.connected}`);
@@ -169,7 +175,7 @@ export class TopicMessagingService {
     public publish(topic: string, message: string): Promise<any> {
         let self = this;
         return new Promise((resolve, reject) => {
-            this.client.publish(topic, message, {qos: 1}, function (err) {
+            this.client.publish(topic, message, {qos: 0}, function (err) {
                 if (err) {
                     reject(err);
                 } else {

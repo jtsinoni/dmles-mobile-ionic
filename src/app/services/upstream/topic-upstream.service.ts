@@ -7,7 +7,7 @@ import { UpstreamService } from './upstream.service'
 import {TopicMessagingService} from "../topic-messaging.service";
 import {NetworkService} from "../network.service";
 import {StoreDatabaseService} from "../store-database.service";
-import {CommonDataService} from "../common-data.service";
+import {MessagingDataService} from "../messaging-data.service";
 import {ForwardDataModel} from "../../models/forward-data.model";
 import {StoreDataModel} from "../../models/store-data.model";
 import {LoggerService} from "../logger/logger-service";
@@ -22,12 +22,12 @@ export class TopicUpstreamService extends UpstreamService {
     constructor(private topicMessagingService: TopicMessagingService,
                 private networkService: NetworkService,
                 private databaseService: StoreDatabaseService,
-                public commonDataService: CommonDataService,
+                public messagingDataService: MessagingDataService,
                 public log: LoggerService) {
-        super(commonDataService, log);
+        super(messagingDataService, log);
 
-        this.forwardDataModel = commonDataService.forwardDataModel;
-        this.storeDataModel = commonDataService.storeDataModel;
+        this.forwardDataModel = messagingDataService.forwardDataModel;
+        this.storeDataModel = messagingDataService.storeDataModel;
 
         TopicMessagingService.onServiceAvailable().subscribe((results) => {
             this.log.info(`TopicUpstreamService:connected => ${results}`);
@@ -106,7 +106,7 @@ export class TopicUpstreamService extends UpstreamService {
     }
 
     /**
-     * Sends data to local cache or an upstream service
+     * Sends messagingDataModel to local cache or an upstream service
      * @param param
      * @returns {Promise<any>}
      */
@@ -116,13 +116,13 @@ export class TopicUpstreamService extends UpstreamService {
             return this.sendDataServer(param);
 
         } else {
-            // Not connected, need to cache data
+            // Not connected, need to cache messagingDataModel
             return this.sendDataLocal(param);
         }
     }
 
     /**
-     * Connects to messaging server then sends data
+     * Connects to messaging server then sends messagingDataModel
      * @param message
      * @returns {Promise<U|R>}
      */
@@ -139,7 +139,7 @@ export class TopicUpstreamService extends UpstreamService {
     }
 
     /**
-     * Sends data to local cache
+     * Sends messagingDataModel to local cache
      * @param message
      * @returns Promise<number>
      */
@@ -155,7 +155,7 @@ export class TopicUpstreamService extends UpstreamService {
     }
 
     /**
-     * Finds data that is cached
+     * Finds messagingDataModel that is cached
      * @param client
      * @returns {Promise<any>|Thenable<any>|Promise<U>|Thenable<U>|PromiseLike<TResult>}
      */
@@ -172,7 +172,7 @@ export class TopicUpstreamService extends UpstreamService {
     }
 
     /**
-     * Deletes data that is cached
+     * Deletes messagingDataModel that is cached
      * @param client
      * @returns {Promise<U|R>}
      */

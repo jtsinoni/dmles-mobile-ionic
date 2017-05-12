@@ -31,7 +31,7 @@ export class  LocalSecureStorageService extends LocalStorageService {
     }
 
     /**
-     * Cordova secure local storage plugin does not support clear all data
+     * Cordova secure local storage plugin does not support clear all messagingDataModel
      *
      * @returns {undefined}
      */

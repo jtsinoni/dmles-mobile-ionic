@@ -73,7 +73,7 @@ export class LocalFileStorageService {
     private writeFile(data: string): Promise<any> {
         return File.writeFile(cordova.file.dataDirectory, FILE_NAME, data, {replace: false, create: true, append: true})
             .then((results) => {
-                //console.debug(`writeFile(): Data written to client.log => ${data}`);
+                //console.debug(`writeFile(): Data written to client.log => ${messagingDataModel}`);
             })
             .catch((error) => {
                 console.error(`writeFile(): ${error.message}`)

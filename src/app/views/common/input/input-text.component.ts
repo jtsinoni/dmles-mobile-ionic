@@ -48,6 +48,7 @@ export class InputTextComponent extends Search {
     ionViewDidEnter() { // NOTE: not as reliable: ionViewDidLoad()
         // display keyboard and set focus when we arrive
         this.platform.ready().then(() => {
+            // iOS get => Although it works get warning: Showing keyboard not supported in iOS due to platform limitations.
             setTimeout(() => {
                 Keyboard.show();
             }, 300); // increased timeout from 150ms, seemed too short
@@ -95,11 +96,11 @@ export class InputTextComponent extends Search {
                             let barcodeData: BarcodeData = new BarcodeData(result.text, result.format);
 
                             if (barcodeData) {
-                                // TODO: should we use renderer approach via DOM two-way data bind, initially I used the renderer Focuser.setText() below, but it didn't update the DOM
-                                // Without two-way data binding, the side effect was enter a value to search, then use camera to scan barcode, which worked, but even though the
+                                // TODO: should we use renderer approach via DOM two-way messagingDataModel bind, initially I used the renderer Focuser.setText() below, but it didn't update the DOM
+                                // Without two-way messagingDataModel binding, the side effect was enter a value to search, then use camera to scan barcode, which worked, but even though the
                                 // scanned value was put into the input textbox, but when regular non-camera, non-scanner input was input again (the search button selected),
                                 // the OLD search value was used, hmmm
-                                this.searchValue = result.text; //NOTE: MAGIC: This performs two-way data bind back to the DOM
+                                this.searchValue = result.text; //NOTE: MAGIC: This performs two-way messagingDataModel bind back to the DOM
                                 searchVal = this.searchValue;
 
                                 //Focuser.setText(result.text); // This approach did not update the DOM as advertised (bug in renderer?)

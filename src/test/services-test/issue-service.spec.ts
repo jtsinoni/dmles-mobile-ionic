@@ -59,15 +59,15 @@ describe('IssueService', () => {
                     // );
                 });
             // let model:IssueModel = issueService.getIssue('W560JL6062J011').toPromise()
-            // .then(response => response.json().data as IssueModel);
+            // .then(response => response.json().messagingDataModel as IssueModel);
             // expect(model).toBeDefined();
 
             // // .subscribe(
-            // //     (data) => {
-            // //         expect(data).toBeDefined();
-            // //         console.log('data: ' + data.data);
-            // //         // expect(data.id).toBe('W560JL6062J011');
-            // //         // expect(data.itemId).toEqual('00 2500 1');
+            // //     (messagingDataModel) => {
+            // //         expect(messagingDataModel).toBeDefined();
+            // //         console.log('messagingDataModel: ' + messagingDataModel.messagingDataModel);
+            // //         // expect(messagingDataModel.id).toBe('W560JL6062J011');
+            // //         // expect(messagingDataModel.itemId).toEqual('00 2500 1');
             // //     });
         })));
 

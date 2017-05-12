@@ -17,7 +17,7 @@ export class BaseSelectFilterService {
                 returnValue = returnValue + " OR ";
             }
             if (this.optionsSelected[i] !== "") {
-                // escape special characters that might be embedded in DMLSS/DML-ES data
+                // escape special characters that might be embedded in DMLSS/DML-ES messagingDataModel
                 // not doing this causes issues for elasticsearch
                 returnValue = returnValue + "(" + dbFieldName + ':"'
                     + this.optionsSelected[i].selValue.replace(/[!@#$%^&()+=\-[\]\\';,./{}|":<>?~_]/g, "\\$&")

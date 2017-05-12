@@ -7,7 +7,7 @@ import {OAuthService} from "../../services/oauth.service";
 import {AuthenticationService} from "../../services/authentication.service";
 import {AppService} from "../../services/app.service";
 import {StoreDatabaseService} from "../../services/store-database.service";
-import {CommonDataService} from "../../services/common-data.service";
+import {MessagingDataService} from "../../services/messaging-data.service";
 import {NetworkService} from "../../services/network.service";
 import {TopicUpstreamService} from "../../services/upstream/topic-upstream.service";
 import {TopicMessagingService} from "../../services/topic-messaging.service";
@@ -23,9 +23,8 @@ import {DatabaseService} from "../../services/database.service";
 import {WindowService} from "../../services/window.service";
 import {BluetoothModalService} from "../../services/bluetooth-modal.service";
 import {CACService} from "../../services/cac.service";
-
-
-
+import {BarcodeScannerService} from "../../services/barcode-scanner.service";
+import {IMDatabaseService} from "../../services/im-database.service";
 
 @NgModule({
 })
@@ -42,7 +41,7 @@ export class CommonServicesModule {
                 AppService,
                 OAuthService,
                 StoreDatabaseService,
-                CommonDataService,
+                MessagingDataService,
                 NetworkService,
                 NotificationService,
                 TopicUpstreamService,
@@ -56,6 +55,8 @@ export class CommonServicesModule {
                 DatabaseService,
                 BluetoothModalService,
                 CACService,
+                BarcodeScannerService,
+                IMDatabaseService,
                 { provide: UpstreamService, useClass: TopicUpstreamService },]
         };
     }

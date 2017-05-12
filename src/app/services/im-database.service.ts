@@ -1,15 +1,14 @@
 import {Http} from "@angular/http";
 import {Injectable} from "@angular/core";
 import {LoggerService} from "./logger/logger-service";
-import {StoreDataTableModel} from '../models/store-data-table.model'
 import {BaseDatabaseService} from '../services/base-database.service';
 import {DatabaseService} from '../services/database.service';
+import {IMTableModel} from "../models/im-table.model";
 
 @Injectable()
-export class StoreDatabaseService extends BaseDatabaseService<StoreDataTableModel> {
+export class IMDatabaseService extends BaseDatabaseService<IMTableModel> {
     constructor(databaseService: DatabaseService,
-                private http: Http,
                 log: LoggerService) {
-        super('Store Database Service', databaseService.getStoreDataTable(), log);
+        super('IM Database Service', databaseService.getIMDataTable(), log);
     }
 }

@@ -65,7 +65,7 @@ export class AppContainerComponent {
                     text: 'Go',
                     handler: data => {
                         this.log.debug('Go clicked');
-                        //this.showLoadingData(data.value);
+                        //this.showLoadingData(messagingDataModel.value);
                     }
                 }
             ]

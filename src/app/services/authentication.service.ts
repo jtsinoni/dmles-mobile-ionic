@@ -21,7 +21,7 @@ export class AuthenticationService {
 
     public logout():Promise<any> {
         return this.localStorageService.removeData(ApiConstants.DMLES_TOKEN);
-        // todo should we clear all data...?
+        // todo should we clear all messagingDataModel...?
         //this.localStorageService.clearData();
     }
 

@@ -1,5 +1,5 @@
 import {AppConfigConstants} from "../constants/app-config.constants";
-export class CommonDataModel {
+export class MessagingDataModel {
     topic: string;
     message: string;
     messages: string;

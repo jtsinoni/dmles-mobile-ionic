@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { ForwardDataModel } from "../../models/forward-data.model";
 import { StoreDataModel } from "../../models/store-data.model";
-import { CommonDataService } from "../../services/common-data.service";
+import { MessagingDataService } from "../../services/messaging-data.service";
 import {AppConfigConstants} from "../../constants/app-config.constants";
 
 @Component({
@@ -15,9 +15,9 @@ export class TopicComponent {
     // Default toolbar start page
     public page: string = AppConfigConstants.topicComponent.page;
 
-    constructor(private commonDataService: CommonDataService) {
-        this.forwardDataModel = commonDataService.forwardDataModel;
-        this.storeDataModel = commonDataService.storeDataModel;
+    constructor(private messagingDataService: MessagingDataService) {
+        this.forwardDataModel = messagingDataService.forwardDataModel;
+        this.storeDataModel = messagingDataService.storeDataModel;
     }
 }
 

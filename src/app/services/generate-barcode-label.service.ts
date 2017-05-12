@@ -95,7 +95,7 @@ export class GenerateBarcodeLabelService {
         mess = "Printer make: Zebra";
         GenerateBarcodeLabelService.myLogger(log, Level.DEBUG, mess);
 
-        // loop thru the data, trimming
+        // loop thru the messagingDataModel, trimming
         for (let inx = 0; inx < labelContent.length; inx++) {
             // trim TRAILING spaces, NOT LEADING spaces
             labelContent[inx] = GenerateBarcodeLabelService.rtrim(labelContent[inx]); //RIGHT TRIM - note we are NOT trimming LEFT!
@@ -109,9 +109,9 @@ export class GenerateBarcodeLabelService {
             }
         }
 
-        // loop thru the data and create the label
+        // loop thru the messagingDataModel and create the label
         for (let inx = 0; inx < labelContent.length; inx++) {
-            // we have data after 7th row? if so then we are a WIDE label, not NARROW
+            // we have messagingDataModel after 7th row? if so then we are a WIDE label, not NARROW
             if (inx >= 7) {
                 // NOTE: WE SHOULD NEVER GET WIDE LABELS from handheld!
                 mess ='Too many lines fed to label generator, 7 is the max, skipping extra lines';
@@ -244,7 +244,7 @@ export class GenerateBarcodeLabelService {
         mess = "Printer make: Intermec";
         GenerateBarcodeLabelService.myLogger(log, Level.DEBUG, mess);
 
-        // loop thru the data, trimming
+        // loop thru the messagingDataModel, trimming
         for (let inx = 0; inx < labelContent.length; inx++) {
             // trim TRAILING spaces, NOT LEADING spaces
             labelContent[inx] = GenerateBarcodeLabelService.rtrim(labelContent[inx]); //RIGHT TRIM - note we are NOT trimming LEFT!
@@ -263,9 +263,9 @@ export class GenerateBarcodeLabelService {
             x_start = 2 + 10; // NOTE: may need fine tune (the label text is smaller so move it down a tad)
         }
 
-        // loop thru the data and create the label
+        // loop thru the messagingDataModel and create the label
         for (let inx = 0; inx < labelContent.length; inx++) {
-            // we have data after 7th row? if so then we are a WIDE label, not NARROW
+            // we have messagingDataModel after 7th row? if so then we are a WIDE label, not NARROW
             if (inx >= 7) {
                 // NOTE: WE SHOULD NEVER GET WIDE LABELS from handheld!
                 mess ='Too many lines fed to label generator, 7 is the max, skipping extra lines';

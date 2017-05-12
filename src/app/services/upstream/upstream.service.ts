@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Network} from 'ionic-native';
-import {CommonDataModel} from "../../models/common-data.model";
-import {CommonDataService} from "../common-data.service";
+import {MessagingDataModel} from "../../models/messaging-data.model";
+import {MessagingDataService} from "../messaging-data.service";
 import {LoggerService} from "../logger/logger-service";
 
 
@@ -11,10 +11,10 @@ import {LoggerService} from "../logger/logger-service";
 @Injectable()
 export class UpstreamService {
     private serviceName = "Upstream Service";
-    protected data: CommonDataModel;
+    protected data: MessagingDataModel;
 
-    constructor(public commonDataService: CommonDataService, public log: LoggerService) {
-        this.data = commonDataService.data
+    constructor(public messagingDataService: MessagingDataService, public log: LoggerService) {
+        this.data = messagingDataService.messagingDataModel
 
         this.init();
     }

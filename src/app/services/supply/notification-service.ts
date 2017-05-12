@@ -7,7 +7,7 @@ import { DatabaseService } from '../../services/database.service';
 
 @Injectable()
 export class NotificationService extends BaseDatabaseService<NotificationModel> {
-   // Demo data file location
+   // Demo messagingDataModel file location
   assetFilename: string = "supply-notifications.json";
   assetDirectory: string = "assets/files";
 
@@ -17,7 +17,7 @@ export class NotificationService extends BaseDatabaseService<NotificationModel> 
     log: LoggerService) {
       // TODO store in db ? inject table : null
     super('Supply Notification Service', null, log);
-   
+
   }
 
   getNotifications() {

@@ -1,25 +1,22 @@
 import { Injectable }    from '@angular/core';
-import {CommonDataModel} from "../models/common-data.model";
+import {MessagingDataModel} from "../models/messaging-data.model";
 import {StoreDataModel} from "../models/store-data.model";
 import {ForwardDataModel} from "../models/forward-data.model";
-import {MessagingModel} from "../models/messaging.model";
 import {LoggerService} from "./logger/logger-service";
 
 @Injectable()
-export class CommonDataService {
-    private serviceName = "CommonData Service";
+export class MessagingDataService {
+    private serviceName = "MessagingData Service";
 
-    public data: CommonDataModel;
+    public messagingDataModel: MessagingDataModel;
     public storeDataModel: StoreDataModel;
     public forwardDataModel: ForwardDataModel;
-    public messagingModel: MessagingModel;
 
     constructor (private log: LoggerService) {
         this.log.debug(`${this.serviceName} - Start`);
 
-        this.data = new CommonDataModel();
+        this.messagingDataModel = new MessagingDataModel();
         this.storeDataModel = new StoreDataModel();
         this.forwardDataModel = new ForwardDataModel();
-        this.messagingModel = new MessagingModel();
     }
 }

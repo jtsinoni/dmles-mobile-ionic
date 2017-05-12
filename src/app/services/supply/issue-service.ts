@@ -8,7 +8,7 @@ import { DatabaseService } from '../../services/database.service';
 
 @Injectable()
 export class IssueService extends BaseDatabaseService<IssueModel> {
-   // Demo data file location
+   // Demo messagingDataModel file location
   assetFilename: string = "issues.json";
   assetDirectory: string = "assets/files";
 

@@ -14,20 +14,23 @@ export class DatabaseService{
         this.dataDB = new DataTableDatabase(AppConfigConstants.indexedDatabase.name, this.log);
     }
 
-    getSettingsDataTable() {
+    getSettingsDataTable(): any {
         return this.dataDB.settings;
     }
 
-    getServersDataTable() {        
+    getServersDataTable(): any {
         return this.dataDB.servers;
     }
 
-    getStoreDataTable() {
+    getStoreDataTable(): any {
         return this.dataDB.data;
-    }   
+    }
 
-    getOrderDataTable() {
+    getOrderDataTable(): any {
         return this.dataDB.orders;
     }
 
+    getIMDataTable() {
+        return this.dataDB.im;
+    }
 }

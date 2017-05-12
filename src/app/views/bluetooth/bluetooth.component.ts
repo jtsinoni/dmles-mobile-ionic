@@ -31,7 +31,7 @@ import {AppConfigConstants} from "../../constants/app-config.constants";
 //   bluetoothSerial.isConnected - true if bluetooth is connected (to a particular device???)
 //   bluetoothSerial.connect - connect to 'id' (mac or UUID)
 //   bluetoothSerial.disconnect - disconnect current connection
-//   bluetoothSerial.write - write data to serial port (which device??? connected device???)
+//   bluetoothSerial.write - write messagingDataModel to serial port (which device??? connected device???)
 //
 // Not needed:
 //   bluetoothSerial.setDiscoverable - makes the device discoverable to other devices (not sure we need this, maybe reach out to printer?)

@@ -1,10 +1,9 @@
 import {Injectable}    from '@angular/core';
 
 import MQTT from 'mqtt';
-import {CommonDataModel} from "../models/common-data.model";
-import {CommonDataService} from "./common-data.service";
+import {MessagingDataModel} from "../models/messaging-data.model";
+import {MessagingDataService} from "./messaging-data.service";
 import {Subject, Observable} from "rxjs";
-import {MessagingModel} from "../models/messaging.model";
 import {LoggerService} from "./logger/logger-service";
 import {AppConfigConstants} from "../constants/app-config.constants";
 
@@ -17,15 +16,13 @@ export class TopicMessagingService {
     private static onTryToConnectSubject: Subject<any> = new Subject();
     private static onReconnectAttemptsSubject: Subject<any> = new Subject();
 
-    private dataModel: CommonDataModel;
-    private messagingModel: MessagingModel;
+    private messagingDataModel: MessagingDataModel;
 
-    constructor(private commonDataService: CommonDataService,
+    constructor(private messagingDataService: MessagingDataService,
                 private log: LoggerService) {
         this.log.debug(`${this.serviceName} - Start`);
 
-        this.dataModel = commonDataService.data;
-        this.messagingModel = commonDataService.messagingModel;
+        this.messagingDataModel = messagingDataService.messagingDataModel;
     }
 
     public static onServiceAvailable(): Observable<any> {
@@ -49,7 +46,7 @@ export class TopicMessagingService {
     public connect(protocol: number, host: string, port: number): Promise<any> {
 
         return new Promise((resolve, reject) => {
-            let brokerURL = `${AppConfigConstants.messagingServer.protocol}://${AppConfigConstants.messagingServer.host}:${AppConfigConstants.messagingServer.port}`;
+            let brokerURL = `${this.messagingDataModel.protocol}://${this.messagingDataModel.host}:${AppConfigConstants.messagingServer.port}`;
             this.log.info(`messaging server => ${brokerURL}`);
 
             // reconnectPeriod: 2 (default), reconnect every 2 seconds until reconnectAttempts has reached
@@ -121,9 +118,9 @@ export class TopicMessagingService {
             this.client.on('reconnect', () => {
                 TopicMessagingService.onReconnectAttemptsSubject.next({message: `Reconnect attempt => ${tries}`, tries: tries});
 
-                if(tries == this.dataModel.reconnectAttempts) {
+                if(tries == this.messagingDataModel.reconnectAttempts) {
                     this.disconnect();
-                    let message = `Stopped retrying to get a connection after ${this.dataModel.reconnectAttempts} attempts`;
+                    let message = `Stopped retrying to get a connection after ${this.messagingDataModel.reconnectAttempts} attempts`;
                     this.log.log(message);
 
                     TopicMessagingService.onTryToConnectSubject.next(true);

@@ -9,7 +9,7 @@ import { UtilService } from "../../common/services/util.service";
 
 @Injectable()
 export class OrderService extends BaseDatabaseService<OrderModel> {
-  // Demo data file location
+  // Demo messagingDataModel file location
   assetFilename: string = "orders.json";
   assetDirectory: string = "assets/files";
 
@@ -35,9 +35,9 @@ export class OrderService extends BaseDatabaseService<OrderModel> {
   }
 
 
-  addOrder(order: OrderModel) {    
-    this.add(order).then((o) => {   
-      this.log.debug('saving order: '+ order.id);   
+  addOrder(order: OrderModel) {
+    this.add(order).then((o) => {
+      this.log.debug('saving order: '+ order.id);
       this.createReferenceNumber(order);
     });
   }

@@ -60,9 +60,9 @@ export class Focuser {
         }
     }
 
-    // NOTE: using the renderer approach does not work, as the DOM value was not honoring the two-way data bind
+    // NOTE: using the renderer approach does not work, as the DOM value was not honoring the two-way messagingDataModel bind
     // public static setText(text: string) {
-    //     Focuser.myElem.value = text; // NOTE: This approach kinda worked, however did not honor the two-data bind, that is the screen showed proper value, but DOM did not see this new value
+    //     Focuser.myElem.value = text; // NOTE: This approach kinda worked, however did not honor the two-messagingDataModel bind, that is the screen showed proper value, but DOM did not see this new value
     //     //Focuser.myRenderer.setElementAttribute(Focuser.myElem, "value", text); // NOTE: Doesn't work, but above statement does. hmmm
     //     Focuser.refocus();
     // }

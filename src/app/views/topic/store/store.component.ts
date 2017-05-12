@@ -2,7 +2,7 @@ import {Component} from "@angular/core/src/metadata/directives";
 import {OnInit} from "@angular/core";
 import {StoreDataTableModel} from "../../../models/store-data-table.model";
 import {StoreDatabaseService} from "../../../services/store-database.service";
-import {CommonDataService} from "../../../services/common-data.service";
+import {MessagingDataService} from "../../../services/messaging-data.service";
 import {LoggerService} from "../../../services/logger/logger-service";
 
 @Component({
@@ -13,7 +13,7 @@ export class StoreComponent implements OnInit {
     public items: StoreDataTableModel[] = [];
 
     constructor(private databaseService: StoreDatabaseService,
-                private commonDataService: CommonDataService,
+                private messagingDataService: MessagingDataService,
                 private log: LoggerService) {
     }
 
@@ -28,7 +28,7 @@ export class StoreComponent implements OnInit {
     }
 
     public itemTapped(event, item) {
-        this.log.log(`Store Event: ${event} Item: ${item.data}`);
+        this.log.log(`Store Event: ${event} Item: ${item.messagingDataModel}`);
         // this.navCtrl.push(RoleDetailsComponent, {
         //   item: item
         // });
@@ -41,7 +41,7 @@ export class StoreComponent implements OnInit {
         this.items.splice(id, 1);
 
         // update badge count
-        this.commonDataService.storeDataModel.badgeCount = this.items.length;
+        this.messagingDataService.storeDataModel.badgeCount = this.items.length;
 
         // now remove from db
         this.databaseService.delete(item);

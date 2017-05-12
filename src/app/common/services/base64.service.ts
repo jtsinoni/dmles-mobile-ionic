@@ -13,7 +13,7 @@ export class Base64Service {
     }
 
     /**
-     * Creates a base-64 encoded ASCII string from a "string" of binary data.
+     * Creates a base-64 encoded ASCII string from a "string" of binary messagingDataModel.
      * @param str
      * @returns {string}
      */
@@ -22,7 +22,7 @@ export class Base64Service {
     }
 
     /**
-     * Decodes a string of data which has been encoded using base-64 encoding.
+     * Decodes a string of messagingDataModel which has been encoded using base-64 encoding.
      * @param str
      * @returns {string}
      */

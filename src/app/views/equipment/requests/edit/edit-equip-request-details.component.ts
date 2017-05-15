@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {ViewController, NavParams} from 'ionic-angular';
 
 import {LoggerService} from "../../../../services/logger/logger-service";
-import {UpstreamService} from "../../../../services/upstream/upstream.service";
+import {EquipReqTopicUpstreamService} from "../../../../services/upstream/equip-req-topic-upstream.service"
 
 @Component({
     templateUrl: 'edit-equip-request-details.component.html',
@@ -12,7 +12,7 @@ export class EditEquipmentRequestDetailsComponent {
 
     constructor(private viewController: ViewController,
                 private params: NavParams,
-                private upstreamService: UpstreamService,
+                private upstreamService: EquipReqTopicUpstreamService,
                 private log: LoggerService) {
         this.selectedItem = this.params.get('selectedItem');
     }

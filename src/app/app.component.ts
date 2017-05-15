@@ -7,7 +7,6 @@ import { AppContainerComponent } from "./app-container.component";
 import { UtilService } from "./common/services/util.service";
 import { HelpComponent } from "./views/help/help.component";
 import { LogsModalComponent } from "./views/logs/modal/logs-modal.component";
-import { UpstreamService } from "./services/upstream/upstream.service";
 import { LoggerService } from "./services/logger/logger-service";
 import { AppConfigConstants } from "./constants/app-config.constants";
 import { AuthenticationService } from "./services/authentication.service";
@@ -16,6 +15,7 @@ import { LoginModalService } from "./services/login-modal.service";
 import { SecurityComponent } from "./views/security/security.component";
 import { CACService } from "./services/cac.service";
 import { SettingsService } from "./services/settings.service";
+import {EquipReqTopicUpstreamService} from "./services/upstream/equip-req-topic-upstream.service";
 
 @Component({
     templateUrl: './app.html'
@@ -41,7 +41,7 @@ export class DMLESMobile implements OnInit {
         private app: App,
         private authService: AuthenticationService,
         private loginModalService: LoginModalService,
-        private upstreamService: UpstreamService,
+        private upstreamService: EquipReqTopicUpstreamService,
         private log: LoggerService,
         private cacService: CACService,
         private settingService: SettingsService) {
@@ -62,7 +62,7 @@ export class DMLESMobile implements OnInit {
         this.setSettingsCount();
         this.platform.ready().then(() => {
             Splashscreen.hide();
-            StatusBar.styleDefault();            
+            StatusBar.styleDefault();
 
 
             this.isMobility = this.utilService.isMobility();

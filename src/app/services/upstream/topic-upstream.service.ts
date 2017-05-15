@@ -1,36 +1,29 @@
-/**
- * Created by johntsinonis on 11/10/16.
- */
-import { Injectable }    from '@angular/core';
-
-import { UpstreamService } from './upstream.service'
 import {TopicMessagingService} from "../topic-messaging.service";
 import {NetworkService} from "../network.service";
-import {StoreDatabaseService} from "../store-database.service";
 import {MessagingDataService} from "../messaging-data.service";
-import {ForwardDataModel} from "../../models/forward-data.model";
-import {StoreDataModel} from "../../models/store-data.model";
 import {LoggerService} from "../logger/logger-service";
-import {StoreDataTableModel} from "../../models/store-data-table.model";
+import {BaseDatabaseService} from "../base-database.service";
+import {BaseDataTableModel} from "../../models/base-data-table.model";
+import {UpstreamService} from "./upstream.service";
 
-@Injectable()
-export class TopicUpstreamService extends UpstreamService {
-    private forwardDataModel: ForwardDataModel;
-    private storeDataModel: StoreDataModel;
+export abstract class TopicUpstreamService<M extends BaseDataTableModel, D extends BaseDatabaseService<M>> extends UpstreamService {
     private serviceAvailable: boolean = false;
+    private databaseService: D;
+    private dataTableModel: M;
 
-    constructor(private topicMessagingService: TopicMessagingService,
-                private networkService: NetworkService,
-                private databaseService: StoreDatabaseService,
-                public messagingDataService: MessagingDataService,
-                public log: LoggerService) {
+    constructor(protected topicMessagingService: TopicMessagingService,
+                protected networkService: NetworkService,
+                protected dbService: D,
+                protected dbModel: M,
+                protected messagingDataService: MessagingDataService,
+                protected log: LoggerService) {
         super(messagingDataService, log);
 
-        this.forwardDataModel = messagingDataService.forwardDataModel;
-        this.storeDataModel = messagingDataService.storeDataModel;
+        this.databaseService = dbService;
+        this.dataTableModel = dbModel;
 
         TopicMessagingService.onServiceAvailable().subscribe((results) => {
-            this.log.info(`TopicUpstreamService:connected => ${results}`);
+            this.log.info(`TopicUpstreamService:connected => ${results}, databaseService => ${this.databaseService}, dataTableModel => ${this.dataTableModel}`);
             this.serviceAvailable = results;
         });
     }
@@ -89,8 +82,8 @@ export class TopicUpstreamService extends UpstreamService {
             .then(this.publishMany)
             .then(this.deleteCachedData)
             .then((client) => {
-                this.storeDataModel.badgeCount = 0;
-                this.forwardDataModel.pushedChanges = client.items;
+                // this.storeDataModel.badgeCount = 0;
+                // this.forwardDataModel.pushedChanges = client.items;
 
                 return client;
             })
@@ -122,7 +115,7 @@ export class TopicUpstreamService extends UpstreamService {
     }
 
     /**
-     * Connects to messaging server then sends messagingDataModel
+     * Connects to messaging server then sends the data
      * @param message
      * @returns {Promise<U|R>}
      */
@@ -144,7 +137,7 @@ export class TopicUpstreamService extends UpstreamService {
      * @returns Promise<number>
      */
     private sendDataLocal(message: any): Promise<number> {
-        return this.databaseService.put(new StoreDataTableModel(JSON.stringify(message), message.id))
+        return this.databaseService.put(this.dataTableModel)
             .then((id)=> {
                 this.log.debug(`Added => ${message} with id => ${id} to IndexedDB`)
                 return id;

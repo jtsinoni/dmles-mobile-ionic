@@ -10,10 +10,11 @@ import {LoggerService} from "../logger/logger-service";
  */
 @Injectable()
 export class UpstreamService {
-    private serviceName = "Upstream Service";
+    protected serviceName = "Upstream Service";
     protected data: MessagingDataModel;
 
-    constructor(public messagingDataService: MessagingDataService, public log: LoggerService) {
+    constructor(protected messagingDataService: MessagingDataService,
+                protected log: LoggerService) {
         this.data = messagingDataService.messagingDataModel
 
         this.init();

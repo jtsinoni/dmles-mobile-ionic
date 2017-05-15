@@ -9,9 +9,7 @@ import {AppService} from "../../services/app.service";
 import {StoreDatabaseService} from "../../services/store-database.service";
 import {MessagingDataService} from "../../services/messaging-data.service";
 import {NetworkService} from "../../services/network.service";
-import {TopicUpstreamService} from "../../services/upstream/topic-upstream.service";
 import {TopicMessagingService} from "../../services/topic-messaging.service";
-import {UpstreamService} from "../../services/upstream/upstream.service";
 import {NotificationService} from "../../services/notification.service";
 import {LogViewerService} from "../../services/log-viewer.service";
 import {LocalFileStorageService} from "../../services/local-file-storage.service";
@@ -25,6 +23,7 @@ import {BluetoothModalService} from "../../services/bluetooth-modal.service";
 import {CACService} from "../../services/cac.service";
 import {BarcodeScannerService} from "../../services/barcode-scanner.service";
 import {IMDatabaseService} from "../../services/im-database.service";
+import {EquipReqTopicUpstreamService} from "../../services/upstream/equip-req-topic-upstream.service";
 
 @NgModule({
 })
@@ -44,7 +43,6 @@ export class CommonServicesModule {
                 MessagingDataService,
                 NetworkService,
                 NotificationService,
-                TopicUpstreamService,
                 TopicMessagingService,
                 LogViewerService,
                 LocalFileStorageService,
@@ -57,7 +55,11 @@ export class CommonServicesModule {
                 CACService,
                 BarcodeScannerService,
                 IMDatabaseService,
-                { provide: UpstreamService, useClass: TopicUpstreamService },]
+                EquipReqTopicUpstreamService,
+                // { provide: TopicUpstreamService, useClass: TopicUpstreamService },
+                // { provide: BaseDatabaseService, useClass: TopicUpstreamService },
+                // { provide: BaseDataTableModel, useClass: TopicUpstreamService },
+                ]
         };
     }
 

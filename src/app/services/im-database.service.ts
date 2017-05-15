@@ -1,4 +1,3 @@
-import {Http} from "@angular/http";
 import {Injectable} from "@angular/core";
 import {LoggerService} from "./logger/logger-service";
 import {BaseDatabaseService} from '../services/base-database.service';

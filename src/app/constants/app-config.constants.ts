@@ -31,6 +31,7 @@ export class AppConfigConstants {
         host:"192.168.1.25",
         port:"9001",
         topic:"dmles-mobile",
+        im:{topic:"dmles-mobile-im"},
         protocol:"ws",
         reconnectAttempts:3,
         reconnectPeriod:2000,

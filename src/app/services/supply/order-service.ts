@@ -3,7 +3,7 @@ import { Http } from "@angular/http";
 import { OrderModel } from "../../models/order.model";
 import { LoggerService } from "../logger/logger-service";
 import { BaseDatabaseService } from '../../services/base-database.service';
-import { DatabaseService } from '../../services/database.service';
+import { DatabaseTableModelService } from '../database-table-model.service';
 import { UtilService } from "../../common/services/util.service";
 
 
@@ -16,7 +16,7 @@ export class OrderService extends BaseDatabaseService<OrderModel> {
   ITEM_REF: string = 'REF-';
 
   constructor(
-    databaseService: DatabaseService,
+    databaseService: DatabaseTableModelService,
     private http: Http,
     private utilService: UtilService,
     log: LoggerService) {
@@ -35,9 +35,9 @@ export class OrderService extends BaseDatabaseService<OrderModel> {
   }
 
 
-  addOrder(order: OrderModel) {    
-    this.add(order).then((o) => {   
-      this.log.debug('saving order: '+ order.id);   
+  addOrder(order: OrderModel) {
+    this.add(order).then((o) => {
+      this.log.debug('saving order: '+ order.id);
       this.createReferenceNumber(order);
     });
   }

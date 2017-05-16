@@ -1,37 +1,52 @@
-/**
- * Created by johntsinonis on 11/10/16.
- */
-import { Injectable }    from '@angular/core';
-
-import { UpstreamService } from './upstream.service'
 import {TopicMessagingService} from "../topic-messaging.service";
 import {NetworkService} from "../network.service";
-import {StoreDatabaseService} from "../store-database.service";
 import {CommonDataService} from "../common-data.service";
 import {ForwardDataModel} from "../../models/forward-data.model";
 import {StoreDataModel} from "../../models/store-data.model";
 import {LoggerService} from "../logger/logger-service";
+import {Network} from "ionic-native";
+import {MessagingModel} from "../../models/messaging.model";
+import {BaseDataTableModel} from "../../models/base-data-table.model";
+import {BaseDatabaseService} from "../base-database.service";
 import {StoreDataTableModel} from "../../models/store-data-table.model";
 
-@Injectable()
-export class TopicUpstreamService extends UpstreamService {
+export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDataTableModel>> {
+    protected serviceName = "TopicUpstreamService Service";
     private forwardDataModel: ForwardDataModel;
     private storeDataModel: StoreDataModel;
     private serviceAvailable: boolean = false;
+    private messagingModel: MessagingModel;
 
-    constructor(private topicMessagingService: TopicMessagingService,
-                private networkService: NetworkService,
-                private databaseService: StoreDatabaseService,
+    constructor(protected topicMessagingService: TopicMessagingService,
+                protected networkService: NetworkService,
+                protected databaseService: D,
                 public commonDataService: CommonDataService,
                 public log: LoggerService) {
-        super(commonDataService, log);
 
         this.forwardDataModel = commonDataService.forwardDataModel;
         this.storeDataModel = commonDataService.storeDataModel;
+        this.messagingModel = commonDataService.messagingModel;
 
         TopicMessagingService.onServiceAvailable().subscribe((results) => {
             this.log.info(`TopicUpstreamService:connected => ${results}`);
             this.serviceAvailable = results;
+        });
+
+        this.init();
+    }
+
+    /**
+     * If device connects to network, push any locally stored changes to the upstream service
+     */
+    private init() {
+        this.log.debug(`${this.serviceName} - Start`);
+
+        Network.onConnect().subscribe(() => {
+            this.connect()
+                .then(() => {
+                    this.log.info('Pushing local changes ... ');
+                    this.pushLocalChanges();
+                })
         });
     }
 
@@ -110,7 +125,7 @@ export class TopicUpstreamService extends UpstreamService {
      * @param param
      * @returns {Promise<any>}
      */
-    public sendData(param: any): Promise<any> {
+    protected sendData(param: any): Promise<any> {
         if(this.networkService.isConnected && this.serviceAvailable) {
             // Connect to Host and Publish messages to Topic
             return this.sendDataServer(param);
@@ -144,7 +159,8 @@ export class TopicUpstreamService extends UpstreamService {
      * @returns Promise<number>
      */
     private sendDataLocal(message: any): Promise<number> {
-        return this.databaseService.put(new StoreDataTableModel(JSON.stringify(message), message.id))
+        //return this.databaseService.put(new StoreDataTableModel(JSON.stringify(message), message.id))
+        return this.databaseService.put(message)
             .then((id)=> {
                 this.log.debug(`Added => ${message} with id => ${id} to IndexedDB`)
                 return id;
@@ -283,9 +299,9 @@ export class TopicUpstreamService extends UpstreamService {
      * @returns {Promise<T>|Promise}
      */
     private clientConnection(): Promise<any> {
-        let host = this.data.host;
-        let port = this.data.port;
-        let protocol = this.data.protocol;
+        let host = this.messagingModel.host;
+        let port = this.messagingModel.port;
+        let protocol = this.messagingModel.protocol;
 
         return new Promise((resolve, reject) => {
             // First check for network connectivity
@@ -328,9 +344,9 @@ export class TopicUpstreamService extends UpstreamService {
      * @returns {any}
      */
     private adornClient(client: any, message?: any): any {
-        client.host = this.data.host;
-        client.port = this.data.port;
-        client.topic = this.data.topic;
+        client.host = this.messagingModel.host;
+        client.port = this.messagingModel.port;
+        client.topic = this.messagingModel.topic;
         client.topicMessagingService = this.topicMessagingService;
         client.databaseService = this.databaseService;
         client.networkService = this.networkService;

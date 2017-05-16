@@ -9,9 +9,7 @@ import {AppService} from "../../services/app.service";
 import {StoreDatabaseService} from "../../services/store-database.service";
 import {CommonDataService} from "../../services/common-data.service";
 import {NetworkService} from "../../services/network.service";
-import {TopicUpstreamService} from "../../services/upstream/topic-upstream.service";
 import {TopicMessagingService} from "../../services/topic-messaging.service";
-import {UpstreamService} from "../../services/upstream/upstream.service";
 import {NotificationService} from "../../services/notification.service";
 import {LogViewerService} from "../../services/log-viewer.service";
 import {LocalFileStorageService} from "../../services/local-file-storage.service";
@@ -19,13 +17,11 @@ import {JSONWebTokenService} from "../../services/jason-web-token.service";
 import {LoginModalService} from "../../services/login-modal.service";
 import {HostServerService} from "../../services/host-server.service";
 import {SettingsService} from "../../services/settings.service";
-import {DatabaseService} from "../../services/database.service";
+import {DatabaseTableModelService} from "../../services/database-table-model.service";
 import {WindowService} from "../../services/window.service";
 import {BluetoothModalService} from "../../services/bluetooth-modal.service";
 import {CACService} from "../../services/cac.service";
-
-
-
+import {EquipReqTopicUpstreamService} from "../../services/upstream/equip-req-topic-upstream.service";
 
 @NgModule({
 })
@@ -45,7 +41,6 @@ export class CommonServicesModule {
                 CommonDataService,
                 NetworkService,
                 NotificationService,
-                TopicUpstreamService,
                 TopicMessagingService,
                 LogViewerService,
                 LocalFileStorageService,
@@ -53,10 +48,12 @@ export class CommonServicesModule {
                 LoginModalService,
                 SettingsService,
                 HostServerService,
-                DatabaseService,
+                DatabaseTableModelService,
                 BluetoothModalService,
                 CACService,
-                { provide: UpstreamService, useClass: TopicUpstreamService },]
+                EquipReqTopicUpstreamService,
+                // { provide: UpstreamService, useClass: TopicUpstreamService },
+            ]
         };
     }
 

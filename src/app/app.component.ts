@@ -41,7 +41,6 @@ export class DMLESMobile implements OnInit {
         private app: App,
         private authService: AuthenticationService,
         private loginModalService: LoginModalService,
-        private upstreamService: UpstreamService,
         private log: LoggerService,
         private cacService: CACService,
         private settingService: SettingsService) {
@@ -62,7 +61,7 @@ export class DMLESMobile implements OnInit {
         this.setSettingsCount();
         this.platform.ready().then(() => {
             Splashscreen.hide();
-            StatusBar.styleDefault();            
+            StatusBar.styleDefault();
 
 
             this.isMobility = this.utilService.isMobility();
@@ -74,17 +73,17 @@ export class DMLESMobile implements OnInit {
             }
 
             // Attempt to connect to messaging server if connect flag is true
-            if (AppConfigConstants.messagingServer.connect) {
-                this.upstreamService.connect()
-                    .then((client) => {
-                        if (client.connected) {
-                            this.log.debug(`Received connect event, Client ID: ${client.options.clientId}, connected: ${client.connected}`);
-                        }
-                    })
-                    .catch((error) => {
-                        this.log.error(error);
-                    })
-            }
+            // if (AppConfigConstants.messagingServer.connect) {
+            //     this.upstreamService.connect()
+            //         .then((client) => {
+            //             if (client.connected) {
+            //                 this.log.debug(`Received connect event, Client ID: ${client.options.clientId}, connected: ${client.connected}`);
+            //             }
+            //         })
+            //         .catch((error) => {
+            //             this.log.error(error);
+            //         })
+            // }
 
             this.setLoggedInOutAreas();
         });

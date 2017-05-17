@@ -34,9 +34,6 @@ export class AppContainerComponent {
         this.demoAreas.push(new AreaModel('Admin', 'card', AdminComponent, 'light'));
         this.demoAreas.push(new AreaModel('Supply', 'document', SupplyComponent, 'gray'));
         this.demoAreas.push(new AreaModel('Inventory', 'barcode', InventoryComponent, 'light'));
-        if(AppConfigConstants.messagingServer.showStats) {
-            this.demoAreas.push(new AreaModel('Messaging', 'git-network', TopicComponent, 'light'));
-        }
     }
 
      goTo(area: AreaModel) {

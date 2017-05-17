@@ -7,7 +7,7 @@ import {AppConfigConstants} from "../constants/app-config.constants";
 @Injectable()
 export class DatabaseTableModelService{
     private dataDB: DataTableDatabase;
-    private serviceName = "Database Service";
+    private serviceName = "DatabaseTableModel Service";
 
     constructor(private log: LoggerService) {
         this.log.debug(`${this.serviceName} - Start`);
@@ -30,4 +30,7 @@ export class DatabaseTableModelService{
         return this.dataDB.orders;
     }
 
+    getIMDataTable() {
+        return this.dataDB.im;
+    }
 }

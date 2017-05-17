@@ -21,7 +21,10 @@ import {DatabaseTableModelService} from "../../services/database-table-model.ser
 import {WindowService} from "../../services/window.service";
 import {BluetoothModalService} from "../../services/bluetooth-modal.service";
 import {CACService} from "../../services/cac.service";
+import {BarcodeScannerService} from "../../services/barcode-scanner.service";
+import {IMDatabaseService} from "../../services/im-database.service";
 import {EquipReqTopicUpstreamService} from "../../services/upstream/equip-req-topic-upstream.service";
+import {IMTopicUpstreamService} from "../../services/upstream/im-topic-upstream.service";
 
 @NgModule({
 })
@@ -51,7 +54,10 @@ export class CommonServicesModule {
                 DatabaseTableModelService,
                 BluetoothModalService,
                 CACService,
+                BarcodeScannerService,
+                IMDatabaseService,
                 EquipReqTopicUpstreamService,
+                IMTopicUpstreamService,
                 // { provide: UpstreamService, useClass: TopicUpstreamService },
             ]
         };

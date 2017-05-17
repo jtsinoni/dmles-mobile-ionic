@@ -2,8 +2,8 @@ import Dexie from 'dexie';
 import { StoreDataTableModel } from '../models/store-data-table.model';
 import { SettingsModel } from '../models/settings.model';
 import { ServerModel } from '../models/server.model';
-
 import { OrderModel } from '../models/order.model';
+import {IMTableModel} from '../models/im-table.model';
 import { LoggerService } from "../services/logger/logger-service";
 
 export class DataTableDatabase extends Dexie {
@@ -11,17 +11,25 @@ export class DataTableDatabase extends Dexie {
     settings: Dexie.Table<SettingsModel, number>;
     servers: Dexie.Table<ServerModel, number>;
     orders: Dexie.Table<OrderModel, number>;
-
+    im: Dexie.Table<IMTableModel, number>;
 
     constructor(databaseName: string, private log: LoggerService) {
         super(databaseName);
         //this.delete();
-        this.version(1).stores({ 
-            data: "++id,data",      
+        this.version(1).stores({
+            data: "++id,data",
             servers: '++id, serverName, port, protocol, isDefault',
             settings: '++id, settingsName, setting, dataType, *values',
-            orders: '++id, documentNumber, referenceId, itemId, requiredDate, orderDate, orderState, orderQuantity, requestor, unitOfPurchasePrice' 
+            orders: '++id, documentNumber, referenceId, itemId, requiredDate, orderDate, orderState, orderQuantity, requestor, unitOfPurchasePrice'
         });
+        this.version(2).stores({
+            data: "++id,data",
+            servers: '++id, serverName, port, protocol, isDefault',
+            settings: '++id, settingsName, setting, dataType, *values',
+            orders: '++id, documentNumber, referenceId, itemId, requiredDate, orderDate, orderState, orderQuantity, requestor, unitOfPurchasePrice',
+            im: '++id, barcodeData, barcodeType'
+        });
+
 
         // Open it
         this.open().catch(function (e) {
@@ -31,10 +39,6 @@ export class DataTableDatabase extends Dexie {
         this.settings.mapToClass(SettingsModel);
         this.servers.mapToClass(ServerModel);
         this.orders.mapToClass(OrderModel);
-
+        this.im.mapToClass(IMTableModel);
     }
-
-
-
-
 }

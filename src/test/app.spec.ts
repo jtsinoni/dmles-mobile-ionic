@@ -2,7 +2,8 @@ import { DMLESMobile } from '../app/app.component';
 import {
     NavMock, PlatformMock, UtilServiceMock,
     AppMock, AuthServiceMock, LoginModalServiceMock,
-    UpstreamServiceMock, LoggerServiceMock, CACServiceMock,
+    //UpstreamServiceMock,
+    LoggerServiceMock, CACServiceMock,
     SettingsServiceMock
 } from './mocks';
 

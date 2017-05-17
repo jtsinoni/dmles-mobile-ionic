@@ -1,12 +1,23 @@
-
 <ion-content padding>
-	<div class="top-spacer-div"></div>
-	<ion-item>
-		<ion-input type="text" placeholder="Search" [(ngModel)]="searchValue" name="searchInput"></ion-input>
-	</ion-item>
-	<div padding>
-		<button ion-button color="primary" block (click)="showLoadingData(searchValue)">
-				<ion-icon name="search"></ion-icon>
-			</button>
-	</div>
+    <div class="top-spacer-div"></div>
+    <ion-item>
+        <ion-input type="text" placeholder="Search" [(ngModel)]="searchValue" name="searchInput"></ion-input>
+    </ion-item>
+    <div padding>
+        <div *ngIf="isConnected">
+            <button ion-button color="primary" block (click)="showLoadingData(searchValue)" [disabled]="!searchValue">
+                <ion-icon name="search"></ion-icon>
+            </button>
+        </div>
+
+        <div *ngIf="!isConnected">
+            <button ion-button color="primary" block (click)="storeBarcode()" [disabled]="!barcodeResults">
+                <ion-icon name="add"></ion-icon>
+            </button>
+        </div>
+
+        <button ion-button color="primary" block (click)="barcodeScan()">
+            <ion-icon name="barcode"></ion-icon>
+        </button>
+    </div>
 </ion-content>

@@ -1,32 +1,21 @@
 import {TopicMessagingService} from "../topic-messaging.service";
 import {NetworkService} from "../network.service";
-import {CommonDataService} from "../common-data.service";
-import {ForwardDataModel} from "../../models/forward-data.model";
-import {StoreDataModel} from "../../models/store-data.model";
 import {LoggerService} from "../logger/logger-service";
 import {Network} from "ionic-native";
 import {MessagingModel} from "../../models/messaging.model";
 import {BaseDataTableModel} from "../../models/base-data-table.model";
 import {BaseDatabaseService} from "../base-database.service";
-import {StoreDataTableModel} from "../../models/store-data-table.model";
 import {AppConfigConstants} from "../../constants/app-config.constants";
 
 export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDataTableModel>> {
     protected serviceName = "TopicUpstreamService Service";
-    // private forwardDataModel: ForwardDataModel;
-    // private storeDataModel: StoreDataModel;
     private serviceAvailable: boolean = false;
-    //private messagingModel: MessagingModel;
 
     constructor(protected topicMessagingService: TopicMessagingService,
                 protected networkService: NetworkService,
                 protected databaseService: D,
                 public messagingModel: MessagingModel,
                 public log: LoggerService) {
-
-        // this.forwardDataModel = commonDataService.forwardDataModel;
-        // this.storeDataModel = commonDataService.storeDataModel;
-        // this.messagingModel = commonDataService.messagingModel;
 
         TopicMessagingService.onServiceAvailable().subscribe((results) => {
             this.log.info(`TopicUpstreamService:connected => ${results}`);

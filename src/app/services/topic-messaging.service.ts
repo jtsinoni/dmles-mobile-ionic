@@ -46,10 +46,24 @@ export class TopicMessagingService {
      * @param port
      * @returns {Promise<T>|Promise}
      */
-    public connect(protocol: number, host: string, port: number): Promise<any> {
+    public connect(protocol?: number, host?: string, port?: number): Promise<any> {
 
         return new Promise((resolve, reject) => {
-            let brokerURL = `${AppConfigConstants.messagingServer.protocol}://${AppConfigConstants.messagingServer.host}:${AppConfigConstants.messagingServer.port}`;
+            let localProtocol = AppConfigConstants.messagingServer.protocol;
+            let localHost = AppConfigConstants.messagingServer.host;
+            let localPort = AppConfigConstants.messagingServer.port;
+
+            if(protocol != null) {
+                localProtocol = protocol;
+            }
+            if(host != null) {
+                localHost = host;
+            }
+            if(port != null) {
+                localPort = port;
+            }
+
+            let brokerURL = `${localProtocol}://${localHost}:${localPort}`;
             this.log.info(`messaging server => ${brokerURL}`);
 
             // reconnectPeriod: 2 (default), reconnect every 2 seconds until reconnectAttempts has reached
@@ -103,20 +117,7 @@ export class TopicMessagingService {
             }
 
 
-            //stop trying to reconnect after 10 (default) attempts
-            //TODO: Use RXJS interval Observables
-            // let source = Observable
-            //     .fromEventPattern(
-            //         (h) => {  this.client.on('reconnect', h); },
-            //         (h) => {  }
-            //     )
-            //     .timeInterval();
-            //
-            // source.subscribe(
-            //     x => console.log(`Received reconnect event in Observable => ${JSON.stringify(x)}`),
-            //     err => console.log('Error: ' + err),
-            //     () => console.log('Completed'));
-
+            //stop trying to reconnect after 3 (default) attempts
             let tries = 1;
             this.client.on('reconnect', () => {
                 TopicMessagingService.onReconnectAttemptsSubject.next({message: `Reconnect attempt => ${tries}`, tries: tries});
@@ -144,7 +145,7 @@ export class TopicMessagingService {
      */
     public subscribe(topic: string): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.client.subscribe(topic, {qos: 1}, function (err, granted) {
+            this.client.subscribe(topic, {qos: 0}, function (err, granted) {
                 if (err) {
                     reject(err);
                 } else {

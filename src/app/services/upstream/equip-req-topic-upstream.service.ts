@@ -8,6 +8,8 @@ import {NetworkService} from "../network.service";
 import {StoreDatabaseService} from "../store-database.service";
 import {DatabaseTableModelService} from "../database-table-model.service";
 import {CommonDataService} from "../common-data.service";
+import {MessagingModel} from "../../models/messaging.model";
+import {AppConfigConstants} from "../../constants/app-config.constants";
 
 @Injectable()
 export class EquipReqTopicUpstreamService extends TopicUpstreamService<StoreDatabaseService> {
@@ -16,14 +18,12 @@ export class EquipReqTopicUpstreamService extends TopicUpstreamService<StoreData
     constructor(protected topicMessagingService: TopicMessagingService,
                 protected networkService: NetworkService,
                 protected storeDatabaseService: StoreDatabaseService,
-                public commonDataService: CommonDataService,
                 public log: LoggerService) {
-        super(topicMessagingService, networkService, storeDatabaseService, commonDataService, log);
-
+        super(topicMessagingService, networkService, storeDatabaseService, new MessagingModel(AppConfigConstants.messagingServer.eq.topic), log);
     }
 
     public sendData(data: any): Promise<any> {
-        return super.sendData(new StoreDataTableModel(JSON.stringify(data)));
+        return super.sendData(new StoreDataTableModel(data));
     }
 
     /*

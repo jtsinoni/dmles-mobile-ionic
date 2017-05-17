@@ -10,8 +10,13 @@ export class MessagingModel {
     reconnectAttempts: number;
     reconnectPeriod: number;
 
-    constructor() {
-        this.topic = AppConfigConstants.messagingServer.topic;
+    constructor(topic?: string) {
+        if(topic != null) {
+            this.topic = topic;
+        } else {
+            this.topic = AppConfigConstants.messagingServer.default.topic;
+        }
+
         this.message = 'Hello DML-ES Mobile!';
         this.messages = '';
         this.host = AppConfigConstants.messagingServer.host;

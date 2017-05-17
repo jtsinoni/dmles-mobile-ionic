@@ -9,23 +9,24 @@ import {MessagingModel} from "../../models/messaging.model";
 import {BaseDataTableModel} from "../../models/base-data-table.model";
 import {BaseDatabaseService} from "../base-database.service";
 import {StoreDataTableModel} from "../../models/store-data-table.model";
+import {AppConfigConstants} from "../../constants/app-config.constants";
 
 export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDataTableModel>> {
     protected serviceName = "TopicUpstreamService Service";
-    private forwardDataModel: ForwardDataModel;
-    private storeDataModel: StoreDataModel;
+    // private forwardDataModel: ForwardDataModel;
+    // private storeDataModel: StoreDataModel;
     private serviceAvailable: boolean = false;
-    private messagingModel: MessagingModel;
+    //private messagingModel: MessagingModel;
 
     constructor(protected topicMessagingService: TopicMessagingService,
                 protected networkService: NetworkService,
                 protected databaseService: D,
-                public commonDataService: CommonDataService,
+                public messagingModel: MessagingModel,
                 public log: LoggerService) {
 
-        this.forwardDataModel = commonDataService.forwardDataModel;
-        this.storeDataModel = commonDataService.storeDataModel;
-        this.messagingModel = commonDataService.messagingModel;
+        // this.forwardDataModel = commonDataService.forwardDataModel;
+        // this.storeDataModel = commonDataService.storeDataModel;
+        // this.messagingModel = commonDataService.messagingModel;
 
         TopicMessagingService.onServiceAvailable().subscribe((results) => {
             this.log.info(`TopicUpstreamService:connected => ${results}`);
@@ -41,11 +42,26 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
     private init() {
         this.log.debug(`${this.serviceName} - Start`);
 
+        // Attempt to connect to messaging server if connect flag is true
+        if (AppConfigConstants.messagingServer.connect) {
+            this.connect()
+                .then((client) => {
+                    if (client.connected) {
+                        this.log.debug(`Received connect event, Client ID: ${client.options.clientId}, connected: ${client.connected}`);
+                    }
+                })
+                .catch((error) => {
+                    this.log.error(error);
+                })
+        }
+
         Network.onConnect().subscribe(() => {
             this.connect()
                 .then(() => {
-                    this.log.info('Pushing local changes ... ');
                     this.pushLocalChanges();
+                })
+                .catch((error) => {
+                    this.log.error(error);
                 })
         });
     }
@@ -97,6 +113,7 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
                 if(!connected) {
                     throw new Error("NotConnected");
                 } else {
+                    this.log.info('Pushing local changes ... ');
                     return this.topicMessagingService.client;
                 }
             })
@@ -104,8 +121,8 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
             .then(this.publishMany)
             .then(this.deleteCachedData)
             .then((client) => {
-                this.storeDataModel.badgeCount = 0;
-                this.forwardDataModel.pushedChanges = client.items;
+                // this.storeDataModel.badgeCount = 0;
+                // this.forwardDataModel.pushedChanges = client.items;
 
                 return client;
             })

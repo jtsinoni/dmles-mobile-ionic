@@ -2,24 +2,19 @@
     <ion-card-header>
         <ion-grid>
             <ion-row>
-                <ion-col width-75>
+                <ion-col col-8>
                     <ion-icon name="{{iconName}}"></ion-icon>
                     <b>{{growlTitle}}</b>
                 </ion-col>
-                <ion-col width-25>
-                    <ion-row>
-                        <ion-buttons end>
-                            <button ion-button class="ripple" (click)="pauseTimer()">{{countDown}}</button>
-                            <button ion-button class="ripple" icon-only (click)="cancel()">
-                                <ion-icon name="close"></ion-icon>
-                            </button>
-                        </ion-buttons>
-                    </ion-row>
+                <ion-col col-2>
+                    <ion-badge (click)="pauseTimer()">{{countDown}}</ion-badge>
+                </ion-col>
+                <ion-col col-2>
+                    <ion-icon name="close-circle" (click)="cancel()" right></ion-icon>
                 </ion-col>
             </ion-row>
         </ion-grid>
     </ion-card-header>
-
     <ion-card-content>
         <ion-col width-100>
             {{growlMessage}}

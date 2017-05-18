@@ -9,6 +9,7 @@ export class ApiConstants {
     static SITE_API = "Dmles.Site.Server/V1/";
     static SYSTEM_API = "Dmles.System.Server/V1/";
     static USER_API = "Dmles.User.Server/V1/user/";
+    static ABI_CATALOG_API = "Dmles.ABi.Server/V1/production/";
 
     constructor(){}
 }

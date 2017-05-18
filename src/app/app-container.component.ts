@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { NavController, AlertController, PopoverController, MenuController } from 'ionic-angular';
 import { LoggerService } from "./services/logger/logger-service";
 //import { AppMenuComponent } from "./views/common/header/app-menu.component";
@@ -15,9 +15,13 @@ import {AppConfigConstants} from "./constants/app-config.constants";
 @Component({
     templateUrl: './app-container.html'
 })
-export class AppContainerComponent {
+export class AppContainerComponent implements OnInit {
 
     demoAreas = new Array<AreaModel>();
+
+    fabPosition: String = "right";
+
+    @ViewChild("searchFab") searchFab;
 
     constructor(public navCtrl: NavController,
         public alertController: AlertController,
@@ -37,12 +41,17 @@ export class AppContainerComponent {
         if(AppConfigConstants.messagingServer.showStats) {
             this.demoAreas.push(new AreaModel('Messaging', 'git-network', TopicComponent, 'light'));
         }
+
+        
     }
 
      goTo(area: AreaModel) {
         this.navCtrl.push(area.component);
     }
 
+    ngOnInit(): void {
+        this.log.debug("The Search Fab is; " + this.searchFab);
+    }
 
     showFindItem() {
         let alert = this.alertController.create({

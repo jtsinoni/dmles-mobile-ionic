@@ -32,18 +32,18 @@ export class RequestApiService extends ApiService {
     public getEquipmentRecords(searchValue, aggregations): Observable<any> {
         let searchString = 'getEquipmentRecordSearchResults?' + searchValue + ' ' + aggregations;
 
-        this.platform.platforms().forEach((platformName, step) => {
-            let message =
-                "Platform #(" + step + ") - (" + platformName +
-                ") CORE(" + this.platform.is('core') + ")" +
-                ") iOS(" + this.platform.is('ios') + ")" +
-                ") android(" + this.platform.is('android') + ")" +
-                ") Windows(" + this.platform.is('windows') + ")" +
-                ") Mobile(" + this.platform.is('mobile') + ")" +
-                ") MobileWeb(" + this.platform.is('mobileweb') + ")" +
-                "";
-            this.log.debug(message);
-        });
+        // this.platform.platforms().forEach((platformName, step) => {
+        //     let message =
+        //         "Platform #(" + step + ") - (" + platformName +
+        //         ") CORE(" + this.platform.is('core') + ")" +
+        //         ") iOS(" + this.platform.is('ios') + ")" +
+        //         ") android(" + this.platform.is('android') + ")" +
+        //         ") Windows(" + this.platform.is('windows') + ")" +
+        //         ") Mobile(" + this.platform.is('mobile') + ")" +
+        //         ") MobileWeb(" + this.platform.is('mobileweb') + ")" +
+        //         "";
+        //     this.log.debug(message);
+        // });
 
         this.log.debug('In getEquipmentRecords with (' + searchValue + ', ' + aggregations + ') making (' + searchString + ')');
         return this.get(searchString);

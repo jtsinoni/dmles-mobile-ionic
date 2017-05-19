@@ -1,81 +1,69 @@
 import {TopicMessagingService} from "../topic-messaging.service";
-//import {NetworkService} from "../network.service";
 import {LoggerService} from "../logger/logger-service";
-//import {Network} from "ionic-native";
-import {MessagingModel} from "../../models/messaging.model";
 import {BaseDataTableModel} from "../../models/base-data-table.model";
 import {BaseDatabaseService} from "../base-database.service";
-//import {AppConfigConstants} from "../../constants/app-config.constants";
+import {Network} from "ionic-native";
 
 export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDataTableModel>> {
     protected client: any;
-    protected topic: string;
     protected serviceName = "TopicUpstreamService Service";
-    //private serviceAvailable: boolean = false;
 
     constructor(protected topicMessagingService: TopicMessagingService,
-//                protected networkService: NetworkService,
                 protected databaseService: D,
-                public messagingModel: MessagingModel,
+                protected topic: string,
                 public log: LoggerService) {
-
-        // TopicMessagingService.onServiceAvailable().subscribe((results) => {
-        //     this.log.info(`TopicUpstreamService:connected => ${results}`);
-        //     this.serviceAvailable = results;
-        // });
-
-        this.init();
+        this.setup();
     }
 
-    abstract init();
+    abstract setup();
 
-    // /**
-    //  * If device connects to network, push any locally stored changes to the upstream service
-    //  */
-    // private init() {
-    //     this.log.debug(`${this.serviceName} - Start`);
-    //
-    //     // // Attempt to connect to messaging server if connect flag is true
-    //     // if (AppConfigConstants.messagingServer.connect) {
-    //     //     this.connect()
-    //     //         .then((client) => {
-    //     //             if (client.connected) {
-    //     //                 this.log.debug(`Received connect event, Client ID: ${client.options.clientId}, connected: ${client.connected}`);
-    //     //             }
-    //     //         })
-    //     //         .catch((error) => {
-    //     //             this.log.error(error);
-    //     //         })
-    //     // }
-    //     //
-    //     // Network.onConnect().subscribe(() => {
-    //     //     this.connect()
-    //     //         .then(() => {
-    //     //             this.pushLocalChanges();
-    //     //         })
-    //     //         .catch((error) => {
-    //     //             this.log.error(error);
-    //     //         })
-    //     // });
-    // }
+    protected start() {
+        this.startHelper();
+
+        Network.onConnect().subscribe(() => {
+            this.startHelper();
+        });
+
+        Network.onDisconnect().subscribe(() => {
+            this.disconnect()
+                .then((client) => {
+                    this.client = client;
+                    this.log.debug(`Received disconnect event, Client ID: ${client.options.clientId}, connected: ${client.connected}`);
+                })
+                .catch((error) => {
+                    this.log.error(error);
+                })
+        });
+    }
+
+    private startHelper(){
+        this.connect()
+            .then((client) => {
+                this.client = client;
+                if(client.connected) {
+                    this.log.debug(`Received connect event, Client ID: ${client.options.clientId}, connected: ${client.connected}`);
+
+                    return client;
+                } else {
+                    throw new Error("Client not connected to messaging server.");
+                }
+            })
+            .then((client) => {
+                this.pushLocalChanges();
+            })
+            .catch((error) => {
+                this.log.error(error);
+            })
+    }
 
     /**
-     * Check if already connected, if not, create connection and subscribe.
+     * Create connection
+     * @param protocol
+     * @param host
+     * @param port
      * @returns @returns {Promise<any>} MQTT client
      */
     public connect(protocol?: number, host?: string, port?: number): Promise<any> {
-        // let localClient = this.topicMessagingService.client;
-        // if(this.clientConnected()) {
-        //     this.log.warn(`Client already connected: Client ID: ${localClient.options.clientId}`);
-        //     return Promise.resolve(localClient);
-        // } else {
-        //     return this.clientConnection()
-        //         .then(this.subscribe)
-        //         .catch((error) => {
-        //             this.log.error(error);
-        //         });
-        // }
-
         return new Promise((resolve, reject) => {
             this.topicMessagingService.connect(protocol, host, port)
                 .then((client) => {
@@ -85,33 +73,11 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
                     reject(error);
                 });
         });
-
-        //
-        //     // First check for network connectivity
-        //     if (this.networkService.isConnected) {
-        //         let localClient = this.topicMessagingService.client;
-        //
-        //         // Second, check if already connected, if not make new Connection
-        //         if (localClient && localClient.connected) {
-        //             resolve(localClient);
-        //         } else {
-        //             this.topicMessagingService.connect(protocol, host, port)
-        //                 .then((client) => {
-        //                     resolve(this.adornClient(client));
-        //                 })
-        //                 .catch((error) => {
-        //                     reject(error);
-        //                 });
-        //         }
-        //     } else {
-        //         reject(`Failed to connect to host: ${host} port: ${port}, no network connection.`);
-        //     }
-        // }
     }
 
     /**
-     * Check to see if already disconnected, no point in disconnecting, if already "disconnected"
-     * @returns {Promise<any>} may contain undefined, if never connected, then try to disconnect again
+     * Disconnect client from broker
+     * @returns {Promise<any>} may contain undefined
      */
     public disconnect(): Promise<any> {
         return new Promise((resolve, reject) => {
@@ -123,25 +89,12 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
                     reject(error);
                 });
         });
-
-        // let localClient = this.topicMessagingService.client;
-        // if(this.clientConnected()) {
-        //     return Promise.resolve(localClient)
-        //         .then(this.unsubscribe)
-        //         .then(this.clientDisconnection)
-        //         .catch((error) => {
-        //             this.log.error(error);
-        //         })
-        // } else {
-        //     let message = `Client already disconnected`;
-        //     if(localClient) {
-        //         message = message + `: Client ID: ${localClient.options.clientId}`;
-        //     }
-        //     this.log.warn(message);
-        //     return Promise.resolve(localClient);
-        // }
     }
 
+    /**
+     * Push local changes t messaging broker
+     * @returns {Promise<Array[T]>} of items cached
+     */
     public pushLocalChanges(): Promise<any> {
         return Promise.resolve(this.clientConnected())
             .then((connected) => {
@@ -183,7 +136,7 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
     }
 
     /**
-     * Sends data to the messaginf server
+     * Sends data to the messaging server
      * @param data
      * @returns a Promise with the client
      */
@@ -213,11 +166,6 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
             });
     }
 
-    /**
-     * Finds data that is cached
-     * @param client
-     * @returns {Promise<any>|Thenable<any>|Promise<U>|Thenable<U>|PromiseLike<TResult>}
-     */
     /**
      * Finds data that is cached
      * @returns a Promise<Array[T]> with the items in local cache
@@ -322,87 +270,7 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
             });
     }
 
-    // /**
-    //  * Disconnect client from messaging broker
-    //  * @param client
-    //  * @returns {Promise<U|R>}
-    //  */
-    // private clientDisconnection(client: any): Promise<any> {
-    //     return client.topicMessagingService.disconnect()
-    //         .then(() => {
-    //             return client;
-    //         })
-    //         .catch((error) => {
-    //             client.log.error(error);
-    //         });
-    // }
-
-    // /**
-    //  * This is two-fold, first checks if a cellular network exists, then checks if the client has an
-    //  * existing connection to a messaging broker.  If the the client has a connection, just return the
-    //  * same connection, else create a new connection to the messaging broker.
-    //  *
-    //  * @returns {Promise<T>|Promise}
-    //  */
-    // private clientConnection(): Promise<any> {
-    //     let host = this.messagingModel.host;
-    //     let port = this.messagingModel.port;
-    //     let protocol = this.messagingModel.protocol;
-    //
-    //     return new Promise((resolve, reject) => {
-    //         // First check for network connectivity
-    //         if(this.networkService.isConnected) {
-    //             let localClient  = this.topicMessagingService.client;
-    //
-    //             // Second, check if already connected, if not make new Connection
-    //             if(localClient && localClient.connected) {
-    //                 resolve(localClient);
-    //             } else {
-    //                 this.topicMessagingService.connect(protocol, host, port)
-    //                     .then((client) => {
-    //                         resolve(this.adornClient(client));
-    //                     })
-    //                     .catch((error) => {
-    //                         reject(error);
-    //                     });
-    //             }
-    //         } else {
-    //             reject(`Failed to connect to host: ${host} port: ${port}, no network connection.`);
-    //         }
-    //     });
-    // }
-
-    /**
-     * Returns true if the client is connected to a messaging broker, else false
-     * @returns {boolean}
-     */
     private clientConnected(): boolean {
-
         return (this.client && this.client.connected) ? true : false;
-        // if(this.topicMessagingService.client && this.topicMessagingService.client.connected) {
-        //     return true;
-        // }
-        // return false;
     }
-
-    // /**
-    //  * Adds additional services to the client
-    //  * @param client
-    //  * @param message
-    //  * @returns {any}
-    //  */
-    // private adornClient(client: any, message?: any): any {
-    //     client.host = this.messagingModel.host;
-    //     client.port = this.messagingModel.port;
-    //     client.topic = this.messagingModel.topic;
-    //     client.topicMessagingService = this.topicMessagingService;
-    //     client.databaseService = this.databaseService;
-    //     client.networkService = this.networkService;
-    //     client.log = this.log;
-    //     if (message) {
-    //         client.message = message;
-    //     }
-    //
-    //     return client;
-    // }
 }

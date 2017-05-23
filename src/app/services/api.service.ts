@@ -43,6 +43,9 @@ export class ApiService {
             case "OAuth":
                 url += ApiConstants.OAUTH_API + action;
                 break;
+            case "Inventory":
+                url += ApiConstants.INVENTORY_API + action;
+                break;
             default:
                 url += this.managerName + '/Api/' + action;
         }
@@ -102,15 +105,15 @@ export class ApiService {
         )
     }
 
-    public setServer(server: ServerModel) {     
-        this.defaultServer = server;        
+    public setServer(server: ServerModel) {
+        this.defaultServer = server;
     }
 
     getServer() {
-        if (this.defaultServer === null || this.defaultServer === undefined) {           
+        if (this.defaultServer === null || this.defaultServer === undefined) {
             return this.App.getBtBaseUrl();
         } else {
-            return this.defaultServer.toString();            
+            return this.defaultServer.toString();
         }
     }
 

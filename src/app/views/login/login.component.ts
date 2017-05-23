@@ -37,6 +37,7 @@ export class LoginComponent {
         this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
             if (server) {
                 this.loginModel.serverName = server.toString();
+                this.OAuthService.setServer(server);
             } else {
                 this.loginModel.serverName = this.appService.getBtBaseUrl();
             }
@@ -44,7 +45,6 @@ export class LoginComponent {
     }
 
     public login(loginModel: LoginModel) {
-
         let message = '';
         this.addLogMessage('logging in: ' + loginModel.username);
         this.platform.ready()

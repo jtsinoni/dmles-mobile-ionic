@@ -27,6 +27,16 @@ export class ServerModel extends BaseDataTableModel implements IServerModel {
 
     }
 
+    setPort() {
+        if (this.port === undefined) {
+            if (this.protocol === "https") {
+                this.port = 443
+            } else {
+                this.port = 80;
+            }
+        }
+    }
+
     toString(): string {
         let proto = this.protocol ? this.protocol : 'https';
         return proto + '://' + this.serverName + ':' + this.port + '/'; 

@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, ModalController, NavParams } from 'ionic-angular';
 import { LoggerService } from "../../../services/logger/logger-service";
 
 import { EquipmentRecordDetailsComponent } from './details/equip-record-details.component';
 import { RequestApiService } from "../../../common/endpoints/request-api.service";
 import { HostServerService } from "../../../services/host-server.service";
 import { ServerModel } from "../../../models/server.model";
+import { WarningDialogComponent } from "../../common/dialogs/warning-dialog.component";
 
 
 @Component({
@@ -24,7 +25,8 @@ export class EquipmentRecordsComponent {
         public navParams: NavParams,
         private RequestApiService: RequestApiService,
         private hostServerService: HostServerService,
-        private log: LoggerService) {
+        private log: LoggerService,
+        private modalController: ModalController) {
     }
 
     ngOnInit() {
@@ -32,9 +34,9 @@ export class EquipmentRecordsComponent {
         this.selectedItem = this.navParams.get('item');
         this.searchValue = this.navParams.get('searchValue');
         this.aggregations = this.navParams.get('aggregations');
-        this.getEquipmentRecords(); 
+        this.getEquipmentRecords();
 
-       
+
     }
 
     private getEquipmentRecords() {
@@ -52,7 +54,9 @@ export class EquipmentRecordsComponent {
                     this.log.debug(`results => ${JSON.stringify(results)}`);
                 },
                 (error) => {
-                    this.log.error(`Error => ${error}`);
+                    let message = `Error => ${error}`;
+                    this.log.error(message);
+                    this.showErrorModal(message);
                 });
         });
     }
@@ -61,5 +65,11 @@ export class EquipmentRecordsComponent {
         this.navCtrl.push(EquipmentRecordDetailsComponent, {
             item: item
         });
+    }
+
+    private showErrorModal(error) {
+        let msg = 'Connection Error';
+        let errorModal = this.modalController.create(WarningDialogComponent, { txt: error, message: msg });
+        errorModal.present();
     }
 }

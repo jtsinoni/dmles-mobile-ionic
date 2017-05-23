@@ -29,7 +29,7 @@ export class EquipmentComponent {
         if (area.title == 'Equipment Records') {
             let title = 'Search';
             let hintText = 'Equipment Record Search';
-            let prefix = "searchValue=";
+            let prefix = "Results for: ";
             let aggregations = "(deleteInd:N)";
 
             // mec: redirection through search.component to area.component, so, NOW area.component is passed to the callee, which will open that page (with the collected search criteria)

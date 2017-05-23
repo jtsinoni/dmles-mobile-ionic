@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { NavController, AlertController, PopoverController, MenuController } from 'ionic-angular';
 import { LoggerService } from "./services/logger/logger-service";
 //import { AppMenuComponent } from "./views/common/header/app-menu.component";
@@ -15,6 +15,7 @@ import { AdminComponent } from "./views/admin/admin.component";
 export class AppContainerComponent {
 
     demoAreas = new Array<AreaModel>();
+
 
     constructor(public navCtrl: NavController,
         public alertController: AlertController,

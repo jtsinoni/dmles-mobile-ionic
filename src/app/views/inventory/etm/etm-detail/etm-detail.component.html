@@ -1,0 +1,23 @@
+<modal-header remove-parent-element [title]="'Detail'"></modal-header>
+<ion-content>
+  <div *ngIf="selectedItem" class="selection">
+    <ion-grid>
+      <ion-row>
+        <ion-col width-25>
+          <ion-badge item-left>Description:</ion-badge>
+        </ion-col>
+        <ion-col width-75>
+          <label>{{selectedItem.shortItemDescription}}</label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col width-25>
+          <ion-badge item-left>UNSPSC Class:</ion-badge>
+        </ion-col>
+        <ion-col width-75>
+          <label>{{selectedItem.unspscClass}}</label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

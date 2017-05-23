@@ -1,12 +1,12 @@
-<ion-menu id="mainMenu" [content]="content" persistent="true" >
+<ion-menu id="mainMenu" [content]="content" persistent="true">
   <ion-header>
-    <ion-toolbar>
+    <ion-toolbar color="logi-cole-blue">
       <ion-title>LogiCole Mobile</ion-title>
       <ion-buttons end>
         <button ion-button menuClose>
         <ion-icon name="close"></ion-icon>
       </button>
-      </ion-buttons>     
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
   <ion-content>
@@ -17,11 +17,11 @@
       </button>
     </ion-list>-->
     <ion-list>
-      <button ion-item menuClose color="{{area.color}}" *ngFor="let area of loggedOutAreas" (click)="goTo(area)">
+      <button *ngFor="let area of loggedOutAreas" ion-item no-lines menuClose (click)="goTo(area)" color="{{area.color}}">
         <ion-icon item-left name="{{area.iconName}}"></ion-icon>
-         {{area.title}}
+         <ion-label>{{area.title}}</ion-label>
       </button>
-    </ion-list>
+    </ion-list>  
   </ion-content>
 
 </ion-menu>

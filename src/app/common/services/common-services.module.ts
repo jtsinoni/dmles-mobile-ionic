@@ -25,6 +25,7 @@ import {BarcodeScannerService} from "../../services/barcode-scanner.service";
 import {IMDatabaseService} from "../../services/im-database.service";
 import {EquipReqTopicUpstreamService} from "../../services/upstream/equip-req-topic-upstream.service";
 import {IMTopicUpstreamService} from "../../services/upstream/im-topic-upstream.service";
+import { ABiCatalogService } from '../../services/catalog/abi-catalog.service';
 
 @NgModule({
 })
@@ -58,9 +59,9 @@ export class CommonServicesModule {
                 IMDatabaseService,
                 EquipReqTopicUpstreamService,
                 IMTopicUpstreamService,
+                ABiCatalogService,
                 // { provide: UpstreamService, useClass: TopicUpstreamService },
             ]
         };
     }
-
 }

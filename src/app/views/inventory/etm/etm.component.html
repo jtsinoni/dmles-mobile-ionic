@@ -1,13 +1,20 @@
-
 <ion-content padding>
-<div class="top-spacer-div"></div>
+	<div class="top-spacer-div"></div>
 	<ion-item>
-		<ion-input type="text" placeholder="Search" [(ngModel)]="searchValue" name="searchInput"></ion-input>
+		<ion-input type="text" placeholder="Search" [(ngModel)]="searchValue" name="searchInput" autofocus></ion-input>
 	</ion-item>
 	<div padding>
-		<button ion-button color="primary" block  (click)="showLoadingData(searchValue)">
+		<button ion-button color="primary" block (click)="getSearchResults(searchValue)">
 			<ion-icon name="search"></ion-icon>
 		</button>
 	</div>
-
+	<ion-list>
+		<button ion-item *ngFor="let abiItem of items" (click)="itemTapped(abiItem)">			
+				<div class="item-note" item-center>
+				<h2>Id:	{{abiItem.enterpriseProductIdentifier}}</h2>				
+                <p>Noun: {{abiItem.productNoun}}</p>
+				<p style="word-wrap: break-word;">{{abiItem.fullDescription}}</p>
+				</div>		  
+        </button>
+	</ion-list>
 </ion-content>

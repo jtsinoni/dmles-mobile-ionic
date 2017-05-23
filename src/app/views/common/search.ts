@@ -1,4 +1,4 @@
-import {LoadingController} from 'ionic-angular';
+import {LoadingController, Loading} from 'ionic-angular';
 import {NetworkService} from "../../services/network.service";
 import {AppInjector} from "../../app.module";
 import {Network} from "ionic-native";
@@ -16,6 +16,8 @@ export class Search {
 
     private ngZone: NgZone;
 
+    private loader: Loading;
+    
     constructor (public loadingCtrl: LoadingController) {
         this.init();
     }
@@ -44,10 +46,13 @@ export class Search {
     }
 
     public showLoadingData(value: string) {
-        let loader = this.loadingCtrl.create( {
-            content: "Searching for " + value,
-            duration: 3000
+        this.loader = this.loadingCtrl.create( {
+            content: "Searching for " + value
         });
-        loader.present();
+        this.loader.present();
+    }
+
+    public loadingEnded() {
+        this.loader.dismiss();
     }
 }

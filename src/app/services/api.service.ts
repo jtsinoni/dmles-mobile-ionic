@@ -46,6 +46,9 @@ export class ApiService {
             case "Inventory":
                 url += ApiConstants.INVENTORY_API + action;
                 break;
+            case "AbiCatalog":
+                url += ApiConstants.ABI_PRODUCTION_API + action;
+                break;
             default:
                 url += this.managerName + '/Api/' + action;
         }

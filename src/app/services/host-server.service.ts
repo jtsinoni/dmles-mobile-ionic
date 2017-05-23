@@ -13,6 +13,7 @@ export class HostServerService extends BaseDatabaseService<ServerModel> {
     }
 
     addHostServer(server: ServerModel) {
+        server.setPort();
         this.add(server).then(() => {
             if (server.isDefault) {
                 this.setDefaultServer(server);

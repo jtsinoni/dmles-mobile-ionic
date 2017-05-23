@@ -6,13 +6,15 @@ import { CaimComponent } from './caim/caim.component';
 import { EtmComponent } from './etm/etm.component';
 import { ImReceiptsComponent } from './im/im-receipts.component';
 import {CommonDirectivesModule} from "../../common/directives/common-directives.module";
+import { EtmDetailComponent } from "./etm/etm-detail/etm-detail.component";
 
 
 @NgModule({
-    declarations: [InventoryComponent, CaimComponent, EtmComponent, ImReceiptsComponent],
+    declarations: [InventoryComponent, CaimComponent, EtmComponent, ImReceiptsComponent,
+    EtmDetailComponent],
     imports: [IonicModule, CommonDirectivesModule],
     exports: [InventoryComponent],
-    entryComponents: [CaimComponent, EtmComponent, ImReceiptsComponent]
+    entryComponents: [CaimComponent, EtmComponent, ImReceiptsComponent, EtmDetailComponent]
 })
 export class InventoryModule {
 

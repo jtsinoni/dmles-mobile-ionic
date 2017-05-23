@@ -1,18 +1,21 @@
-import { LoadingController } from 'ionic-angular';
+import { LoadingController, Loading } from 'ionic-angular';
 
 export class Search {
 
     public searchValue: string;
-
+    private loader: Loading;
     constructor (public loadingCtrl: LoadingController) {
         this.searchValue = '';
     }
 
     public showLoadingData(value: string) {
-        let loader = this.loadingCtrl.create( {
-            content: "Searching for " + value,
-            duration: 3000
+        this.loader = this.loadingCtrl.create( {
+            content: "Searching for " + value
         });
-        loader.present();
+        this.loader.present();
+    }
+
+    public loadingEnded() {
+        this.loader.dismiss();
     }
 }

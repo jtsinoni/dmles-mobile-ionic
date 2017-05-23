@@ -1,5 +1,4 @@
-<ion-card class="ripple" class="growl-dialog" (swipe)="growlSwiped($event)">
-    <ion-card-header>
+<ion-item class="ripple" class="growl-dialog" (swipe)="growlSwiped($event)">
         <ion-grid>
             <ion-row>
                 <ion-col col-8>
@@ -13,11 +12,15 @@
                     <ion-icon name="close-circle" (click)="cancel()" right></ion-icon>
                 </ion-col>
             </ion-row>
+            <ion-row>
+                <ion-col width-100>
+                    {{growlMessage}}
+                </ion-col>
+            </ion-row>
         </ion-grid>
-    </ion-card-header>
-    <ion-card-content>
+    <!--<ion-content>
         <ion-col width-100>
             {{growlMessage}}
         </ion-col>
-    </ion-card-content>
-</ion-card>
+    </ion-content>-->
+</ion-item>

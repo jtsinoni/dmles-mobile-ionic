@@ -43,7 +43,10 @@ export class ApiService {
             case "OAuth":
                 url += ApiConstants.OAUTH_API + action;
                 break;
-            default:
+            case "AbiCatalog":
+                url += ApiConstants.ABI_CATALOG_API + action;
+                break;
+            default:            
                 url += this.managerName + '/Api/' + action;
         }
         return url;

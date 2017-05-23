@@ -23,6 +23,7 @@ import {DatabaseService} from "../../services/database.service";
 import {WindowService} from "../../services/window.service";
 import {BluetoothModalService} from "../../services/bluetooth-modal.service";
 import {CACService} from "../../services/cac.service";
+import { ABiCatalogService } from '../../services/catalog/abi-catalog.service';
 
 
 
@@ -56,6 +57,7 @@ export class CommonServicesModule {
                 DatabaseService,
                 BluetoothModalService,
                 CACService,
+                ABiCatalogService,
                 { provide: UpstreamService, useClass: TopicUpstreamService },]
         };
     }

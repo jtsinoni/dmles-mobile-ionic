@@ -28,7 +28,7 @@ export class AppConfigConstants {
     }
 
     public static messagingServer: any = {
-        host:"192.168.1.25",
+        host:"localhost",
         port:"9001",
         topic:"dmles-mobile",
         protocol:"ws",

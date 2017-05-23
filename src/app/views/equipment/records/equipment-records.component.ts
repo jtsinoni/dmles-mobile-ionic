@@ -72,9 +72,4 @@ export class EquipmentRecordsComponent {
         let errorModal = this.modalController.create(WarningDialogComponent, { txt: error, message: msg });
         errorModal.present();
     }
-
-    private test(search: String) {
-        alert(search);
-    }
-
 }

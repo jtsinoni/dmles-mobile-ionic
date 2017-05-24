@@ -40,6 +40,7 @@ export class EtmComponent extends Search {
   }
 
   public getSearchResults(searchValue: string) {
+    this.log.debug('getting search results for value: ' + searchValue)
     this.showLoadingData(searchValue);
     let server: ServerModel;
     this.hostServerService.getDefaultServer().then(s => server = s).then(() => {

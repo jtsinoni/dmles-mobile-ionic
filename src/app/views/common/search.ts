@@ -17,7 +17,7 @@ export class Search {
     private ngZone: NgZone;
 
     private loader: Loading;
-    
+
     constructor (public loadingCtrl: LoadingController) {
         this.init();
     }

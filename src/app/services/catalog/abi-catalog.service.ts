@@ -57,7 +57,7 @@ export class ABiCatalogService extends ApiService {
             updatedSearchValue = updatedSearchValue.substr("AND ".length);
         }
         // encode URI/URL reserved characters
-        return encodeURIComponent(updatedSearchValue);
+        return updatedSearchValue; //encodeURIComponent();
 
     }
 

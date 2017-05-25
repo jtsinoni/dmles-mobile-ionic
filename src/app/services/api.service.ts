@@ -81,6 +81,7 @@ export class ApiService {
     public post(action: string, data: any): Observable<any> {
         let url: string = this.determineUrl(action);
         this.log.debug(`${this.apiServiceName} - BT Post URL: ${url}`);
+        this.log.debug(`${this.apiServiceName} - BT Post Data: ${JSON.stringify(data)}`);
 
         return this.getLocalToken()
             .flatMap((token) => {

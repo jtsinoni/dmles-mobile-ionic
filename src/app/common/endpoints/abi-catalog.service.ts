@@ -22,12 +22,16 @@ export class ABiCatalogService extends ApiService {
     public getABiCatalogRecords(searchValue: string): Observable<any> {
 
         let updatedSearchValue = this.formatSearchValue(searchValue);
+        this.log.debug('update search is: ' + updatedSearchValue);
 
-        let searchString = 'getABiCatalogRecordESResults?queryString=' + updatedSearchValue;
+        let actionString = 'getABiCatalogRecordESResults';
 
-        this.log.debug('In getABiCatalogRecordESResults with (' + searchValue + ') making (' + searchString + ')');
-      
-        return this.get(searchString);
+          let searchInput = {
+                "queryString": updatedSearchValue,
+                "aggregations": ""
+            };
+        this.log.debug('search input: ' + searchInput);
+        return this.post(actionString, searchInput);
     }
 
     private formatSearchValue(searchValue: string) {

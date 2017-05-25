@@ -33,6 +33,7 @@ export class AppConfigConstants {
         default:{topic:"dmles-mobile"},
         im:{topic:"dmles-mobile-im"},
         eq:{topic:"dmles-mobile-eq"},
+        abi:{topic:"dmles-mobile-abi"},
         protocol:"ws",
         reconnectAttempts:3,
         reconnectPeriod:2000,

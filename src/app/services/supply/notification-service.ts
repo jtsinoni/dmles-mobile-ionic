@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http } from "@angular/http";
 import { NotificationModel } from "../../models/notification.model";
 import { LoggerService } from "../logger/logger-service";
-import { BaseDatabaseService } from '../../services/base-database.service';
-import { DatabaseTableModelService } from '../database-table-model.service';
+import { BaseDatabaseService } from '../database/base-database.service';
+import { DatabaseTableModelService } from '../database/database-table-model.service';
 
 @Injectable()
 export class NotificationService extends BaseDatabaseService<NotificationModel> {

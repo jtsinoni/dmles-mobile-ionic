@@ -2,8 +2,8 @@ import { Http } from "@angular/http";
 import { Injectable } from "@angular/core";
 import { LoggerService } from "./logger/logger-service";
 import { SettingsModel } from '../models/settings.model'
-import { BaseDatabaseService } from '../services/base-database.service';
-import { DatabaseTableModelService } from './database-table-model.service';
+import { BaseDatabaseService } from './database/base-database.service';
+import { DatabaseTableModelService } from './database/database-table-model.service';
 import { AppConfigConstants } from "../constants/app-config.constants";
 
 

@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { LoggerService } from "./logger/logger-service";
 import { ServerModel } from '../models/server.model'
-import { BaseDatabaseService } from '../services/base-database.service';
-import { DatabaseTableModelService } from './database-table-model.service'
+import { BaseDatabaseService } from './database/base-database.service';
+import { DatabaseTableModelService } from './database/database-table-model.service'
 
 @Injectable()
 export class HostServerService extends BaseDatabaseService<ServerModel> {

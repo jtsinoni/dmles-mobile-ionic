@@ -1,21 +1,21 @@
 import {Injectable}    from '@angular/core';
 import {LoggerService} from "../logger/logger-service";
-import {IMBarcodeTableModel} from "../../models/barcode/im-barcode-table.model";
 import {TopicUpstreamService} from "./topic-upstream.service";
 import {TopicMessagingService} from "../topic-messaging.service";
-import {IMDatabaseService} from "../database/im-database.service";
 import {AppConfigConstants} from "../../constants/app-config.constants";
+import {ABiDatabaseService} from "../database/abi-database.service";
+import {ABiBarcodeTableModel} from "../../models/barcode/abi-barcode-table.model";
 
 @Injectable()
-export class IMTopicUpstreamService extends TopicUpstreamService<IMDatabaseService> {
+export class ABiTopicUpstreamService extends TopicUpstreamService<ABiDatabaseService> {
     constructor(protected topicMessagingService: TopicMessagingService,
-                protected imDatabaseService: IMDatabaseService,
+                protected abiDatabaseService: ABiDatabaseService,
                 public log: LoggerService) {
-        super(topicMessagingService, imDatabaseService, AppConfigConstants.messagingServer.im.topic, log);
+        super(topicMessagingService, abiDatabaseService, AppConfigConstants.messagingServer.abi.topic, log);
     }
 
     setup() {
-        this.log.debug(`IMTopicUpstream Service - Start`);
+        this.log.debug(`ABiTopicUpstream Service - Start`);
 
         // Attempt to connect to messaging server if connect flag is true
         if (AppConfigConstants.messagingServer.connect) {
@@ -24,6 +24,6 @@ export class IMTopicUpstreamService extends TopicUpstreamService<IMDatabaseServi
     }
 
     public sendData(data: any): Promise<any> {
-        return super.sendData(new IMBarcodeTableModel(data.text, data.format));
+        return super.sendData(new ABiBarcodeTableModel(data.text, data.format));
     }
 }

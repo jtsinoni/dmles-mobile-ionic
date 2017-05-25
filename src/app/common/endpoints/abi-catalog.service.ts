@@ -1,35 +1,33 @@
-import { Injectable } from "@angular/core";
-import { Http } from "@angular/http";
-import { Observable } from "rxjs";
+import {Injectable} from "@angular/core";
+import {Http} from "@angular/http";
+import {Observable} from "rxjs";
 
-import { ApiService } from "../../services/api.service";
-import { AppService } from "../../services/app.service";
-import { AuthenticationService } from "../../services/authentication.service";
-import { LoggerService } from "../../services/logger/logger-service";
+import {ApiService} from "../../services/api.service";
+import {AppService} from "../../services/app.service";
+import {AuthenticationService} from "../../services/authentication.service";
+import {LoggerService} from "../../services/logger/logger-service";
 
 
 @Injectable()
 export class ABiCatalogService extends ApiService {
 
-    constructor(
-        http: Http,
-        public log: LoggerService,
-        protected authenticationService: AuthenticationService,
-        private app: AppService) {
+    constructor(http: Http,
+                public log: LoggerService,
+                protected authenticationService: AuthenticationService,
+                private app: AppService) {
         super(http, log, authenticationService, app, "AbiCatalog");
     }
 
     public getABiCatalogRecords(searchValue: string): Observable<any> {
-
         let updatedSearchValue = this.formatSearchValue(searchValue);
         this.log.debug('update search is: ' + updatedSearchValue);
 
         let actionString = 'getABiCatalogRecordESResults';
+        let searchInput = {
+            "queryString": updatedSearchValue,
+            "aggregations": ""
+        };
 
-          let searchInput = {
-                "queryString": updatedSearchValue,
-                "aggregations": ""
-            };
         this.log.debug('search input: ' + searchInput);
         return this.post(actionString, searchInput);
     }
@@ -57,7 +55,7 @@ export class ABiCatalogService extends ApiService {
             updatedSearchValue = updatedSearchValue.substr("AND ".length);
         }
         // encode URI/URL reserved characters
-        return encodeURIComponent(updatedSearchValue);
+        return updatedSearchValue; //encodeURIComponent();
 
     }
 

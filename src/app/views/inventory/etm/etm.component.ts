@@ -41,7 +41,6 @@ export class EtmComponent extends Search {
         super(loadingCtrl);
         //this.item = new ABiCatalogResultModel();
         this.items = new Array();
-
     }
 
     public barcodeScan() {
@@ -87,7 +86,7 @@ export class EtmComponent extends Search {
 
     public getSearchResults(searchValue: string) {
         this.log.debug('getting search results for value: ' + searchValue)
-        this.showLoadingData(searchValue);
+        this.showLoadingData({content:`Searching for ${searchValue}`});
         let server: ServerModel;
         this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
             this.abiCatalogService.setServer(server);
@@ -98,7 +97,7 @@ export class EtmComponent extends Search {
                         if (response) {
                             this.items = response.hits.fields;
                         }
-                        //this.log.debug(`data => ${response}`)
+                        //this.log.debug(`data => ${response.json()}`)
                         this.loadingEnded();
                     },
                     (error) => {
@@ -106,11 +105,7 @@ export class EtmComponent extends Search {
                         // todo show error growl...?
                         this.log.log(`Error => ${error}`);
                     });
-
-
         });
-
-
     }
 
     itemTapped(item: ABiCatalogModel) {
@@ -123,12 +118,9 @@ export class EtmComponent extends Search {
     public presentModal(item: ABiCatalogModel) {
         this.modal = this.modalController.create(EtmDetailComponent, {selected: item});
         this.modal.present();
-
     }
 
     public cancelModal() {
         this.modal.dismiss();
     }
-
-
 }

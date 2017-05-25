@@ -21,13 +21,13 @@
         </button>
     </div>
 
-	<ion-list>
-		<button ion-item *ngFor="let abiItem of items" (click)="itemTapped(abiItem)">
-				<div class="item-note" item-center>
-				<h2>Id:	{{abiItem.enterpriseProductIdentifier}}</h2>
+    <ion-list>
+        <button ion-item class="ripple" *ngFor="let abiItem of items"  (click)="itemTapped(abiItem)">
+            <div class="item-note" item-center>
+                <h2>Id:	{{abiItem.enterpriseProductIdentifier}}</h2>
                 <p>Noun: {{abiItem.productNoun}}</p>
-				<p style="word-wrap: break-word;">{{abiItem.fullDescription}}</p>
-				</div>
+                <p style="word-wrap: break-word;">{{abiItem.fullDescription}}</p>
+            </div>
         </button>
-	</ion-list>
+    </ion-list>
 </ion-content>

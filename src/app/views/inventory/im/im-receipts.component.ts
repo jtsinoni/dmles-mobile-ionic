@@ -22,6 +22,11 @@ export class ImReceiptsComponent extends Search {
         super(loadingCtrl);
     }
 
+    public getSearchResults(searchValue: string) {
+        this.log.debug('getting search results for value: ' + searchValue)
+        this.showLoadingData({content:`Inventory search TBD, searching for ${searchValue}`, duration: 3000});
+    }
+
     public barcodeScan() {
         this.barcodeScannerService.scan()
             .then((results) => {

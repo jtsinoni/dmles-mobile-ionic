@@ -4,21 +4,18 @@ import { LoggerService } from "./services/logger/logger-service";
 //import { AppMenuComponent } from "./views/common/header/app-menu.component";
 import { AreaModel } from './models/area.model';
 
-import { TopicComponent } from './views/topic/topic.component';
 import { EquipmentComponent } from './views/equipment/equipment.component';
 import { InventoryComponent } from './views/inventory/inventory.component';
 import { SupplyComponent } from './views/supply/supply.component';
 import { AdminComponent } from "./views/admin/admin.component";
-import {AppConfigConstants} from "./constants/app-config.constants";
-
 
 @Component({
     templateUrl: './app-container.html'
 })
 export class AppContainerComponent {
 
-    demoAreas = new Array<AreaModel>();  
-   
+    demoAreas = new Array<AreaModel>();
+
 
     constructor(public navCtrl: NavController,
         public alertController: AlertController,
@@ -35,11 +32,6 @@ export class AppContainerComponent {
         this.demoAreas.push(new AreaModel('Admin', 'card', AdminComponent, 'light'));
         this.demoAreas.push(new AreaModel('Supply', 'document', SupplyComponent, 'gray'));
         this.demoAreas.push(new AreaModel('Inventory', 'barcode', InventoryComponent, 'light'));
-        if(AppConfigConstants.messagingServer.showStats) {
-            this.demoAreas.push(new AreaModel('Messaging', 'git-network', TopicComponent, 'light'));
-        }
-
-        
     }
 
      goTo(area: AreaModel) {

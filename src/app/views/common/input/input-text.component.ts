@@ -48,6 +48,7 @@ export class InputTextComponent extends Search {
     ionViewDidEnter() { // NOTE: not as reliable: ionViewDidLoad()
         // display keyboard and set focus when we arrive
         this.platform.ready().then(() => {
+            // iOS get => Although it works get warning: Showing keyboard not supported in iOS due to platform limitations.
             setTimeout(() => {
                 Keyboard.show();
             }, 300); // increased timeout from 150ms, seemed too short

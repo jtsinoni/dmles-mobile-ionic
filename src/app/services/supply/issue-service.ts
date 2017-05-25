@@ -3,7 +3,7 @@ import { Http } from "@angular/http";
 import { IssueModel } from '../../models/issue.model';
 import { LoggerService } from "../logger/logger-service";
 import { BaseDatabaseService } from '../../services/base-database.service';
-import { DatabaseService } from '../../services/database.service';
+import { DatabaseTableModelService } from '../database-table-model.service';
 
 
 @Injectable()
@@ -13,7 +13,7 @@ export class IssueService extends BaseDatabaseService<IssueModel> {
   assetDirectory: string = "assets/files";
 
 
-  constructor(databaseService: DatabaseService,
+  constructor(databaseService: DatabaseTableModelService,
     private http: Http,
     log: LoggerService) {
       // TODO store in db ? inject table : null

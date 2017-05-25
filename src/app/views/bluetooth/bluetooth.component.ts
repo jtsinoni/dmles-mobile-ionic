@@ -279,8 +279,8 @@ export class BluetoothComponent {
         //TESTING Windows: device = new BluetoothModel('class_mec...','id_mec...','address_mec...','Zebra');
 
         let labelContent: Array<string> = [];
-        labelContent.push('[ECN:012345 Org ID:ABCDEF]');
-        labelContent.push('[Org Name:MIKE AA ARMY ME]');
+        labelContent.push('[ECN:012345 OwnerModel ID:ABCDEF]');
+        labelContent.push('[OwnerModel Name:MIKE AA ARMY ME]');
         labelContent.push('[Item ID: SAMPLE label 12]');
         labelContent.push('[Nomen:               ABC]');
         labelContent.push(GenerateBarcodeLabelService.BARCODE_SYMBOL + '012345 ABCDEF');

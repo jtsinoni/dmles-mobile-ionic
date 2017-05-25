@@ -43,10 +43,13 @@ export class ApiService {
             case "OAuth":
                 url += ApiConstants.OAUTH_API + action;
                 break;
-            case "AbiCatalog":
-                url += ApiConstants.ABI_CATALOG_API + action;
+            case "Inventory":
+                url += ApiConstants.INVENTORY_API + action;
                 break;
-            default:            
+            case "AbiCatalog":
+                url += ApiConstants.ABI_PRODUCTION_API + action;
+                break;
+            default:
                 url += this.managerName + '/Api/' + action;
         }
         return url;
@@ -106,15 +109,15 @@ export class ApiService {
         )
     }
 
-    public setServer(server: ServerModel) {     
-        this.defaultServer = server;        
+    public setServer(server: ServerModel) {
+        this.defaultServer = server;
     }
 
     getServer() {
-        if (this.defaultServer === null || this.defaultServer === undefined) {           
+        if (this.defaultServer === null || this.defaultServer === undefined) {
             return this.App.getBtBaseUrl();
         } else {
-            return this.defaultServer.toString();            
+            return this.defaultServer.toString();
         }
     }
 

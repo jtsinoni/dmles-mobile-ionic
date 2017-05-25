@@ -3,7 +3,7 @@ import { Http } from "@angular/http";
 import { NotificationModel } from "../../models/notification.model";
 import { LoggerService } from "../logger/logger-service";
 import { BaseDatabaseService } from '../../services/base-database.service';
-import { DatabaseService } from '../../services/database.service';
+import { DatabaseTableModelService } from '../database-table-model.service';
 
 @Injectable()
 export class NotificationService extends BaseDatabaseService<NotificationModel> {
@@ -12,12 +12,12 @@ export class NotificationService extends BaseDatabaseService<NotificationModel> 
   assetDirectory: string = "assets/files";
 
   constructor(
-     databaseService: DatabaseService,
+     databaseService: DatabaseTableModelService,
      private http: Http,
     log: LoggerService) {
       // TODO store in db ? inject table : null
     super('Supply Notification Service', null, log);
-   
+
   }
 
   getNotifications() {

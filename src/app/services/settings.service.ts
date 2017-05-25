@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { LoggerService } from "./logger/logger-service";
 import { SettingsModel } from '../models/settings.model'
 import { BaseDatabaseService } from '../services/base-database.service';
-import { DatabaseService } from '../services/database.service';
+import { DatabaseTableModelService } from './database-table-model.service';
 import { AppConfigConstants } from "../constants/app-config.constants";
 
 
@@ -11,13 +11,13 @@ import { AppConfigConstants } from "../constants/app-config.constants";
 export class SettingsService extends BaseDatabaseService<SettingsModel> {
     assetFilename: string = "app-settings.json";
     assetDirectory: string = "assets/files";
-    
+
     constructor(
-        databaseService: DatabaseService,
+        databaseService: DatabaseTableModelService,
         log: LoggerService,
         private http: Http) {
         super('Settings Service', databaseService.getSettingsDataTable(), log);
-        
+
     }
 
     public getAssetFile() {
@@ -37,7 +37,7 @@ export class SettingsService extends BaseDatabaseService<SettingsModel> {
                     }, () => {
                         for (let s of items) {
                             this.log.info(s.settingName);
-                            s.selectedValue = s.setting;                           
+                            s.selectedValue = s.setting;
                             this.add(s);
                         }
                     });

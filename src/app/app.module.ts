@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, Injector} from '@angular/core';
 import {HttpModule} from '@angular/http';
 import {FormsModule} from "@angular/forms";
 import {IonicApp, IonicModule} from 'ionic-angular';
@@ -29,6 +29,12 @@ import {LoggerService} from "./services/logger/logger-service";
 import {FileLoggerService} from "./services/logger/file-logger-service";
 import {SecurityModule} from "./views/security/security.module";
 import {LocalStorageModule} from "./services/local-storage/local-storage.module";
+
+// Use AppInjector to get instance of service without constructor injection, because in some cases we don't want to
+// inject the service on all of the derivative components.
+//
+// @see ../dmles-mobile-ionic/src/app/views/common/search.ts for example usage
+export let AppInjector: Injector;
 
 @NgModule({
     declarations: [
@@ -71,4 +77,8 @@ import {LocalStorageModule} from "./services/local-storage/local-storage.module"
         // //{ provide: ErrorHandler, useClass: IonicErrorHandler }
     ]
 })
-export class AppModule { }
+export class AppModule {
+    constructor(private injector: Injector) {
+        AppInjector = this.injector;
+    }
+}

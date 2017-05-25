@@ -2,12 +2,12 @@ import { Injectable } from "@angular/core";
 import { LoggerService } from "./logger/logger-service";
 import { ServerModel } from '../models/server.model'
 import { BaseDatabaseService } from '../services/base-database.service';
-import { DatabaseService } from '../services/database.service'
+import { DatabaseTableModelService } from './database-table-model.service'
 
 @Injectable()
 export class HostServerService extends BaseDatabaseService<ServerModel> {
 
-    constructor(private databaseService: DatabaseService, log: LoggerService) {
+    constructor(private databaseService: DatabaseTableModelService, log: LoggerService) {
         super("Host Server Service", databaseService.getServersDataTable(), log);
 
     }

@@ -5,9 +5,9 @@ import {LoggerService} from "./logger/logger-service";
 import {AppConfigConstants} from "../constants/app-config.constants";
 
 @Injectable()
-export class DatabaseService{
+export class DatabaseTableModelService{
     private dataDB: DataTableDatabase;
-    private serviceName = "Database Service";
+    private serviceName = "DatabaseTableModel Service";
 
     constructor(private log: LoggerService) {
         this.log.debug(`${this.serviceName} - Start`);
@@ -18,16 +18,19 @@ export class DatabaseService{
         return this.dataDB.settings;
     }
 
-    getServersDataTable() {        
+    getServersDataTable() {
         return this.dataDB.servers;
     }
 
     getStoreDataTable() {
         return this.dataDB.data;
-    }   
+    }
 
     getOrderDataTable() {
         return this.dataDB.orders;
     }
 
+    getIMDataTable() {
+        return this.dataDB.im;
+    }
 }

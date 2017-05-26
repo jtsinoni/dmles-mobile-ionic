@@ -1,8 +1,8 @@
 import {Injectable}    from '@angular/core';
 
-import {DataTableDatabase} from '../database/data-table.database';
-import {LoggerService} from "./logger/logger-service";
-import {AppConfigConstants} from "../constants/app-config.constants";
+import {DataTableDatabase} from '../../database/data-table.database';
+import {LoggerService} from "../logger/logger-service";
+import {AppConfigConstants} from "../../constants/app-config.constants";
 
 @Injectable()
 export class DatabaseTableModelService{
@@ -32,5 +32,9 @@ export class DatabaseTableModelService{
 
     getIMDataTable() {
         return this.dataDB.im;
+    }
+
+    getABiDataTable() {
+        return this.dataDB.abi;
     }
 }

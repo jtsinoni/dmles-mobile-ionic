@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { LoggerService } from "./logger/logger-service";
-import { StoreDataTableModel } from '../models/store-data-table.model'
-import { BaseDatabaseService } from '../services/base-database.service';
+import { LoggerService } from "../logger/logger-service";
+import { StoreDataTableModel } from '../../models/store-data-table.model'
+import { BaseDatabaseService } from './base-database.service';
 import { DatabaseTableModelService } from './database-table-model.service';
 
 @Injectable()

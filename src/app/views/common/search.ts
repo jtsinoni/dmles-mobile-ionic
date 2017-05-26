@@ -17,7 +17,7 @@ export class Search {
     private ngZone: NgZone;
 
     private loader: Loading;
-    
+
     constructor (public loadingCtrl: LoadingController) {
         this.init();
     }
@@ -45,10 +45,14 @@ export class Search {
         });
     }
 
-    public showLoadingData(value: string) {
-        this.loader = this.loadingCtrl.create( {
-            content: "Searching for " + value
-        });
+    public showLoadingData(args: any) {
+        let params = {content: args.content} as any;
+
+        if(args.duration) {
+            params.duration = args.duration;
+        }
+
+        this.loader = this.loadingCtrl.create(params);
         this.loader.present();
     }
 

@@ -3,18 +3,31 @@
 	<ion-item>
 		<ion-input type="text" placeholder="Search" [(ngModel)]="searchValue" name="searchInput" autofocus></ion-input>
 	</ion-item>
-	<div padding>
-		<button ion-button color="primary" block (click)="getSearchResults(searchValue)">
-			<ion-icon name="search"></ion-icon>
-		</button>
-	</div>
-	<ion-list>
-		<button ion-item class="ripple" *ngFor="let abiItem of items"  (click)="itemTapped(abiItem)">			
-				<div class="item-note" item-center>
-				<h2>Id:	{{abiItem.enterpriseProductIdentifier}}</h2>				
+    <div padding>
+        <div *ngIf="isConnected">
+            <button ion-button color="primary" block (click)="getSearchResults(searchValue)" [disabled]="!searchValue">
+                <ion-icon name="search"></ion-icon>
+            </button>
+        </div>
+
+        <div *ngIf="!isConnected">
+            <button ion-button color="primary" block (click)="storeBarcode()" [disabled]="!barcodeResults">
+                <ion-icon name="add"></ion-icon>
+            </button>
+        </div>
+
+        <button ion-button color="primary" block (click)="barcodeScan()">
+            <ion-icon name="barcode"></ion-icon>
+        </button>
+    </div>
+
+    <ion-list>
+        <button ion-item class="ripple" *ngFor="let abiItem of items"  (click)="itemTapped(abiItem)">
+            <div class="item-note" item-center>
+                <h2>Id:	{{abiItem.enterpriseProductIdentifier}}</h2>
                 <p>Noun: {{abiItem.productNoun}}</p>
-				<p style="word-wrap: break-word;">{{abiItem.fullDescription}}</p>
-				</div>		  
-		</button>
-	</ion-list>	
+                <p style="word-wrap: break-word;">{{abiItem.fullDescription}}</p>
+            </div>
+        </button>
+    </ion-list>
 </ion-content>

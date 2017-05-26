@@ -1,6 +1,6 @@
 import Dexie from 'dexie';
-import { LoggerService } from "./logger/logger-service";
-import { BaseDataTableModel } from '../models/base-data-table.model';
+import { LoggerService } from "../logger/logger-service";
+import { BaseDataTableModel } from '../../models/base-data-table.model';
 
 export abstract class BaseDatabaseService<M extends BaseDataTableModel> {
     private serviceName;

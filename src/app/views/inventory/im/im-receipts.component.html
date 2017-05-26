@@ -5,7 +5,7 @@
     </ion-item>
     <div padding>
         <div *ngIf="isConnected">
-            <button ion-button color="primary" block (click)="showLoadingData(searchValue)" [disabled]="!searchValue">
+            <button ion-button color="primary" block (click)="getSearchResults(searchValue)" [disabled]="!searchValue">
                 <ion-icon name="search"></ion-icon>
             </button>
         </div>

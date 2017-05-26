@@ -1,6 +1,6 @@
-import {BaseDataTableModel} from './base-data-table.model';
+import {BaseDataTableModel} from '../base-data-table.model';
 
-export class IMTableModel extends BaseDataTableModel {
+export class BarcodeTableModel extends BaseDataTableModel {
     id?: number;
     barcodeData: string;
     barcodeType?: string;

@@ -1,7 +1,7 @@
 import {TopicMessagingService} from "../topic-messaging.service";
 import {LoggerService} from "../logger/logger-service";
 import {BaseDataTableModel} from "../../models/base-data-table.model";
-import {BaseDatabaseService} from "../base-database.service";
+import {BaseDatabaseService} from "../database/base-database.service";
 import {Network} from "ionic-native";
 
 export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDataTableModel>> {

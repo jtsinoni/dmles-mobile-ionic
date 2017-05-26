@@ -3,7 +3,8 @@ import { StoreDataTableModel } from '../models/store-data-table.model';
 import { SettingsModel } from '../models/settings.model';
 import { ServerModel } from '../models/server.model';
 import { OrderModel } from '../models/order.model';
-import {IMTableModel} from '../models/im-table.model';
+import {IMBarcodeTableModel} from '../models/barcode/im-barcode-table.model';
+import {ABiBarcodeTableModel} from '../models/barcode/abi-barcode-table.model';
 import { LoggerService } from "../services/logger/logger-service";
 
 export class DataTableDatabase extends Dexie {
@@ -11,7 +12,8 @@ export class DataTableDatabase extends Dexie {
     settings: Dexie.Table<SettingsModel, number>;
     servers: Dexie.Table<ServerModel, number>;
     orders: Dexie.Table<OrderModel, number>;
-    im: Dexie.Table<IMTableModel, number>;
+    im: Dexie.Table<IMBarcodeTableModel, number>;
+    abi: Dexie.Table<ABiBarcodeTableModel, number>;
 
     constructor(databaseName: string, private log: LoggerService) {
         super(databaseName);
@@ -36,6 +38,14 @@ export class DataTableDatabase extends Dexie {
             orders: '++id, documentNumber, referenceId, itemId, requiredDate, orderDate, orderState, orderQuantity, requestor, unitOfPurchasePrice',
             im: '++id, barcodeData, barcodeType',
         });
+        this.version(4).stores({
+            data: "++id,data",
+            servers: '++id, serverName, port, protocol, isDefault',
+            settings: '++id, settingName, setting, dataType, *values',
+            orders: '++id, documentNumber, referenceId, itemId, requiredDate, orderDate, orderState, orderQuantity, requestor, unitOfPurchasePrice',
+            im: '++id, barcodeData, barcodeType',
+            abi: '++id, barcodeData, barcodeType',
+        });
 
 
         // Open it
@@ -46,6 +56,7 @@ export class DataTableDatabase extends Dexie {
         this.settings.mapToClass(SettingsModel);
         this.servers.mapToClass(ServerModel);
         this.orders.mapToClass(OrderModel);
-        this.im.mapToClass(IMTableModel);
+        this.im.mapToClass(IMBarcodeTableModel);
+        this.abi.mapToClass(ABiBarcodeTableModel);
     }
 }

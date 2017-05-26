@@ -4,7 +4,7 @@ import {LoggerService} from "../logger/logger-service";
 import {StoreDataTableModel} from "../../models/store-data-table.model";
 import {TopicUpstreamService} from "./topic-upstream.service";
 import {TopicMessagingService} from "../topic-messaging.service";
-import {StoreDatabaseService} from "../store-database.service";
+import {StoreDatabaseService} from "../database/store-database.service";
 import {AppConfigConstants} from "../../constants/app-config.constants";
 
 @Injectable()

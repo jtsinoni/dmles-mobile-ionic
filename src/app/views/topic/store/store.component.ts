@@ -1,7 +1,7 @@
 import {Component} from "@angular/core/src/metadata/directives";
 import {OnInit} from "@angular/core";
 import {StoreDataTableModel} from "../../../models/store-data-table.model";
-import {StoreDatabaseService} from "../../../services/store-database.service";
+import {StoreDatabaseService} from "../../../services/database/store-database.service";
 import {CommonDataService} from "../../../services/common-data.service";
 import {LoggerService} from "../../../services/logger/logger-service";
 

@@ -143,13 +143,13 @@ export class GenerateBarcodeLabelService {
                     }
                 }
 
-                // Barcode?
+                // BarcodeHelper?
                 if ((label_line_raw.length > 1) && (label_line_raw.startsWith(GenerateBarcodeLabelService.BARCODE_SYMBOL))) {
                     H_OR_B = 'B';
                     label_line_raw = label_line_raw.substring(2); // NOTE: Need to trim off the special char
                 }
 
-                // DataMatrix Barcode?
+                // DataMatrix BarcodeHelper?
                 // reduced DataMatrix CRUD
                 if (label_line_raw.indexOf(GenerateBarcodeLabelService.HAS_DATAMATRIX) > 0) {
                     H_OR_B = 'B';
@@ -167,7 +167,7 @@ export class GenerateBarcodeLabelService {
 
                 }
 
-                // BARCODE? // notice we check the H_OR_B flag set above (H = Human, B = Barcode)
+                // BARCODE? // notice we check the H_OR_B flag set above (H = Human, B = BarcodeHelper)
                 else if (H_OR_B == 'B') {
                     label_line_fmt = label_line_fmt + GenerateBarcodeLabelService.ZEBRA_BARCODE_TAG + " " + x_start_zebra + " " +
                         y_start_zebra + " " + label_line_raw + GenerateBarcodeLabelService.CRLF;
@@ -303,7 +303,7 @@ export class GenerateBarcodeLabelService {
                     }
                 }
 
-                // Barcode?
+                // BarcodeHelper?
                 if ((label_line_raw.length > 1) && (label_line_raw.startsWith(GenerateBarcodeLabelService.BARCODE_SYMBOL))) {
                     H_OR_B = 'B';
                     c_font = 6;
@@ -314,7 +314,7 @@ export class GenerateBarcodeLabelService {
                     x_start = x_start + 5; // We NEED to advance a little "before" barcode
                 }
 
-                // DataMatrix Barcode?
+                // DataMatrix BarcodeHelper?
                 // reduced DataMatrix CRUD
                 if (label_line_raw.indexOf(GenerateBarcodeLabelService.HAS_DATAMATRIX) > 0) {
                     H_OR_B = 'B';

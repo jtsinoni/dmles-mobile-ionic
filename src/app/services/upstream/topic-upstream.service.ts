@@ -3,8 +3,13 @@ import {LoggerService} from "../logger/logger-service";
 import {BaseDataTableModel} from "../../models/base-data-table.model";
 import {BaseDatabaseService} from "../database/base-database.service";
 import {Network} from "ionic-native";
+import {Observable, Subject} from "rxjs";
 
 export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDataTableModel>> {
+    private static onServiceAvailableSubject: Subject<any> = new Subject();
+    private static onTryToConnectSubject: Subject<any> = new Subject();
+    private static onReconnectAttemptsSubject: Subject<any> = new Subject();
+
     protected client: any;
     protected serviceName = "TopicUpstreamService Service";
 
@@ -16,6 +21,18 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
     }
 
     abstract setup();
+
+    public static onServiceAvailable(): Observable<any> {
+        return (TopicUpstreamService.onServiceAvailableSubject.asObservable());
+    }
+
+    public static onTryToConnect(): Observable<any> {
+        return (TopicUpstreamService.onTryToConnectSubject.asObservable());
+    }
+
+    public static onReconnectAttempts(): Observable<any> {
+        return (TopicUpstreamService.onReconnectAttemptsSubject.asObservable());
+    }
 
     protected start() {
         this.startHelper();
@@ -41,8 +58,6 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
             .then((client) => {
                 this.client = client;
                 if(client.connected) {
-                    this.log.debug(`Received connect event, Client ID: ${client.options.clientId}, connected: ${client.connected}`);
-
                     return client;
                 } else {
                     throw new Error("Client not connected to messaging server.");
@@ -124,7 +139,7 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
      * @param param
      * @returns {Promise<any>}
      */
-    protected sendData(data: any): Promise<any> {
+    public sendData(data: any): Promise<any> {
         if(this.clientConnected()) {
             // Connect to Host and Publish messages to Topic
             return this.sendDataServer(JSON.stringify(data));

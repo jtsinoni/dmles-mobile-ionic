@@ -1,34 +1,34 @@
 [
     {
-        "settingName": "Enable Scanner",
+        "settingsName": "Enable Scanner",
         "setting": true,
         "dataType": "boolean"
     },
     {
-        "settingName": "Work Area",
+        "settingsName": "Work Area",
         "setting": "Inventory",
         "dataType": "select",
          "values": ["All", "Inventory", "Ordering", "Equipment"]
 
     },
     {
-        "settingName": "Pin Code",
+        "settingsName": "Pin Code",
         "setting": 0,
         "dataType": "number"
     },
     {
-        "settingName": "Allow Offline",
+        "settingsName": "Allow Offline",
         "setting": "true",
         "dataType": "boolean"
     },
     {
-        "settingName": "Theme",
+        "settingsName": "Theme",
         "setting": "Light",
         "dataType": "select",
         "values": ["Light", "Dark", "Creamy", "Dystopian"]
     },
     {
-        "settingName": "Colors",
+        "settingsName": "Colors",
         "setting": "Standard",
         "dataType": "select",
         "values": ["Standard", "Fuchsia", "Mauve", "NuttyCaCa"]

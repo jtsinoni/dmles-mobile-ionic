@@ -120,7 +120,7 @@ export class BluetoothComponent {
         let message = "";
         //let temp: SettingsModel = new SettingsModel(AppConfigConstants.printer.bluetoothBarcodeKey, "Zebra", "");
 
-        this.settingService.getWhereUnindexed("settingName", AppConfigConstants.printer.bluetoothBarcodeKey).then((s) => {
+        this.settingService.getWhereUnindexed("settingsName", AppConfigConstants.printer.bluetoothBarcodeKey).then((s) => {
             message = 'after getWhereUnindexed() (' + JSON.stringify(s) + ')'
             this.myLogger(Level.DEBUG, message);
 
@@ -130,7 +130,7 @@ export class BluetoothComponent {
             if (s.length == 1) {
                 //walk this list (which is a list of 1) looking for 'where' with 'value'
                 s.forEach((row) => {
-                    message = 'FOUND (' + row.id + ',' + row.settingName + ',' + row.setting + ')';
+                    message = 'FOUND (' + row.id + ',' + row.settingsName + ',' + row.setting + ')';
                     this.myLogger(Level.DEBUG, message);
                     this.selectedPrinter = row.setting;
                     this.itemTapped(this.selectedPrinter); // note: this will set the .selectedDevice
@@ -148,7 +148,7 @@ export class BluetoothComponent {
             }
 
         }).catch((error) => {
-            message = `Failed to getWhereUnindexed(settingName, ` + AppConfigConstants.printer.bluetoothBarcodeKey + `), Error => ${error}`;
+            message = `Failed to getWhereUnindexed(settingsName, ` + AppConfigConstants.printer.bluetoothBarcodeKey + `), Error => ${error}`;
             this.showGrowl(LoggerLevel.ERROR, 'Error: ', message);
         });
     }

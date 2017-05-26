@@ -7,7 +7,7 @@
       <ion-label>My Settings</ion-label>
     </ion-item-divider>
     <ion-item *ngFor="let setting of settings" (press)="itemSelected(setting)">
-      <ion-label>{{setting.settingName}}</ion-label>
+      <ion-label>{{setting.settingsName}}</ion-label>
       <ion-toggle [hidden]="isHidden(setting, 'boolean')" [(ngModel)]="setting.setting" (ionChange)="boolChanged(setting)"></ion-toggle>
       <ion-input [hidden]="isHidden(setting, 'number')" type="number" [(ngModel)]="setting.setting" (blur)="numberChanged(setting)"></ion-input>
       <ion-input [hidden]="isHidden(setting, 'text')" type="text" [(ngModel)]="setting.setting" (blur)="textChanged(setting)"></ion-input>

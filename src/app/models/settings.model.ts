@@ -1,14 +1,14 @@
 import {BaseDataTableModel} from './base-data-table.model';
 
 export interface ISettingsModel {
-    settingName: string;
+    settingsName: string;
     setting: any;   
     dataType: string;
 }
 
 export class SettingsModel extends BaseDataTableModel implements ISettingsModel {
    
-    settingName: string
+    settingsName: string
     setting: any;
     dataType: string;
     values: Array<any>;
@@ -16,7 +16,7 @@ export class SettingsModel extends BaseDataTableModel implements ISettingsModel 
     
     constructor(key: string, setting: any, dataType: string, id?: number) {
         super(id);
-        this.settingName = key;
+        this.settingsName = key;
         this.setting = setting;
         this.dataType = dataType
         this.selectedValue = setting;
@@ -24,7 +24,7 @@ export class SettingsModel extends BaseDataTableModel implements ISettingsModel 
     }
 
     toString() : string {
-        return this.id + ' ' + this.settingName + ' ' + this.setting;
+        return this.id + ' ' + this.settingsName + ' ' + this.setting;
     }
 
 

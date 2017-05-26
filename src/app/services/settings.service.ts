@@ -36,7 +36,7 @@ export class SettingsService extends BaseDatabaseService<SettingsModel> {
                         this.log.error(error);
                     }, () => {
                         for (let s of items) {
-                            this.log.info(s.settingName);
+                            this.log.info(s.settingsName);
                             s.selectedValue = s.setting;
                             this.add(s);
                         }
@@ -47,7 +47,7 @@ export class SettingsService extends BaseDatabaseService<SettingsModel> {
     }
 
     isBluetoothBarcodePrinterSettingsCallback = (s: SettingsModel): boolean => {
-        return s.settingName === AppConfigConstants.printer.bluetoothBarcodeKey;
+        return s.settingsName === AppConfigConstants.printer.bluetoothBarcodeKey;
     }
 
     getBluetoothBarcodePrinterSettingsCount():Promise<number> {

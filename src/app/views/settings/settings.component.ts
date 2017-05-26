@@ -75,7 +75,7 @@ export class SettingsComponent {
   }
 
   itemSelected(setting: SettingsModel) {
-    this.log.debug('you selected setting: ' + setting.settingName);
+    this.log.debug('you selected setting: ' + setting.settingsName);
     this.selectedItem = setting;
   }
 

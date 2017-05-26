@@ -9,7 +9,7 @@ describe('dmles-mobile-ionic-app-container', () => {
     instance = new AppContainerComponent((<any> new NavMock),
     (<any> new AlertControllerMock),
     (<any> new LoggerServiceMock),
-     (<any> new AppMock), (<any> new MenuControllerMock));
+     (<any> new AppMock), (<any> new MenuControllerMock), (<any> new LoggerServiceMock));
     instance['nav'] = (<any>new NavMock());
   });
 

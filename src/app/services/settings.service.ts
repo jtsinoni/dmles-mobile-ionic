@@ -50,14 +50,22 @@ export class SettingsService extends BaseDatabaseService<SettingsModel> {
         return s.settingsName === AppConfigConstants.printer.bluetoothBarcodeKey;
     }
 
-    getBluetoothBarcodePrinterSettingsCount():Promise<number> {
+    getBluetoothBarcodePrinterSettingsCount(): Promise<number> {
         return this.getFilteredCount(this.isBluetoothBarcodePrinterSettingsCallback);
     }
 
-    deleteBluetoothBarcodePrinterSettings():Promise<number> {
+    deleteBluetoothBarcodePrinterSettings(): Promise<number> {
         return this.deleteFilteredCollection(this.isBluetoothBarcodePrinterSettingsCallback);
-}
+    }
 
+    actionPositionSettingCallBack = (s: SettingsModel): boolean => {
+        return s.settingsName == "Action Position";
+    }
+
+    getActionPositionSetting(): Promise<SettingsModel> {
+        return this.findFirst(this.actionPositionSettingCallBack)
+
+    }
 
 
 }

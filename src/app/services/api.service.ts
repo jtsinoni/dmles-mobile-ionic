@@ -62,6 +62,7 @@ export class ApiService {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Authorization', 'Basic ' + encodedDn);
+        headers.append('Accept', 'application/json');
         headers.append('ClientId', 'dmles');
 
         return this.http.post(url, {}, { headers: headers });
@@ -76,6 +77,7 @@ export class ApiService {
                 let headers = new Headers();
                 headers.append('Authorization', 'Token ' + token);
                 headers.append('ClientId', 'dmles');
+                headers.append('Accept', 'application/json');
 
                 return this.http.get(url, { headers: headers });
             });
@@ -91,6 +93,7 @@ export class ApiService {
                 let headers = new Headers();
                 headers.append('Content-Type', 'application/json');
                 headers.append('Authorization', 'Token ' + token);
+                headers.append('Accept', 'application/json');
                 headers.append('ClientId', 'dmles');
 
                 return this.http.post(url, data, { headers: headers });

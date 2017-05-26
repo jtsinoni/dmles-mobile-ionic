@@ -1,40 +1,46 @@
-import {Component} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 //import {Component, ViewChild} from '@angular/core';
-import {NavController, NavParams, Platform, ModalController} from 'ionic-angular';
-import {Search} from "../../common/search";
-import {LoadingController} from 'ionic-angular';
-import {LoggerService} from "../../../services/logger/logger-service";
-import {BarcodeScanner, Keyboard} from 'ionic-native';
-import {BarcodeData} from "./barcode-data";
-import {UtilService} from "../../../common/services/util.service";
-import {Level as LoggerLevel, Level} from "../../../services/logger/level";
-import {GrowlDialogComponent} from "../dialogs/growl-dialog.component";
-import {Focuser} from "../../../common/directives/focuser.directive";
+import { NavController, NavParams, Platform, ModalController } from 'ionic-angular';
+import { Search } from "../../common/search";
+import { LoadingController } from 'ionic-angular';
+import { LoggerService } from "../../../services/logger/logger-service";
+import { BarcodeScanner, Keyboard } from 'ionic-native';
+import { BarcodeData } from "./barcode-data";
+import { UtilService } from "../../../common/services/util.service";
+import { Level as LoggerLevel, Level } from "../../../services/logger/level";
+import { GrowlDialogComponent } from "../dialogs/growl-dialog.component";
+import { Focuser } from "../../../common/directives/focuser.directive";
+import { ElementPositionDirective } from "../../../common/directives/element-position.directive";
+import { SettingsService } from "../../../services/settings.service";
+import { SettingsModel } from "../../../models/settings.model";
+
 
 @Component({
-  selector: 'input-text',
-  templateUrl: 'input-text.component.html'
+    selector: 'input-text',
+    templateUrl: 'input-text.component.html'
+
 })
 
 export class InputTextComponent extends Search {
     // NOTE: this is a working alternate approach for renderer
     //@ViewChild('focusInput') myInput; //: HTMLInputElement; or : TextInput;  // actually this is TextInput
-
+    @ViewChild(ElementPositionDirective)
+    posDirective: ElementPositionDirective;
     pushNav: any;
     navTitle: string;
     hintText: string;
     prefix: string;
     aggregations: string;
 
-    leftPos: string = "25px";
 
     constructor(public navCtrl: NavController,
-                public loadingCtrl: LoadingController,
-                public navParams: NavParams,
-                private log: LoggerService,
-                private modalController: ModalController,
-                private util: UtilService,
-                private platform: Platform) {
+        public loadingCtrl: LoadingController,
+        public navParams: NavParams,
+        private log: LoggerService,
+        private modalController: ModalController,
+        private util: UtilService,
+        private platform: Platform,
+        private settingsService: SettingsService) {
         super(loadingCtrl);
     }
 
@@ -45,6 +51,21 @@ export class InputTextComponent extends Search {
         this.hintText = this.navParams.get('hintText');
         this.prefix = this.navParams.get('prefix');
         this.aggregations = this.navParams.get('aggregations');
+        let setting: SettingsModel;
+        this.settingsService.getActionPositionSetting().then(s => setting = s).then(() => {
+
+            if (setting) {
+                let val = setting.setting.split(" ");
+                if (val && val.length > 0) {
+                    let topBottom = val[0];
+                    let leftRight = val[1];                    
+                    this.posDirective.setPosition(leftRight, topBottom);
+                    this.log.debug('left right: ' + leftRight + 'top bottom: ' + topBottom);
+                } 
+            }
+        });
+
+
     }
 
     ionViewDidEnter() { // NOTE: not as reliable: ionViewDidLoad()

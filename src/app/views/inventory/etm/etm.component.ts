@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {NavController, AlertController} from 'ionic-angular';
 import {Search} from "../../common/search";
 import {LoadingController, ModalController, Modal} from 'ionic-angular';
@@ -12,6 +12,11 @@ import {EtmDetailComponent} from "./etm-detail/etm-detail.component";
 import {BarcodeScannerService} from "../../../services/barcode-scanner.service";
 import {ABiTopicUpstreamService} from "../../../services/upstream/abi-topic-upstream.service";
 
+import { ElementPositionDirective } from "../../../common/directives/element-position.directive";
+import { SettingsService } from "../../../services/settings.service";
+import { SettingsModel } from "../../../models/settings.model";
+
+
 
 @Component({
     selector: 'inventory-etm',
@@ -23,6 +28,9 @@ export class EtmComponent extends Search {
     @Input()
     items: Array<ABiCatalogModel>;
     //item: ABiCatalogResultModel;
+
+    @ViewChild(ElementPositionDirective)
+    posDirective: ElementPositionDirective;
 
     @Input()
     count: number;
@@ -37,10 +45,28 @@ export class EtmComponent extends Search {
                 private abiCatalogService: ABiCatalogService,
                 private hostServerService: HostServerService,
                 private log: LoggerService,
-                private modalController: ModalController) {
+                private modalController: ModalController,
+                private settingsService: SettingsService) {
         super(loadingCtrl);
         //this.item = new ABiCatalogResultModel();
         this.items = new Array();
+    }
+
+    ngOnInit() {
+
+         let setting: SettingsModel;
+        this.settingsService.getActionPositionSetting().then(s => setting = s).then(() => {
+
+            if (setting) {
+                let val = setting.setting.split(" ");
+                if (val && val.length > 0) {
+                    let topBottom = val[0];
+                    let leftRight = val[1];                    
+                    this.posDirective.setPosition(leftRight, topBottom);                    
+                } 
+            }
+        });
+
     }
 
     public barcodeScan() {

@@ -23,14 +23,15 @@
       <ion-label>Selected Host Server</ion-label>
       <ion-icon item-right name="add"></ion-icon>
     </ion-item-divider>
-    <ion-item-divider class="ripple" ion-item (click)="presentPKardSettings()">
-      <ion-label>PKard Settings</ion-label>
-      <ion-icon item-right name="add"></ion-icon>
-    </ion-item-divider>
     <ion-item *ngIf="defaultServer">
       <ion-label>{{defaultServer.serverName}}</ion-label>
       <ion-label>{{defaultServer.port}}</ion-label>
       <ion-badge item-right>Default</ion-badge>
     </ion-item>
+    <ion-item-divider class="ripple" ion-item (click)="presentPKardSettings()">
+      <ion-label>PKard Settings</ion-label>
+      <ion-icon item-right name="add"></ion-icon>
+    </ion-item-divider>
+    
   </ion-list>
 </ion-content>

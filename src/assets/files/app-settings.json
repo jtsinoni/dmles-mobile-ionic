@@ -17,9 +17,10 @@
         "dataType": "number"
     },
     {
-        "settingsName": "Allow Offline",
-        "setting": "true",
-        "dataType": "boolean"
+        "settingsName": "Action Position",
+        "setting": "bottom right",
+        "dataType": "select",
+         "values": [ "bottom right", "top right", "bottom left", "top left"]
     },
     {
         "settingsName": "Theme",

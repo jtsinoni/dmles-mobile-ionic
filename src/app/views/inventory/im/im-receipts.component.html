@@ -16,8 +16,12 @@
             </button>
         </div>
 
-        <button ion-button color="primary" block (click)="barcodeScan()">
-            <ion-icon name="barcode"></ion-icon>
-        </button>
+        <!--<button ion-button color="primary" block (click)="barcodeScan()">-->
+            <!--<ion-icon name="barcode"></ion-icon>-->
+        <!--</button>-->
     </div>
+    <ion-fab logicole-element-position id="barcodeScanFab">
+        <button id="scanFab" ion-fab (click)="barcodeScan()"><ion-icon name="barcode" >
+        </ion-icon></button>
+    </ion-fab>
 </ion-content>

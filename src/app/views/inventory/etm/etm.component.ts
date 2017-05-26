@@ -1,5 +1,5 @@
 import {Component, Input, ViewChild} from '@angular/core';
-import {NavController, AlertController} from 'ionic-angular';
+import {NavController} from 'ionic-angular';
 import {Search} from "../../common/search";
 import {LoadingController, ModalController, Modal} from 'ionic-angular';
 import {LoggerService} from "../../../services/logger/logger-service";
@@ -71,6 +71,9 @@ export class EtmComponent extends Search {
         this.barcodeHelper.barcodeScan()
             .then((results) => {
                 this.searchValue = results.text;
+            })
+            .catch((error) => {
+                this.log.error(`${error}`);
             });
     }
 

@@ -29,6 +29,9 @@ export class ImReceiptsComponent extends Search {
         this.barcodeHelper.barcodeScan()
             .then((results) => {
                 this.searchValue = results.text;
+            })
+            .catch((error) => {
+                this.log.error(`${error}`);
             });
     }
 

@@ -26,6 +26,8 @@ export class InputTextComponent extends Search {
     prefix: string;
     aggregations: string;
 
+    leftPos: string = "25px";
+
     constructor(public navCtrl: NavController,
                 public loadingCtrl: LoadingController,
                 public navParams: NavParams,

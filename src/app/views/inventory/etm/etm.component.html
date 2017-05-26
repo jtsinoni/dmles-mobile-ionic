@@ -16,9 +16,9 @@
             </button>
         </div>
 
-        <button ion-button color="primary" block (click)="barcodeScan()">
+        <!--<button ion-button color="primary" block (click)="barcodeScan()">
             <ion-icon name="barcode"></ion-icon>
-        </button>
+        </button>-->
     </div>
 
     <ion-list>
@@ -30,4 +30,8 @@
             </div>
         </button>
     </ion-list>
+     <ion-fab right bottom id="barcodeScanFab">
+        <button id="scanFab" ion-fab (click)="barcodeScan()"><ion-icon name="barcode" >
+      </ion-icon></button>
+    </ion-fab>
 </ion-content>

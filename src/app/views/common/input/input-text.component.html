@@ -14,7 +14,7 @@
             <ion-icon name="barcode"></ion-icon>
         </button>-->
     </ion-item>
-     <ion-fab right bottom id="barcodeScanFab">
+     <ion-fab bottom id="barcodeScanFab" [logicole-element-position]="leftPos">
         <button id="scanFab" ion-fab (click)="barcodeScanClick(searchValue)"><ion-icon name="barcode" >
       </ion-icon></button>
     </ion-fab>

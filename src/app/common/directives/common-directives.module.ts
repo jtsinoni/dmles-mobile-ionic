@@ -8,6 +8,7 @@ import {AppMenuComponent} from "../../views/common/header/app-menu.component";
 import {WarningDialogComponent} from "../../views/common/dialogs/warning-dialog.component";
 import {GrowlDialogComponent} from "../../views/common/dialogs/growl-dialog.component";
 import {Focuser} from "./focuser.directive";
+import { ElementPositionDirective } from "./element-position.directive";
 
 import {IonicModule} from "ionic-angular";
 import {NavDrawerHeaderComponent} from "../../views/common/header/nav-drawer-header.component";
@@ -22,7 +23,8 @@ import {ModalHeaderComponent} from "../../views/common/header/modal-header.compo
         AppMenuComponent,
         WarningDialogComponent,
         GrowlDialogComponent,
-        Focuser
+        Focuser,
+        ElementPositionDirective
     ],
     imports: [IonicModule],
     exports: [
@@ -30,7 +32,8 @@ import {ModalHeaderComponent} from "../../views/common/header/modal-header.compo
         ModalHeaderComponent,
         HeaderPageComponent,
         RemoveParentElementDirective,
-        Focuser
+        Focuser,
+        ElementPositionDirective
     ],
     entryComponents: [
         AppMenuComponent,

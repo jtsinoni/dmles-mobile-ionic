@@ -77,7 +77,6 @@ export class ApiService {
                 let headers = new Headers();
                 headers.append('Authorization', 'Token ' + token);
                 headers.append('ClientId', 'dmles');
-                headers.append('Accept', 'application/json');
 
                 return this.http.get(url, { headers: headers });
             });

@@ -29,7 +29,7 @@ export class StoreComponent implements OnInit {
 
     public itemTapped(event, item) {
         this.log.log(`Store Event: ${event} Item: ${item.data}`);
-        // this.navCtrl.push(RoleDetailsComponent, {
+        // this.navCtrl.push(StoredDetailsComponent, {
         //   item: item
         // });
     }

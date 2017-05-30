@@ -78,6 +78,7 @@ export class EtmComponent extends Search {
     }
 
     public storeBarcode() {
+        //this.barcodeHelper.barcodeResults = { text: this.searchValue, format:"XXXX"};
         this.barcodeHelper.storeBarcode(this.upstreamService);
     }
 

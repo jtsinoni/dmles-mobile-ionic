@@ -1,10 +1,10 @@
-<mb-header-page remove-parent-element [title]="'Inventory'"></mb-header-page>
+<mb-header-page remove-parent-element [menu]="myTabs.getSelected()" [title]="'Inventory'"></mb-header-page>
 
-<ion-tabs> <!--tabsPlacement="top"-->
-	<ion-tab [root]="tab3Root" tabTitle="ETM" tabIcon="calculator">
+<ion-tabs #myTabs> <!--tabsPlacement="top"-->
+	<ion-tab [rootParams]="'EtmMenuComponent'" [root]="tab3Root" tabTitle="ETM" tabIcon="calculator">
 	</ion-tab>
     <!--<ion-tab [root]="tab2Root" tabTitle="CAIM" tabIcon="clipboard">
     </ion-tab>-->
-    <ion-tab [root]="tab1Root" tabTitle="IM" tabIcon="barcode">
+    <ion-tab [rootParams]="'ImMenuComponent'" [root]="tab1Root" tabTitle="IM" tabIcon="barcode">
     </ion-tab>
 </ion-tabs>

@@ -29,6 +29,7 @@ import {LoggerService} from "./services/logger/logger-service";
 import {FileLoggerService} from "./services/logger/file-logger-service";
 import {SecurityModule} from "./views/security/security.module";
 import {LocalStorageModule} from "./services/local-storage/local-storage.module";
+import {MenusModule} from "./views/menus/menus.module";
 
 // Use AppInjector to get instance of service without constructor injection, because in some cases we don't want to
 // inject the service on all of the derivative components.
@@ -41,7 +42,7 @@ export let AppInjector: Injector;
         DMLESMobile,
         AppContainerComponent,
         LoginComponent,
-        BluetoothComponent
+        BluetoothComponent,
     ],
     imports: [
         IonicModule.forRoot(DMLESMobile),
@@ -57,10 +58,11 @@ export let AppInjector: Injector;
         ServicesModule,
         LogViewerModule,
         CommonDirectivesModule,
+        MenusModule,
         SecurityModule,
         FormsModule,
         SettingsModule,
-        HelpModule
+        HelpModule,
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -69,7 +71,7 @@ export let AppInjector: Injector;
         SupplyComponent,
         AppContainerComponent,
         LoginComponent,
-        BluetoothComponent
+        BluetoothComponent,
     ],
     providers: [
         { provide: LoggerService, useClass: FileLoggerService },

@@ -9,7 +9,7 @@ import { EtmComponent } from './etm/etm.component';
 
 @Component({
   selector: 'inventory-inventory',
-  templateUrl: './inventory.component.html'  
+  templateUrl: './inventory.component.html'
 })
 
 export class InventoryComponent {
@@ -20,7 +20,7 @@ export class InventoryComponent {
 
     constructor(navCtrl: NavController) {
 
-        
+
 
 
     }

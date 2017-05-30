@@ -29,6 +29,7 @@ export class AppConfigConstants {
 
     public static messagingServer: any = {
         host:"johns-macbook-pro.local",
+        // host:"192.168.1.129",
         port:"9001",
         default:{topic:"dmles-mobile"},
         im:{topic:"dmles-mobile-im"},

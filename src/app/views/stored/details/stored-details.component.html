@@ -1,5 +1,5 @@
-<modal-header remove-parent-element [title]="valuesSelectedItem[0]"></modal-header>
-<ion-content>
+<modal-header remove-parent-element [title]="title"></modal-header>
+<ion-content >
     <div *ngIf="selectedItem" class="selection">
         <ion-item *ngFor="let item of keysSelectedItem; let i = index">
             <h2>{{keysSelectedItem[i]}}:</h2>

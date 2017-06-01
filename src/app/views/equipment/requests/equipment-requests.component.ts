@@ -8,6 +8,7 @@ import { HostServerService } from "../../../services/host-server.service";
 import { ServerModel } from "../../../models/server.model";
 
 @Component({
+    selector: 'equipment-requests-page',
     templateUrl: './equipment-requests.component.html'
 })
 

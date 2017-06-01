@@ -23,26 +23,31 @@ export class TopicMessagingService {
      * @param protocol
      * @param host
      * @param port
+     * @param clientId
      * @returns a {Promise<T>} with a messaging broker client
      */
-    public connect(protocol?: number, host?: string, port?: number): Promise<any> {
+    public connect(protocol?: number, host?: string, port?: number, clientId?: string): Promise<any> {
 
         return new Promise((resolve, reject) => {
             let localProtocol = this.messagingModel.protocol;
             let localHost = this.messagingModel.host;
             let localPort = this.messagingModel.port;
 
-            if (protocol != null) {
+            if(protocol) {
                 localProtocol = protocol;
             }
-            if (host != null) {
+            if(host) {
                 localHost = host;
             }
-            if (port != null) {
+            if(port) {
                 localPort = port;
             }
 
             let brokerURL = `${localProtocol}://${localHost}:${localPort}`;
+            if(clientId) {
+                brokerURL = `${brokerURL}/?clientId=${clientId}`;
+
+            }
             this.log.info(`messaging server => ${brokerURL}`);
 
             // reconnectPeriod: 2 (default), reconnect every 2 seconds until reconnectAttempts has reached

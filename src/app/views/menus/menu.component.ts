@@ -40,10 +40,10 @@ export abstract class MenuComponent<D extends BaseDatabaseService<BaseDataTableM
     }
 
     presentModal() {
+        this.cancel();
+
         this.modal = this.modalController.create(StoredComponent, {databaseService: this.databaseService});
         this.modal.present();
-
-        this.cancel();
     }
 
     cancelModal() {

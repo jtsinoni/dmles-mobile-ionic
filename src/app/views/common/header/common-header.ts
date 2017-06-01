@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from "@angular/core";
-import {Tab} from "ionic-angular";
+import {Input, OnInit } from "@angular/core";
+import {Tab, ViewController} from "ionic-angular";
 //import { LogViewerService } from "../../../services/log-viewer.service";
 import { UtilService } from "../../../common/services/util.service";
 import {PopoverController} from 'ionic-angular';
@@ -8,26 +8,23 @@ import {EtmMenuComponent} from "../../menus/etm-menu/etm-menu.component";
 import {ImMenuComponent} from "../../menus/im-menu/im-menu.component";
 import {EquipMenuComponent} from "../../menus/equip-menu/equip-menu.component";
 
-@Component({
-    selector: 'mb-header-page',
-    templateUrl: './header-page.component.html'
-})
-
-export class HeaderPageComponent implements OnInit {
+export class CommonHeader implements OnInit {
 
     @Input()
-    public title: string;
+    title: string;
 
     @Input()
-    public menu: any;
+    menu: any;
 
     @Input()
-    public isMobility: boolean;
+    isMobility: boolean;
 
     // Registry of MenuComponents
     menuComponents: any = {'ImMenuComponent':ImMenuComponent, 'EtmMenuComponent':EtmMenuComponent, 'EquipMenuComponent':EquipMenuComponent};
 
-    constructor(private utilService: UtilService, private popoverCtrl: PopoverController) {
+    constructor(protected utilService: UtilService,
+                protected popoverCtrl: PopoverController,
+                protected viewController: ViewController) {
     }
 
     ngOnInit(): void {
@@ -55,4 +52,10 @@ export class HeaderPageComponent implements OnInit {
         let popover = this.popoverCtrl.create(menuComponent);
         popover.present(menuComponent);
     }
+
+
+    cancel() {
+        this.viewController.dismiss();
+    }
+
 }

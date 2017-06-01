@@ -1,9 +1,9 @@
 <modal-header remove-parent-element [title]="'Data Stored'"></modal-header>
-<ion-content class="stored-ionic-page">
+<ion-content class="stored-view">
     <ion-list>
         <ion-item *ngFor="let item of items; let i = index" (click)="itemTapped($event,item)">
             <h2>{{item.barcodeData || item.id}}</h2>
-            <h3>{{item.barcodeType || item.data}}</h3>
+            <h3>{{item.barcodeType || item.data.requestInformation.requestTitle}}</h3>
             <button (click)="delete(item, i)" ion-button color="danger" clear icon-only item-right>
                 <ion-icon name='trash' is-active="true"></ion-icon>
             </button>

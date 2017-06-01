@@ -4,6 +4,9 @@ import {BaseDataTableModel} from "../../models/base-data-table.model";
 import {BaseDatabaseService} from "../database/base-database.service";
 import {Network} from "ionic-native";
 import {Observable, Subject} from "rxjs";
+import {UtilService} from "../../common/services/util.service";
+import {AppInjector} from "../../app.module";
+import {NetworkService} from "../network.service";
 
 export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDataTableModel>> {
     private static onServiceAvailableSubject: Subject<any> = new Subject();
@@ -11,12 +14,18 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
     private static onReconnectAttemptsSubject: Subject<any> = new Subject();
 
     protected client: any;
+    protected clientId: string;
     protected serviceName = "TopicUpstreamService Service";
+    protected utilService: UtilService;
+    private networkService: NetworkService;
 
     constructor(protected topicMessagingService: TopicMessagingService,
                 protected databaseService: D,
                 protected topic: string,
                 public log: LoggerService) {
+        this.utilService = AppInjector.get(UtilService);
+        this.networkService = AppInjector.get(NetworkService);
+
         this.setup();
     }
 
@@ -35,7 +44,9 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
     }
 
     protected start() {
-        this.startHelper();
+        if(this.networkService.isConnected) {
+            this.startHelper();
+        }
 
         Network.onConnect().subscribe(() => {
             this.startHelper();
@@ -54,7 +65,7 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
     }
 
     private startHelper(){
-        this.connect()
+        this.connect(undefined, undefined, undefined, this.clientId)
             .then((client) => {
                 this.client = client;
                 if(client.connected) {
@@ -78,9 +89,9 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
      * @param port
      * @returns @returns {Promise<any>} MQTT client
      */
-    public connect(protocol?: number, host?: string, port?: number): Promise<any> {
+    public connect(protocol?: number, host?: string, port?: number, clientId?: string): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.topicMessagingService.connect(protocol, host, port)
+            this.topicMessagingService.connect(protocol, host, port, clientId)
                 .then((client) => {
                     resolve(client);
                 })

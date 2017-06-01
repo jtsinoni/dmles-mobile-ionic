@@ -19,6 +19,7 @@ export class IMTopicUpstreamService extends TopicUpstreamService<IMDatabaseServi
 
         // Attempt to connect to messaging server if connect flag is true
         if (AppConfigConstants.messagingServer.connect) {
+            this.clientId = `IM_mqttjs_${this.utilService.generateUUID()}`;
             this.start();
         }
     }

@@ -1,11 +1,8 @@
-.store-details-page {
-
-  div.selection {
-    font-size: 22px;
-    display: block;
-    text-align: center;
-    padding-top: 5%;
-  }
-
+store-details-view {
+    .toolbar-ios {
+        //workaround: statusbar gets overlapped
+        padding-top: calc(20px + 4px);
+        min-height: calc(44px + 20px);
+    }
 }
 

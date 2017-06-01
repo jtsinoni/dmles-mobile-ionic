@@ -5,11 +5,13 @@ import {ImMenuComponent} from "./im-menu/im-menu.component";
 import {StoredComponent} from "../stored/stored.component";
 import {CommonDirectivesModule} from "../../common/directives/common-directives.module";
 import {StoredDetailsComponent} from "../stored/details/stored-details.component";
+import {EquipMenuComponent} from "./equip-menu/equip-menu.component";
 
 @NgModule({
     declarations: [
         EtmMenuComponent,
         ImMenuComponent,
+        EquipMenuComponent,
         StoredComponent,
         StoredDetailsComponent,
     ],
@@ -17,12 +19,14 @@ import {StoredDetailsComponent} from "../stored/details/stored-details.component
     exports: [
         EtmMenuComponent,
         ImMenuComponent,
+        EquipMenuComponent,
         StoredComponent,
         StoredDetailsComponent,
     ],
     entryComponents: [
         EtmMenuComponent,
         ImMenuComponent,
+        EquipMenuComponent,
         StoredComponent,
         StoredDetailsComponent
     ]

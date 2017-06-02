@@ -6,6 +6,7 @@ import { RequestApiService } from "../../../common/endpoints/request-api.service
 import { LoggerService } from "../../../services/logger/logger-service";
 import { HostServerService } from "../../../services/host-server.service";
 import { ServerModel } from "../../../models/server.model";
+import {EquipReqTopicUpstreamService} from "../../../services/upstream/equip-req-topic-upstream.service";
 
 @Component({
     selector: 'equipment-requests-page',
@@ -22,6 +23,7 @@ export class EquipmentRequestsComponent {
         public navParams: NavParams,
         private RequestApiService: RequestApiService,
         private hostServerService: HostServerService,
+        private upstreamService: EquipReqTopicUpstreamService,
         private log: LoggerService) {
 
     }

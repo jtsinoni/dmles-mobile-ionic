@@ -36,7 +36,7 @@ export class StoredComponent implements OnInit {
     }
 
     public delete(item: BaseDataTableModel, id: number) {
-        this.log.info(`Deleting record with ${item.id} ...`);
+        this.log.debug(`Deleting record with ${item.id} ...`);
 
         // remove from scope
         this.items.splice(id, 1);

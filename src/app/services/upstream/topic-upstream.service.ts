@@ -15,6 +15,7 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
 
     protected client: any;
     protected clientId: string;
+    protected name: string;
     protected serviceName = "TopicUpstreamService Service";
     protected utilService: UtilService;
     private networkService: NetworkService;
@@ -56,7 +57,7 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
             this.disconnect()
                 .then((client) => {
                     this.client = client;
-                    this.log.debug(`Received disconnect event, Client ID: ${client.options.clientId}, connected: ${client.connected}`);
+                    this.log.debug(`Received disconnect event, Name: ${this.name}, Client ID: ${client.options.clientId}, connected: ${client.connected}`);
                 })
                 .catch((error) => {
                     this.log.error(error);
@@ -71,7 +72,7 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
                 if(client.connected) {
                     return client;
                 } else {
-                    throw new Error("Client not connected to messaging server.");
+                    throw new Error(`${this.name} client not connected to messaging server.`);
                 }
             })
             .then((client) => {
@@ -127,7 +128,7 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
                 if(!connected) {
                     throw new Error("NotConnected");
                 } else {
-                    this.log.info('Pushing local changes ... ');
+                    this.log.info(`Pushing ${this.name} local changes ... `);
                     return this;
                 }
             })
@@ -136,9 +137,9 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
             .then(this.deleteCachedData)
             .catch((reason) => {
                 if(reason.message === "NoItems") {
-                    this.log.debug("The are no items in local storage");
+                    this.log.debug(`The are no items in ${this.name} local storage`);
                 } else if(reason.message === "NotConnected") {
-                    this.log.warn("Client not connected to Messaging Server");
+                    this.log.warn(`${this.name} client not connected to Messaging Server`);
                 } else {
                     this.log.error(reason);
                 }
@@ -184,7 +185,7 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
     private sendDataLocal(data: any): Promise<number> {
         return this.databaseService.put(data)
             .then((id)=> {
-                this.log.debug(`Added => ${data} with id => ${id} to IndexedDB`)
+                this.log.debug(`Added => ${data} with id => ${id} to ${this.name} IndexedDB`)
                 return id;
             })
             .catch((error) => {
@@ -217,7 +218,7 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
         let self = args.self;
         return self.databaseService.deleteAll()
             .then(() => {
-                self.log.info(`Removed ${items.length} messages from local storage`);
+                self.log.info(`Removed ${items.length} messages from ${self.name} local storage`);
                 return items;
             })
             .catch((error) => {
@@ -232,7 +233,7 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
     protected subscribe(): Promise<any> {
         return this.topicMessagingService.subscribe(this.client, this.topic)
             .then((client) => {
-                this.log.info(`Subscribed to Topic: ${this.topic}, client: ${client.options.clientId}`);
+                this.log.info(`Subscribed to Topic: ${this.topic}, name: ${this.name}, client: ${client.options.clientId}`);
                 return client;
             })
             .catch((error) => {
@@ -247,7 +248,7 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
     protected unsubscribe() {
         return this.topicMessagingService.unsubscribe(this.client, this.topic)
             .then((client) => {
-                this.log.debug(`Unsubscribed from Topic: ${this.topic}, client: ${client.options.clientId}`);
+                this.log.debug(`Unsubscribed from Topic: ${this.topic}, name: ${this.name}, client: ${client.options.clientId}`);
                 return client;
             })
             .catch((error) => {
@@ -263,7 +264,7 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
     private publish(data: any): Promise<any> {
         return this.topicMessagingService.publish(this.client, this.topic, data)
             .then((client) => {
-                this.log.log(`Publishing message: ${data}  to Topic: ${this.topic}`);
+                this.log.log(`Publishing message: ${data}  to ${this.name} Topic: ${this.topic}`);
                 return client;
             })
             .catch((error) => {
@@ -288,7 +289,7 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
 
         return Promise.all(promises)
             .then((results) => {
-                self.log.info(`Published ${items.length} messages to Topic: ${self.topic}`);
+                self.log.info(`Published ${items.length} messages to ${self.name} Topic: ${self.topic}`);
                 return {self:self, items:items};
             })
             .catch((error) => {

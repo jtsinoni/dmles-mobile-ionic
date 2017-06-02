@@ -20,7 +20,8 @@ export class EquipReqTopicUpstreamService extends TopicUpstreamService<StoreData
 
         // Attempt to connect to messaging server if connect flag is true
         if (AppConfigConstants.messagingServer.connect) {
-            this.clientId = `EQReq_mqttjs_${this.utilService.generateUUID()}`;
+            this.name = "EQReq";
+            this.clientId = `${this.name}_mqttjs_${this.utilService.generateUUID()}`;
             this.start();
         }
     }

@@ -4,7 +4,6 @@ import { BaseDataTableModel } from '../../models/base-data-table.model';
 
 export abstract class BaseDatabaseService<M extends BaseDataTableModel> {
     private serviceName;
-    private modal: M;
 
     dbTable: Dexie.Table<M, number>;
 
@@ -64,10 +63,6 @@ export abstract class BaseDatabaseService<M extends BaseDataTableModel> {
 
     getCount(): Promise<number> {
         return Promise.resolve(this.dbTable.count());
-    }
-
-    getModel(): M {
-        return this.modal;
     }
 
     getFilteredCount(filterCallback: (model: M) => boolean): Promise<number> {

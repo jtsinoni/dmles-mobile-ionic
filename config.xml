@@ -33,7 +33,10 @@
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <platform name="ios">
-        <allow-navigation href="*://*.johns-macbook-pro.local/*" />
+        <allow-navigation href="*://*.192.168.1.13/*" />
+        <!--allow-navigation href="*://*.johns-macbook-pro.local/*" /-->
+        <!-- jmlmob -->
+        <!--allow-navigation href="*://*.172.16.32.10/*" /-->
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />

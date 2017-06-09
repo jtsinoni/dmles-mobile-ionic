@@ -1,8 +1,9 @@
 <ion-content padding>
-	<div class="top-spacer-div"></div>
-	<ion-item>
-		<ion-input type="text" placeholder="Search" [(ngModel)]="searchValue" name="searchInput"></ion-input>
-	</ion-item>
+    <div class="top-spacer-div"></div>
+    <ion-item>
+        <ion-input focuser type="text" placeholder="Search" [(ngModel)]="searchValue" name="searchInput" clearInput clearOnEdit="true"
+            (keyup.enter)="getSearchResults(searchValue)"></ion-input>
+    </ion-item>
     <div padding>
         <div *ngIf="isConnected">
             <button ion-button color="primary" block (click)="getSearchResults(searchValue)" [disabled]="!searchValue">
@@ -15,26 +16,23 @@
                 <ion-icon name="add"></ion-icon>
             </button>
         </div>
-
-        <!--<button ion-button color="primary" block (click)="storeBarcode()">-->
-            <!--<ion-icon name="add"></ion-icon>-->
-        <!--</button>-->
-
-        <!--<button ion-button color="primary" block (click)="barcodeScan()">
-            <ion-icon name="barcode"></ion-icon>
-        </button>-->
     </div>
-
+    <ion-item *ngIf="item.resultReturned">
+        <span> 
+       <ion-badge color="primary-blue">{{item.resultCount}}</ion-badge> Items found        
+       (<ion-badge color="primary-blue">{{item.milliseconds}}</ion-badge> milliseconds)
+        </span>
+    </ion-item>
     <ion-list>
-        <button ion-item class="ripple" *ngFor="let abiItem of items"  (click)="itemTapped(abiItem)">
+        <button ion-item class="ripple" *ngFor="let abiItem of item.items" (click)="itemTapped(abiItem)">
             <div class="item-note" item-center>
                 <h2>Id:	{{abiItem.enterpriseProductIdentifier}}</h2>
                 <p>Noun: {{abiItem.productNoun}}</p>
                 <p style="word-wrap: break-word;">{{abiItem.fullDescription}}</p>
-            </div>
+            </div>            
         </button>
     </ion-list>
-     <ion-fab logicole-element-position id="barcodeScanFab">
+    <ion-fab logicole-element-position id="barcodeScanFab">
         <button id="scanFab" ion-fab (click)="barcodeScan()"><ion-icon name="barcode" >
       </ion-icon></button>
     </ion-fab>

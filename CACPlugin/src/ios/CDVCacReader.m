@@ -167,6 +167,30 @@
         // and reeive error callback
         [PKScreenLockController sharedScreenLockController].delegate = self;
 
+        /*
+        NSDictionary * info = [NSBundle mainBundle].infoDictionary;
+
+        NSString *lockGraphic = info[@"LockScreenGraphic"];
+        if(lockGraphic) {
+            if([UIScreen mainScreen].bounds.size.height > 667.0f) {
+                lockGraphic = @"LaunchImage-800-736h"; // iphone6 plus
+            }
+            else if([UIScreen mainScreen].bounds.size.height > 568.0f) {
+                lockGraphic = @"LaunchImage-800-667h"; // iphone6
+            }
+            else if([UIScreen mainScreen].bounds.size.height > 480.0f){
+                lockGraphic = @"LaunchImage-700-568h";// iphone5/5plus
+            } else {
+                lockGraphic = @"LaunchImage-700"; // iphone4 or below
+            }
+
+            UIImage *lockImg = [UIImage imageNamed:lockGraphic];
+            if(lockImg) {
+                [PKScreenLockController sharedScreenLockController].image = lockImg;
+            }
+        }
+        */
+
         [self setEnabled:YES];
 
         #ifdef USE_FIPS_MODE

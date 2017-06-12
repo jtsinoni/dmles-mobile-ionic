@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { NavController, Platform, TextInput } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
 //import { Keyboard } from 'ionic-native';
 import { Search } from "../../common/search";
 import { LoadingController, ModalController, Modal } from 'ionic-angular';

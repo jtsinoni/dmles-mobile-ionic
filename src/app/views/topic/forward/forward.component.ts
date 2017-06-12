@@ -1,4 +1,4 @@
-import {Component} from "@angular/core/src/metadata/directives";
+import {Component} from "@angular/core";
 import {CommonDataService} from "../../../services/common-data.service";
 import {ForwardDataModel} from "../../../models/forward-data.model";
 import {LoggerService} from "../../../services/logger/logger-service";

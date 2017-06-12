@@ -2,6 +2,7 @@ import {NgModule, Injector} from '@angular/core';
 import {HttpModule} from '@angular/http';
 import {FormsModule} from "@angular/forms";
 import {IonicApp, IonicModule} from 'ionic-angular';
+import {BrowserModule} from '@angular/platform-browser';
 import {DMLESMobile} from './app.component';
 
 import {AppContainerComponent} from './app-container.component';
@@ -63,6 +64,7 @@ export let AppInjector: Injector;
         FormsModule,
         SettingsModule,
         HelpModule,
+        BrowserModule,
     ],
     bootstrap: [IonicApp],
     entryComponents: [

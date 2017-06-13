@@ -40,7 +40,9 @@ export class AppContainerComponent {
         this.demoAreas.push(new AreaModel('Equipment', 'cog', EquipmentComponent, 'gray'));
         this.demoAreas.push(new AreaModel('Admin', 'card', AdminComponent, 'light'));
         this.demoAreas.push(new AreaModel('Supply', 'document', SupplyComponent, 'gray'));
-        this.demoAreas.push(new AreaModel('Inventory', 'barcode', InventoryComponent, 'light'));
+        this.demoAreas.push(new AreaModel('Inventory', 'clipboard', InventoryComponent, 'light'));
+        this.demoAreas.push(new AreaModel('Scanner', 'barcode', InventoryComponent, 'gray'));
+
     }
 
      goTo(area: AreaModel) {

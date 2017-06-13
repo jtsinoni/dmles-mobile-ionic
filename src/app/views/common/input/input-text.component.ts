@@ -94,8 +94,8 @@ export class InputTextComponent extends Search {
 
     public saveTheData(value: string) {
         let searchCriteria = this.prefix + "'" + value + "'";
-        let message = value;
-        this.showGrowl(LoggerLevel.INFO, 'Entered: ', message);
+        //let message = value;
+        //this.showGrowl(LoggerLevel.INFO, 'Entered: ', message);
 
         // MAGIC - we receive the destination page as a parm that this page will "push", or navigate too, making this page a 'pass-thru' page acquiring user input
         this.navCtrl.push(this.pushNav, {

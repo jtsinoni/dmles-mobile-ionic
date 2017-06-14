@@ -41,7 +41,7 @@ export class BarcodeHelper {
             upstreamService.sendData(this.barcodeResults)
                 .then((result) => {
                     let message = `Stored barcode data to cache, barcode => ${this.barcodeResults.text}, format => ${this.barcodeResults.format}`;
-                    this.log.debug(`${message}`);
+                    //this.log.debug(`${message}`);
 
                     this.showAlert("", message);
                 })

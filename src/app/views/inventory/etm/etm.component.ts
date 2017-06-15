@@ -70,10 +70,10 @@ export class EtmComponent extends Search {
 
     }
 
-    ionViewDidEnter() {
-        this.resetFocus();
-
-    }
+    // ionViewDidEnter() {
+    //     this.resetFocus();
+    //
+    // }
 
     public barcodeScan() {
         this.barcodeHelper.barcodeScan()
@@ -97,7 +97,7 @@ export class EtmComponent extends Search {
         this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
             this.abiCatalogService.setServer(server);
             this.abiCatalogService.getABiCatalogRecords(searchValue)
-                .timeout(8000)                
+                .timeout(8000)
                 .map(response => response.json())
                 .subscribe(
                 (response) => {
@@ -132,11 +132,11 @@ export class EtmComponent extends Search {
         this.modal.dismiss();
     }
 
-    private resetFocus() {
-        this.platform.ready().then(() => {
-            setTimeout(() => {
-                Focuser.refocus();
-            }, 800);
-        });
-    }
+    // private resetFocus() {
+    //     this.platform.ready().then(() => {
+    //         setTimeout(() => {
+    //             Focuser.refocus();
+    //         }, 800);
+    //     });
+    // }
 }

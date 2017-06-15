@@ -1,5 +1,4 @@
-import {Component} from "@angular/core/src/metadata/directives";
-import {OnInit} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {LoggerService} from "../../services/logger/logger-service";
 import {BaseDataTableModel} from "../../models/base-data-table.model";
 import {NavParams, NavController} from "ionic-angular";

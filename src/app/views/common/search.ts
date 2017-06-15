@@ -2,8 +2,7 @@ import {LoadingController, Loading} from 'ionic-angular';
 import {NetworkService} from "../../services/network.service";
 import {AppInjector} from "../../app.module";
 import {Network} from "ionic-native";
-import {Input} from "@angular/core/src/metadata/directives";
-import {NgZone} from "@angular/core";
+import {Input, NgZone} from "@angular/core";
 
 export class Search {
     @Input()

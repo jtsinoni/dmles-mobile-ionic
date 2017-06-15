@@ -1,8 +1,7 @@
-import {Component} from "@angular/core";
+import {Component, Input} from "@angular/core";
 import {ViewController} from "ionic-angular";
 
 import {LocalFileStorageService} from "../../../services/local-file-storage.service";
-import {Input} from "@angular/core/src/metadata/directives";
 
 @Component({
     templateUrl: './logs-modal.component.html',

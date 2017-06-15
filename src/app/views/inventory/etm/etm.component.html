@@ -1,7 +1,7 @@
 <ion-content padding>
     <div class="top-spacer-div"></div>
     <ion-item>
-        <ion-input focuser type="text" placeholder="Search" [(ngModel)]="searchValue" name="searchInput" clearInput
+        <ion-input type="text" placeholder="Search" [(ngModel)]="searchValue" name="searchInput" clearInput
             (keyup.enter)="getSearchResults(searchValue)"></ion-input>
     </ion-item>
     <div padding>
@@ -18,8 +18,8 @@
         </div>
     </div>
     <ion-item *ngIf="item.resultReturned">
-        <span> 
-       <ion-badge color="primary-blue">{{item.resultCount}}</ion-badge> Items found        
+        <span>
+       <ion-badge color="primary-blue">{{item.resultCount}}</ion-badge> Items found
        (<ion-badge color="primary-blue">{{item.milliseconds}}</ion-badge> milliseconds)
         </span>
     </ion-item>
@@ -29,7 +29,7 @@
                 <h2>Id:	{{abiItem.enterpriseProductIdentifier}}</h2>
                 <p>Noun: {{abiItem.productNoun}}</p>
                 <p style="word-wrap: break-word;">{{abiItem.fullDescription}}</p>
-            </div>            
+            </div>
         </button>
     </ion-list>
     <ion-fab logicole-element-position id="barcodeScanFab">

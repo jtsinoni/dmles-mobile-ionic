@@ -1,4 +1,4 @@
-import {Component} from "@angular/core/src/metadata/directives";
+import {Component} from "@angular/core";
 import {LoggerService} from "../../../services/logger/logger-service";
 import {ViewController, ModalController} from "ionic-angular";
 import {ABiDatabaseService} from "../../../services/database/abi-database.service";

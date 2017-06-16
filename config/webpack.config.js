@@ -2,6 +2,8 @@ var path = require('path');
 var webpack = require('webpack');
 var ionicWebpackFactory = require(process.env.IONIC_WEBPACK_FACTORY);
 
+console.log('-------------- CUSTOM WEBPACK CONFIG --------------');
+
 function getPlugins() {
     var env = process.env.IONIC_ENV;
     var plugins = [
@@ -15,6 +17,8 @@ function getPlugins() {
     if (env === 'prod') {
         // This helps ensure the builds are consistent if source hasn't changed:
         plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
+        //plugins.push(new webpack.SourceMapDevToolPlugin({filename:'[name].js.map'}));
+        //plugins.push(new webpack.optimize.UglifyJsPlugin({ sourceMap: true }));
     }
 
     return plugins;
@@ -28,6 +32,7 @@ module.exports = {
         devtoolModuleFilenameTemplate: ionicWebpackFactory.getSourceMapperFunction(),
     },
     devtool: process.env.IONIC_GENERATE_SOURCE_MAP ? process.env.IONIC_SOURCE_MAP_TYPE : '',
+    //devtool: process.env.IONIC_SOURCE_MAP_TYPE,
 
     resolve: {
         extensions: ['.ts', '.js', '.json'],
@@ -41,9 +46,12 @@ module.exports = {
                 loader: 'json-loader'
             },
             {
-                //test: /\.(ts|ngfactory.js)$/,
                 test: /\.ts$/,
                 loader: process.env.IONIC_WEBPACK_LOADER
+            },
+            {
+                test: /\.js$/,
+                loader: process.env.IONIC_WEBPACK_TRANSPILE_LOADER
             }
         ]
     },

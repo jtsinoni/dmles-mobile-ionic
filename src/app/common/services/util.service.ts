@@ -39,6 +39,12 @@ export class UtilService {
         Math.random().toString(26).substring(2, 15);
     }
 
+    public generateRandomNumberID(): number {
+        let min = Math.ceil(0);
+        let max = Math.floor(10000000);
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+
     public addZero(i) {
         if (i < 10) {
             i = "0" + i;
@@ -212,7 +218,7 @@ export class UtilService {
         if (typeof padding === "string") {
             return padding + value;
         }
-        
+
     }
 
 

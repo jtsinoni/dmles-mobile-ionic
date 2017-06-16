@@ -12,7 +12,7 @@ import { ABiCatalogModel } from "../../../models/abi-catalog.model";
 import { EtmDetailComponent } from "./etm-detail/etm-detail.component";
 import { ABiTopicUpstreamService } from "../../../services/upstream/abi-topic-upstream.service";
 import { BarcodeHelper } from "../../common/barcode-helper";
-import { Focuser } from "../../../common/directives/focuser.directive";
+// import { Focuser } from "../../../common/directives/focuser.directive";
 import { ElementPositionDirective } from "../../../common/directives/element-position.directive";
 import { SettingsService } from "../../../services/settings.service";
 import { SettingsModel } from "../../../models/settings.model";

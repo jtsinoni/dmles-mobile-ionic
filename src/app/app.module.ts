@@ -31,6 +31,7 @@ import {FileLoggerService} from "./services/logger/file-logger-service";
 import {SecurityModule} from "./views/security/security.module";
 import {LocalStorageModule} from "./services/local-storage/local-storage.module";
 import {MenusModule} from "./views/menus/menus.module";
+import {IonicPluginsModule} from "./common/plugins/ionic-plugins.module";
 
 // Use AppInjector to get instance of service without constructor injection, because in some cases we don't want to
 // inject the service on all of the derivative components.
@@ -50,6 +51,7 @@ export let AppInjector: Injector;
         CommonServicesModule.forRoot(),
         CommonEndpointsModule.forRoot(),
         LocalStorageModule.forRoot(),
+        IonicPluginsModule.forRoot(),
         TopicModule,
         InventoryModule,
         EquipmentModule,

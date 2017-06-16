@@ -7,6 +7,7 @@ import {Observable, Subject} from "rxjs";
 import {UtilService} from "../../common/services/util.service";
 import {AppInjector} from "../../app.module";
 import {NetworkService} from "../network.service";
+import {NotificationService} from "../notification.service";
 
 export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDataTableModel>> {
     private static onServiceAvailableSubject: Subject<any> = new Subject();
@@ -19,6 +20,7 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
     protected serviceName = "TopicUpstreamService Service";
     protected utilService: UtilService;
     private networkService: NetworkService;
+    private notificationService: NotificationService;
 
     constructor(protected topicMessagingService: TopicMessagingService,
                 protected databaseService: D,
@@ -26,6 +28,7 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
                 public log: LoggerService) {
         this.utilService = AppInjector.get(UtilService);
         this.networkService = AppInjector.get(NetworkService);
+        this.notificationService = AppInjector.get(NotificationService);
 
         this.setup();
     }
@@ -134,6 +137,7 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
             })
             .then(this.findCachedData)
             .then(this.publishMany)
+            .then(this.sendLocalNotifications)
             .then(this.deleteCachedData)
             .catch((reason) => {
                 if(reason.message === "NoItems") {
@@ -289,7 +293,34 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
 
         return Promise.all(promises)
             .then((results) => {
-                self.log.info(`Published ${items.length} messages to ${self.name} Topic: ${self.topic}`);
+                let message = `Published ${items.length} messages to ${self.name} Topic: ${self.topic}`;
+                self.log.info(message);
+
+                return {self:self, items:items};
+            })
+            .catch((error) => {
+                self.log.error(error);
+            });
+    }
+
+    /**
+     * Display a Local Notification that the items in local storage have been published
+     * @param args
+     * @returns {{self: any, items: any}}
+     */
+    private sendLocalNotifications(args: any): Promise<any> {
+        let items = args.items;
+        let self = args.self;
+
+        return Promise.resolve()
+            .then(() => {
+                // Display a Local Notification that the items in local storage have been published
+                let notification:any = {
+                    title: `${self.topic}`,
+                    text:  `${items.length} messages forwarded to ${self.topic}`
+                };
+                self.notificationService.addNotification(notification);
+
                 return {self:self, items:items};
             })
             .catch((error) => {

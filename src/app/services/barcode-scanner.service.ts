@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Platform} from "ionic-angular";
-import {BarcodeScanner, BarcodeScannerOptions} from 'ionic-native';
+import {BarcodeScanner, BarcodeScannerOptions} from '@ionic-native/barcode-scanner';
 import {LoggerService} from "./logger/logger-service";
 
 @Injectable()
@@ -8,6 +8,7 @@ export class BarcodeScannerService {
     private serviceName = "BarcodeScanner Service";
 
     constructor(private log: LoggerService,
+                private barcodeScanner: BarcodeScanner,
                 private platform: Platform) {
         this.init();
     }
@@ -29,7 +30,7 @@ export class BarcodeScannerService {
      * Returns a Promise that resolves with scanner data, or rejects with an error.
      */
     public scan(options?: BarcodeScannerOptions): Promise<any> {
-        return BarcodeScanner.scan(options);
+        return this.barcodeScanner.scan(options);
     }
 
     /**
@@ -47,6 +48,6 @@ export class BarcodeScannerService {
      * @returns {Promise<any>}
      */
     public encode(type: string, data: any): Promise<any> {
-        return BarcodeScanner.encode(type, data);
+        return this.barcodeScanner.encode(type, data);
     }
 }

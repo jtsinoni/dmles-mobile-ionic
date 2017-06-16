@@ -4,7 +4,7 @@ import { NavController, NavParams, Platform, ModalController } from 'ionic-angul
 import { Search } from "../../common/search";
 import { LoadingController } from 'ionic-angular';
 import { LoggerService } from "../../../services/logger/logger-service";
-import { BarcodeScanner, Keyboard } from 'ionic-native';
+import { Keyboard } from 'ionic-native';
 import { BarcodeData } from "./barcode-data";
 import { UtilService } from "../../../common/services/util.service";
 import { Level as LoggerLevel, Level } from "../../../services/logger/level";
@@ -13,6 +13,7 @@ import { Focuser } from "../../../common/directives/focuser.directive";
 import { ElementPositionDirective } from "../../../common/directives/element-position.directive";
 import { SettingsService } from "../../../services/settings.service";
 import { SettingsModel } from "../../../models/settings.model";
+import {BarcodeScannerService} from "../../../services/barcode-scanner.service";
 
 
 @Component({
@@ -38,6 +39,7 @@ export class InputTextComponent extends Search {
         public navParams: NavParams,
         private log: LoggerService,
         private modalController: ModalController,
+        private barcodeScannerService: BarcodeScannerService,
         private util: UtilService,
         private platform: Platform,
         private settingsService: SettingsService) {
@@ -58,10 +60,10 @@ export class InputTextComponent extends Search {
                 let val = setting.setting.split(" ");
                 if (val && val.length > 0) {
                     let topBottom = val[0];
-                    let leftRight = val[1];                    
+                    let leftRight = val[1];
                     this.posDirective.setPosition(leftRight, topBottom);
                     this.log.debug('left right: ' + leftRight + 'top bottom: ' + topBottom);
-                } 
+                }
             }
         });
 
@@ -113,7 +115,7 @@ export class InputTextComponent extends Search {
 
             if (this.util.isMobility()) {
                 // Camera barcode scan
-                BarcodeScanner.scan()
+                this.barcodeScannerService.scan()
                     .then((result) => {
                         if (!result.cancelled) {
                             let barcodeData: BarcodeData = new BarcodeData(result.text, result.format);

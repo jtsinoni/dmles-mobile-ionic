@@ -44,7 +44,7 @@ export class EquipmentRequestsComponent {
                 .subscribe(
                 (results) => {
                     this.items = results;
-                    this.log.log(`results => ${JSON.stringify(results)}`);
+                    //this.log.log(`results => ${JSON.stringify(results)}`);
                 },
                 (error) => {
                     this.log.error(`Error => ${error}`);

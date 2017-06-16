@@ -10,6 +10,7 @@ import {LoginComponent} from  './views/login/login.component';
 import {BluetoothComponent} from  './views/bluetooth/bluetooth.component';
 import {InventoryComponent} from './views/inventory/inventory.component';
 import {SupplyComponent} from './views/supply/supply.component';
+
 import {InventoryModule} from "./views/inventory/inventory.module";
 import {SupplyModule} from "./views/supply/supply.module";
 import {ServicesModule} from "./services/services.module";
@@ -31,6 +32,7 @@ import {FileLoggerService} from "./services/logger/file-logger-service";
 import {SecurityModule} from "./views/security/security.module";
 import {LocalStorageModule} from "./services/local-storage/local-storage.module";
 import {MenusModule} from "./views/menus/menus.module";
+import { ScannerModule } from "./views/scanner/scanner.module"
 
 // Use AppInjector to get instance of service without constructor injection, because in some cases we don't want to
 // inject the service on all of the derivative components.
@@ -65,6 +67,7 @@ export let AppInjector: Injector;
         SettingsModule,
         HelpModule,
         BrowserModule,
+        ScannerModule,
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -74,6 +77,7 @@ export let AppInjector: Injector;
         AppContainerComponent,
         LoginComponent,
         BluetoothComponent,
+        
     ],
     providers: [
         { provide: LoggerService, useClass: FileLoggerService },

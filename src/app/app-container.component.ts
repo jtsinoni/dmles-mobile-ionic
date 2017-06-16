@@ -8,6 +8,7 @@ import { EquipmentComponent } from './views/equipment/equipment.component';
 import { InventoryComponent } from './views/inventory/inventory.component';
 import { SupplyComponent } from './views/supply/supply.component';
 import { AdminComponent } from "./views/admin/admin.component";
+import { ScannerComponent } from "./views/scanner/scanner.component";
 import { SettingsService } from "./services/settings.service";
 import { SettingsModel } from "./models/settings.model";
 import { ElementPositionDirective } from "./common/directives/element-position.directive";
@@ -40,9 +41,8 @@ export class AppContainerComponent {
         this.demoAreas.push(new AreaModel('Equipment', 'cog', EquipmentComponent, 'gray'));
         this.demoAreas.push(new AreaModel('Admin', 'card', AdminComponent, 'light'));
         this.demoAreas.push(new AreaModel('Supply', 'document', SupplyComponent, 'gray'));
-        this.demoAreas.push(new AreaModel('Inventory', 'clipboard', InventoryComponent, 'light'));
-        // TODO include component
-        this.demoAreas.push(new AreaModel('Scanner', 'barcode', InventoryComponent, 'gray'));
+        this.demoAreas.push(new AreaModel('Inventory', 'clipboard',InventoryComponent , 'light'));        // TODO include component
+        this.demoAreas.push(new AreaModel('Scanner', 'barcode', ScannerComponent, 'gray'));
 
     }
 

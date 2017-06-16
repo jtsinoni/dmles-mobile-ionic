@@ -1,8 +1,24 @@
-<!--
-  Generated template for the ScannerComponent component.
+<mb-header-page remove-parent-element [title]="'Scanner'"></mb-header-page>
 
-  See https://angular.io/docs/ts/latest/api/core/index/ComponentMetadata-class.html
-  for more info on Angular 2 Components.
--->
+<ion-content padding>
+    <div class="top-spacer-div"></div>
+    <ion-item>
+        <ion-input type="text" focuser placeholder="Search" [(ngModel)]="searchValue" name="searchInput" clearInput (keyup.enter)="getSearchResults(searchValue)"></ion-input>
+    </ion-item>
 
-{{text}}
+    <ion-list>
+        <ion-item class="ripple" *ngFor="let abiItem of item.items" (click)="itemTapped(abiItem)">
+            <div class="item-note" item-center>
+                <span>
+                <h2>Id:	{{abiItem.enterpriseProductIdentifier}}</h2>
+                Noun: {{abiItem.productNoun}}
+                 Desc: {{abiItem.shortItemDescription}}</span>               
+            </div>
+        </ion-item>
+    </ion-list>
+    <!--<ion-fab logicole-element-position id="add-item-fab">
+        <button id="addItemFab" ion-fab (click)="addItem()"><ion-icon name="add-circle" >
+      </ion-icon></button>
+    </ion-fab>-->
+
+</ion-content>

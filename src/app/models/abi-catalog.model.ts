@@ -15,14 +15,18 @@ export class ABiCatalogModel extends BaseDataTableModel {
     productStatus: string;
     clinicalDescription: string;
     unspscCommodity:string;
-    unspscCode:string; // TODO num?
+    unspscCode:string;
     enterpriseProductIdentifier:string;
     productNoun:string;
     locations:Array<any>;
+    packaging:Array<any>;
+    // test input value, not an ABi data element
+    quantity:number;
 
     
     constructor(id?: number) {
         super(id);
+        this.quantity = 0;
     }
 
 }

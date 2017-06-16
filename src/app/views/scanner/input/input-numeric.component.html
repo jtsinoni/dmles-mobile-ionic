@@ -1,0 +1,16 @@
+<modal-header remove-parent-element [title]="'Enter Quantity'"></modal-header>
+<ion-content>
+    <div *ngIf="selectedItem" class="selection">
+        <ion-item>
+            <span>{{id}}</span>
+            <div style="overflow:auto; white-space:normal; height:100%; width:100%;">{{description}}</div>            
+        </ion-item>
+        <ion-item>
+            <ion-input id="itemQuantity" type="number" [(ngModel)]="quantity" placeholder="Qty" autofocus
+            (keyup.enter)="setData()"></ion-input>
+            <button (click)="setData()" ion-button clear icon-only item-right>
+            <ion-icon name='add-circle' is-active="true"></ion-icon>
+          </button>
+        </ion-item>
+    </div>
+</ion-content>

@@ -42,7 +42,7 @@ export class  LocalSecureStorageService extends LocalStorageService {
     public getData(key:string): Promise<any> {
         return this.secureStorage.get(key)
             .then((data) => {
-                this.log.debug(`${this.serviceName} - Get cache data: ${key} => ${data}`);
+                this.log.log(`${this.serviceName} - Get cache data: ${key} => ${data}`);
 
                 return data;
             })

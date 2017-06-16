@@ -26,7 +26,7 @@ export class LocalNativeStorageService extends LocalStorageService {
     public getData(key:string): Promise<any> {
         return NativeStorage.getItem(key)
             .then((data) => {
-                this.log.debug(`${this.serviceName} - Get cache data: ${key} => ${data}`);
+                this.log.log(`${this.serviceName} - Get cache data: ${key} => ${data}`);
 
                 return data;
             })

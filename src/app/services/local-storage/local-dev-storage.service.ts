@@ -26,7 +26,7 @@ export class LocalDevStorageService extends LocalStorageService {
         return Promise.resolve()
             .then(() => {
                 let value:any = this.windowService.window.localStorage.getItem(key);
-                this.log.debug(`${this.serviceName} - Get cache data: ${key} => ${value}`);
+                this.log.log(`${this.serviceName} - Get cache data: ${key} => ${value}`);
 
                 if (!value || "undefined" == value || "null" == value) {
                     return null;

@@ -1,11 +1,16 @@
-<mb-header-page remove-parent-element [title]="'Scanner'"></mb-header-page>
+<mb-header-page remove-parent-element [title]="'Scanner'" [menu]="'ScannerMenuComponent'"></mb-header-page>
 
 <ion-content padding>
     <div class="top-spacer-div"></div>
     <ion-item>
-        <ion-input type="text" focuser placeholder="Search" [(ngModel)]="searchValue" name="searchInput" clearInput (keyup.enter)="getSearchResults(searchValue)"></ion-input>
+        <ion-input type="text" focuser placeholder="Search" [(ngModel)]="searchValue" name="searchInput" clearInput (keyup.enter)="getSearchResults()"></ion-input>
     </ion-item>
-
+    <ion-item *ngIf="item.resultReturned">
+        <span>
+       <ion-badge color="primary-blue">{{item.resultCount}}</ion-badge> Items found
+       (<ion-badge color="primary-blue">{{item.milliseconds}}</ion-badge> milliseconds)
+        </span>
+    </ion-item>
     <ion-list>
         <ion-item class="ripple" *ngFor="let abiItem of item.items" (click)="itemTapped(abiItem)">
             <div class="item-note" item-center>

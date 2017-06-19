@@ -28,23 +28,18 @@ export class InputNumericComponent {
         this.selectedItem = navParams.get('selected');
         this.id = navParams.get('id');
         this.description = navParams.get('description');
-        this.isConnected = navParams.get('isConnected');         
     }
 
 
     setData() {
-        // todo 
-        if (!this.isConnected) {
-        // store data locally
-        } else {
-         // send to server
-        }
+        // todo validate input     
         this.logger.info('quantity entered: ' + this.quantity + ' for item: ' + this.id);
         this.dismiss();
     }
 
     dismiss() {
-        this.viewController.dismiss();
+        this.viewController.dismiss({id: this.id,
+        quantity: this.quantity});
     }
 
 

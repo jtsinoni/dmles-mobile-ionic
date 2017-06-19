@@ -30,6 +30,8 @@ export class ScannerComponent extends Search {
 
   itemSelected: boolean;
 
+  searchValue: string;
+
   constructor(
     loadingCtrl: LoadingController,
     private platform: Platform,
@@ -43,6 +45,7 @@ export class ScannerComponent extends Search {
     this.item = new ABiCatalogResultModel();
     this.item.setDefaults();
     this.itemSelected = false;
+    this.searchValue = "";
   }
 
   ionViewDidEnter() {
@@ -58,14 +61,14 @@ export class ScannerComponent extends Search {
     });
   }
 
-  public getSearchResults(searchValue: string) {
+  public getSearchResults() {
     this.item.setDefaults();
-    this.log.debug('getting search results for value: ' + searchValue)
-    this.showLoadingData({ content: `Searching for ${searchValue}` });
+    this.log.debug('getting search results for value: ' + this.searchValue)
+    this.showLoadingData({ content: `Searching for ${this.searchValue}` });
     let server: ServerModel;
     this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
       this.abiCatalogService.setServer(server);
-      this.abiCatalogService.getABiCatalogRecords(searchValue)
+      this.abiCatalogService.getABiCatalogRecords(this.searchValue)
         .timeout(8000)
         .map(response => response.json())
         .subscribe(
@@ -74,16 +77,16 @@ export class ScannerComponent extends Search {
             this.item.setResults(response.total, response.took, response.hits.fields);
           }
           this.loadingEnded();
-          this.item.resultReturned = true;
+          this.item.resultReturned = true;        
         },
         (error) => {
           this.loadingEnded();
           this.item.setDefaults();
           this.item.resultReturned = true;
           this.log.log(`Error => ${error}`);
-          let msg: String = "Error retrieving search results";
-          let errorModal = this.modalController.create(WarningDialogComponent, { txt: error, message: msg });
-          errorModal.present();
+          let msg: string = "Error retrieving search results";
+          this.setErrorMessage(error, msg);
+        
         });
     });
   }
@@ -92,14 +95,38 @@ export class ScannerComponent extends Search {
     this.presentModal(item);
   }
 
-  public presentModal(item: ABiCatalogModel) {
-    if (item) {
-    this.log.debug('item is NOT null');
-    }
-    this.modal = this.modalController.create(InputNumericComponent, { selected: item, id: item.enterpriseProductIdentifier, description: item.fullDescription, isConnected: this.isConnected });
+  public presentModal(item: ABiCatalogModel) {    
+    this.modal = this.modalController.create(InputNumericComponent, { selected: item, id: item.enterpriseProductIdentifier, description: item.fullDescription });
+    this.modal.onDidDismiss(data => {
+        this.onDataSaved(data);
+    })
     this.modal.present();
-    //this.itemSelected = true;
-    //alert("show add item modal");
+  }
+
+  setErrorMessage(error: string, msg: string) {
+      let errorModal = this.modalController.create(WarningDialogComponent, { txt: error, message: msg });
+          errorModal.present();
+  }
+
+  onDataSaved(data: any) {
+     
+      if (data) {
+       let id = data.id;
+       let quantity = data.quantity;
+       this.log.info("got: " + id + " qty:" + quantity);
+       // todo 
+        // if (!this.isConnected) {
+        // // store data locally
+        // } else {
+        //  // send to server
+        // }
+
+      }
+     
+    this.item.items = [];
+    this.item.resultReturned = false;
+    this.searchValue = "";
+    this.resetFocus();
   }
 
 

@@ -8,7 +8,7 @@
         <ion-item>
             <ion-input id="itemQuantity" type="number" [(ngModel)]="quantity" placeholder="Qty" autofocus
             (keyup.enter)="setData()"></ion-input>
-            <button (click)="setData()" ion-button clear icon-only item-right>
+            <button [attr.aria-label]="save item quantity" (click)="setData()" ion-button clear icon-only item-right>
             <ion-icon name='add-circle' is-active="true"></ion-icon>
           </button>
         </ion-item>

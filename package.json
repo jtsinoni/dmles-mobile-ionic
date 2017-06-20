@@ -29,6 +29,7 @@
         "@ionic-native/barcode-scanner": "^3.12.1",
         "@ionic-native/core": "^3.12.1",
         "@ionic-native/local-notifications": "^3.12.1",
+        "@ionic-native/network": "^3.12.1",
         "@ionic-native/splash-screen": "3.12.1",
         "@ionic-native/status-bar": "3.12.1",
         "@ionic/storage": "2.0.1",
@@ -60,13 +61,13 @@
         "ionic-native": "2.2.12",
         "ionic-plugin-keyboard": "~2.2.1",
         "ionicons": "3.0.0",
+        "logicole-plugin-cac": "/CACPlugin",
         "mqtt": "^2.7.1",
         "phonegap-plugin-barcodescanner": "~6.0.5",
         "rxjs": "5.1.1",
         "sw-toolbox": "3.6.0",
         "xcode": "^0.9.1",
-        "zone.js": "0.8.11",
-        "logicole-plugin-cac": "/CACPlugin"
+        "zone.js": "0.8.11"
     },
     "devDependencies": {
         "@angular/cli": "^1.1.1",

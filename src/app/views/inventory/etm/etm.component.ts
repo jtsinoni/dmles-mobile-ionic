@@ -17,6 +17,7 @@ import { ElementPositionDirective } from "../../../common/directives/element-pos
 import { SettingsService } from "../../../services/settings.service";
 import { SettingsModel } from "../../../models/settings.model";
 import { WarningDialogComponent } from "../../common/dialogs/warning-dialog.component";
+import {ModalDialogController} from "../../common/dialogs/modal-dialog-controller.component";
 
 
 
@@ -112,9 +113,9 @@ export class EtmComponent extends Search {
                     this.item.setDefaults();
                     this.item.resultReturned = true;
                     this.log.log(`Error => ${error}`);
-                    let msg: String = "Error retrieving search results";
-                    let errorModal = this.modalController.create(WarningDialogComponent, { txt: error, message: msg });
-                    errorModal.present();
+
+                    let dialog = new ModalDialogController(WarningDialogComponent);
+                    dialog.show({message: `Error retrieving ABi search results.`, error: error});
                 });
         });
     }

@@ -3,9 +3,9 @@
 <ion-content>
 
   <ion-list>
-    <ion-item-divider ion-item (click)="addSetting()">
+    <button ion-item (click)="addSetting()">
       <ion-label>My Settings</ion-label>
-    </ion-item-divider>
+    </button>
     <ion-item *ngFor="let setting of settings" (press)="itemSelected(setting)">
       <ion-label>{{setting.settingsName}}</ion-label>
       <ion-toggle [hidden]="isHidden(setting, 'boolean')" [(ngModel)]="setting.setting" (ionChange)="boolChanged(setting)"></ion-toggle>
@@ -15,23 +15,23 @@
         <ion-option *ngFor="let value of setting.values" [value]="value">{{value}}</ion-option>
       </ion-select>
     </ion-item>
-    <ion-item-divider class="ripple" ion-item (click)="presentBluetoothModal()">
+    <button ion-item detail-none (click)="presentBluetoothModal()">
       <ion-label>Bluetooth Settings</ion-label>
-      <ion-icon item-right name="bluetooth"></ion-icon>
-    </ion-item-divider>
-    <ion-item-divider class="ripple" ion-item (click)="presentAddServer()">
+      <ion-icon item-end name="bluetooth"></ion-icon>
+    </button>
+    <button ion-item detail-none (click)="presentAddServer()">
       <ion-label>Selected Host Server</ion-label>
-      <ion-icon item-right name="add"></ion-icon>
-    </ion-item-divider>
+      <ion-icon item-end name="add"></ion-icon>
+    </button>
     <ion-item *ngIf="defaultServer">
       <ion-label>{{defaultServer.serverName}}</ion-label>
       <ion-label>{{defaultServer.port}}</ion-label>
-      <ion-badge item-right>Default</ion-badge>
+      <ion-badge item-end>Default</ion-badge>
     </ion-item>
-    <ion-item-divider class="ripple" ion-item (click)="presentPKardSettings()">
+    <button ion-item detail-none (click)="presentPKardSettings()">
       <ion-label>PKard Settings</ion-label>
-      <ion-icon item-right name="add"></ion-icon>
-    </ion-item-divider>
-    
+      <ion-icon item-end name="add"></ion-icon>
+    </button>
+
   </ion-list>
 </ion-content>

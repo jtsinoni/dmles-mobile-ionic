@@ -26,8 +26,8 @@ export class AddServerComponent {
     this.addServerForm = formBuilder.group({
       'nameInput': ['', Validators.required],
       'portInput': ['', Validators.nullValidator],
-      'protocolInput': ['http', Validators.nullValidator],   
-      'defaultServerCheck' : ['true', Validators.nullValidator]  
+      'protocolInput': ['', Validators.required],
+      'defaultServerCheck': ['', Validators.nullValidator]
     });
 
   }
@@ -55,9 +55,13 @@ export class AddServerComponent {
 
   saveHostServer() {
     if (this.validate()) {
-
-      this.serverService.addHostServer(this.model);
-
+      if (this.model.id) {
+        //update
+        this.serverService.updateHostServer(this.model);
+      } else {
+        //add new
+        this.serverService.addHostServer(this.model);
+      }
       this.dismiss();
     }
 
@@ -69,19 +73,15 @@ export class AddServerComponent {
     }
     let errorMessage = "<ul>";
     let name = this.addServerForm.controls['nameInput'];
-    //let port = this.addServerForm.controls['portInput'];
-    // let protocol = this.addServerForm.controls['protocolInput'];
-    // if (!protocol.valid) {
-    //   errorMessage += "<li>Protocol must be selected</li>"
-    // }
 
     if (!name.valid) {
       errorMessage += "<li>Host Server required</li>"
     }
 
-    // if (!port.valid) {
-    //   errorMessage += "<li>Port is required</li>"
-    // }
+    let protocol = this.addServerForm.controls['protocolInput'];
+    if (!protocol.valid) {
+      errorMessage += "<li>Protocol must be selected</li>"
+    }
 
     errorMessage += "</ul>"
 
@@ -94,6 +94,13 @@ export class AddServerComponent {
     });
     alert.present();
 
+  }
+
+  onNotify(server: ServerModel): void {
+    //this.log.debug("name: " + server.serverName + " id:" + server.id + " isDefault:" + server.isDefault );
+    this.model = server;
+    //this.model.isDefault = server.isDefault;
+    //this.log.debug("name: " + this.model.serverName + " id:" + this.model.id + " isDefault:" + this.model.isDefault);
   }
 
   dismiss() {

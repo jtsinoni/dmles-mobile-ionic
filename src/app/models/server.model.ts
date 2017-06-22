@@ -19,13 +19,16 @@ export class ServerModel extends BaseDataTableModel implements IServerModel {
     protocol: string;
 
 
-    constructor(name: string, port?: number, protocol?: string, id?: number) {
+    constructor(name: string, isDefault?: boolean, port?: number, protocol?: string, id?: number) {
         super(id);
         this.serverName = name;
         this.port = port;    
         this.protocol = protocol;
+        this.isDefault = isDefault ? false : isDefault;       
 
     }
+
+   
 
     setPort() {
         if (this.port === undefined) {

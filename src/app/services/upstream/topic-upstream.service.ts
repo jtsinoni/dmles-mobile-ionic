@@ -2,7 +2,6 @@ import {TopicMessagingService} from "../topic-messaging.service";
 import {LoggerService} from "../logger/logger-service";
 import {BaseDataTableModel} from "../../models/base-data-table.model";
 import {BaseDatabaseService} from "../database/base-database.service";
-import {Network} from "ionic-native";
 import {Observable, Subject} from "rxjs";
 import {UtilService} from "../../common/services/util.service";
 import {AppInjector} from "../../app.module";
@@ -52,20 +51,35 @@ export abstract class TopicUpstreamService<D extends BaseDatabaseService<BaseDat
             this.startHelper();
         }
 
-        Network.onConnect().subscribe(() => {
-            this.startHelper();
+        this.networkService.onNetworkAvailable().subscribe((available: boolean) => {
+            if(available) {
+                this.startHelper();
+            } else {
+                this.disconnect()
+                    .then((client) => {
+                        this.client = client;
+                        this.log.debug(`Received disconnect event, Name: ${this.name}, Client ID: ${client.options.clientId}, connected: ${client.connected}`);
+                    })
+                    .catch((error) => {
+                        this.log.error(error);
+                    })
+            }
         });
 
-        Network.onDisconnect().subscribe(() => {
-            this.disconnect()
-                .then((client) => {
-                    this.client = client;
-                    this.log.debug(`Received disconnect event, Name: ${this.name}, Client ID: ${client.options.clientId}, connected: ${client.connected}`);
-                })
-                .catch((error) => {
-                    this.log.error(error);
-                })
-        });
+        // this.network.onConnect().subscribe(() => {
+        //     this.startHelper();
+        // });
+        //
+        // this.network.onDisconnect().subscribe(() => {
+        //     this.disconnect()
+        //         .then((client) => {
+        //             this.client = client;
+        //             this.log.debug(`Received disconnect event, Name: ${this.name}, Client ID: ${client.options.clientId}, connected: ${client.connected}`);
+        //         })
+        //         .catch((error) => {
+        //             this.log.error(error);
+        //         })
+        // });
     }
 
     private startHelper(){

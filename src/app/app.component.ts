@@ -14,6 +14,8 @@ import { LoginModalService } from "./services/login-modal.service";
 import { SecurityComponent } from "./views/security/security.component";
 import { CACService } from "./services/cac.service";
 import { SettingsService } from "./services/settings.service";
+import {AppInjector} from "./app.module";
+import {NetworkService} from "./services/network.service";
 
 @Component({
     templateUrl: './app.html'
@@ -61,14 +63,15 @@ export class DMLESMobile implements OnInit {
             Splashscreen.hide();
             StatusBar.styleDefault();
 
-
             this.isMobility = this.utilService.isMobility();
-
             if (this.settingsCount < 1 && this.isMobility) {
                 // add settings to the db from asset file
                 this.settingService.getAssetFile();
 
             }
+
+            // Initialize NetworkService
+            AppInjector.get(NetworkService);
 
             this.setLoggedInOutAreas();
         });

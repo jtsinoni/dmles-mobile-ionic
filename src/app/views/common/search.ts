@@ -1,8 +1,7 @@
+import {Input, NgZone} from "@angular/core";
 import {LoadingController, Loading} from 'ionic-angular';
 import {NetworkService} from "../../services/network.service";
 import {AppInjector} from "../../app.module";
-import {Network} from "ionic-native";
-import {Input, NgZone} from "@angular/core";
 
 export class Search {
     @Input()
@@ -10,11 +9,8 @@ export class Search {
 
     @Input()
     public searchValue: string;
-
     public networkService: NetworkService;
-
     private ngZone: NgZone;
-
     private loader: Loading;
 
     constructor (public loadingCtrl: LoadingController) {
@@ -30,18 +26,30 @@ export class Search {
         // get initial state of connection
         this.isConnected = this.networkService.isConnected;
 
-        Network.onConnect().subscribe(() => {
-            this.ngZone.run(() => {
-                this.isConnected = true;
-            });
+        this.networkService.onNetworkAvailable().subscribe((available: boolean) => {
+            if(available) {
+                this.ngZone.run(() => {
+                    this.isConnected = true;
+                });
+            } else {
+                this.ngZone.run(() => {
+                    this.isConnected = false;
+                });
+            }
         });
 
-        Network.onDisconnect().subscribe(() => {
-            this.ngZone.run(() => {
-                this.isConnected = false;
-            });
-
-        });
+        // this.network.onConnect().subscribe(() => {
+        //     this.ngZone.run(() => {
+        //         this.isConnected = true;
+        //     });
+        // });
+        //
+        // this.network.onDisconnect().subscribe(() => {
+        //     this.ngZone.run(() => {
+        //         this.isConnected = false;
+        //     });
+        //
+        // });
     }
 
     public showLoadingData(args: any) {

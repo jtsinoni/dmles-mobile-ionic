@@ -1,0 +1,11 @@
+1.  get latest from GitHub
+      -- git clone https://github.com/jtsinoni/dmles-mobile-ionic.git
+2.  cd to dmles-mobile-ionic
+4.  npm install
+5.  ionic prepare --nofetch (this adds the platforms and plugins to each platform)
+6.  done
+
+a few ionic commands
+    -- ionic serve                      ## runs node.js and serves files, great during development, can make changes to code and autodeploys
+    -- ionic emulate [android|ios]      ## builds and deploys to emulator
+    -- ionic run [android|ios]          ## builds and deploys to device

@@ -29,8 +29,8 @@ export class AppConfigConstants {
 
     public static messagingServer: any = {
         //host:"johns-macbook-pro.local",
-        //host:"192.168.1.13",
-        host:"192.168.1.129",
+        host:"192.168.1.13",
+        //host:"192.168.1.129",
         //host:"172.16.32.13",
         port:"9001",
         default:{topic:"logicole-mobile"},

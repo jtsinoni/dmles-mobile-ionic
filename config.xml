@@ -36,7 +36,7 @@
         <preference name="FadeSplashScreenDuration" value="1500" />
     </platform>
     <platform name="ios">
-        <allow-navigation href="*://*.192.168.1.129/*" />
+        <allow-navigation href="*://*.192.168.1.13/*" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />

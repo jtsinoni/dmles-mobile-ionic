@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {File, RemoveResult, FileEntry} from 'ionic-native';
+import {File, RemoveResult, FileEntry} from '@ionic-native/file';
 import {AppConfigConstants} from "../constants/app-config.constants";
 import {Platform} from "ionic-angular";
 
@@ -10,7 +10,8 @@ const FILE_NAME = AppConfigConstants.clientLogFileName;
 export class LocalFileStorageService {
     private serviceName = "LocalFileStorageService";
 
-    constructor(private platform: Platform) {
+    constructor(private platform: Platform,
+                private file: File) {
         this.init();
     }
 
@@ -25,8 +26,7 @@ export class LocalFileStorageService {
     }
 
     public writeToFile(data: string) {
-        Promise.resolve()
-            .then(this.checkFile)
+        Promise.resolve(this.checkFile())
             .then((found) => {
                 if(found) {
                     this.writeFile(data);
@@ -34,7 +34,7 @@ export class LocalFileStorageService {
                     this.createFile()
                         .then(() => {
                             this.writeFile(data);
-                        });
+                        })
                 }
             })
             .catch((error) => {
@@ -43,7 +43,7 @@ export class LocalFileStorageService {
     }
 
     public readFile(component?: any) {
-        File.readAsText(cordova.file.dataDirectory, FILE_NAME)
+        this.file.readAsText(cordova.file.dataDirectory, FILE_NAME)
             .then((fileContents) => {
                 if(component) {
                     component.logData = fileContents;
@@ -61,7 +61,7 @@ export class LocalFileStorageService {
     }
 
     public deleteFile() {
-        File.removeFile(cordova.file.dataDirectory, FILE_NAME)
+        this.file.removeFile(cordova.file.dataDirectory, FILE_NAME)
             .then((removeResult: RemoveResult) => {
                 console.debug(`File ${removeResult.fileRemoved.name} removed => ${removeResult.success}`);
             })
@@ -71,7 +71,7 @@ export class LocalFileStorageService {
     }
 
     private writeFile(data: string): Promise<any> {
-        return File.writeFile(cordova.file.dataDirectory, FILE_NAME, data, {replace: false, create: true, append: true})
+        return this.file.writeFile(cordova.file.dataDirectory, FILE_NAME, data, {replace: false, append: true})
             .then((results) => {
                 //console.debug(`writeFile(): Data written to client.log => ${data}`);
             })
@@ -82,7 +82,7 @@ export class LocalFileStorageService {
     }
 
     public createFile(): Promise<any> {
-        return File.createFile(cordova.file.dataDirectory, FILE_NAME, false)
+        return this.file.createFile(cordova.file.dataDirectory, FILE_NAME, true)
             .then((fileEntry: FileEntry) => {
                 console.debug(`Successfully created => ${fileEntry.name}`);
 
@@ -102,7 +102,7 @@ export class LocalFileStorageService {
 
     public readDataFile(filename: string): any {
         let data: any;
-        File.readAsText(cordova.file.dataDirectory, filename)
+        this.file.readAsText(cordova.file.dataDirectory, filename)
             .then((fileContents) => {
                 data = fileContents;
             })
@@ -117,7 +117,7 @@ export class LocalFileStorageService {
     }
 
     private checkFile(): Promise<any> {
-        return File.checkFile(cordova.file.dataDirectory, FILE_NAME)
+        return this.file.checkFile(cordova.file.dataDirectory, FILE_NAME)
             .then((results) => {
                 //console.debug(`Successfully found file => ${FILE_NAME}`);
                 return results;

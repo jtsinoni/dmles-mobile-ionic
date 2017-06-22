@@ -8,13 +8,15 @@ import {LoggerService} from "../logger/logger-service";
 import {WindowService} from "../window.service";
 import {Platform} from "ionic-angular";
 
-export function storageFactory(log: LoggerService, utilService: UtilService, windowService: WindowService, platform: Platform) {
-    if(utilService.isProd()) {
-        return new LocalSecureStorageService(log, platform);
-    } else if(utilService.isMobility()) {
-        return new LocalNativeStorageService(log);
-    } else {
-        return new LocalDevStorageService(log, windowService);
+export class StorageFactory {
+    constructor(log: LoggerService, utilService: UtilService, windowService: WindowService, platform: Platform) {
+        if(utilService.isProd()) {
+            return new LocalSecureStorageService(log, platform);
+        } else if(utilService.isMobility()) {
+            return new LocalNativeStorageService(log);
+        } else {
+            return new LocalDevStorageService(log, windowService);
+        }
     }
 }
 
@@ -27,7 +29,7 @@ export class LocalStorageModule {
             ngModule: LocalStorageModule,
             providers: [LocalDevStorageService, LocalNativeStorageService, LocalSecureStorageService,
                         { provide: LocalStorageService,
-                          useFactory: storageFactory,
+                          useFactory: StorageFactory,
                           deps: [LoggerService, UtilService, WindowService, Platform] }]
         };
     }

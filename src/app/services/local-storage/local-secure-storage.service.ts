@@ -1,13 +1,15 @@
 import {Injectable} from "@angular/core";
-import {SecureStorage} from 'ionic-native';
+import {SecureStorage, SecureStorageObject} from '@ionic-native/secure-storage';
 import {LoggerService} from "../logger/logger-service";
 import {LocalStorageService} from "./local-storage.service";
 import {Platform} from "ionic-angular";
+import {AppInjector} from "../../app.module";
 
 @Injectable()
 export class  LocalSecureStorageService extends LocalStorageService {
     serviceName = "LocalSecureStorage Service";
-    private secureStorage:SecureStorage;
+    private secureStorage: SecureStorage;
+    private secureStorageObject: SecureStorageObject;
 
     constructor(log: LoggerService, private platform: Platform) {
         super(log);
@@ -18,9 +20,11 @@ export class  LocalSecureStorageService extends LocalStorageService {
         this.log.debug(`${this.serviceName} - Start`);
 
         this.platform.ready().then(() => {
-            this.secureStorage = new SecureStorage();
+            this.secureStorage =  AppInjector.get(SecureStorage);
             this.secureStorage.create('dmles-secure-storage')
-                .then(() => {
+                .then((secureStorageObject: SecureStorageObject) => {
+                    this.secureStorageObject = secureStorageObject;
+
                     this.log.debug(`LocalSecureStorageService: Secure storage is ready`);
                 })
                 .catch((error) => {
@@ -40,7 +44,7 @@ export class  LocalSecureStorageService extends LocalStorageService {
     }
 
     public getData(key:string): Promise<any> {
-        return this.secureStorage.get(key)
+        return this.secureStorageObject.get(key)
             .then((data) => {
                 this.log.debug(`${this.serviceName} - Get cache data: ${key} => ${data}`);
 
@@ -52,7 +56,7 @@ export class  LocalSecureStorageService extends LocalStorageService {
     }
 
     public removeData(key:string): Promise<any> {
-        return this.secureStorage.remove(key)
+        return this.secureStorageObject.remove(key)
             .then(() => {
                 this.log.debug(`${this.serviceName} - Cache data removed: ${key}`);
 
@@ -64,7 +68,7 @@ export class  LocalSecureStorageService extends LocalStorageService {
     }
 
     public storeData(key:string, data:any): Promise<any> {
-        return this.secureStorage.set(key, data)
+        return this.secureStorageObject.set(key, data)
             .then((results) => {
                 this.log.debug(`${this.serviceName} - Stored data => ${key} => ${JSON.stringify(results)}, results => ${results}`);
                 return results;

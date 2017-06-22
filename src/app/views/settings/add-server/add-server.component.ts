@@ -26,7 +26,7 @@ export class AddServerComponent {
     this.addServerForm = formBuilder.group({
       'nameInput': ['', Validators.required],
       'portInput': ['', Validators.nullValidator],
-      'protocolInput': ['http', Validators.required],   
+      'protocolInput': ['http', Validators.nullValidator],   
       'defaultServerCheck' : ['true', Validators.nullValidator]  
     });
 
@@ -70,10 +70,10 @@ export class AddServerComponent {
     let errorMessage = "<ul>";
     let name = this.addServerForm.controls['nameInput'];
     //let port = this.addServerForm.controls['portInput'];
-    let protocol = this.addServerForm.controls['protocolInput'];
-    if (!protocol.valid) {
-      errorMessage += "<li>Protocol must be selected</li>"
-    }
+    // let protocol = this.addServerForm.controls['protocolInput'];
+    // if (!protocol.valid) {
+    //   errorMessage += "<li>Protocol must be selected</li>"
+    // }
 
     if (!name.valid) {
       errorMessage += "<li>Host Server required</li>"

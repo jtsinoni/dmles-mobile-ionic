@@ -39,6 +39,10 @@ export class ServerDisplayComponent implements OnInit {
     });
   }
 
+  updateServer(server: ServerModel) {
+    alert('update server here;');
+  }
+
   setDefault(server: ServerModel) {
     if (server.isDefault) {
       this.log.debug("setting " + server.serverName + " to default");

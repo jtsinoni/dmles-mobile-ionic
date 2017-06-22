@@ -70,7 +70,8 @@
         "rxjs": "5.1.1",
         "sw-toolbox": "3.6.0",
         "xcode": "^0.9.1",
-        "zone.js": "0.8.11"
+        "zone.js": "0.8.11",
+        "logicole-plugin-cac": "./CACPlugin"
     },
     "devDependencies": {
         "@angular/cli": "^1.1.1",
@@ -132,7 +133,8 @@
             "cordova-plugin-whitelist": {},
             "de.appplant.cordova.plugin.local-notification": {},
             "ionic-plugin-keyboard": {},
-            "phonegap-plugin-barcodescanner": {}
+            "phonegap-plugin-barcodescanner": {},
+            "logicole-plugin-cac": {}
         }
     }
 }

@@ -1,10 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-//import {Component, ViewChild} from '@angular/core';
 import { NavController, NavParams, Platform, ModalController } from 'ionic-angular';
+import { Keyboard } from '@ionic-native/keyboard';
 import { Search } from "../../common/search";
 import { LoadingController } from 'ionic-angular';
 import { LoggerService } from "../../../services/logger/logger-service";
-import { Keyboard } from 'ionic-native';
 import { BarcodeData } from "./barcode-data";
 import { UtilService } from "../../../common/services/util.service";
 import { Level as LoggerLevel, Level } from "../../../services/logger/level";
@@ -42,7 +41,8 @@ export class InputTextComponent extends Search {
         private barcodeScannerService: BarcodeScannerService,
         private util: UtilService,
         private platform: Platform,
-        private settingsService: SettingsService) {
+        private settingsService: SettingsService,
+        private keyboard: Keyboard) {
         super(loadingCtrl);
     }
 
@@ -75,7 +75,7 @@ export class InputTextComponent extends Search {
         this.platform.ready().then(() => {
             // iOS get => Although it works get warning: Showing keyboard not supported in iOS due to platform limitations.
             setTimeout(() => {
-                Keyboard.show();
+                this.keyboard.show();
             }, 300); // increased timeout from 150ms, seemed too short
 
             setTimeout(() => {
@@ -89,7 +89,7 @@ export class InputTextComponent extends Search {
         // close the keyboard when we leave
         this.platform.ready().then(() => {
             setTimeout(() => {
-                Keyboard.close();
+                this.keyboard.close();
             }, 300); // increased timeout from 150ms, seemed too short
         });
     }

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="logicole-plugin-cac" version="0.0.2" xmlns="http://apache.org/cordova/ns/plugins/1.0"
+<plugin id="logicole-plugin-cac" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android">
     <name>CACReaderPlugin</name>
     <description>CAC Reader Plugin</description>
@@ -34,11 +34,11 @@
             <clobbers target="cordova.plugins.CacReader" />
         </js-module>
 
-        <resource-file src="./config/ios/PKardSDK.bundle" target="/PKardSDK.bundle" />
-        <resource-file src="./config/ios/lockScreen.png" target="/lockScreen.png" />
-        <resource-file src="./config/ios/certs/trusted_cas.pem" target="/trusted_cas.pem" />
-        <resource-file src="./config/ios/certs/trusted_certs.pem" target="/trusted_certs.pem" />
-        <resource-file src="./config/ios/certs/untrusted_cas.pem" target="/untrusted_cas.pem" />
+        <resource-file src="./config/ios/PKardSDK.bundle" target="PKardSDK.bundle" />
+        <resource-file src="./config/ios/lockScreen.png" target="lockScreen.png" />
+        <resource-file src="./config/ios/certs/trusted_cas.pem" target="trusted_cas.pem" />
+        <resource-file src="./config/ios/certs/trusted_certs.pem" target="trusted_certs.pem" />
+        <resource-file src="./config/ios/certs/untrusted_cas.pem" target="untrusted_cas.pem" />
 
         <framework src="CFNetwork.framework" />
         <framework src="SystemConfiguration.framework" />

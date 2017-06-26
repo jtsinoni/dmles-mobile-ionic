@@ -1,19 +1,23 @@
 import {Injectable} from "@angular/core";
-import {NativeStorage} from 'ionic-native';
+import {NativeStorage} from '@ionic-native/native-storage';
 import {LoggerService} from "../logger/logger-service";
 import {LocalStorageService} from "./local-storage.service";
+import {AppInjector} from "../../app.module";
 
 @Injectable()
 export class LocalNativeStorageService extends LocalStorageService {
+    private nativeStorage: NativeStorage;
     serviceName = "LocalNativeStorage Service";
 
     constructor(log: LoggerService) {
         super(log);
         this.log.debug(`${this.serviceName} - Start`);
+
+        this.nativeStorage = AppInjector.get(NativeStorage);
     }
 
     public clearData(): Promise<any> {
-        return NativeStorage.clear()
+        return this.nativeStorage.clear()
             .then(() => {
                 this.log.debug(`${this.serviceName} - Cache data cleared`);
                 return true;
@@ -24,7 +28,7 @@ export class LocalNativeStorageService extends LocalStorageService {
     }
 
     public getData(key:string): Promise<any> {
-        return NativeStorage.getItem(key)
+        return this.nativeStorage.getItem(key)
             .then((data) => {
                 this.log.debug(`${this.serviceName} - Get cache data: ${key} => ${data}`);
 
@@ -36,7 +40,7 @@ export class LocalNativeStorageService extends LocalStorageService {
     }
 
     public removeData(key:string): Promise<any> {
-        return NativeStorage.remove(key)
+        return this.nativeStorage.remove(key)
             .then(() => {
                 this.log.debug(`${this.serviceName} - Cache data removed: ${key}`);
 
@@ -48,7 +52,7 @@ export class LocalNativeStorageService extends LocalStorageService {
     }
 
     public storeData(key:string, data:any): Promise<any> {
-        return NativeStorage.setItem(key, data)
+        return this.nativeStorage.setItem(key, data)
             .then((results) => {
                 this.log.debug(`${this.serviceName} - Stored data => ${key} => ${JSON.stringify(results)}, results => ${results}`);
                 return results;

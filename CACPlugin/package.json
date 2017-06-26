@@ -1,6 +1,6 @@
 {
   "name": "CACReaderPlugin",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "CAC Reader Plugin",
   "cordova": {
     "id": "logicole-plugin-cac",

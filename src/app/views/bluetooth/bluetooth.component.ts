@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
+import {BluetoothSerial} from '@ionic-native/bluetooth-serial';
 import {BluetoothModel} from "../../models/bluetooth.model";
 import {Platform, ModalController, ViewController} from 'ionic-angular';
 import {LoggerService} from "../../services/logger/logger-service";
 import {GrowlDialogComponent} from "../common/dialogs/growl-dialog.component";
-import {BluetoothSerial} from "ionic-native";
 import {Level as LoggerLevel, Level} from "../../services/logger/level";
 import {GenerateBarcodeLabelService} from '../../services/generate-barcode-label.service';
 import {Subscription} from "rxjs";
@@ -59,7 +59,6 @@ import {AppConfigConstants} from "../../constants/app-config.constants";
 export class BluetoothComponent {
     bluetoothText: string;
     showEnableBluetoothButton: boolean = true;
-    private bt: any; // local class instance, use this one
     myConnection: Subscription = null;
     selectedDevice: BluetoothModel = null;
     printStatus: boolean = false;
@@ -71,10 +70,9 @@ export class BluetoothComponent {
                 private log: LoggerService,
                 private settingService: SettingsService,
                 private modalController: ModalController,
-                private viewController: ViewController) {
+                private viewController: ViewController,
+                private bt: BluetoothSerial) {
         this.bluetoothText = "Bluetooth";
-
-        this.bt = BluetoothSerial;
     }
 
     ionViewDidLoad() { // ionViewDidEnter() - recursion?

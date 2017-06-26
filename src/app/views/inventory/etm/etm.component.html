@@ -24,7 +24,7 @@
         </span>
     </ion-item>
     <ion-list>
-        <button ion-item class="ripple" *ngFor="let abiItem of item.items" (click)="itemTapped(abiItem)">
+        <button ion-item *ngFor="let abiItem of item.items" (click)="itemTapped(abiItem)">
             <div class="item-note" item-center>
                 <h2>Id:	{{abiItem.enterpriseProductIdentifier}}</h2>
                 <p>Noun: {{abiItem.productNoun}}</p>

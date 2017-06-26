@@ -1,6 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { Platform, Nav, App } from 'ionic-angular';
-import { StatusBar, Splashscreen } from 'ionic-native';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
 import { LoginComponent } from './views/login/login.component';
 import { AreaModel } from './models/area.model';
 import { AppContainerComponent } from "./app-container.component";
@@ -14,12 +15,17 @@ import { LoginModalService } from "./services/login-modal.service";
 import { SecurityComponent } from "./views/security/security.component";
 import { CACService } from "./services/cac.service";
 import { SettingsService } from "./services/settings.service";
+import { AppInjector } from "./app.module";
+import { NetworkService } from "./services/network.service";
 
 @Component({
     templateUrl: './app.html'
 })
 export class DMLESMobile implements OnInit {
     @ViewChild(Nav) nav: Nav;
+
+    private statusBar: StatusBar;
+    private splashScreen: SplashScreen;
 
     rootPage: any = SecurityComponent;
     loggedOutAreas = new Array<AreaModel>();
@@ -58,17 +64,22 @@ export class DMLESMobile implements OnInit {
     initializeApp() {
         this.setSettingsCount();
         this.platform.ready().then(() => {
-            Splashscreen.hide();
-            StatusBar.styleDefault();
+            // Initialize Ionic-Plugins
+            AppInjector.get(NetworkService);
+            this.splashScreen = AppInjector.get(SplashScreen);
+            this.statusBar = AppInjector.get(StatusBar);
 
+
+            this.splashScreen.hide();
+            this.statusBar.styleDefault();
 
             this.isMobility = this.utilService.isMobility();
-
             if (this.settingsCount < 1 && this.isMobility) {
                 // add settings to the db from asset file
                 this.settingService.getAssetFile();
 
             }
+
 
             this.setLoggedInOutAreas();
         });

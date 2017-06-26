@@ -22,11 +22,18 @@ export class ABiCatalogModel extends BaseDataTableModel {
     packaging:Array<any>;
     // test input value, not an ABi data element
     quantity:number;
+    preferredProductIndicator:string;
+    isPreferredItem: boolean;
 
     
     constructor(id?: number) {
         super(id);
         this.quantity = 0;
+        this.setPreferredItem();
+    }
+
+    setPreferredItem()  {
+        this.isPreferredItem = (this.preferredProductIndicator.toUpperCase() === "Y");
     }
 
 }

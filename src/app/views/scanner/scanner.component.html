@@ -14,10 +14,12 @@
     <ion-list>
         <ion-item class="ripple" *ngFor="let abiItem of item.items" (click)="itemTapped(abiItem)">
             <div class="item-note" item-center>
+                
+                <h2>{{abiItem.longItemDescription}}</h2>
                 <span>
-                <h2>Id:	{{abiItem.enterpriseProductIdentifier}}</h2>
-                Noun: {{abiItem.productNoun}}
-                 Desc: {{abiItem.shortItemDescription}}</span>               
+                {{abiItem.manufacturer}}
+                 {{abiItem.manufacturerCatalogNumber}}</span>  
+                 <ion-icon [hidden]="abiItem.isPreferredItem" name="thumbs-up" >             
             </div>
         </ion-item>
     </ion-list>

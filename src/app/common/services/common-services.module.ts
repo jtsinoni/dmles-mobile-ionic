@@ -27,6 +27,7 @@ import {EquipReqTopicUpstreamService} from "../../services/upstream/equip-req-to
 import {IMTopicUpstreamService} from "../../services/upstream/im-topic-upstream.service";
 import {ABiTopicUpstreamService} from "../../services/upstream/abi-topic-upstream.service";
 import {ABiDatabaseService} from "../../services/database/abi-database.service";
+import {AppVersionService} from "../../services/app-version.service";
 
 
 @NgModule({
@@ -63,6 +64,7 @@ export class CommonServicesModule {
                 IMTopicUpstreamService,
                 ABiTopicUpstreamService,
                 ABiDatabaseService,
+                AppVersionService,
 
                 // { provide: UpstreamService, useClass: TopicUpstreamService },
             ]

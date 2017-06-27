@@ -9,6 +9,7 @@ import {File} from '@ionic-native/file';
 import {NativeStorage} from '@ionic-native/native-storage';
 import {SecureStorage} from '@ionic-native/secure-storage';
 import {Keyboard} from '@ionic-native/keyboard';
+import {AppVersion} from '@ionic-native/app-version';
 
 @NgModule({
 })
@@ -17,7 +18,7 @@ export class IonicPluginsModule {
         return {
             ngModule: IonicPluginsModule,
             providers: [BarcodeScanner, LocalNotifications, Network, StatusBar, SplashScreen,
-                        BluetoothSerial, File, NativeStorage, SecureStorage, Keyboard]
+                        BluetoothSerial, File, NativeStorage, SecureStorage, Keyboard, AppVersion]
         };
     }
 

@@ -26,7 +26,7 @@ export class RequestApiService extends ApiService {
     }
 
     public getEquipmentRequests(): Observable<any> {
-        return this.get("getEquipmentRequests");
+        return this.get("getAllEquipmentRequests");
     }
 
     public getEquipmentRecords(searchValue, aggregations): Observable<any> {

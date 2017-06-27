@@ -1,14 +1,44 @@
 <modal-header remove-parent-element [title]="'Detail'"></modal-header>
 <ion-content>
   <div *ngIf="selectedItem" class="selection">
-      <ion-item>
-          <h2>Description:</h2>
-          <h3>{{selectedItem.shortItemDescription}}</h3>
-      </ion-item>
+      <ion-card>
+          <!--img *ngIf="selectedItem.productImages" src="selectedItem.productImages[0]"/->
+          <!--img src="assets/images/imageNotAvailable.jpg"/-->
+          <ion-card-header><strong>ID:&nbsp;</strong> {{selectedItem.enterpriseProductIdentifier}}</ion-card-header>
+          <ion-card-content>
+              <ion-row>
+                  {{selectedItem.longItemDescription}}
+              </ion-row>
+              <ion-row class="manufacturer">
+                  <span>{{selectedItem.manufacturer}}</span>
+                  <span *ngIf="selectedItem.manufacturerCatalogNumber">&nbsp;/&nbsp;{{selectedItem.manufacturerCatalogNumber}}</span>
+              </ion-row>
+              <ion-row>&nbsp;</ion-row>
+              <ion-row><strong>Packaging Description:&nbsp;</strong> {{selectedItem.packagingDescription}}</ion-row>
+          </ion-card-content>
+      </ion-card>
 
-      <ion-item>
-          <h2>UNSPSC Class:</h2>
-          <h3>{{selectedItem.unspscClass}}</h3>
-      </ion-item>
+      <ion-card>
+          <ion-card-header>About This Item</ion-card-header>
+          <ion-card-content>
+              <ion-row><strong>Product:&nbsp;</strong> {{selectedItem.productNoun}}</ion-row>
+              <ion-row><strong>Product Type:&nbsp;</strong> {{selectedItem.productType}}</ion-row>
+              <ion-row><strong>Product Commodity:&nbsp;</strong> {{selectedItem.unspscCommodity}}</ion-row>
+          </ion-card-content>
+          <ion-row>
+              <ion-col>
+                  <button ion-button color="primary" clear small>
+                      <!--ion-icon name='text'></ion-icon-->
+                      Related Products
+                  </button>
+              </ion-col>
+              <ion-col>
+                  <button ion-button color="primary" clear small>
+                      <!--ion-icon name='text'></ion-icon-->
+                      Equivalent Products
+                  </button>
+              </ion-col>
+          </ion-row>
+      </ion-card>
   </div>
 </ion-content>

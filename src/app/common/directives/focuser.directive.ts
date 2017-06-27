@@ -45,7 +45,7 @@ export class Focuser {
                 let len: number = Focuser.myElem.value.length;
                 Focuser.myElem.setSelectionRange(0, len);
             }
-            Focuser.myLog.debug('Value = (' + Focuser.myElem.value + ',' + Focuser.myElem.value.length + ')');
+            //Focuser.myLog.debug('Value = (' + Focuser.myElem.value + ',' + Focuser.myElem.value.length + ')');
         }
         else {
             Focuser.myLog.error('No Focuser.element found');

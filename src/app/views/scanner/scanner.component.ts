@@ -129,5 +129,8 @@ export class ScannerComponent extends Search {
     this.resetFocus();
   }
 
+  public isPreferredItem(item: ABiCatalogModel) : boolean {
+        return item.preferredProductIndicator.toUpperCase() === "Y" ? true : false;
+    }
 
 }

@@ -13,19 +13,13 @@
     </ion-item>
     <ion-list>
         <ion-item class="ripple" *ngFor="let abiItem of item.items" (click)="itemTapped(abiItem)">
-            <div class="item-note" item-center>
-                
-                <h2>{{abiItem.longItemDescription}}</h2>
-                <span>
+            <h2 style="width:80%; word-wrap:break-word;">{{abiItem.longItemDescription}}</h2>
+            <span>
                 {{abiItem.manufacturer}}
-                 {{abiItem.manufacturerCatalogNumber}}</span>  
-                 <ion-icon [hidden]="abiItem.isPreferredItem" name="thumbs-up" >             
-            </div>
+                 {{abiItem.manufacturerCatalogNumber}}                   
+                 </span>
+            <ion-icon [hidden]="!isPreferredItem(abiItem)" name="thumbs-up"></ion-icon>
+            <span><ion-badge color="secondary">{{abiItem.siteCount}}</ion-badge></span>
         </ion-item>
     </ion-list>
-    <!--<ion-fab logicole-element-position id="add-item-fab">
-        <button id="addItemFab" ion-fab (click)="addItem()"><ion-icon name="add-circle" >
-      </ion-icon></button>
-    </ion-fab>-->
-
 </ion-content>

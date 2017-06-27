@@ -3,7 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { LoggerService } from "../../../../services/logger/logger-service";
 
 @Component({
-  selector: 'etm-detail.component',
+  selector: 'etm-detail',
   templateUrl: 'etm-detail.component.html'
 })
 export class EtmDetailComponent {

@@ -11,6 +11,7 @@ import { BluetoothModalService } from "../../services/bluetooth-modal.service";
 import { AddServerComponent } from "./add-server/add-server.component";
 import { HostServerService } from "../../services/host-server.service";
 import {CacSettingComponent} from "./cac/cac-setting.component";
+import {AppVersionSettingComponent} from "./app-version/app-version-setting.component";
 
 @Component({
   selector: 'settings',
@@ -31,6 +32,10 @@ export class SettingsComponent {
     private utilService: UtilService,
     private bluetoothModalService: BluetoothModalService,
     private hostServerService: HostServerService) {
+  }
+
+  ionViewDidLoad() {
+    this.isMobility = this.utilService.isMobility();
   }
 
   ionViewWillEnter() {
@@ -105,6 +110,10 @@ export class SettingsComponent {
 
   presentPKardSettings() {
     this.modalController.create(CacSettingComponent).present();
+  }
+
+  presentAppVersion() {
+    this.modalController.create(AppVersionSettingComponent).present();
   }
 
   boolChanged(setting: SettingsModel) {

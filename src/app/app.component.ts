@@ -17,6 +17,7 @@ import { CACService } from "./services/cac.service";
 import { SettingsService } from "./services/settings.service";
 import { AppInjector } from "./app.module";
 import { NetworkService } from "./services/network.service";
+import {AppVersionService} from "./services/app-version.service";
 
 @Component({
     templateUrl: './app.html'
@@ -66,9 +67,9 @@ export class DMLESMobile implements OnInit {
         this.platform.ready().then(() => {
             // Initialize Ionic-Plugins
             AppInjector.get(NetworkService);
+            AppInjector.get(AppVersionService);
             this.splashScreen = AppInjector.get(SplashScreen);
             this.statusBar = AppInjector.get(StatusBar);
-
 
             this.splashScreen.hide();
             this.statusBar.styleDefault();
@@ -79,7 +80,6 @@ export class DMLESMobile implements OnInit {
                 this.settingService.getAssetFile();
 
             }
-
 
             this.setLoggedInOutAreas();
         });

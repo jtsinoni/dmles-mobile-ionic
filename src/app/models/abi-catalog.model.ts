@@ -3,7 +3,7 @@ import { BaseDataTableModel } from './base-data-table.model';
 export class ABiCatalogModel extends BaseDataTableModel {
     manufacturerCatalogNumber: string;
     fullDescription: string;
-    manufacturer: string; //mec...
+    manufacturer: string; 
     ghxProductIdentifier:string;
     longItemDescription:string;
     unspscFamily:string;
@@ -15,14 +15,23 @@ export class ABiCatalogModel extends BaseDataTableModel {
     productStatus: string;
     clinicalDescription: string;
     unspscCommodity:string;
-    unspscCode:string; // TODO num?
+    unspscCode:string;
     enterpriseProductIdentifier:string;
     productNoun:string;
     locations:Array<any>;
+    packaging:Array<any>;
+    preferredProductIndicator:string;
+    siteCount: number;
+    
+    // test input value, not an ABi data element
+    quantity:number;
+   
+    
 
     
     constructor(id?: number) {
         super(id);
-    }
+        this.quantity = 0;
+    }  
 
 }

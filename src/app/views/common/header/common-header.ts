@@ -7,6 +7,7 @@ import {AppMenuComponent} from './app-menu.component';
 import {EtmMenuComponent} from "../../menus/etm-menu/etm-menu.component";
 import {ImMenuComponent} from "../../menus/im-menu/im-menu.component";
 import {EquipMenuComponent} from "../../menus/equip-menu/equip-menu.component";
+import { ScannerMenuComponent } from "../../menus/scanner-menu/scanner-menu.component";  
 
 export class CommonHeader implements OnInit {
 
@@ -20,7 +21,11 @@ export class CommonHeader implements OnInit {
     isMobility: boolean;
 
     // Registry of MenuComponents
-    menuComponents: any = {'ImMenuComponent':ImMenuComponent, 'EtmMenuComponent':EtmMenuComponent, 'EquipMenuComponent':EquipMenuComponent};
+    menuComponents: any = {
+        'ImMenuComponent':ImMenuComponent, 
+        'EtmMenuComponent':EtmMenuComponent, 
+        'EquipMenuComponent':EquipMenuComponent,
+        'ScannerMenuComponent': ScannerMenuComponent};
 
     constructor(protected utilService: UtilService,
                 protected popoverCtrl: PopoverController,

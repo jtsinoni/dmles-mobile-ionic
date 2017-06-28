@@ -12,14 +12,16 @@
         </span>
     </ion-item>
     <ion-list>
-        <ion-item class="ripple" *ngFor="let abiItem of item.items" (click)="itemTapped(abiItem)">
-            <h2 style="width:80%; word-wrap:break-word;">{{abiItem.longItemDescription}}</h2>
-            <span>
+        <ion-item text-wrap class="ripple" *ngFor="let abiItem of item.items" (click)="itemTapped(abiItem)">
+            <ion-icon [hidden]="!isPreferredItem(abiItem)" name="star"></ion-icon>
+            {{abiItem.longItemDescription}}            
+            <span><ion-badge color="secondary">{{abiItem.siteCount}}</ion-badge></span>
+            <div>
+                <span style="color:gray">
                 {{abiItem.manufacturer}}
                  {{abiItem.manufacturerCatalogNumber}}                   
                  </span>
-            <ion-icon [hidden]="!isPreferredItem(abiItem)" name="thumbs-up"></ion-icon>
-            <span><ion-badge color="secondary">{{abiItem.siteCount}}</ion-badge></span>
+            </div>
         </ion-item>
     </ion-list>
 </ion-content>

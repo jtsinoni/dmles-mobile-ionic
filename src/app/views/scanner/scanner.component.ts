@@ -77,7 +77,8 @@ export class ScannerComponent extends Search {
             this.item.setResults(response.total, response.took, response.hits.fields);
           }
           this.loadingEnded();
-          this.item.resultReturned = true;        
+          this.item.resultReturned = true; 
+          
         },
         (error) => {
           this.loadingEnded();
@@ -92,7 +93,8 @@ export class ScannerComponent extends Search {
   }
 
   itemTapped(item: ABiCatalogModel) {
-    this.presentModal(item);
+    //this.presentModal(item);
+    this.abiCatalogService.searchWithinResults(item.manufacturer);       
   }
 
   public presentModal(item: ABiCatalogModel) {    

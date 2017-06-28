@@ -14,24 +14,4 @@ export class ElasticFilterModel {
         this.fieldValues.push(new ElasticFilterFieldModel(field, value));
     }
 
-    toString() {
-        let t:string = "\"filters\": [";
-        let count: number = this.fieldValues.length;
-        let index: number = 0;
-        for (let model of this.fieldValues) {
-            t+= model.toString();
-            if (index < (count - 1)) {
-                t += ",";
-            }  
-            index++;
-        }
-
-        t += "]";
-        return t;
-
-
-    }
-
-
-
 }

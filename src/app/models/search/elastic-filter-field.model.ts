@@ -6,12 +6,5 @@ export class ElasticFilterFieldModel {
         this.field = field;
         this.value = value;
     }
-
-
-    public toString() : string {
-        let t: string = "{ \"field\": " + "\"" + this.field + "\",";
-        t += "{ \"value\": " + "\"" + this.value + "\"}";
-        return t;    }
-
     
 }

@@ -1,60 +1,39 @@
 
 import { ElasticFilterModel } from "./elastic-filter.model";
+import { ElasticFilterFieldModel } from "./elastic-filter-field.model";
 
 export class ElasticQueryModel {
 
     public queryString: string;
-    public searchWithinResults: Array<string>;
     public filters: Array<ElasticFilterModel>;
+    public searchWithinResults: Array<string>;
+
 
     constructor(query: string) {
         this.queryString = query;
+        this.filters = new Array<ElasticFilterModel>();
+
     }
 
-    public addFilter(operator: string) {
-        this.filters.push(new ElasticFilterModel(operator));
+    public addFilter(operator: string, filters: Array<ElasticFilterFieldModel>) {
+        let model: ElasticFilterModel = new ElasticFilterModel(operator)
+        for (let fm of filters) {
+            model.addFieldValues(fm.field, fm.value);
+        }
+        this.filters.push(model);
     }
+
 
     public addSearchWithinResults(searchItem: string) {
+        if (!this.searchWithinResults) {
+            this.searchWithinResults = new Array<string>();
+        }
         this.searchWithinResults.push(searchItem);
+    }  
+
+    public static createSimpleQuery(queryString: string) : ElasticQueryModel {
+       return new ElasticQueryModel(queryString);
     }
-
-    toString(): string {
-        let s = "{ \"queryString\":" + this.queryString + ",";
-        let count = this.filters.length;
-        let index = 0
-        for (let filter of this.filters) {
-            s += filter.toString();
-            if (index < (count - 1)) {
-                s += ",";
-            }
-            index++;
-        }
-        // add search within results
-        s += this.formatSearchWithinResults();
-        s += "}";
-        return s;
-    }
-
-    formatSearchWithinResults(): string {
-        let s: string = "";
-        let count = this.searchWithinResults.length;
-        let index = 0
-        if (count > 0) {
-            s += "["
-            for (let search of this.searchWithinResults) {
-                s += "\"" + search + "\"";
-                if (index < (count - 1)) {
-                    s += ",";
-                }
-                index++;
-
-            }
-            s += "]";
-        }
-        return s;
-
-    }
-
+   
 
 }

@@ -6,11 +6,13 @@ import { ApiService } from "../../services/api.service";
 import { AppService } from "../../services/app.service";
 import { AuthenticationService } from "../../services/authentication.service";
 import { LoggerService } from "../../services/logger/logger-service";
+import { ElasticQueryModel } from "../../models/search/elastic-query.model";
+import { ElasticFilterFieldModel } from "../../models/search/elastic-filter-field.model";
 
 
 @Injectable()
 export class ABiCatalogService extends ApiService {
-
+    currentQuery: ElasticQueryModel;
     constructor(http: Http,
         public log: LoggerService,
         protected authenticationService: AuthenticationService,
@@ -18,49 +20,66 @@ export class ABiCatalogService extends ApiService {
         super(http, log, authenticationService, app, "AbiCatalog");
     }
 
-    public getABiCatalogRecords(searchValue: string): Observable<any> {
-        //let updatedSearchValue = this.formatSearchValue(searchValue);
-        //this.log.debug('update search is: ' + updatedSearchValue);
+    public getABiCatalogRecords(searchValue: string,
+        filters?: Array<ElasticFilterFieldModel>,
+        searchWithinResults?: string): Observable<any> {
+        this.log.debug('search within: ' + searchWithinResults);
 
         let actionString = 'getABiCatalogRecordESResults';
-        let searchInput = {
-            queryString: searchValue,
-            aggregations: "",
-            filters: []
+        if (this.currentQuery) {
+            this.currentQuery.searchWithinResults = [];
+            // if (filters) {
+            //     for (let f of filters) {
+            //     this.currentQuery.addFilter("or", new 
+            //      f.field, f.value);
+            //     }
+            // }
+            this.currentQuery.addSearchWithinResults(searchWithinResults);
+
+        } else {
+            this.currentQuery = ElasticQueryModel.createSimpleQuery(searchValue);
+            if (filters) {
+                //add new filters here
+            }
         }
-        this.log.debug('search input: ' + searchInput);
-        return this.post(actionString, searchInput);
+
+
+        // let filters = new Array<ElasticFilterFieldModel>(); 
+        // let filter = new ElasticFilterFieldModel("preferredProductIndicator", "Y");
+        // filters.push(filter);
+        // searchInput.addFilter("or", filters);
+        // searchInput.addSearchWithinResults("500s");
+
+        // {
+        //     queryString: searchValue,
+        //     filters: [
+        //         {
+        //             operator: "or",
+        //             fieldValues: [
+        //                 {
+        //                     field: "preferredProductIndicator",
+        //                     value: "Y"
+        //                 }
+        //             ]
+
+        //         }
+        //     ]
+        // }
+        //this.log.debug('search input: ' + searchInput);
+        return this.post(actionString, this.currentQuery);
     }
-    
-    // no longer used as BT doesn't accept ANDs ORs and * chars in query string
-    // private formatSearchValue(searchValue: string) {
-    //     let updatedSearchValue: string = searchValue;
-    //     if ((updatedSearchValue.lastIndexOf("unspscCommodity") >= 0) || (updatedSearchValue.lastIndexOf("productType") >= 0)) {
-    //         // do not add asterisks since we are doing a secondary search
-    //     } else {
-    //         let updatedSearchValueArray: Array<string> = updatedSearchValue.split(" ");
-    //         updatedSearchValue = "";
-    //         for (let i = 0; i < updatedSearchValueArray.length; i++) {
-    //             if (i === updatedSearchValueArray.length - 1) {
-    //                 updatedSearchValue += updatedSearchValueArray[i];
-    //             } else {
-    //                 updatedSearchValue +=  updatedSearchValueArray[i] + ' AND ';
-    //             }
-    //         }
-    //         updatedSearchValue = updatedSearchValue.trim();
 
-    //         this.log.debug("updatedSearchValue: " + JSON.stringify(updatedSearchValue));
-    //     }
+    searchWithinResults(search: string) {
+        if (this.currentQuery) {
+            this.log.debug('got a current query');
+            this.currentQuery.addSearchWithinResults(search);
+            this.getABiCatalogRecords(this.currentQuery.queryString, null, search);
+        }
+    }
 
-    //     if (updatedSearchValue.indexOf("AND ") === 0) {
-    //         updatedSearchValue = updatedSearchValue.substr("AND ".length);
-    //     }
-    //     // encode URI/URL reserved characters
-    //     return updatedSearchValue; //encodeURIComponent();
-
-    // }
 
 }
+
 
 
 

@@ -5,6 +5,11 @@
     <ion-item>
         <ion-input type="text" focuser placeholder="Search" [(ngModel)]="searchValue" name="searchInput" clearInput (keyup.enter)="getSearchResults()"></ion-input>
     </ion-item>
+    <ion-item [hidden]="hasOneOrNoneResult()">
+        <ion-input type="text" placeholder="Refine" [(ngModel)]="refineSearchValue" name="searchInput2" clearInput (keyup.enter)="getSearchResults()"></ion-input>
+        <ion-icon name='search' is-active="true" (click)="getSearchResults()" item-right></ion-icon>
+    </ion-item>
+
     <ion-item *ngIf="item.resultReturned">
         <span>
        <ion-badge color="primary-blue">{{item.resultCount}}</ion-badge> Items found
@@ -14,7 +19,7 @@
     <ion-list>
         <ion-item text-wrap class="ripple" *ngFor="let abiItem of item.items" (click)="itemTapped(abiItem)">
             <ion-icon [hidden]="!isPreferredItem(abiItem)" name="star"></ion-icon>
-            {{abiItem.longItemDescription}}            
+            {{abiItem.longItemDescription}}
             <span><ion-badge color="secondary">{{abiItem.siteCount}}</ion-badge></span>
             <div>
                 <span style="color:gray">

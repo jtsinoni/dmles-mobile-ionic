@@ -32,6 +32,8 @@ export class ScannerComponent extends Search {
 
   searchValue: string;
 
+  refineSearchValue: string;
+
   constructor(
     loadingCtrl: LoadingController,
     private platform: Platform,
@@ -68,7 +70,7 @@ export class ScannerComponent extends Search {
     let server: ServerModel;
     this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
       this.abiCatalogService.setServer(server);
-      this.abiCatalogService.getABiCatalogRecords(this.searchValue)
+      this.abiCatalogService.getABiCatalogRecords(this.searchValue, null, this.refineSearchValue)
         .timeout(8000)
         .map(response => response.json())
         .subscribe(
@@ -93,9 +95,13 @@ export class ScannerComponent extends Search {
   }
 
   itemTapped(item: ABiCatalogModel) {
-    //this.presentModal(item);
-    this.abiCatalogService.searchWithinResults(item.manufacturer);       
+    this.presentModal(item);
   }
+
+  hasOneOrNoneResult() : boolean {
+    return this.item.resultCount < 2;
+  } 
+ 
 
   public presentModal(item: ABiCatalogModel) {    
     this.modal = this.modalController.create(InputNumericComponent, { selected: item, id: item.enterpriseProductIdentifier, description: item.fullDescription });

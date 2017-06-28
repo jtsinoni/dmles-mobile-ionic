@@ -27,6 +27,9 @@ export class ABiCatalogService extends ApiService {
 
         let actionString = 'getABiCatalogRecordESResults';
         if (this.currentQuery) {
+            if (this.currentQuery.queryString.toUpperCase() != searchValue.toUpperCase() ) {
+                this.currentQuery = ElasticQueryModel.createSimpleQuery(searchValue);
+            } else {
             this.currentQuery.searchWithinResults = [];
             // if (filters) {
             //     for (let f of filters) {
@@ -35,6 +38,7 @@ export class ABiCatalogService extends ApiService {
             //     }
             // }
             this.currentQuery.addSearchWithinResults(searchWithinResults);
+            }
 
         } else {
             this.currentQuery = ElasticQueryModel.createSimpleQuery(searchValue);
@@ -43,39 +47,8 @@ export class ABiCatalogService extends ApiService {
             }
         }
 
-
-        // let filters = new Array<ElasticFilterFieldModel>(); 
-        // let filter = new ElasticFilterFieldModel("preferredProductIndicator", "Y");
-        // filters.push(filter);
-        // searchInput.addFilter("or", filters);
-        // searchInput.addSearchWithinResults("500s");
-
-        // {
-        //     queryString: searchValue,
-        //     filters: [
-        //         {
-        //             operator: "or",
-        //             fieldValues: [
-        //                 {
-        //                     field: "preferredProductIndicator",
-        //                     value: "Y"
-        //                 }
-        //             ]
-
-        //         }
-        //     ]
-        // }
-        //this.log.debug('search input: ' + searchInput);
         return this.post(actionString, this.currentQuery);
-    }
-
-    searchWithinResults(search: string) {
-        if (this.currentQuery) {
-            this.log.debug('got a current query');
-            this.currentQuery.addSearchWithinResults(search);
-            this.getABiCatalogRecords(this.currentQuery.queryString, null, search);
-        }
-    }
+    } 
 
 
 }

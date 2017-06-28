@@ -68,6 +68,7 @@ export class DMLESMobile implements OnInit {
             // Initialize Ionic-Plugins
             AppInjector.get(AppVersionService);
             AppInjector.get(NetworkService);
+            AppInjector.get(AppVersionService);
             this.splashScreen = AppInjector.get(SplashScreen);
             this.statusBar = AppInjector.get(StatusBar);
 

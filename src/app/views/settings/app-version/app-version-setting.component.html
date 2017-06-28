@@ -1,0 +1,30 @@
+<modal-header remove-parent-element [title]="'Version'"></modal-header>
+<ion-content>
+    <ion-list>
+        <ion-item>
+            <span>App Name</span>
+            <ion-note item-right>
+                {{getAppName()}}
+            </ion-note>
+        </ion-item>
+        <ion-item>
+            <span>Version Number</span>
+            <ion-note item-right>
+                {{getVersionNumber()}}
+            </ion-note>
+        </ion-item>
+        <ion-item>
+            <span>Version Code</span>
+            <ion-note item-right>
+                {{getVersionCode()}}
+            </ion-note>
+        </ion-item>
+        <ion-item>
+            <span>Package Name</span>
+            <ion-note class="block">
+                {{getPackageName()}}
+            </ion-note>
+        </ion-item>
+
+    </ion-list>
+</ion-content>

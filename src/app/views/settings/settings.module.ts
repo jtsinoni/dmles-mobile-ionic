@@ -6,6 +6,7 @@ import { ServerDisplayComponent } from './add-server/server-display.component';
 import { CommonDirectivesModule } from "../../common/directives/common-directives.module";
 import { AddServerComponent } from "./add-server/add-server.component";
 import {CacSettingComponent} from "./cac/cac-setting.component";
+import {AppVersionSettingComponent} from "./app-version/app-version-setting.component";
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import {CacSettingComponent} from "./cac/cac-setting.component";
         AddSettingComponent,
         ServerDisplayComponent,
         AddServerComponent,
-        CacSettingComponent
+        CacSettingComponent,
+        AppVersionSettingComponent
 
     ],
     imports: [IonicModule, CommonDirectivesModule],
@@ -23,8 +25,10 @@ import {CacSettingComponent} from "./cac/cac-setting.component";
         AddSettingComponent,
         ServerDisplayComponent,
         AddServerComponent,
-        CacSettingComponent
+        CacSettingComponent,
+        AppVersionSettingComponent
     ],
-    entryComponents: [SettingsComponent, AddSettingComponent, AddServerComponent, CacSettingComponent]
+    entryComponents: [SettingsComponent, AddSettingComponent, AddServerComponent,
+                      CacSettingComponent, AppVersionSettingComponent]
 })
 export class SettingsModule { }

@@ -37,19 +37,6 @@ export class Search {
                 });
             }
         });
-
-        // this.network.onConnect().subscribe(() => {
-        //     this.ngZone.run(() => {
-        //         this.isConnected = true;
-        //     });
-        // });
-        //
-        // this.network.onDisconnect().subscribe(() => {
-        //     this.ngZone.run(() => {
-        //         this.isConnected = false;
-        //     });
-        //
-        // });
     }
 
     public showLoadingData(args: any) {

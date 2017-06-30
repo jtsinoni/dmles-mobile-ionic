@@ -99,7 +99,11 @@ export class EtmComponent extends Search {
             this.abiCatalogService.setServer(server);
             this.abiCatalogService.getABiCatalogRecords(searchValue)
                 .timeout(8000)
-                .map(response => response.json())
+                .map((results) => {
+                    if(results) {
+                        return results.json()
+                    }
+                })
                 .subscribe(
                 (response) => {
                     if (response) {

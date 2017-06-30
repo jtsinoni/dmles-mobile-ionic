@@ -125,7 +125,7 @@ export class EtmComponent extends Search {
     }
 
     public presentModal(item: ABiCatalogModel) {
-        this.modal = this.modalController.create(EtmDetailComponent, { selected: item, searchValue: this.searchValue });
+        this.modal = this.modalController.create(EtmDetailComponent, { selected: item });
         this.modal.present();
     }
 

@@ -1,0 +1,23 @@
+<modal-header remove-parent-element [title]="title"></modal-header>
+<ion-content padding>
+    <div class="top-spacer-div"></div>
+    <ion-item *ngIf="item.resultReturned">
+        <span>
+       <ion-badge color="primary-blue">{{item.resultCount}}</ion-badge> Items found
+       (<ion-badge color="primary-blue">{{item.milliseconds}}</ion-badge> milliseconds)
+        </span>
+    </ion-item>
+    <ion-list>
+        <button ion-item text-wrap *ngFor="let abiItem of item.items" (click)="itemTapped(abiItem)">
+            <ion-icon [hidden]="!isPreferredItem(abiItem)" name="star"></ion-icon>
+            {{abiItem.longItemDescription}}
+            <span><ion-badge color="secondary">{{abiItem.siteCount}}</ion-badge></span>
+            <ion-row>
+                <ion-note>
+                    <span>{{abiItem.manufacturer}}</span>
+                    <span *ngIf="abiItem.manufacturerCatalogNumber">&nbsp;/&nbsp;{{abiItem.manufacturerCatalogNumber}}</span>
+                </ion-note>
+            </ion-row>
+        </button>
+    </ion-list>
+</ion-content>

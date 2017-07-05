@@ -8,7 +8,6 @@ export class ElasticQueryModel {
     public filters: Array<ElasticFilterModel>;
     public searchWithinResults: Array<string>;
 
-
     constructor(query: string) {
         this.queryString = query;
         this.filters = new Array<ElasticFilterModel>();

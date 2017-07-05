@@ -42,7 +42,11 @@ export class EquipmentRequestsComponent {
             this.RequestApiService.setServer(server);
             this.RequestApiService.getEquipmentRequests()
                 .timeout(8000)
-                .map(results => results.json())
+                .map((results) => {
+                    if(results) {
+                        return results.json()
+                    }
+                })
                 .subscribe(
                 (results) => {
                     if(results) {

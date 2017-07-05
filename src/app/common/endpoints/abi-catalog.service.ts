@@ -20,6 +20,14 @@ export class ABiCatalogService extends ApiService {
         super(http, log, authenticationService, app, "AbiCatalog");
     }
 
+    public getABiCatalogRecordsByQueryModel(queryModel: ElasticQueryModel): Observable<any> {
+        this.log.debug('Elastic query model search => ' + queryModel.queryString);
+
+        let actionString = 'getABiCatalogRecordESResults';
+        return this.post(actionString, queryModel);
+
+    }
+
     public getABiCatalogRecords(searchValue: string,
         filters?: Array<ElasticFilterFieldModel>,
         searchWithinResults?: string): Observable<any> {

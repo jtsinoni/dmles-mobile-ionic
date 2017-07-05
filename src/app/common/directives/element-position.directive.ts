@@ -10,7 +10,7 @@ export class ElementPositionDirective {
 
     constructor(private el: ElementRef, private logger: LoggerService) {
         if (this.el.nativeElement) {
-            this.logger.debug(el.nativeElement.toString())
+            //this.logger.debug(el.nativeElement.toString())
         }
 
         this.el.nativeElement.style.position = 'absolute';

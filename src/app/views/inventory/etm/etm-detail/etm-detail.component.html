@@ -1,4 +1,4 @@
-<modal-header remove-parent-element [title]="'Detail'"></modal-header>
+<modal-header remove-parent-element [title]="'Product Details'"></modal-header>
 <ion-content>
   <div *ngIf="selectedItem" class="selection">
       <ion-card>
@@ -9,9 +9,11 @@
               <ion-row>
                   {{selectedItem.longItemDescription}}
               </ion-row>
-              <ion-row class="manufacturer">
-                  <span>{{selectedItem.manufacturer}}</span>
-                  <span *ngIf="selectedItem.manufacturerCatalogNumber">&nbsp;/&nbsp;{{selectedItem.manufacturerCatalogNumber}}</span>
+              <ion-row>
+                  <ion-note>
+                      <span>{{selectedItem.manufacturer}}</span>
+                      <span *ngIf="selectedItem.manufacturerCatalogNumber">&nbsp;/&nbsp;{{selectedItem.manufacturerCatalogNumber}}</span>
+                  </ion-note>
               </ion-row>
               <ion-row>&nbsp;</ion-row>
               <ion-row><strong>Packaging Description:&nbsp;</strong> {{selectedItem.packagingDescription}}</ion-row>
@@ -26,14 +28,14 @@
               <ion-row><strong>Product Commodity:&nbsp;</strong> {{selectedItem.unspscCommodity}}</ion-row>
           </ion-card-content>
           <ion-row>
-              <ion-col>
-                  <button ion-button color="primary" clear small>
+              <ion-col *ngIf="selectedItem.productGroup">
+                  <button ion-button color="primary" clear small (click)="getRelatedProducts()">
                       <!--ion-icon name='text'></ion-icon-->
                       Related Products
                   </button>
               </ion-col>
-              <ion-col>
-                  <button ion-button color="primary" clear small>
+              <ion-col *ngIf="selectedItem.productSubstituteGroup">
+                  <button ion-button color="primary" clear small (click)="getEquivalentProducts()">
                       <!--ion-icon name='text'></ion-icon-->
                       Equivalent Products
                   </button>

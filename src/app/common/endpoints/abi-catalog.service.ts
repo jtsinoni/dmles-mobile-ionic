@@ -27,17 +27,22 @@ export class ABiCatalogService extends ApiService {
 
         let actionString = 'getABiCatalogRecordESResults';
         if (this.currentQuery) {
-            if (this.currentQuery.queryString.toUpperCase() != searchValue.toUpperCase() ) {
+            if (this.currentQuery.queryString.toUpperCase() != searchValue.toUpperCase()) {
+                this.currentQuery.clearSearchWithinResults();  
                 this.currentQuery = ElasticQueryModel.createSimpleQuery(searchValue);
+            } else if (searchWithinResults) {
+                  // if (filters) {
+                    //     for (let f of filters) {
+                    //     this.currentQuery.addFilter("or", new 
+                    //      f.field, f.value);
+                    //     }
+                    // }
+                
+                    this.currentQuery.clearSearchWithinResults();      
+                    this.currentQuery.addSearchWithinResults(searchWithinResults);
+                
             } else {
-            this.currentQuery.searchWithinResults = [];
-            // if (filters) {
-            //     for (let f of filters) {
-            //     this.currentQuery.addFilter("or", new 
-            //      f.field, f.value);
-            //     }
-            // }
-            this.currentQuery.addSearchWithinResults(searchWithinResults);
+                this.currentQuery.clearSearchWithinResults();
             }
 
         } else {
@@ -48,7 +53,7 @@ export class ABiCatalogService extends ApiService {
         }
 
         return this.post(actionString, this.currentQuery);
-    } 
+    }
 
 
 }

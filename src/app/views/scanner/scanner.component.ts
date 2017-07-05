@@ -79,8 +79,8 @@ export class ScannerComponent extends Search {
             this.item.setResults(response.total, response.took, response.hits.fields);
           }
           this.loadingEnded();
-          this.item.resultReturned = true; 
-          
+          this.item.resultReturned = true;
+
         },
         (error) => {
           this.loadingEnded();
@@ -89,7 +89,7 @@ export class ScannerComponent extends Search {
           this.log.log(`Error => ${error}`);
           let msg: string = "Error retrieving search results";
           this.setErrorMessage(error, msg);
-        
+
         });
     });
   }
@@ -100,45 +100,49 @@ export class ScannerComponent extends Search {
 
   hasOneOrNoneResult() : boolean {
     return this.item.resultCount < 2;
-  } 
- 
+  }
 
-  public presentModal(item: ABiCatalogModel) {    
+
+  public presentModal(item: ABiCatalogModel) {
     this.modal = this.modalController.create(InputNumericComponent, { selected: item, id: item.enterpriseProductIdentifier, description: item.fullDescription });
     this.modal.onDidDismiss(data => {
-        this.onDataSaved(data);
+      this.onDataSaved(data);
     })
     this.modal.present();
   }
 
   setErrorMessage(error: string, msg: string) {
-      let errorModal = this.modalController.create(WarningDialogComponent, { txt: error, message: msg });
-          errorModal.present();
+    let errorModal = this.modalController.create(WarningDialogComponent, { txt: error, message: msg });
+    errorModal.present();
   }
 
   onDataSaved(data: any) {
-     
-      if (data) {
-       let id = data.id;
-       let quantity = data.quantity;
-       this.log.info("got: " + id + " qty:" + quantity);
-       // todo 
-        // if (!this.isConnected) {
-        // // store data locally
-        // } else {
-        //  // send to server
-        // }
 
-      }
-     
+    if (data) {
+      let id = data.id;
+      let quantity = data.quantity;
+      this.log.info("got: " + id + " qty:" + quantity);
+      // todo 
+      // if (!this.isConnected) {
+      // // store data locally
+      // } else {
+      //  // send to server
+      // }
+
+    }
+
     this.item.items = [];
     this.item.resultReturned = false;
     this.searchValue = "";
     this.resetFocus();
   }
 
-  public isPreferredItem(item: ABiCatalogModel) : boolean {
-        return item.preferredProductIndicator.toUpperCase() === "Y" ? true : false;
+  public isPreferredItem(item: ABiCatalogModel): boolean {
+    if (item && item.preferredProductIndicator) {
+      return item.preferredProductIndicator.toUpperCase() === "Y" ? true : false;
+    } else {
+      return false;
     }
+  }
 
 }

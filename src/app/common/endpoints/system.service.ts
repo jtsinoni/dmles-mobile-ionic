@@ -1,7 +1,6 @@
 
 import { Injectable } from "@angular/core";
 import { Http } from "@angular/http";
-import { Observable } from "rxjs";
 
 import { ApiService } from "../../services/api.service";
 import { AppService } from "../../services/app.service";
@@ -12,7 +11,6 @@ import { SiteModel } from "../../models/branchServices/site.model"
 
 @Injectable()
 export class SystemService extends ApiService {
-    private serviceName: string = "System Service";
 
     private branchServices: BranchServicesModel;
 
@@ -24,11 +22,14 @@ export class SystemService extends ApiService {
     }
 
     public getServices() {
-        this.get("getServices")            
-            .map(response => response.json())
-            .subscribe((response) => {
-                this.branchServices = response;
-            });
+        if (!this.branchServices) {
+            return this.get("getServices")
+                .map(response => response.json())
+                .subscribe((response) => {
+                    this.branchServices = response;
+                    this.log.debug("Services: " + this.branchServices);
+                });
+        }
     }
 
     public getSiteFromDodaac(dodaac: string): SiteModel {

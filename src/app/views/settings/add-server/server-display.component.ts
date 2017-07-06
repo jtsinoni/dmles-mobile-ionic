@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ServerModel } from "../../../models/server.model";
 import { HostServerService } from "../../../services/host-server.service";
 import { LoggerService } from "../../../services/logger/logger-service";
@@ -11,7 +11,7 @@ import { ViewController } from "ionic-angular";
 })
 
 export class ServerDisplayComponent implements OnInit {
-  //server: ServerModel = new ServerModel("");
+  
 
   defaultServerFilter = { defaultServer: true };
 
@@ -19,6 +19,8 @@ export class ServerDisplayComponent implements OnInit {
 
 
   @Input() servers: Array<ServerModel>;
+
+  @Output() notify: EventEmitter<ServerModel> = new EventEmitter<ServerModel>();
 
   constructor(private hostServerService: HostServerService, private log: LoggerService, private viewCtrl: ViewController) {
 
@@ -39,19 +41,22 @@ export class ServerDisplayComponent implements OnInit {
     });
   }
 
-  setDefault(server: ServerModel) {
-    if (server.isDefault) {
-      this.log.debug("setting " + server.serverName + " to default");
-      this.hostServerService.setDefaultServer(server);
-      this.viewCtrl.dismiss();
-    } else {
-      //do nothing user needs to set another or there is only one
-      //this.log.debug("UN-setting " + server.serverName + " to default");
-    }
+  updateServer(server: ServerModel) {
+    this.notify.emit(server);
   }
 
+  // setDefault(server: ServerModel) {
+    
+  //   this.log.debug("setting " + server.serverName + " to default");
+  //   this.hostServerService.setDefaultServer(server);      
+        
+  //   this.viewCtrl.dismiss(); 
+  //   this.ngOnInit();     
+  // }
+
   showHideSecureProtocol(serverModel: ServerModel, protocol: string) {
-    if (protocol != serverModel.protocol) {
+    this.log.debug("what is server: " + serverModel.serverName + " " + serverModel.protocol);    
+    if (protocol != serverModel.protocol) {      
       return true;
     } else {
       return false;

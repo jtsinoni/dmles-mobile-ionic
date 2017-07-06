@@ -14,6 +14,8 @@ export class SystemService extends ApiService {
 
     private branchServices: BranchServicesModel;
 
+    private static sites: Array<SiteModel>;
+
     constructor(http: Http,
         public log: LoggerService,
         protected authenticationService: AuthenticationService,
@@ -22,19 +24,36 @@ export class SystemService extends ApiService {
     }
 
     public getServices() {
+        SystemService.sites = new Array<SiteModel>();
         if (!this.branchServices) {
             return this.get("getServices")
                 .map(response => response.json())
                 .subscribe((response) => {
                     this.branchServices = response;
-                    this.log.debug("Services: " + this.branchServices);
+                    if (this.branchServices) {
+                        for (let branch of this.branchServices) {
+                            for (let region of branch.regions) {
+                                for (let site of region.sites) {
+                                    SystemService.sites.push(site);
+                                    this.log.debug(site.dodaac + " " + site.name);
+                                }
+                            }
+                        }
+                    }
                 });
         }
     }
 
-    public getSiteFromDodaac(dodaac: string): SiteModel {
-        if (this.branchServices) {
-            return this.branchServices.getSiteByDodaac(dodaac);
+    public getSites() {
+        return SystemService.sites;
+    }
+
+    public getSiteNameFromDodaac(dodaac: string): string {
+        if (SystemService.sites) {
+            let site: SiteModel = SystemService.sites.find((t) => t.dodaac === dodaac);
+            if (site) {
+                return site.name;
+            }
         } else {
             return null;
         }

@@ -3,7 +3,6 @@ import { NavController, NavParams, ViewController, LoadingController } from 'ion
 import { LoggerService } from "../../services/logger/logger-service";
 import { SiteCatalogService } from "../../common/endpoints/site-catalog.service";
 import { HostServerService } from "../../services/host-server.service";
-import { SystemService } from "../../common/endpoints/system.service";
 
 import { ServerModel } from "../../models/server.model";
 import { SiteModel } from "../../models/branchServices/site.model";
@@ -20,6 +19,7 @@ export class SiteCatalogListComponent extends Search {
     selectedItem: ABiCatalogModel;
 
     siteCatalogItems: Array<SiteCatalogModel>;
+    siteItems: Array<SiteModel>;
 
     constructor(
         loadingCtrl: LoadingController,
@@ -28,17 +28,22 @@ export class SiteCatalogListComponent extends Search {
         private log: LoggerService,
         public viewController: ViewController,
         private hostServerService: HostServerService,
-        private siteCatalogService: SiteCatalogService,
-        private systemService: SystemService) {
+        private siteCatalogService: SiteCatalogService
+    ) {
         super(loadingCtrl);
-
 
     }
 
     ngOnInit() {
         this.selectedItem = this.navParams.get('selected');
+        this.siteItems = this.navParams.get('sites');
+        if (this.siteItems) {
+            this.log.debug("Ive got this many sites: " + this.siteItems.length);
+        } else {
+            this.log.debug("Ive got NO sites");
+        }
         this.getSiteCatalogData();
-        this.systemService.getServices();
+
     }
 
     getSiteCatalogData() {
@@ -55,8 +60,10 @@ export class SiteCatalogListComponent extends Search {
                         .subscribe(
                         (response) => {
                             if (response) {
-                                this.siteCatalogItems = response;
+                                //this.siteCatalogItems = response;
+                                this.setSiteNames(response);
                                 this.loadingEnded();
+                                this.log.debug("loaded the site catalog items");
                             }
                         },
                         (error) => {
@@ -66,14 +73,17 @@ export class SiteCatalogListComponent extends Search {
                             //let msg: string = "Error retrieving search results";
                         });
                 } else {
-                    this.log.debug("getting by enterprise id - this doesn't work");
+                    this.log.debug("getting by enterprise id - this doesn't seem to work");
                     this.siteCatalogService.retrieveSiteCatalogItems("enterprise", this.selectedItem.enterpriseProductIdentifier)
                         .map(response => response.json())
                         .subscribe(
                         (response) => {
                             if (response) {
-                                this.siteCatalogItems = response;
+                                //
+                                //this.siteCatalogItems = response;
+                                this.setSiteNames(response);
                                 this.loadingEnded();
+                                this.log.debug("loaded the site catalog items");
                             }
                         },
                         (error) => {
@@ -91,11 +101,12 @@ export class SiteCatalogListComponent extends Search {
     private setSiteNames(tempItems: Array<SiteCatalogModel>) {
         this.siteCatalogItems = new Array<SiteCatalogModel>();
         for (let item of tempItems) {
-            let site: SiteModel = this.systemService.getSiteFromDodaac(item.siteDodaac);
+            this.log.debug("getting the site names");
+            let site = this.siteItems.find((t) => t.dodaac === item.siteDodaac);
             if (site) {
-                this.log.debug("got site: " + site.dodaac + " " + site.name);
                 item.siteName = site.name;
             }
+            this.log.debug(" Site Name: " + item.siteName);
             this.siteCatalogItems.push(item);
         }
     }

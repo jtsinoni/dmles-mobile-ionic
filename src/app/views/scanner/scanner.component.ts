@@ -8,6 +8,8 @@ import { LoadingController, ModalController, Modal } from 'ionic-angular';
 import { LoggerService } from "../../services/logger/logger-service";
 import { ABiCatalogService } from "../../common/endpoints/abi-catalog.service";
 import { HostServerService } from "../../services/host-server.service";
+import { SystemService } from "../../common/endpoints/system.service";
+
 
 import { ServerModel } from "../../models/server.model";
 import { ABiCatalogResultModel } from "../../models/abi-catalog-result.model";
@@ -17,6 +19,7 @@ import { ABiCatalogModel } from "../../models/abi-catalog.model";
 import { WarningDialogComponent } from "../common/dialogs/warning-dialog.component";
 //import { InputNumericComponent } from "./input/input-numeric.component";
 import { SiteCatalogListComponent } from "../siteCatalog/site-catalog-list.component";
+import { EtmDetailComponent } from "../inventory/etm/etm-detail/etm-detail.component";
 
 
 
@@ -43,7 +46,8 @@ export class ScannerComponent extends Search {
     private abiCatalogService: ABiCatalogService,
     private hostServerService: HostServerService,
     private log: LoggerService,
-    private modalController: ModalController,    
+    private modalController: ModalController,
+    private systemService: SystemService
   ) {
     super(loadingCtrl);
 
@@ -51,6 +55,11 @@ export class ScannerComponent extends Search {
     this.item.setDefaults();
     this.itemSelected = false;
     this.searchValue = "";
+  }
+
+  ngOnInit() {
+    this.systemService.getServices();
+
   }
 
   ionViewDidEnter() {
@@ -97,11 +106,11 @@ export class ScannerComponent extends Search {
     });
   }
 
-  itemTapped(item: ABiCatalogModel) {
+  showDetail(item: ABiCatalogModel) {
     this.presentModal(item);
   }
 
-  hasOneOrNoneResult() : boolean {
+  hasOneOrNoneResult(): boolean {
     return this.item.resultCount < 2;
   }
 
@@ -111,9 +120,8 @@ export class ScannerComponent extends Search {
     // this.modal.onDidDismiss(data => {
     //   this.onDataSaved(data);
     // })
-    // this.modal.present();
-
-    this.modal = this.modalController.create(SiteCatalogListComponent, { selected: item });
+    // this.modal.present();  
+    this.modal = this.modalController.create(EtmDetailComponent, { selected: item });
     this.modal.present();
   }
 
@@ -152,9 +160,12 @@ export class ScannerComponent extends Search {
   }
 
   goToSiteCatalogRecords(abiItem: ABiCatalogModel) {
-    this.modal = this.modalController.create(SiteCatalogListComponent, { selected: abiItem });
+    let sites = this.systemService.getSites();
+   
+    this.modal = this.modalController.create(SiteCatalogListComponent, { selected: abiItem, sites: sites });
+    //this.modal = this.modalController.create(SiteCatalogListComponent, { selected: abiItem });
     this.modal.present();
-  
+
   }
 
 }

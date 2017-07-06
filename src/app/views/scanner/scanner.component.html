@@ -17,10 +17,10 @@
         </span>
     </ion-item>
     <ion-list>
-        <ion-item text-wrap class="ripple" *ngFor="let abiItem of item.items" (click)="itemTapped(abiItem)">
+        <ion-item text-wrap class="ripple" *ngFor="let abiItem of item.items" >
             <ion-icon [hidden]="!isPreferredItem(abiItem)" name="star"></ion-icon>
             {{abiItem.longItemDescription}}
-            <span><ion-badge color="secondary">{{abiItem.siteCount}}</ion-badge></span>
+            <span><ion-badge *ngIf="abiItem.mmcProductIdentifier" color="secondary" (click)="goToSiteCatalogRecords(abiItem)">{{abiItem.siteCount}}</ion-badge></span>
             <div>
                 <span style="color:gray">
                 {{abiItem.manufacturer}}

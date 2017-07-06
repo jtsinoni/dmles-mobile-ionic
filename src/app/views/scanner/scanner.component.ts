@@ -8,13 +8,16 @@ import { LoadingController, ModalController, Modal } from 'ionic-angular';
 import { LoggerService } from "../../services/logger/logger-service";
 import { ABiCatalogService } from "../../common/endpoints/abi-catalog.service";
 import { HostServerService } from "../../services/host-server.service";
+
 import { ServerModel } from "../../models/server.model";
 import { ABiCatalogResultModel } from "../../models/abi-catalog-result.model";
 import { ABiCatalogModel } from "../../models/abi-catalog.model";
 // import { SettingsService } from "../../services/settings.service";
 // import { SettingsModel } from "../../models/settings.model";
 import { WarningDialogComponent } from "../common/dialogs/warning-dialog.component";
-import { InputNumericComponent } from "./input/input-numeric.component";
+//import { InputNumericComponent } from "./input/input-numeric.component";
+import { SiteCatalogListComponent } from "../siteCatalog/site-catalog-list.component";
+
 
 
 @Component({
@@ -40,7 +43,7 @@ export class ScannerComponent extends Search {
     private abiCatalogService: ABiCatalogService,
     private hostServerService: HostServerService,
     private log: LoggerService,
-    private modalController: ModalController
+    private modalController: ModalController,    
   ) {
     super(loadingCtrl);
 
@@ -104,10 +107,13 @@ export class ScannerComponent extends Search {
 
 
   public presentModal(item: ABiCatalogModel) {
-    this.modal = this.modalController.create(InputNumericComponent, { selected: item, id: item.enterpriseProductIdentifier, description: item.fullDescription });
-    this.modal.onDidDismiss(data => {
-      this.onDataSaved(data);
-    })
+    // this.modal = this.modalController.create(InputNumericComponent, { selected: item, id: item.enterpriseProductIdentifier, description: item.fullDescription });
+    // this.modal.onDidDismiss(data => {
+    //   this.onDataSaved(data);
+    // })
+    // this.modal.present();
+
+    this.modal = this.modalController.create(SiteCatalogListComponent, { selected: item });
     this.modal.present();
   }
 
@@ -143,6 +149,12 @@ export class ScannerComponent extends Search {
     } else {
       return false;
     }
+  }
+
+  goToSiteCatalogRecords(abiItem: ABiCatalogModel) {
+    this.modal = this.modalController.create(SiteCatalogListComponent, { selected: abiItem });
+    this.modal.present();
+  
   }
 
 }

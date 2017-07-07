@@ -6,13 +6,13 @@ import { ApiService } from "../../services/api.service";
 import { AppService } from "../../services/app.service";
 import { AuthenticationService } from "../../services/authentication.service";
 import { LoggerService } from "../../services/logger/logger-service";
-import { BranchServicesModel } from "../../models/branchServices/branch-services.model"
+import { BranchModel } from "../../models/branchServices/branch.model"
 import { SiteModel } from "../../models/branchServices/site.model"
 
 @Injectable()
 export class SystemService extends ApiService {
 
-    private branchServices: BranchServicesModel;
+    private branchServices: Array<BranchModel>;
 
     private static sites: Array<SiteModel>;
 

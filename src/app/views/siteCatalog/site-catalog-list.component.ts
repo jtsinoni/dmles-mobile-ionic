@@ -36,24 +36,19 @@ export class SiteCatalogListComponent extends Search {
 
     ngOnInit() {
         this.selectedItem = this.navParams.get('selected');
-        this.siteItems = this.navParams.get('sites');
-        if (this.siteItems) {
-            this.log.debug("Ive got this many sites: " + this.siteItems.length);
-        } else {
-            this.log.debug("Ive got NO sites");
-        }
+        this.siteItems = this.navParams.get('sites');       
         this.getSiteCatalogData();
 
     }
 
     getSiteCatalogData() {
         if (this.selectedItem) {
-            this.showLoadingData({ content: `Loading site catalog items for ${this.selectedItem.shortItemDescription}` });
-            let hasPreferredProductIdentifier = (this.selectedItem.mmcProductIdentifier != null);
+            this.showLoadingData({ content: `Loading site catalog items for ${this.selectedItem.enterpriseProductIdentifier}` });
+            let hasProductIdentifier = (this.selectedItem.mmcProductIdentifier != null);
             let server: ServerModel;
             this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
                 this.siteCatalogService.setServer(server);
-                if (hasPreferredProductIdentifier) {
+                if (hasProductIdentifier) {
                     this.log.debug("getting by product id");
                     this.siteCatalogService.retrieveSiteCatalogItems("product", this.selectedItem.mmcProductIdentifier)
                         .map(response => response.json())

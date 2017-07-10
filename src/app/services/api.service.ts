@@ -49,6 +49,9 @@ export class ApiService {
             case "AbiCatalog":
                 url += ApiConstants.ABI_PRODUCTION_API + action;
                 break;
+            case "AbiSiteCatalog":
+                url += ApiConstants.ABI_SITE_CATALOG_API + action;
+                break;
             default:
                 url += this.managerName + '/Api/' + action;
         }
@@ -76,6 +79,7 @@ export class ApiService {
             .flatMap((token) => {
                 let headers = new Headers();
                 headers.append('Authorization', 'Token ' + token);
+                headers.append('Accept', 'application/json');
                 headers.append('ClientId', 'dmles');
 
                 return this.http.get(url, { headers: headers });

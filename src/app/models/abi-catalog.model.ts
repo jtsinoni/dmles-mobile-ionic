@@ -22,6 +22,7 @@ export class ABiCatalogModel extends BaseDataTableModel {
     packaging:Array<any>;
     preferredProductIndicator:string;
     siteCount: number;
+    mmcProductIdentifier: string;
     
     // test input value, not an ABi data element
     quantity:number;

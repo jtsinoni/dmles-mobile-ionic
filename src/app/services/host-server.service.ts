@@ -24,6 +24,18 @@ export class HostServerService extends BaseDatabaseService<ServerModel> {
 
     }
 
+    updateHostServer(server: ServerModel) {
+        server.setPort();
+        this.update(server).then(() => {
+            if (server.isDefault) {
+                this.setDefaultServer(server);
+            }
+        }).catch((error) => {
+            this.log.error(error);
+        });
+
+    }
+
 
     setDefaultServer(server: ServerModel) {
         this.dbTable.toCollection().modify({ isDefault: false }).then(() => {

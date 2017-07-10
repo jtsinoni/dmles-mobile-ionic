@@ -4,12 +4,6 @@
     <name>CACReaderPlugin</name>
     <description>CAC Reader Plugin</description>
 
-    <hook type="before_compile" src="./hooks/ios/addDirs.js" />
-    <hook type="before_compile" src="./hooks/ios/copyConfigs.js" />
-    <hook type="before_compile" src="./hooks/ios/copyTools.js" />
-    <hook type="before_compile" src="./hooks/ios/copyFrameworks.js" />
-    <hook type="before_compile" src="./hooks/ios/modifyBuildSettings.js" />
-
     <!-- anroid -->
     <platform name="android">
         <js-module src="www/android/CacReader.js" name="CacReader">
@@ -24,11 +18,42 @@
             </feature>
         </config-file>
         <config-file parent="/*" target="AndroidManifest.xml"/>
-        <source-file src="src/android/CDVCacReader.java" target-dir="src/logicole/plugin/cac"/>
+
+        <config-file parent="/manifest/application/activity[@android:name='MainActivity']" target="AndroidManifest.xml" >
+ 			<intent-filter>
+                <action android:name="android.intent.action.VIEW" />                			    
+                <category android:name="android.intent.category.DEFAULT" />  
+      	        <data android:pathPattern="*.*\\.pkardmanagement"/> 
+      	        <data android:mimeType="application/x-pkard-management" />
+         	</intent-filter> 
+        </config-file> 
+
+        <config-file parent="/manifest/application" target="AndroidManifest.xml" >
+            <provider
+                android:name="android.support.v4.content.FileProvider"
+                android:authorities="com.thursby.pkard.sample.logprovider"
+                android:exported="false"
+                android:grantUriPermissions="true" >
+                <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/log_paths" /> 
+            </provider>
+        </config-file> 
+
+        <source-file src="src/android/logicole/plugin/cac/CDVCacReader.java" target-dir="src/logicole/plugin/cac"/>
+
+        <framework src="src/android/pkard/pkard.gradle" custom="true" type="gradleReference"/>
+        <resource-file src="src/android/pkard/PKardSDK-3.1.1-476.aar" target="libs/PKardSDK-3.1.1-476.aar"/>
     </platform>
 
     <!-- ios -->
     <platform name="ios">
+        <hook type="before_compile" src="./hooks/ios/addDirs.js" />
+        <hook type="before_compile" src="./hooks/ios/copyConfigs.js" />
+        <hook type="before_compile" src="./hooks/ios/copyTools.js" />
+        <hook type="before_compile" src="./hooks/ios/copyFrameworks.js" />
+        <hook type="before_compile" src="./hooks/ios/modifyBuildSettings.js" />
+
         <js-module src="www/ios/CacReader.js" name="CacReader">
             <runs/>
             <clobbers target="cordova.plugins.CacReader" />

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Input, Component} from '@angular/core';
 import {LoggerService} from "../../../services/logger/logger-service";
 import {ViewController} from "ionic-angular";
 import {CACService} from "../../../services/cac.service";
@@ -10,8 +10,13 @@ import {CACService} from "../../../services/cac.service";
 })
 export class CacSettingComponent {
     public version: string;
+
+    @Input()
     public readerAttached: boolean = false;
+
+    @Input()
     public cacInserted: boolean = false;
+
     public fipsMode: boolean = true;
 
     constructor(private log: LoggerService,
@@ -44,6 +49,8 @@ export class CacSettingComponent {
         this.cacService.isCardInserted()
             .then((results) => {
                 this.cacInserted = results;
+
+                this.log.debug(`cacInserted => ${results}`);
             })
             .catch((error) => {
                 this.log.error(error);
@@ -55,6 +62,8 @@ export class CacSettingComponent {
         this.cacService.isReaderAttached()
             .then((results) => {
                 this.readerAttached = results;
+
+                this.log.debug(`readerAttached => ${results}`);
             })
             .catch((error) => {
                 this.log.error(error);

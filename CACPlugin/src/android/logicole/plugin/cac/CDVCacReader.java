@@ -131,28 +131,22 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
         public void onReceive(Context c, Intent intent) {
             if (intent.getAction().equals(PKardSDK.ACTION_PKARD_READER_STATE)) {
                 // grab the intent's extras and display reader name, etc as desired.
-                Log.i(LOG_TAG, "reader state changed");
-
                 int readerStatus = intent.getIntExtra(PKardSDK.EXTRA_READER_STATE, ReaderStatus.NoReader);
                 if(readerStatus == ReaderStatus.Ready) {
                     isReaderAttached = true;
                 } else {
                     isReaderAttached = false;
                 }
-                //previousReaderState = isReaderAttached;
-
-                // only make callback if reader status has changed
-
-                //isReaderAttached();
-
+                isReaderAttached();
             } else if (intent.getAction().equals(PKardSDK.ACTION_PKARD_TOKEN_STATE)) {
-
                 int tokenStatus = intent.getIntExtra(PKardSDK.EXTRA_TOKEN_STATE, TokenStatus.kTokenStateInvalid);
                 if (tokenStatus == TokenStatus.kTokenStateReadyForUse) {
                     isCardInserted = true;
                 } else {
                     isCardInserted = false;
                 }
+
+                isCardInserted();
 
                 handleTokenStateChange(intent);
             } else {
@@ -247,21 +241,30 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
     private void isReaderAttached() {
         LOG.d(LOG_TAG, "isReaderAttached: " + isReaderAttached);
 
-        if(this.readerCallbackContext != null) {
-            PluginResult pluginResult = new PluginResult(Status.OK, isReaderAttached);
-            pluginResult.setKeepCallback(true);
+        if(readerCallbackContext != null) {
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                    PluginResult pluginResult = new PluginResult(Status.OK, isReaderAttached);
+                    pluginResult.setKeepCallback(true);
 
-            this.readerCallbackContext.sendPluginResult(new PluginResult(Status.OK, isReaderAttached));
+                    readerCallbackContext.sendPluginResult(pluginResult);
+                }
+            });
         }
     }
 
     private void isCardInserted() {
         LOG.d(LOG_TAG, "isCardInserted: " + isCardInserted);
-        if(this.cardCallbackContext != null) {
-            PluginResult pluginResult = new PluginResult(Status.OK, isCardInserted);
-            pluginResult.setKeepCallback(true);
 
-            this.cardCallbackContext.sendPluginResult(new PluginResult(Status.OK, isCardInserted));
+        if(cardCallbackContext != null) {
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                    PluginResult pluginResult = new PluginResult(Status.OK, isCardInserted);
+                    pluginResult.setKeepCallback(true);
+
+                    cardCallbackContext.sendPluginResult(pluginResult);
+                }
+            });
         }
     }
 

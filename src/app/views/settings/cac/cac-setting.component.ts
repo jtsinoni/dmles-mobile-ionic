@@ -22,12 +22,21 @@ export class CacSettingComponent {
     constructor(private log: LoggerService,
                 private cacService: CACService,
                 private viewController: ViewController) {
+
+        this.init();
     }
 
-    ngOnInit(): void {
+
+    private init(): void {
         this.CACReaderVersion();
-        this.isCardInserted();
-        this.isReaderAttached()
+        //this.isCardInserted();
+        this.isReaderAttached();
+
+        // this.cacService.isCardInserted2().subscribe((results) => {
+        //     this.log.debug(`onCardInserted => ${results}`);
+        //
+        //     this.cacInserted = results;
+        // });
     }
 
     dismiss() {
@@ -46,16 +55,28 @@ export class CacSettingComponent {
     }
 
     public isCardInserted() {
-        this.cacService.isCardInserted()
-            .then((results) => {
-                this.cacInserted = results;
+        // this.cacService.isCardInserted()
+        //     .then((results) => {
+        //         this.cacInserted = results;
+        //
+        //         this.log.debug(`cacInserted => ${results}`);
+        //     })
+        //     .catch((error) => {
+        //         this.log.error(error);
+        //     });
 
-                this.log.debug(`cacInserted => ${results}`);
-            })
-            .catch((error) => {
-                this.log.error(error);
-            });
+        // this.cacService.onDisconnect().subscribe(() => {
+        //     this.log.debug(`network disconnected`);
+        //     this.isConnected = false;
+        //     this.onNetworkConnectedSubject.next(this.isConnected);
+        // });
 
+        // this.cacService.isCardInserted2().subscribe((results) => {
+        //     this.log.debug(`onCardInserted => ${results}`);
+        //
+        //     this.cacInserted = results;
+        // });
+        return false;
     }
 
     public isReaderAttached() {

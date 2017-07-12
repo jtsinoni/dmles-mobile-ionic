@@ -12,7 +12,7 @@
               <ion-row>
                   <ion-note>
                       <span>{{selectedItem.manufacturer}}</span>
-                      <span *ngIf="selectedItem.manufacturerCatalogNumber">&nbsp;/&nbsp;{{selectedItem.manufacturerCatalogNumber}}</span>
+                      <span *ngIf="selectedItem.manufacturerCatalogNumber">&nbsp;/&nbsp;{{selectedItem.ndc}} {{selectedItem.manufacturerCatalogNumber}}</span>
                   </ion-note>
               </ion-row>
               <ion-row>&nbsp;</ion-row>

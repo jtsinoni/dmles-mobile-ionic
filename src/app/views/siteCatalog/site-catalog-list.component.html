@@ -1,0 +1,22 @@
+<modal-header remove-parent-element [title]="'Site Catalog Items'"></modal-header>
+<ion-item>
+
+</ion-item>
+<ion-content>
+    <ion-list>
+        <ion-item text-wrap *ngFor="let siteCatalog of siteCatalogItems">
+            <div>
+                {{siteCatalog.siteDodaac}} {{siteCatalog.siteName}}
+            </div>
+            <div>
+                {{siteCatalog.longItemDesc}} {{siteCatalog.itemId}}
+            </div>
+            <div>
+                <span style="color:gray">
+                {{siteCatalog.manufacturerNm}}
+                 {{siteCatalog.manufCatNum}}                   
+                 </span>
+            </div>
+        </ion-item>
+    </ion-list>
+</ion-content>

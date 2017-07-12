@@ -1,6 +1,6 @@
 <modal-header remove-parent-element [title]="'Add/Select Host Server'"></modal-header>
 <ion-content>
-  <server-display item-content></server-display>
+  <server-display item-content (notify)="onNotify($event)"></server-display>
   <form name="createServerForm" [formGroup]="addServerForm" (ngSubmit)="saveHostServer()">
     <ion-grid>
       <ion-row>

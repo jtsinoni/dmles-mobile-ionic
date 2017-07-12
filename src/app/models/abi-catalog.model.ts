@@ -56,6 +56,7 @@ export class ABiCatalogModel extends BaseDataTableModel {
     sterileNonsterile: string; //Sterility
     hazardCode: string; //Hazard
     latexCode: string; //Latex
+    mmcProductIdentifier: string;
 
     // test input value, not an ABi data element
     quantity: number;

@@ -96,12 +96,13 @@ export class SiteCatalogListComponent extends Search {
     private setSiteNames(tempItems: Array<SiteCatalogModel>) {
         this.siteCatalogItems = new Array<SiteCatalogModel>();
         for (let item of tempItems) {
-            this.log.debug("getting the site names");
+            this.log.debug("getting the site name");
             let site = this.siteItems.find((t) => t.dodaac === item.siteDodaac);
             if (site) {
                 item.siteName = site.name;
+                this.log.debug("got the site name" + site.name);
             }
-            this.log.debug(" Site Name: " + item.siteName);
+           // this.log.debug(" Site Name: " + item.siteName);
             this.siteCatalogItems.push(item);
         }
     }

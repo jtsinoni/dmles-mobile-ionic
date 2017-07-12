@@ -20,14 +20,15 @@ import { WarningDialogComponent } from "../common/dialogs/warning-dialog.compone
 //import { InputNumericComponent } from "./input/input-numeric.component";
 import { SiteCatalogListComponent } from "../siteCatalog/site-catalog-list.component";
 import { EtmDetailComponent } from "../inventory/etm/etm-detail/etm-detail.component";
-
+import { BranchModel } from "../../models/branchServices/branch.model"
+import { SiteModel } from "../../models/branchServices/site.model"
 
 
 @Component({
   selector: 'scanner-inventory',
   templateUrl: './scanner.component.html'
 })
-export class ScannerComponent extends Search {
+export class ScannerComponent extends Search  {
 
   @Input()
   item: ABiCatalogResultModel;
@@ -39,6 +40,10 @@ export class ScannerComponent extends Search {
   searchValue: string;
 
   refineSearchValue: string;
+
+  private branchServices: Array<BranchModel>;
+
+  private sites: Array<SiteModel>;
 
   constructor(
     loadingCtrl: LoadingController,
@@ -55,13 +60,9 @@ export class ScannerComponent extends Search {
     this.item.setDefaults();
     this.itemSelected = false;
     this.searchValue = "";
+    this.sites = new Array<SiteModel>();
   }
-
-  ngOnInit() {
-    this.systemService.getServices();
-
-  }
-
+  
   ionViewDidEnter() {
     this.resetFocus();
 
@@ -90,8 +91,8 @@ export class ScannerComponent extends Search {
           if (response) {
             this.item.setResults(response.total, response.took, response.hits.fields);
           }
-          this.loadingEnded();
-          this.item.resultReturned = true;
+          this.getSites();          
+          this.item.resultReturned = true;          
 
         },
         (error) => {
@@ -160,12 +161,32 @@ export class ScannerComponent extends Search {
   }
 
   goToSiteCatalogRecords(abiItem: ABiCatalogModel) {
-    let sites = this.systemService.getSites();
-   
-    this.modal = this.modalController.create(SiteCatalogListComponent, { selected: abiItem, sites: sites });
+    this.log.debug("Go to site catalog records - sites has this many: " + this.sites.length);
+    this.modal = this.modalController.create(SiteCatalogListComponent, { selected: abiItem, sites: this.sites });
     //this.modal = this.modalController.create(SiteCatalogListComponent, { selected: abiItem });
     this.modal.present();
 
+  }
+
+  private getSites() {
+    this.log.log("In get sites ");
+    this.systemService.getBranchServices()
+      .map(response => response.json())
+      .subscribe((response) => {
+        this.branchServices = response;
+        this.log.log("branch services is " + this.branchServices);
+        if (this.branchServices) {
+          for (let branch of this.branchServices) {
+            for (let region of branch.regions) {
+              for (let site of region.sites) {
+                this.sites.push(site);
+                this.log.debug(site.dodaac + " " + site.name);
+              }
+            }
+          }
+        }
+      });
+      this.loadingEnded();
   }
 
 }

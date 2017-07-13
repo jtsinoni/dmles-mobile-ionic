@@ -7,25 +7,82 @@
           <ion-card-header><strong>ID:&nbsp;</strong> {{selectedItem.enterpriseProductIdentifier}}</ion-card-header>
           <ion-card-content>
               <ion-row>
+                  <ion-icon *ngIf="selectedItem.preferredProductIndicator && selectedItem.preferredProductIndicator.toUpperCase() === 'Y'" name="star"></ion-icon>
                   {{selectedItem.longItemDescription}}
               </ion-row>
-              <ion-row>
+              <ion-row *ngIf="selectedItem.manufacturer || selectedItem.manufacturerCatalogNumber || selectedItem.manufacturerCatalogNumber">
                   <ion-note>
                       <span>{{selectedItem.manufacturer}}</span>
                       <span *ngIf="selectedItem.manufacturerCatalogNumber">&nbsp;/&nbsp;{{selectedItem.manufacturerCatalogNumber}}</span>
                   </ion-note>
               </ion-row>
               <ion-row>&nbsp;</ion-row>
-              <ion-row><strong>Packaging Description:&nbsp;</strong> {{selectedItem.packagingDescription}}</ion-row>
+              <ion-row *ngIf="selectedItem.packagingDescription"><strong>Packaging Description:&nbsp;</strong> {{selectedItem.packagingDescription}}</ion-row>
+          </ion-card-content>
+      </ion-card>
+
+      <ion-card *ngIf="selectedItem.productComposition && selectedItem.productComposition.length > 0">
+          <ion-card-header><strong>Product Composition</strong></ion-card-header>
+          <ion-card-content>
+              {{selectedItem.productComposition}}
+          </ion-card-content>
+      </ion-card>
+
+      <ion-card *ngIf="selectedItem.trademarkBrandnames && selectedItem.trademarkBrandnames.length > 0">
+          <ion-card-header><strong>Trademark Brandnames</strong></ion-card-header>
+          <ion-card-content>
+              <ion-row *ngFor="let brandName of selectedItem.trademarkBrandnames">{{brandName}}</ion-row>
+          </ion-card-content>
+      </ion-card>
+
+      <ion-card *ngIf="selectedItem.productProperties && selectedItem.productProperties.length > 0">
+          <ion-card-header><strong>Properties</strong></ion-card-header>
+          <ion-card-content>
+              <ion-row *ngFor="let property of selectedItem.productProperties">{{property}}</ion-row>
+          </ion-card-content>
+      </ion-card>
+
+      <ion-card *ngIf="selectedItem.miscellaneous && selectedItem.miscellaneous.length > 0">
+          <ion-card-header><strong>Additional Information</strong></ion-card-header>
+          <ion-card-content>
+              <ion-row *ngFor="let item of selectedItem.miscellaneous">{{item}}</ion-row>
+          </ion-card-content>
+      </ion-card>
+
+
+      <ion-card *ngIf="selectedItem.locations && selectedItem.locations.length > 0">
+          <ion-card-header><strong>Locations</strong></ion-card-header>
+          <ion-card-content>
+              <ion-row *ngFor="let location of selectedItem.locations">{{location}}</ion-row>
           </ion-card-content>
       </ion-card>
 
       <ion-card>
-          <ion-card-header>About This Item</ion-card-header>
+          <ion-card-header><strong>About This Item</strong></ion-card-header>
           <ion-card-content>
-              <ion-row><strong>Product:&nbsp;</strong> {{selectedItem.productNoun}}</ion-row>
-              <ion-row><strong>Product Type:&nbsp;</strong> {{selectedItem.productType}}</ion-row>
-              <ion-row><strong>Product Commodity:&nbsp;</strong> {{selectedItem.unspscCommodity}}</ion-row>
+              <ion-row *ngIf="selectedItem.productNoun"><strong>Product:&nbsp;</strong> {{selectedItem.productNoun}}</ion-row>
+              <ion-row *ngIf="selectedItem.productType"><strong>Product Type:&nbsp;</strong> {{selectedItem.productType}}</ion-row>
+              <ion-row *ngIf="selectedItem.unspscCommodity"><strong>Product Commodity:&nbsp;</strong> {{selectedItem.unspscCommodity}}</ion-row>
+              <ion-row *ngIf="selectedItem.ndc"><strong>NDC:&nbsp;</strong> {{selectedItem.ndc}}</ion-row>
+              <ion-row *ngIf="selectedItem.deviceText"><strong>Device:&nbsp;</strong> {{selectedItem.deviceText}}</ion-row>
+              <ion-row *ngIf="selectedItem.deviceClassText"><strong>Device Class:&nbsp;</strong> {{selectedItem.deviceClassText}}</ion-row>
+              <ion-row *ngIf="selectedItem.deaCode"><strong>DEA Code:&nbsp;</strong> {{selectedItem.deaCode}}</ion-row>
+              <ion-row *ngIf="selectedItem.drugCategory"><strong>Label Type:&nbsp;</strong> {{selectedItem.drugCategory}}</ion-row>
+              <ion-row *ngIf="selectedItem.drugStorageType"><strong>Storage Type:&nbsp;</strong> {{selectedItem.drugStorageType}}</ion-row>
+              <ion-row *ngIf="selectedItem.sizeShape"><strong>Size/Shape:&nbsp;</strong> {{selectedItem.sizeShape}}</ion-row>
+              <ion-row *ngIf="selectedItem.gender"><strong>Gender:&nbsp;</strong> {{selectedItem.gender}}</ion-row>
+              <ion-row *ngIf="selectedItem.color"><strong>Color:&nbsp;</strong> {{selectedItem.color}}</ion-row>
+              <ion-row *ngIf="selectedItem.flavor"><strong>Flavor:&nbsp;</strong> {{selectedItem.flavor}}</ion-row>
+              <ion-row *ngIf="selectedItem.fragrance"><strong>Fragrance:&nbsp;</strong> {{selectedItem.fragrance}}</ion-row>
+              <ion-row *ngIf="selectedItem.disposableReusable"><strong>Disposable:&nbsp;</strong> {{selectedItem.disposableReusable}}</ion-row>
+              <ion-row *ngIf="selectedItem.diameter"><strong>Diameter:&nbsp;</strong> {{selectedItem.diameter}}</ion-row>
+              <ion-row *ngIf="selectedItem.volume"><strong>Volume:&nbsp;</strong> {{selectedItem.volume}}</ion-row>
+              <ion-row *ngIf="selectedItem.weight"><strong>Weight:&nbsp;</strong> {{selectedItem.weight}}</ion-row>
+              <ion-row *ngIf="selectedItem.lengthWidthHeight"><strong>Dimensions:&nbsp;</strong> {{selectedItem.lengthWidthHeight}}</ion-row>
+              <ion-row *ngIf="selectedItem.lengthWidthHeight2"><strong>Secondary Dimensions:&nbsp;</strong> {{selectedItem.lengthWidthHeight2}}</ion-row>
+              <ion-row *ngIf="selectedItem.sterileNonsterile"><strong>Sterility:&nbsp;</strong> {{selectedItem.sterileNonsterile}}</ion-row>
+              <ion-row *ngIf="selectedItem.hazardCode"><strong>Hazard:&nbsp;</strong> {{selectedItem.hazardCode}}</ion-row>
+              <ion-row *ngIf="selectedItem.latexCode"><strong>Latex:&nbsp;</strong> {{selectedItem.latexCode}}</ion-row>
           </ion-card-content>
           <ion-row>
               <ion-col *ngIf="selectedItem.productGroup">

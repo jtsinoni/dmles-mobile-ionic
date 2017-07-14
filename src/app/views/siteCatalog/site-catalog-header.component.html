@@ -1,0 +1,16 @@
+<ion-card *ngIf="data">
+    <ion-card-content>
+        <ion-item text-wrap>
+            <ion-icon [hidden]="!data.isPreferredProduct" name="star"></ion-icon>
+            {{data.longItemDescription}}
+            <span><ion-badge *ngIf="data.mmcProductIdentifier" color="secondary" >{{data.siteCount}}</ion-badge></span>
+            <div>
+                <span style="color:gray">
+                {{data.manufacturer}}
+                {{data.ndc}} 
+                 {{data.manufacturerCatalogNumber}}                      
+                 </span>
+            </div>
+        </ion-item>
+    </ion-card-content>
+</ion-card>

@@ -23,6 +23,8 @@ export class ABiCatalogModel extends BaseDataTableModel {
     preferredProductIndicator:string;
     siteCount: number;
     mmcProductIdentifier: string;
+
+    isPreferredProduct: boolean = false;
     
     // test input value, not an ABi data element
     quantity:number;

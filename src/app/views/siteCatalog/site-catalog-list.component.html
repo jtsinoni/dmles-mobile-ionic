@@ -1,22 +1,16 @@
-<modal-header remove-parent-element [title]="'Site Catalog Items'"></modal-header>
-<ion-item>
-
-</ion-item>
-<ion-content>
+<modal-header remove-parent-element [title]="componentTitle" [subHeader]="subHeader" [hasSubHeader]="true"></modal-header>
+<ion-content>   
     <ion-list>
         <ion-item text-wrap *ngFor="let siteCatalog of siteCatalogItems">
             <div>
-                {{siteCatalog.siteDodaac}} {{siteCatalog.siteName}}
-            </div>
-            <div>
-                {{siteCatalog.longItemDesc}} {{siteCatalog.itemId}}
-            </div>
-            <div>
-                <span style="color:gray">
-                {{siteCatalog.manufacturerNm}}
-                 {{siteCatalog.manufCatNum}}                   
-                 </span>
-            </div>
+                <span><strong>{{siteCatalog.siteDodaac}}</strong></span><span> {{siteCatalog.siteName}}</span>
+            </div>          
+            <div><strong>Item:&nbsp;</strong><span> {{siteCatalog.itemId}}</span></div>
+            <div><strong>Primary Supplier:&nbsp;</strong><span>{{siteCatalog.primarySupplier}}</span></div>
+            <div><strong>Order Cost:&nbsp;</strong><span>{{siteCatalog.orderCost | currency:'USD':true:'1.2-2'}}</span></div>
+            <div><strong>Orders:&nbsp;</strong><span>{{siteCatalog.orderCount}}</span></div>
+            <div><strong>Price:&nbsp;</strong><span>{{siteCatalog.primarySourcePrice | currency:'USD':true:'1.2-2'}}</span></div>
+            <div><strong>Packaging:&nbsp;</strong><span>{{siteCatalog.primarySourcePackCode}}</span>&nbsp;/<span> {{siteCatalog.primarySourcePackQuantity}}</span></div>            
         </ion-item>
     </ion-list>
 </ion-content>

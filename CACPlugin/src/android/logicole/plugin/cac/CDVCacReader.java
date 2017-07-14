@@ -12,6 +12,7 @@ import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,9 @@ import org.apache.cordova.PluginResult.Status;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import com.thursby.pkard.conscrypt.KeyManagerImpl;
+import com.thursby.pkard.sdk.PKTrustManager;
+import com.thursby.pkard.sdk.PKTrustStore;
 import com.thursby.pkard.sdk.PKardDeviceRootedException;
 import com.thursby.pkard.sdk.PKardNotAvailableException;
 import com.thursby.pkard.sdk.PKardSDK;
@@ -40,14 +44,20 @@ import com.thursby.pkard.sdk.tsspki.PKSignatureRecord;
 import com.thursby.pkard.util.Log;
 import com.thursby.pkard.util.MiscHelper;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -66,8 +76,14 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 
 import javax.crypto.Cipher;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 
 public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEvents {
 
@@ -84,7 +100,7 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
     /* toggle this to one of the values above to experiment with different types of trust manager
        Please note: CONFIG_TRUST_METHOD_PK_DIRECT is recommended, especially for cases where a user may need to approve a certificate
      */
-    int trustMethod = CONFIG_TRUST_METHOD_FACTORY_PK_STORE;
+    int trustMethod = CONFIG_TRUST_METHOD_PK_DIRECT;
 
     private Context context;
     private Activity activity;
@@ -137,7 +153,11 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
                 } else {
                     isReaderAttached = false;
                 }
-                isReaderAttached();
+
+                if(previousReaderState != isReaderAttached) {
+                    isReaderAttached();
+                }
+                previousReaderState = isReaderAttached;
             } else if (intent.getAction().equals(PKardSDK.ACTION_PKARD_TOKEN_STATE)) {
                 int tokenStatus = intent.getIntExtra(PKardSDK.EXTRA_TOKEN_STATE, TokenStatus.kTokenStateInvalid);
                 if (tokenStatus == TokenStatus.kTokenStateReadyForUse) {
@@ -146,7 +166,10 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
                     isCardInserted = false;
                 }
 
-                isCardInserted();
+                if(previousCardState != isCardInserted) {
+                    isCardInserted();
+                }
+                previousCardState = isCardInserted;
 
                 handleTokenStateChange(intent);
             } else {
@@ -234,6 +257,9 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
         } else if(action.equals("lockScreen")) {
             this.lockScreen(callbackContext);
             return true;
+        } else if(action.equals("cacCheck")) {
+            this.cacCheck();
+            return true;
         }
         return false;
     }
@@ -298,6 +324,10 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
         } else {
             callbackContext.error("No version set by Thursby PKard.");
         }
+    }
+
+    private void cacCheck() {
+        okhttpConnect("https://192.168.1.13");
     }
 
     @Override
@@ -637,6 +667,156 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
 
     }
 
+    private SSLContext createSslContext(boolean clientAuth)
+            throws GeneralSecurityException {
+
+
+        TrustManagerFactory factory = TrustManagerFactory.getInstance("X509");
+        Log.d(LOG_TAG, "using TrustManagerFactory.getTrustManagers to find trust manager");
+
+        if (trustMethod == CONFIG_TRUST_METHOD_FACTORY_NULL_STORE) {
+            // should force use of Android built-in CA store.
+            factory.init((KeyStore) null);
+            mTrustManagers = factory.getTrustManagers();
+        } else if (trustMethod == CONFIG_TRUST_METHOD_FACTORY_PK_STORE) {
+            // should use the system default trust policy, using only the certs from the PKTrustStore
+            PKTrustStore pkTrust = new PKTrustStore(context);
+            pkTrust.init();
+            KeyStore trustAnchors = pkTrust.buildKeyStore();
+            factory.init(trustAnchors);
+            mTrustManagers = factory.getTrustManagers();
+        } else if (trustMethod == CONFIG_TRUST_METHOD_PK_DIRECT) {
+            // directly instantiate the PKTrustManager, allowing user interaction
+            // this is more in-line with what Sub Rosa or PKard Browser would use.
+            // it offers CRL, OCSP, etc that CONFIG_TRUST_METHOD_FACTORY_PK_STORE may not use (depending on Android version?)
+            PKTrustManager trustManager = new PKTrustManager(context, false);
+            // call this for each activity if the activity context changes
+            // otherwise, the dialog allowing users to approve new certificates will fall-back to a generic looking Notification
+            trustManager.bindActivity(activity);
+            mTrustManagers = new TrustManager[]{trustManager};
+        }
+        if (clientAuth) {
+            try {
+                KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
+                kmf.init(mKeyStore, null);
+                mKeyManagers = kmf.getKeyManagers();
+                for (KeyManager k : mKeyManagers) {
+                    if (k instanceof KeyManagerImpl) {
+                        KeyManagerImpl impl = (KeyManagerImpl) k;
+                        impl.bindActivity(activity);
+                    }
+                }
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+        }
+
+        SSLContext context = SSLContext.getInstance("TLS", pkardSDK.getProviderName());
+
+        // at last, initialize this context with our trust and keys
+        context.init(mKeyManagers, mTrustManagers, null);
+
+        return context;
+    }
+
+    abstract class GetHtmlTask extends AsyncTask<Void, Void, String> {
+        Exception error;
+
+//        @Override
+//        protected void onPreExecute() {
+//            outputData.setText("");
+//        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (result == null) {
+                Toast.makeText(context,
+                        "Error: failed to connect", Toast.LENGTH_LONG)
+                        .show();
+            }
+        }
+    }
+
+    private void okhttpConnect(final String urlString) {
+        new GetHtmlTask() {
+            @Override
+            protected String doInBackground(Void... arg0) {
+                try {
+
+                    SSLContext sslCtx = createSslContext(true);
+                    URL toLoad = new URL(urlString);
+
+                    // TODO:  remove and use real host name, since it's local dev and self signed, bypass
+                    HostnameVerifier hostnameVerifier = new HostnameVerifier() {
+                        @Override
+                        public boolean verify(String hostname, SSLSession session) {
+                            return true;
+                        }
+                    };
+
+                    /*
+                     * Using HttpsURLConnection client - okhttp client underneath
+                     */
+                    HttpsURLConnection urlConnection = (HttpsURLConnection) toLoad.openConnection();
+                    urlConnection.setHostnameVerifier(hostnameVerifier);
+                    urlConnection.setUseCaches(false);
+                    urlConnection.setDoInput(true);
+                    //urlConnection.setDoOutput(true);
+                    //urlConnection.setRequestProperty("Connection", "keep-alive");
+                    urlConnection.setConnectTimeout(0);
+                    urlConnection.setReadTimeout(TIMEOUT);
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection
+                            .setSSLSocketFactory(sslCtx.getSocketFactory());
+                    try {
+                        urlConnection.connect();
+
+                        if (urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                            return urlConnection.getResponseMessage();
+                        }
+
+                        Log.d(LOG_TAG, "CipherSuite: " + urlConnection.getCipherSuite());
+                        Log.d(LOG_TAG, "Content Type: " + urlConnection.getContentType());
+                        Log.d(LOG_TAG, "Content Length: " + urlConnection.getContentLength());
+                        return readLines(urlConnection.getInputStream(),
+                                urlConnection.getContentEncoding(), urlConnection.getContentType());
+                    } finally {
+                        urlConnection.disconnect();
+                    }
+                } catch (Exception e) {
+                    Log.d(LOG_TAG, "Error: " + e.getMessage(), e);
+
+                    return null;
+                }
+            }
+        }.execute();
+    }
+
+    private String readLines(InputStream in, String encoding, String contentType)
+            throws IOException {
+        Log.i(LOG_TAG, "connection content encoding: " + encoding);
+
+        StringBuilder buff = new StringBuilder();
+        BufferedReader reader = null;
+        reader = new BufferedReader(new InputStreamReader(
+                in, encoding != null ? encoding : "UTF-8"));
+
+        try {
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                buff.append(line + "\n");
+            }
+
+            return buff.toString();
+        } finally {
+
+            Log.v(LOG_TAG, buff.toString());
+            in.close();
+        }
+
+    }
+
+
     private class DoSignatureTask extends AsyncTask<Void, Void, byte[]> {
         @Override
         protected byte[] doInBackground (Void... arg0) {
@@ -714,7 +894,6 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
         }
     }
 
-
     private class CleanupAsync extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void...voids) {
@@ -728,9 +907,6 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
             return null;
         }
     }
-
-
-
 
     private void prepareReceiver () {
         IntentFilter filter = new IntentFilter();

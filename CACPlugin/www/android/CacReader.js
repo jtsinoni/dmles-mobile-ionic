@@ -15,6 +15,9 @@ var CacReader = {
     },
     setFipsMode: function (fipsMode, success, error) {
         exec(success, error, "CDVCacReader", "setFipsMode", [fipsMode]);
+    },
+    cacCheck: function (success, error) {
+        exec(success, error, "CDVCacReader", "cacCheck", []);
     }
 };
 

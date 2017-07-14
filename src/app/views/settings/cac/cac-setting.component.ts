@@ -1,15 +1,15 @@
-import {Input, Component} from '@angular/core';
+import {Input, Component, NgZone} from '@angular/core';
 import {LoggerService} from "../../../services/logger/logger-service";
 import {ViewController} from "ionic-angular";
 import {CACService} from "../../../services/cac.service";
-
+import {AppInjector} from "../../../app.module";
 
 @Component({
     selector: 'cac-setting',
     templateUrl: './cac-setting.component.html'
 })
 export class CacSettingComponent {
-    public version: string;
+    public version: string = "PKard Vesion on device only";
 
     @Input()
     public readerAttached: boolean = false;
@@ -18,6 +18,7 @@ export class CacSettingComponent {
     public cacInserted: boolean = false;
 
     public fipsMode: boolean = true;
+    private ngZone: NgZone;
 
     constructor(private log: LoggerService,
                 private cacService: CACService,
@@ -26,24 +27,30 @@ export class CacSettingComponent {
         this.init();
     }
 
-
-    private init(): void {
-        this.CACReaderVersion();
-        //this.isCardInserted();
-        this.isReaderAttached();
-
-        // this.cacService.isCardInserted2().subscribe((results) => {
-        //     this.log.debug(`onCardInserted => ${results}`);
-        //
-        //     this.cacInserted = results;
-        // });
-    }
-
     dismiss() {
         this.viewController.dismiss();
     }
 
-    public CACReaderVersion() {
+    private init(): void {
+        this.ngZone = AppInjector.get(NgZone);
+
+        this.CACReaderVersion();
+        this.isReaderAttached();
+        this.isCardInserted();
+    }
+
+    private isCardInserted() {
+        this.cacService.isCardInserted().subscribe((results) => {
+            this.log.debug(`onCardInserted => ${results}`);
+
+            this.ngZone.run(() => {
+                this.cacInserted = results;
+            });
+
+        });
+    }
+
+    private CACReaderVersion() {
         this.cacService.CACReaderVersion()
             .then((results) => {
                 this.version = results;
@@ -51,51 +58,32 @@ export class CacSettingComponent {
             .catch((error) => {
                 this.log.error(error);
             });
-
     }
 
-    public isCardInserted() {
-        // this.cacService.isCardInserted()
-        //     .then((results) => {
-        //         this.cacInserted = results;
-        //
-        //         this.log.debug(`cacInserted => ${results}`);
-        //     })
-        //     .catch((error) => {
-        //         this.log.error(error);
-        //     });
+    private isReaderAttached() {
+        this.cacService.isReaderAttached().subscribe((results) => {
+            this.log.debug(`isReaderAttached => ${results}`);
 
-        // this.cacService.onDisconnect().subscribe(() => {
-        //     this.log.debug(`network disconnected`);
-        //     this.isConnected = false;
-        //     this.onNetworkConnectedSubject.next(this.isConnected);
-        // });
-
-        // this.cacService.isCardInserted2().subscribe((results) => {
-        //     this.log.debug(`onCardInserted => ${results}`);
-        //
-        //     this.cacInserted = results;
-        // });
-        return false;
-    }
-
-    public isReaderAttached() {
-        this.cacService.isReaderAttached()
-            .then((results) => {
+            this.ngZone.run(() => {
                 this.readerAttached = results;
-
-                this.log.debug(`readerAttached => ${results}`);
-            })
-            .catch((error) => {
-                this.log.error(error);
             });
-
+        });
     }
 
     public setFipsMode() {
         this.cacService.setFipsMode(this.fipsMode)
             .then((results) => {
                 this.log.debug(`FIPS Mode 140 set to => ${results}`);
+            })
+            .catch((error) => {
+                this.log.error(error);
+            });
+    }
+
+    public cacCheck() {
+        this.cacService.cacCheck()
+            .then((results) => {
+                this.log.debug(`cacCheck => ${results}`);
             })
             .catch((error) => {
                 this.log.error(error);

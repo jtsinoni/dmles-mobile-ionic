@@ -28,7 +28,7 @@
       <ion-label>{{defaultServer.port}}</ion-label>
       <ion-badge item-end>Default</ion-badge>
     </ion-item>
-    <button ion-item detail-none (click)="presentPKardSettings()">
+    <button *ngIf="isMobility" ion-item detail-none (click)="presentPKardSettings()">
       <ion-label>PKard Settings</ion-label>
       <ion-icon item-end name="add"></ion-icon>
     </button>

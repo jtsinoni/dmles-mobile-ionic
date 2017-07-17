@@ -79,8 +79,8 @@ module.exports = function(context) {
     project.parseSync();
 
     modifyBuildXCConfig(['OTHER_LDFLAGS = -ObjC -framework PKardSDK']);
-    modifyBuildXCConfig(['DEVELOPMENT_TEAM = ZH933U85GQ', 'CODE_SIGN_IDENTITY = iPhone Developer: John Tsinonis (H28MUZBE9Q)'], 'debug');
-    modifyBuildXCConfig(['DEVELOPMENT_TEAM = ZH933U85GQ', 'CODE_SIGN_IDENTITY = iPhone Distribution: John Tsinonis (ZH933U85GQ)'], 'release');
+    modifyBuildXCConfig(['DEVELOPMENT_TEAM = JRZK44ZG9H', 'CODE_SIGN_IDENTITY = iPhone Developer: Logicole Logicole (Personal Team) (KMZ3QQ93BJ)'], 'debug');
+    modifyBuildXCConfig(['DEVELOPMENT_TEAM = JRZK44ZG9H', 'CODE_SIGN_IDENTITY = iPhone Distribution: Logicole Logicole (Personal Team) (KMZ3QQ93BJ)'], 'release');
     fingerPrintForFIPS140();
     modifyFrameworkSearchPaths();
     modifyOtherLinkerFlags('"-framework PKardSDK"');

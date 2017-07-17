@@ -173,7 +173,7 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
 
                 handleTokenStateChange(intent);
             } else {
-                Log.e(LOG_TAG, "received bogus intent, ignoring");
+                Log.d(LOG_TAG, "received bogus intent, ignoring => " + intent.getAction());
             }
         }
     }
@@ -181,6 +181,7 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
+
         LOG.d(LOG_TAG, "Starting => " + LOG_TAG);
 
         this.mCryptMode = Cipher.ENCRYPT_MODE;
@@ -199,9 +200,11 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
 
         try {
             pkardSDK = PKardSDK.getInstance(activity, features);
+
             if (pkardSDK == null) {
                 Toast.makeText(context, "PKard Toolkit failed to start, please restart", Toast.LENGTH_SHORT).show();
             }
+
         } catch (PKardNotAvailableException e2) {
             Log.e(LOG_TAG, "Pkard Service not available");
         }
@@ -216,7 +219,7 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
         }
         if (pkardSDK != null) {
             pkardSDK.addEventListener(this);
-            pkardSDK.setAutoScreenLock(false);
+            pkardSDK.setAutoScreenLock(true);
             try {
                 mKeyStore = KeyStore.getInstance("PKardClient", pkardSDK.getProviderName());
                 mKeyStore.load(null, null);

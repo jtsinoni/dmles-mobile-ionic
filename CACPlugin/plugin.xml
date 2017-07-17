@@ -21,9 +21,9 @@
 
         <config-file parent="/manifest/application/activity[@android:name='MainActivity']" target="AndroidManifest.xml" >
  			<intent-filter>
-                <action android:name="android.intent.action.VIEW" />                			    
-                <category android:name="android.intent.category.DEFAULT" />  
-      	        <data android:pathPattern="*.*\\.pkardmanagement"/> 
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+      	        <data android:pathPattern="*.*\\.pkardmanagement"/>
       	        <data android:mimeType="application/x-pkard-management" />
          	</intent-filter> 
         </config-file> 

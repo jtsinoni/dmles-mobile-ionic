@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {Platform} from "ionic-angular";
 import {LoggerService} from "./logger/logger-service";
 import {Observable} from "rxjs";
+import {UtilService} from "../common/services/util.service";
 
 declare var cordova: any;
 
@@ -9,26 +10,25 @@ declare var cordova: any;
 export class CACService {
     private serviceName = "CAC Service";
     constructor(private log: LoggerService,
-                private platform: Platform) {
+                private platform: Platform,
+                private utilService: UtilService) {
         this.init();
     }
 
     private init() {
         this.platform.ready()
             .then(() => {
-                this.log.debug(`${this.serviceName} - Start`);
+                if(this.utilService.isMobility()) {
+                    this.log.debug(`${this.serviceName} - Start`);
 
-                // if(this.utilService.isMobility()) {
-                //     //this.isCardInserted2();
-                //
-                //     this.CACReaderVersion()
-                //         .then((results) => {
-                //             this.log.debug(`PKardSDK Version => ${results}`)
-                //         })
-                //         .catch((error) => {
-                //             this.log.error(error);
-                //         });
-                // }
+                    this.CACReaderVersion()
+                        .then((results) => {
+                            this.log.debug(`PKardSDK Version => ${results}`)
+                        })
+                        .catch((error) => {
+                            this.log.error(error);
+                        });
+                }
             })
             .catch((error) => {
                 this.log.debug(`${error}`);

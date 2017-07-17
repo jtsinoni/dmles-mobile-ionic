@@ -8,7 +8,6 @@ import { SystemService } from "../../common/endpoints/system.service";
 
 import { ServerModel } from "../../models/server.model";
 import { SiteModel } from "../../models/branchServices/site.model";
-import { BranchModel } from "../../models/branchServices/branch.model"
 
 import { Search } from "../common/search";
 import { ABiCatalogModel } from "../../models/abi-catalog.model";
@@ -27,9 +26,6 @@ export class SiteCatalogListComponent extends Search implements OnInit {
     siteCatalogItems: Array<SiteCatalogModel>;
     siteItems: Array<SiteModel>;
 
-    private branchServices: Array<BranchModel>;
-
-
     componentTitle = "Site Catalog Items";
 
     constructor(
@@ -44,22 +40,15 @@ export class SiteCatalogListComponent extends Search implements OnInit {
     ) {
         super(loadingCtrl);
         this.siteItems = new Array<SiteModel>();
-        this.getSites();
-
 
     }
 
     ngOnInit() {
         this.selectedItem = this.navParams.get('selected');
-
-        //this.siteItems = this.navParams.get('sites');
-        //this.getSites();
+        this.siteItems = this.navParams.get('sites');
+        this.log.debug("ive got this many site items: " + (this.siteItems ? this.siteItems.length : 0));
         this.getSiteCatalogData();
-
-
         this.subHeader = new SubHeaderItem(SiteCatalogHeaderComponent, this.selectedItem);
-
-
 
     }
 
@@ -77,9 +66,7 @@ export class SiteCatalogListComponent extends Search implements OnInit {
                         .subscribe(
                         (response) => {
                             if (response) {
-                                //this.siteCatalogItems = response;
                                 this.setSiteNames(response);
-                                //this.loadingEnded();
                                 this.log.debug("loaded the site catalog items");
                             }
                         },
@@ -87,7 +74,6 @@ export class SiteCatalogListComponent extends Search implements OnInit {
                             this.loadingEnded();
 
                             this.log.log(`Error => ${error}`);
-                            //let msg: string = "Error retrieving search results";
                         });
                 } else {
                     this.log.debug("getting by enterprise id - this doesn't seem to work");
@@ -96,18 +82,13 @@ export class SiteCatalogListComponent extends Search implements OnInit {
                         .subscribe(
                         (response) => {
                             if (response) {
-                                //
-                                //this.siteCatalogItems = response;
                                 this.setSiteNames(response);
-                                //this.loadingEnded();
                                 this.log.debug("loaded the site catalog items");
                             }
                         },
                         (error) => {
                             this.loadingEnded();
-
                             this.log.log(`Error => ${error}`);
-                            //let msg: string = "Error retrieving search results";
                         });
                 }
 
@@ -116,7 +97,6 @@ export class SiteCatalogListComponent extends Search implements OnInit {
     }
 
     private setSiteNames(response: any) {
-
         this.siteCatalogItems = response;
         for (let item of this.siteCatalogItems) {
             if (item.sources && item.sources[0]) {
@@ -133,37 +113,9 @@ export class SiteCatalogListComponent extends Search implements OnInit {
                 item.siteName = site.name;
                 this.log.debug("setting the site name");
             }
-           
+
         }
-         this.loadingEnded();
+        this.loadingEnded();
     }
-
-    private getSites() {
-        this.log.log("In get sites ");
-
-        this.systemService.getBranchServices()
-            .map(response => response.json())
-            .subscribe((response) => {
-                //  .toPromise().then((response) => { 
-                this.branchServices = response;
-                this.log.log("branch services is " + this.branchServices);
-                if (this.branchServices) {
-                    for (let branch of this.branchServices) {
-                        for (let region of branch.regions) {
-                            for (let site of region.sites) {
-                                this.siteItems.push(site);
-                                //this.log.debug(site.dodaac + " " + site.name);
-                            }
-                        }
-                    }
-                }
-
-                // }).then(() => {
-                //     this.getSiteCatalogData();
-            });
-
-    }
-
-
 
 }

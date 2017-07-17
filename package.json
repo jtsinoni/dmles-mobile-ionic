@@ -45,7 +45,7 @@
         "angular2-jwt": "^0.1.28",
         "angular2-logger": "^0.5.1",
         "angular2-uuid": "^1.1.0",
-        "cordova-android": "~6.1.0",
+        "cordova-android": "^6.2.1",
         "cordova-browser": "~4.1.0",
         "cordova-ios": "^4.4.0",
         "cordova-plugin-app-version": "^0.1.9",
@@ -67,13 +67,13 @@
         "ionic-angular": "3.3.0",
         "ionic-plugin-keyboard": "~2.2.1",
         "ionicons": "3.0.0",
+        "logicole-plugin-cac": "./CACPlugin",
         "mqtt": "^2.7.1",
         "phonegap-plugin-barcodescanner": "~6.0.5",
         "rxjs": "5.1.1",
         "sw-toolbox": "3.6.0",
         "xcode": "^0.9.1",
-        "zone.js": "0.8.11",
-        "logicole-plugin-cac": "./CACPlugin"
+        "zone.js": "0.8.11"
     },
     "devDependencies": {
         "@angular/cli": "^1.1.1",

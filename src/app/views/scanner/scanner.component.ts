@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 
 import { Platform } from 'ionic-angular';
 import { Focuser } from "../../common/directives/focuser.directive";
@@ -14,8 +14,8 @@ import { SystemService } from "../../common/endpoints/system.service";
 import { ServerModel } from "../../models/server.model";
 import { ABiCatalogResultModel } from "../../models/abi-catalog-result.model";
 import { ABiCatalogModel } from "../../models/abi-catalog.model";
-// import { SettingsService } from "../../services/settings.service";
-// import { SettingsModel } from "../../models/settings.model";
+import { SettingsService } from "../../services/settings.service";
+import { SettingsModel } from "../../models/settings.model";
 import { WarningDialogComponent } from "../common/dialogs/warning-dialog.component";
 //import { InputNumericComponent } from "./input/input-numeric.component";
 import { SiteCatalogListComponent } from "../siteCatalog/site-catalog-list.component";
@@ -23,15 +23,22 @@ import { EtmDetailComponent } from "../inventory/etm/etm-detail/etm-detail.compo
 import { BranchModel } from "../../models/branchServices/branch.model"
 import { SiteModel } from "../../models/branchServices/site.model"
 
+import { BarcodeHelper } from "../common/barcode-helper";
+import { ElementPositionDirective } from "../../common/directives/element-position.directive";
+
 
 @Component({
   selector: 'scanner-inventory',
-  templateUrl: './scanner.component.html'
+  templateUrl: './scanner.component.html',
+  providers: [BarcodeHelper]
 })
 export class ScannerComponent extends Search implements OnInit {
 
   @Input()
   item: ABiCatalogResultModel;
+
+  @ViewChild(ElementPositionDirective)
+  posDirective: ElementPositionDirective;
 
   modal: Modal;
 
@@ -45,6 +52,8 @@ export class ScannerComponent extends Search implements OnInit {
 
   private sites: Array<SiteModel>;
 
+  isScannerDevice: boolean = false;
+
   constructor(
     loadingCtrl: LoadingController,
     private platform: Platform,
@@ -52,7 +61,9 @@ export class ScannerComponent extends Search implements OnInit {
     private hostServerService: HostServerService,
     private log: LoggerService,
     private modalController: ModalController,
-    private systemService: SystemService
+    private systemService: SystemService,
+    public barcodeHelper: BarcodeHelper,
+    public settingsService: SettingsService
   ) {
     super(loadingCtrl);
 
@@ -77,6 +88,31 @@ export class ScannerComponent extends Search implements OnInit {
 
   ngOnInit() {
     this.getSites();
+
+    let setting: SettingsModel;
+
+    this.settingsService.getEnableScannerSetting().then(s => setting = s).then(() => {
+      if (setting) {
+        this.isScannerDevice = setting.setting;
+        this.log.debug("is Scanner = " + this.isScannerDevice);
+      }
+
+    }).then(() => {
+      if (!this.isScannerDevice) {
+        this.settingsService.getActionPositionSetting().then(s => setting = s).then(() => {
+
+          if (setting) {
+            let val = setting.setting.split(" ");
+            if (val && val.length > 0) {
+              let topBottom = val[0];
+              let leftRight = val[1];
+              this.posDirective.setPosition(leftRight, topBottom);
+            }
+          }
+        });
+      }
+    });
+
   }
 
   public getSearchResults() {
@@ -115,7 +151,11 @@ export class ScannerComponent extends Search implements OnInit {
   }
 
   hasOneOrNoneResult(): boolean {
-    return this.item.resultCount < 2;
+    if (this.refineSearchValue) {
+      return false;
+    } else {
+      return this.item.resultCount < 2;
+    }
   }
 
 
@@ -179,7 +219,7 @@ export class ScannerComponent extends Search implements OnInit {
     this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
       this.systemService.setServer(server);
     }).then(() => {
-      this.log.debug("In get sites ");
+      // this.log.debug("In get sites ");
       this.systemService.getBranchServices()
         .map(response => response.json())
         .subscribe((response) => {
@@ -189,7 +229,7 @@ export class ScannerComponent extends Search implements OnInit {
               for (let region of branch.regions) {
                 for (let site of region.sites) {
                   this.sites.push(site);
-                  this.log.debug(site.dodaac + " " + site.name);
+                  // this.log.debug(site.dodaac + " " + site.name);
                 }
               }
             }
@@ -197,5 +237,16 @@ export class ScannerComponent extends Search implements OnInit {
         });
     });
   }
+
+  public barcodeScan() {
+    this.barcodeHelper.barcodeScan()
+      .then((results) => {
+        this.searchValue = results.text;
+      })
+      .catch((error) => {
+        this.log.error(`${error}`);
+      });
+  }
+ 
 
 }

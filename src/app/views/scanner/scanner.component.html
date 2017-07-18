@@ -16,18 +16,36 @@
        (<ion-badge color="primary-blue">{{item.milliseconds}}</ion-badge> milliseconds)
         </span>
     </ion-item>
-    <ion-list>
-        <ion-item text-wrap class="ripple" *ngFor="let abiItem of item.items" (press)="showDetail(abiItem)">
-            <ion-icon [hidden]="!isPreferredItem(abiItem)" name="star"></ion-icon>
-            {{abiItem.longItemDescription}}
-            <span><ion-badge *ngIf="abiItem.mmcProductIdentifier" color="secondary"   (click)="goToSiteCatalogRecords(abiItem)">{{abiItem.siteCount}}</ion-badge></span>
-            <div>
-                <span style="color:gray">
+    <ion-list [virtualScroll]="item.items">
+        <ion-item text-wrap class="ripple" *virtualItem="let abiItem">
+            <ion-grid>
+                <ion-row>
+                    <ion-col width-80>
+                        <ion-icon [hidden]="!isPreferredItem(abiItem)" name="star"></ion-icon>
+                        {{abiItem.longItemDescription}}
+                        <div>
+                            <span style="color:gray">
                 {{abiItem.manufacturer}}
                 {{abiItem.ndc}} 
                  {{abiItem.manufacturerCatalogNumber}}                      
                  </span>
-            </div>
+
+                        </div>
+                    </ion-col>
+                    <ion-col>
+                        <ion-buttons end>
+                             <button ion-button icon-only color="logi-cole-blue" (click)="showDetail(abiItem)">
+                <ion-icon name="open"></ion-icon>
+            </button>
+                            <button ion-button *ngIf="abiItem.mmcProductIdentifier" color="secondary" (click)="goToSiteCatalogRecords(abiItem)"><ion-badge color="secondary" >{{abiItem.siteCount}}</ion-badge></button>
+                        </ion-buttons>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
         </ion-item>
     </ion-list>
+    <ion-fab logicole-element-position id="barcodeScanFab" *ngIf="!isScannerDevice">
+        <button id="scanFab" ion-fab (click)="barcodeScan()"><ion-icon name="barcode" >
+      </ion-icon></button>
+    </ion-fab>
 </ion-content>

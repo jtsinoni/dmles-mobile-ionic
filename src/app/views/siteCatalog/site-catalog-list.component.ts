@@ -40,6 +40,7 @@ export class SiteCatalogListComponent extends Search implements OnInit {
     ) {
         super(loadingCtrl);
         this.siteItems = new Array<SiteModel>();
+        this.siteCatalogItems = new Array<SiteCatalogModel>();
 
     }
 

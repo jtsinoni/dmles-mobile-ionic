@@ -1,7 +1,7 @@
 <modal-header remove-parent-element [title]="componentTitle" [subHeader]="subHeader" [hasSubHeader]="true"></modal-header>
 <ion-content>   
-    <ion-list>
-        <ion-item text-wrap *ngFor="let siteCatalog of siteCatalogItems">
+    <ion-list [virtualScroll]="siteCatalogItems">
+        <ion-item text-wrap *virtualItem="let siteCatalog">
             <div>
                 <span><strong>{{siteCatalog.siteDodaac}}</strong></span><span> {{siteCatalog.siteName}}</span>
             </div>          

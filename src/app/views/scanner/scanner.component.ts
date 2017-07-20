@@ -25,7 +25,7 @@ import { SiteModel } from "../../models/branchServices/site.model"
 
 import { BarcodeHelper } from "../common/barcode-helper";
 import { ElementPositionDirective } from "../../common/directives/element-position.directive";
-
+import { ABiTopicUpstreamService } from "../../services/upstream/abi-topic-upstream.service";
 
 @Component({
   selector: 'scanner-inventory',
@@ -63,7 +63,8 @@ export class ScannerComponent extends Search implements OnInit {
     private modalController: ModalController,
     private systemService: SystemService,
     public barcodeHelper: BarcodeHelper,
-    public settingsService: SettingsService
+    public settingsService: SettingsService,
+    private upstreamService: ABiTopicUpstreamService,
   ) {
     super(loadingCtrl);
 
@@ -247,6 +248,10 @@ export class ScannerComponent extends Search implements OnInit {
         this.log.error(`${error}`);
       });
   }
+
+   public storeBarcode() {
+        this.barcodeHelper.storeBarcode(this.upstreamService);
+    }
  
 
 }

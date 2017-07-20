@@ -1,19 +1,33 @@
-<mb-header-page remove-parent-element [title]="'Scanner'" [menu]="'ScannerMenuComponent'"></mb-header-page>
+<mb-header-page remove-parent-element [title]="'Ask ABi'" [menu]="'ScannerMenuComponent'"></mb-header-page>
 
 <ion-content padding>
     <div class="top-spacer-div"></div>
     <ion-item>
         <ion-input type="text" focuser placeholder="Search" [(ngModel)]="searchValue" name="searchInput" clearInput (keyup.enter)="getSearchResults()"></ion-input>
+        <ion-icon *ngIf="isScannerDevice" name='barcode' is-active="true" (click)="getSearchResults()" item-right></ion-icon>
     </ion-item>
     <ion-item [hidden]="hasOneOrNoneResult()">
         <ion-input type="text" placeholder="Refine" [(ngModel)]="refineSearchValue" name="searchInput2" clearInput (keyup.enter)="getSearchResults()"></ion-input>
         <ion-icon name='search' is-active="true" (click)="getSearchResults()" item-right></ion-icon>
     </ion-item>
+    <div padding *ngIf="!isScannerDevice">
+        <div *ngIf="isConnected">
+            <button ion-button color="primary" block (click)="getSearchResults()" [disabled]="!searchValue">
+                <ion-icon name="search"></ion-icon>
+            </button>
+        </div>
+
+        <div *ngIf="!isConnected">
+            <button ion-button color="primary" block (click)="storeBarcode()" [disabled]="!barcodeHelper.barcodeResults">
+                <ion-icon name="add"></ion-icon>
+            </button>
+        </div>
+    </div>
 
     <ion-item *ngIf="item.resultReturned">
         <span>
-       <ion-badge color="primary-blue">{{item.resultCount}}</ion-badge> Items found
-       (<ion-badge color="primary-blue">{{item.milliseconds}}</ion-badge> milliseconds)
+       <ion-badge color="primary-blue">{{item.resultCount}}</ion-badge>&nbsp;Items found
+       (<ion-badge color="primary-blue">{{item.milliseconds}}</ion-badge>&nbsp;milliseconds)
         </span>
     </ion-item>
     <ion-list [virtualScroll]="item.items">

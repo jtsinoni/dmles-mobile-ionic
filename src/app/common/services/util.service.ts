@@ -33,6 +33,24 @@ export class UtilService {
                 this.platform.is('windows')) ? true : false;
     }
 
+    public isIos(): boolean {
+        return (this.platform.is('ios')) ? true : false;
+    }
+
+    public isAndroid(): boolean {
+        return (this.platform.is('android')) ? true : false;
+    }
+
+    public getPayload(data: any): any {
+        let results: any;
+        if(this.isAndroid()) {
+            results = JSON.parse(data);
+        } else {
+            results = data.json();
+        }
+        return results;
+    }
+
     public generateUUID(): string {
         //return Math.floor((1 + Math.random()) * 1000);
         return Math.random().toString(26).substring(2, 15) +

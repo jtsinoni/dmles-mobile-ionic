@@ -47,7 +47,6 @@ export class DMLESMobile implements OnInit {
         private authService: AuthenticationService,
         private loginModalService: LoginModalService,
         private log: LoggerService,
-        private cacService: CACService,
         private settingService: SettingsService) {
         if (this.utilService.isProd() == false) {
             this.rootPage = AppContainerComponent;
@@ -68,7 +67,7 @@ export class DMLESMobile implements OnInit {
             // Initialize Ionic-Plugins
             AppInjector.get(AppVersionService);
             AppInjector.get(NetworkService);
-            AppInjector.get(AppVersionService);
+            AppInjector.get(CACService);
             this.splashScreen = AppInjector.get(SplashScreen);
             this.statusBar = AppInjector.get(StatusBar);
 

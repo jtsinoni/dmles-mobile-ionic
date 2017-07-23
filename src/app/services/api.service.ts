@@ -1,16 +1,22 @@
 import { Http, Headers } from "@angular/http";
 import { Observable } from "rxjs";
+import {Platform} from "ionic-angular";
 
 import { ApiConstants } from "../constants/api.constants";
 import { AppService } from "./app.service";
 import { AuthenticationService } from "./authentication.service";
 import { LoggerService } from "./logger/logger-service";
 import { ServerModel } from "../models/server.model";
-
+import {AppInjector} from "../app.module";
+import {CACService} from "./cac.service";
+import {UtilService} from "../common/services/util.service";
 
 export class ApiService {
     private apiServiceName: string = "Api Service";
     private defaultServer: ServerModel;
+    private cacService: CACService;
+    protected utilService: UtilService;
+    public platform: Platform;
 
     constructor(
         private http: Http,
@@ -19,6 +25,9 @@ export class ApiService {
         private App: AppService,
         private managerName: string) {
         this.log.debug(`${this.apiServiceName} - Start`);
+        this.cacService = AppInjector.get(CACService)
+        this.utilService = AppInjector.get(UtilService);
+        this.platform = AppInjector.get(Platform);
     }
 
 
@@ -62,13 +71,16 @@ export class ApiService {
         let url: string = this.determineUrl(action);
         this.log.debug(`${this.apiServiceName} - BT getToken URL: ${url}`);
 
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', 'Basic ' + encodedDn);
-        headers.append('Accept', 'application/json');
-        headers.append('ClientId', 'dmles');
+        let headers:any = {'Content-Type': 'application/json',
+                           'Authorization': 'Basic ' + encodedDn,
+                           'Accept': 'application/json',
+                           'ClientId': 'dmles'};
 
-        return this.http.post(url, {}, { headers: headers });
+        if(this.platform.is('android')) {
+            return this.cacService.sendPost(url, "{}", headers);
+        } else {
+            return this.http.post(url, {}, { headers: new Headers(headers) });
+        }
     };
 
     public get(action: string): Observable<any> {
@@ -77,12 +89,15 @@ export class ApiService {
 
         return this.getLocalToken()
             .flatMap((token) => {
-                let headers = new Headers();
-                headers.append('Authorization', 'Token ' + token);
-                headers.append('Accept', 'application/json');
-                headers.append('ClientId', 'dmles');
+                let headers:any = {'Authorization': 'Token ' + token ,
+                                   'Accept': 'application/json',
+                                   'ClientId': 'dmles'};
 
-                return this.http.get(url, { headers: headers });
+                if(this.platform.is('android')) {
+                    return this.cacService.sendGet(url, headers);
+                } else {
+                    return this.http.get(url, {headers: new Headers(headers)});
+                }
             });
     };
 
@@ -93,13 +108,17 @@ export class ApiService {
 
         return this.getLocalToken()
             .flatMap((token) => {
-                let headers = new Headers();
-                headers.append('Content-Type', 'application/json');
-                headers.append('Authorization', 'Token ' + token);
-                headers.append('Accept', 'application/json');
-                headers.append('ClientId', 'dmles');
 
-                return this.http.post(url, data, { headers: headers });
+                let headers:any = {'Content-Type': 'application/json',
+                                   'Authorization': 'Token ' + token ,
+                                   'Accept': 'application/json',
+                                   'ClientId': 'dmles'};
+
+                if(this.platform.is('android')) {
+                    return this.cacService.sendPost(url, data, headers);
+                } else {
+                    return this.http.post(url, data, { headers: new Headers(headers) });
+                }
             });
     };
 

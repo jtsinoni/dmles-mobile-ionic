@@ -101,7 +101,7 @@ export class EtmComponent extends Search {
                 .timeout(8000)
                 .map((results) => {
                     if(results) {
-                        return results.json()
+                        return this.utilService.getPayload(results);
                     }
                 })
                 .subscribe(

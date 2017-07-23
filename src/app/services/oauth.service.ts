@@ -61,15 +61,18 @@ export class OAuthService extends ApiService {
 
     private getNewToken(dn): Observable<any> {
         return this.apiGetToken(dn)
-            .map((response) => {
-                if(response) {
-                    let results = response.json();
+            .map((data) => {
+                if(data) {
+                    let results:any =  this.utilService.getPayload(data);
+                    let authctoken: string = results.authctoken;
+
+                    this.log.debug(`Results => ${authctoken}`);
 
                     // FIX: The below method is promise based, we are treating this as sequential which is incorrect
-                    this.authenticationService.saveToken(results.authctoken);
+                    this.authenticationService.saveToken(authctoken);
 
                     this.log.debug(`${this.serviceName} - New token received and saved`);
-                    return results.authctoken;
+                    return authctoken;
 
                 } else {
                     return null;

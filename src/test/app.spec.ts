@@ -3,7 +3,7 @@ import {
     NavMock, PlatformMock, UtilServiceMock,
     AppMock, AuthServiceMock, LoginModalServiceMock,
     //UpstreamServiceMock,
-    LoggerServiceMock, CACServiceMock,
+    LoggerServiceMock,
     SettingsServiceMock
 } from './mocks';
 
@@ -20,7 +20,6 @@ describe('dmles-mobile-ionic-app', () => {
       (<any>new LoginModalServiceMock),
       //(<any>new UpstreamServiceMock),
       (<any>new LoggerServiceMock),
-      (<any>new CACServiceMock),
       (<any>new SettingsServiceMock));
 
     instance['nav'] = (<any>new NavMock());

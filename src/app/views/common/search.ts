@@ -2,6 +2,7 @@ import {Input, NgZone} from "@angular/core";
 import {LoadingController, Loading} from 'ionic-angular';
 import {NetworkService} from "../../services/network.service";
 import {AppInjector} from "../../app.module";
+import {UtilService} from "../../common/services/util.service";
 
 export class Search {
     @Input()
@@ -10,6 +11,7 @@ export class Search {
     @Input()
     public searchValue: string;
     public networkService: NetworkService;
+    protected utilService: UtilService;
     private ngZone: NgZone;
     private loader: Loading;
 
@@ -22,6 +24,7 @@ export class Search {
 
         this.networkService = AppInjector.get(NetworkService);
         this.ngZone = AppInjector.get(NgZone);
+        this.utilService = AppInjector.get(UtilService);
 
         // get initial state of connection
         this.isConnected = this.networkService.isConnected;

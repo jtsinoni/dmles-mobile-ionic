@@ -21,6 +21,15 @@ export class CACService {
                 if(this.utilService.isMobility()) {
                     this.log.debug(`${this.serviceName} - Start`);
 
+                    // let btHost = AppConfigConstants.apiHosts.btBaseUrl;
+                    // this.cacCheck(`${btHost}/Dmles.OAuth.Server/token`)
+                    //     .then(() => {
+                    //         this.log.debug(`CAC initialized with host => ${btHost}`)
+                    //     })
+                    //     .catch((error) => {
+                    //         this.log.error(error);
+                    //     });
+
                     this.CACReaderVersion()
                         .then((results) => {
                             this.log.debug(`PKardSDK Version => ${results}`)
@@ -46,6 +55,7 @@ export class CACService {
             cordova.plugins.CacReader.isCardInserted(
                 (value) => {
                     observer.next(value);
+                    observer.complete();
                 },
                 (error) => {
                     observer.error(error);
@@ -59,6 +69,7 @@ export class CACService {
             cordova.plugins.CacReader.isReaderAttached(
                 (value) => {
                     observer.next(value);
+                    observer.complete();
                 },
                 (error) => {
                     observer.error(error);
@@ -79,9 +90,45 @@ export class CACService {
         });
     }
 
-    public cacCheck(): Promise<any> {
+    public cacCheck(host: string): Promise<any> {
         return new Promise((resolve, reject) => {
-            cordova.plugins.CacReader.cacCheck(resolve, reject);
+            cordova.plugins.CacReader.cacCheck(host, resolve, reject);
+        });
+    }
+
+    // public sendPost(host: string, postData: string, headers: string): Promise<any> {
+    //     return new Promise((resolve, reject) => {
+    //         cordova.plugins.CacReader.sendPost(host, postData, headers, resolve, reject);
+    //     });
+    // }
+
+    public sendPost(host: string, postData: string, headers: string): Observable<any> {
+        return Observable.create((observer) => {
+            cordova.plugins.CacReader.sendPost(
+                host, postData, headers,
+                (value) => {
+                    observer.next(value);
+                    observer.complete();
+                },
+                (error) => {
+                    observer.error(error);
+                }
+            );
+        });
+    }
+
+    public sendGet(host: string, headers: string): Observable<any> {
+        return Observable.create((observer) => {
+            cordova.plugins.CacReader.sendGet(
+                host, headers,
+                (value) => {
+                    observer.next(value);
+                    observer.complete();
+                },
+                (error) => {
+                    observer.error(error);
+                }
+            );
         });
     }
 }

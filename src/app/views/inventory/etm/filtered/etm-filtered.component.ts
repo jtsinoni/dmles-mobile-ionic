@@ -52,7 +52,9 @@ export class EtmFilteredComponent extends Search {
     public getSearchResults(queryModel: ElasticQueryModel) {
         this.abiCatalogService.getABiCatalogRecordsByQueryModel(queryModel)
             .timeout(8000)
-            .map(response => response.json())
+            .map((response) => {
+                return this.utilService.getPayload(response);
+            })
             .subscribe(
                 (response) => {
                     if (response) {

@@ -51,7 +51,9 @@ export class SiteCatalogListComponent extends Search {
                 if (hasProductIdentifier) {
                     this.log.debug("getting by product id");
                     this.siteCatalogService.retrieveSiteCatalogItems("product", this.selectedItem.mmcProductIdentifier)
-                        .map(response => response.json())
+                        .map((response) => {
+                            return this.utilService.getPayload(response);
+                        })
                         .subscribe(
                         (response) => {
                             if (response) {
@@ -70,7 +72,9 @@ export class SiteCatalogListComponent extends Search {
                 } else {
                     this.log.debug("getting by enterprise id - this doesn't seem to work");
                     this.siteCatalogService.retrieveSiteCatalogItems("enterprise", this.selectedItem.enterpriseProductIdentifier)
-                        .map(response => response.json())
+                        .map((response) => {
+                            return this.utilService.getPayload(response);
+                        })
                         .subscribe(
                         (response) => {
                             if (response) {

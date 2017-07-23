@@ -27,7 +27,9 @@ export class SystemService extends ApiService {
         SystemService.sites = new Array<SiteModel>();
         if (!this.branchServices) {
             return this.get("getServices")
-                .map(response => response.json())
+                .map((response) => {
+                    return this.utilService.getPayload(response);
+                })
                 .subscribe((response) => {
                     this.branchServices = response;
                     if (this.branchServices) {

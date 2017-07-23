@@ -28,6 +28,7 @@ import org.apache.cordova.PluginResult.Status;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.thursby.pkard.conscrypt.KeyManagerImpl;
 import com.thursby.pkard.sdk.PKTrustManager;
@@ -54,8 +55,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.StreamCorruptedException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
@@ -73,7 +76,9 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.Iterator;
 
 import javax.crypto.Cipher;
 import javax.net.ssl.HostnameVerifier;
@@ -122,7 +127,7 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
     private TrustManager[] mTrustManagers = null;
     private KeyManager[] mKeyManagers = null;
     private static final String LOG_TAG = "Logicole";
-    private static final int TIMEOUT = 50 * 1000;
+    private static final int TIMEOUT = 10 * 1000;
     private static final int MAX_ROUTE_CONNECTIONS = 10;
     private static final int MAX_CONNECTIONS = 20;
     private boolean bIsSecureContext = true;
@@ -223,6 +228,7 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
             try {
                 mKeyStore = KeyStore.getInstance("PKardClient", pkardSDK.getProviderName());
                 mKeyStore.load(null, null);
+
             } catch (KeyStoreException e) {
                 e.printStackTrace();
             } catch (NoSuchProviderException e) {
@@ -240,6 +246,10 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         LOG.d(LOG_TAG, "Action: " + action);
+
+
+        String[] identities = pkardSDK.getIdentities(android.os.Process.myPid());
+        Log.d(LOG_TAG, "identities => " + Arrays.toString(identities));
 
         if (action.equals("version")) {
             this.version(callbackContext);
@@ -261,7 +271,20 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
             this.lockScreen(callbackContext);
             return true;
         } else if(action.equals("cacCheck")) {
-            this.cacCheck();
+            this.cacCheck(args);
+            return true;
+        } else if(action.equals("sendPost")) {
+            String host = args.getString(0);
+            String postData = args.getString(1);
+            String headers = args.getString(2);
+            this.sendPost(host, postData, headers, callbackContext);
+
+            return true;
+        } else if(action.equals("sendGet")) {
+            String host = args.getString(0);
+            String headers = args.getString(1);
+            this.sendGet(host, headers, callbackContext);
+
             return true;
         }
         return false;
@@ -329,8 +352,287 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
         }
     }
 
-    private void cacCheck() {
-        okhttpConnect("https://192.168.1.13");
+    private void isReaderAttached2() {
+        LOG.d(LOG_TAG, "isReaderAttached: " + isReaderAttached);
+
+        if(readerCallbackContext != null) {
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                    PluginResult pluginResult = new PluginResult(Status.OK, isReaderAttached);
+                    pluginResult.setKeepCallback(true);
+
+                    readerCallbackContext.sendPluginResult(pluginResult);
+                }
+            });
+        }
+    }
+
+    private PublicKey getPublicKey(String alias) {
+
+        Log.v(LOG_TAG, "inspecting alias: " + alias);
+        PublicKey publickey = null;
+
+        try {
+            userCert = mKeyStore.getCertificate(alias);
+            if (userCert != null) {
+                publickey = userCert.getPublicKey();
+            }
+
+        } catch (KeyStoreException e) {
+            Log.e(LOG_TAG, "Error: " + e.getMessage(), e);
+        }
+        return publickey;
+    }
+
+    private void sendGet(final String urlString, final String jsonHeaders, final CallbackContext callbackContext) {
+        LOG.d(LOG_TAG, "sendGet: urlString => " + urlString );
+
+        new ConnectServerTask(callbackContext) {
+
+            @Override
+            protected String doInBackground(Void... params) {
+                HttpsURLConnection urlConnection = null;
+
+                try {
+                    SSLContext sslCtx = createSslContext(true);
+                    URL toLoad = new URL(urlString);
+
+                    // Using HttpsURLConnection client - okhttp client underneath
+                    urlConnection = (HttpsURLConnection) toLoad.openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    setHeaders(urlConnection, jsonHeaders);
+                    //urlConnection.setDoInput(true);
+                    urlConnection.setHostnameVerifier(hostnameVerifier);
+                    //urlConnection.setUseCaches(false);
+                    //urlConnection.setConnectTimeout(0);
+                    //urlConnection.setReadTimeout(TIMEOUT);
+                    urlConnection.setSSLSocketFactory(sslCtx.getSocketFactory());
+
+                    if (urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+//                        PluginResult pluginResult = new PluginResult(Status.ERROR, urlConnection.getResponseMessage());
+//                        callbackContext.sendPluginResult(pluginResult);
+                        return null;
+                    } else {
+//                        Log.d(LOG_TAG, "CipherSuite: " + urlConnection.getCipherSuite());
+//                        Log.d(LOG_TAG, "Content Type: " + urlConnection.getContentType());
+//                        Log.d(LOG_TAG, "Content Length: " + urlConnection.getContentLength());
+//                        String response = readLines(urlConnection.getInputStream(),
+//                                urlConnection.getContentEncoding(), urlConnection.getContentType());
+
+//                        BufferedReader in = new BufferedReader(new InputStreamReader(
+//                                urlConnection.getInputStream()));
+//                        String inputLine;
+//                        StringBuffer responseBuffer = new StringBuffer();
+//
+//                        while ((inputLine = in.readLine()) != null) {
+//                            responseBuffer.append(inputLine);
+//                        }
+//                        in.close();
+                        String response = readLines(urlConnection.getInputStream(),
+                                urlConnection.getContentEncoding(), urlConnection.getContentType());
+
+                        Log.d(LOG_TAG, "CipherSuite: " + urlConnection.getCipherSuite());
+                        Log.d(LOG_TAG, "Content Type: " + urlConnection.getContentType());
+                        Log.d(LOG_TAG, "Content Length: " + urlConnection.getContentLength());
+                        //Log.d(LOG_TAG, "responseBuffer = > " + responseBuffer.toString());
+
+                        return response;
+//                        PluginResult pluginResult = new PluginResult(Status.OK, response);
+//                        callbackContext.sendPluginResult(pluginResult);
+                    }
+                } catch(Exception e) {
+                    Log.e(LOG_TAG, "Error: " + e.getMessage(), e);
+                    return null;
+//                    PluginResult pluginResult = new PluginResult(Status.ERROR, e.getMessage());
+//                    callbackContext.sendPluginResult(pluginResult);
+                } finally {
+                    if(urlConnection != null) {
+                        urlConnection.disconnect();
+                    }
+                }
+
+            }
+
+        }.execute();
+    }
+
+    private void sendPost(final String urlString, final String postData, final String jsonHeaders, final CallbackContext callbackContext) {
+        LOG.d(LOG_TAG, "sendPost: urlString => " + urlString );
+
+        new ConnectServerTask(callbackContext) {
+
+            @Override
+            protected String doInBackground(Void... params) {
+                HttpsURLConnection urlConnection = null;
+
+                try {
+                    SSLContext sslCtx = createSslContext(true);
+                    URL toLoad = new URL(urlString);
+
+                    // Using HttpsURLConnection client - okhttp client underneath
+                    urlConnection = (HttpsURLConnection) toLoad.openConnection();
+                    urlConnection.setRequestMethod("POST");
+                    setHeaders(urlConnection, jsonHeaders);
+                    //urlConnection.setDoInput(true);
+                    urlConnection.setHostnameVerifier(hostnameVerifier);
+                    //urlConnection.setUseCaches(false);
+                    //urlConnection.setConnectTimeout(0);
+                    //urlConnection.setReadTimeout(TIMEOUT);
+                    urlConnection.setSSLSocketFactory(sslCtx.getSocketFactory());
+
+                    // For POST only - START
+                    if(postData != null && postData.length() > 0) {
+                        Log.d(LOG_TAG, "Post Data => " + postData);
+                        urlConnection.setDoOutput(true);
+                        OutputStream outputStream = urlConnection.getOutputStream();
+
+                        outputStream.write(postData.getBytes("UTF-8"));
+                        outputStream.flush();
+                        outputStream.close();
+                    }
+                    // For POST only - END
+
+
+
+                    if (urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+//                        PluginResult pluginResult = new PluginResult(Status.ERROR, urlConnection.getResponseMessage());
+//                        callbackContext.sendPluginResult(pluginResult);
+                        return null;
+                    } else {
+//                        Log.d(LOG_TAG, "CipherSuite: " + urlConnection.getCipherSuite());
+//                        Log.d(LOG_TAG, "Content Type: " + urlConnection.getContentType());
+//                        Log.d(LOG_TAG, "Content Length: " + urlConnection.getContentLength());
+//                        String response = readLines(urlConnection.getInputStream(),
+//                                urlConnection.getContentEncoding(), urlConnection.getContentType());
+
+//                        BufferedReader in = new BufferedReader(new InputStreamReader(
+//                                urlConnection.getInputStream()));
+//                        String inputLine;
+//                        StringBuffer responseBuffer = new StringBuffer();
+//
+//                        while ((inputLine = in.readLine()) != null) {
+//                            responseBuffer.append(inputLine);
+//                        }
+//                        in.close();
+                        String response = readLines(urlConnection.getInputStream(),
+                                urlConnection.getContentEncoding(), urlConnection.getContentType());
+
+                        Log.d(LOG_TAG, "CipherSuite: " + urlConnection.getCipherSuite());
+                        Log.d(LOG_TAG, "Content Type: " + urlConnection.getContentType());
+                        Log.d(LOG_TAG, "Content Length: " + urlConnection.getContentLength());
+                        //Log.d(LOG_TAG, "responseBuffer = > " + responseBuffer.toString());
+
+                        return response;
+//                        PluginResult pluginResult = new PluginResult(Status.OK, response);
+//                        callbackContext.sendPluginResult(pluginResult);
+                    }
+                } catch(Exception e) {
+                    Log.e(LOG_TAG, "Error: " + e.getMessage(), e);
+                    return null;
+//                    PluginResult pluginResult = new PluginResult(Status.ERROR, e.getMessage());
+//                    callbackContext.sendPluginResult(pluginResult);
+                } finally {
+                    if(urlConnection != null) {
+                        urlConnection.disconnect();
+                    }
+                }
+
+            }
+        }.execute();
+
+    }
+
+//    private void sendPost(final String urlString, final String postData, final String jsonHeaders, final CallbackContext callbackContext) {
+//        LOG.d(LOG_TAG, "sendPost: urlString => " + urlString );
+//
+//        //mIdentitySignature.mAlias
+//        LOG.d(LOG_TAG, "sendPost: Pub key => " + getPublicKey(mIdentitySignature.mAlias));
+//
+//        cordova.getThreadPool().execute(new Runnable() {
+//            public void run() {
+//                HttpsURLConnection urlConnection = null;
+//
+//                try {
+//                    SSLContext sslCtx = createSslContext(true);
+//                    URL toLoad = new URL(urlString);
+//
+//                    // Using HttpsURLConnection client - okhttp client underneath
+//                    urlConnection = (HttpsURLConnection) toLoad.openConnection();
+//                    urlConnection.setRequestMethod("POST");
+//                    setHeaders(urlConnection, jsonHeaders);
+//                    //urlConnection.setDoInput(true);
+//                    urlConnection.setHostnameVerifier(hostnameVerifier);
+//                    //urlConnection.setUseCaches(false);
+//                    //urlConnection.setConnectTimeout(0);
+//                    urlConnection.setReadTimeout(TIMEOUT);
+//                    urlConnection.setSSLSocketFactory(sslCtx.getSocketFactory());
+//
+//                    // For POST only - START
+//                    if(postData != null && postData.length() > 0) {
+//                        Log.d(LOG_TAG, "Post Data => " + postData);
+//                        urlConnection.setDoOutput(true);
+//                        OutputStream outputStream = urlConnection.getOutputStream();
+//
+//                        outputStream.write(postData.getBytes("UTF-8"));
+//                        outputStream.flush();
+//                        outputStream.close();
+//                    }
+//                    // For POST only - END
+//
+//
+//
+//                    if (urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+//                        PluginResult pluginResult = new PluginResult(Status.ERROR, urlConnection.getResponseMessage());
+//                        callbackContext.sendPluginResult(pluginResult);
+//                    } else {
+////                        Log.d(LOG_TAG, "CipherSuite: " + urlConnection.getCipherSuite());
+////                        Log.d(LOG_TAG, "Content Type: " + urlConnection.getContentType());
+////                        Log.d(LOG_TAG, "Content Length: " + urlConnection.getContentLength());
+////                        String response = readLines(urlConnection.getInputStream(),
+////                                urlConnection.getContentEncoding(), urlConnection.getContentType());
+//
+////                        BufferedReader in = new BufferedReader(new InputStreamReader(
+////                                urlConnection.getInputStream()));
+////                        String inputLine;
+////                        StringBuffer responseBuffer = new StringBuffer();
+////
+////                        while ((inputLine = in.readLine()) != null) {
+////                            responseBuffer.append(inputLine);
+////                        }
+////                        in.close();
+//                        String response = readLines(urlConnection.getInputStream(),
+//                                urlConnection.getContentEncoding(), urlConnection.getContentType());
+//
+//                        Log.d(LOG_TAG, "CipherSuite: " + urlConnection.getCipherSuite());
+//                        Log.d(LOG_TAG, "Content Type: " + urlConnection.getContentType());
+//                        Log.d(LOG_TAG, "Content Length: " + urlConnection.getContentLength());
+//                        //Log.d(LOG_TAG, "responseBuffer = > " + responseBuffer.toString());
+//
+//
+//                        PluginResult pluginResult = new PluginResult(Status.OK, response);
+//                        callbackContext.sendPluginResult(pluginResult);
+//                    }
+//                } catch(Exception e) {
+//                    Log.e(LOG_TAG, "Error: " + e.getMessage(), e);
+//                    PluginResult pluginResult = new PluginResult(Status.ERROR, e.getMessage());
+//                    callbackContext.sendPluginResult(pluginResult);
+//                } finally {
+//                    if(urlConnection != null) {
+//                        urlConnection.disconnect();
+//                    }
+//                }
+//            }
+//        });
+//
+//    }
+
+    private void cacCheck(JSONArray args) {
+        try {
+            String host = args.getString(0);
+            okhttpConnect(host);
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, e.getLocalizedMessage());
+        }
     }
 
     @Override
@@ -364,6 +666,8 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
     public void onResume(boolean multitasking) {
         super.onResume(multitasking);
 
+        Log.d(LOG_TAG, "onResume()");
+
         prepareReceiver();
         if (mIdentitySignature == null) {
             FileInputStream fis;
@@ -382,9 +686,9 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
             }
         }
         if (mIdentitySignature != null) {
-            Log.d(LOG_TAG, "restored"
-                    + " signature from file");
+            Log.d(LOG_TAG, "restored signature from file");
             PKSignatureRecord.setSignature(mIdentitySignature);
+            Log.d(LOG_TAG, "Alias Used: " + mIdentitySignature.mAlias);
         }
         //actionSpinner.setSelection(0); // prevent a signature from starting w/o user interaction
 
@@ -397,7 +701,7 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
 
     private void handleIncoming(Intent intent) {
         try {
-            if (intent != null && intent.getAction().equals(Intent.ACTION_VIEW)) {
+            if(intent != null && intent.getAction().equals(Intent.ACTION_VIEW)) {
                 Log.d(LOG_TAG, "received intent:" + intent.getAction());
                 Uri externalUrl = intent.getData();
                 Log.d(LOG_TAG, "intent data: " + externalUrl.toString());
@@ -722,6 +1026,37 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
         return context;
     }
 
+    abstract private class ConnectServerTask extends AsyncTask<Void, Void, String> {
+        private CallbackContext callbackContext;
+
+        public ConnectServerTask(CallbackContext callbackContext) {
+            this.callbackContext = callbackContext;
+        }
+
+//        @Override
+//        protected String doInBackground(Void... params) {
+//            return null;
+//        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            if(result != null) {
+                Log.d(LOG_TAG, "ConnectServerTask results => " + result);
+
+                PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, result);
+                //pluginResult.setKeepCallback(true);
+
+                callbackContext.sendPluginResult(pluginResult);
+            } else {
+                Toast.makeText(context,
+                        "Error: failed to connect", Toast.LENGTH_LONG)
+                        .show();
+            }
+        }
+    }
+
     abstract class GetHtmlTask extends AsyncTask<Void, Void, String> {
         Exception error;
 
@@ -732,13 +1067,40 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
 
         @Override
         protected void onPostExecute(String result) {
-            if (result == null) {
+            if(result != null) {
+                Log.d(LOG_TAG, "GetHtmlTask return results => " + result);
+            }
+            else {
                 Toast.makeText(context,
                         "Error: failed to connect", Toast.LENGTH_LONG)
                         .show();
             }
         }
     }
+
+
+
+    // TODO:  remove and use real host name, since it's local dev and self signed, bypass
+    HostnameVerifier hostnameVerifier = new HostnameVerifier() {
+        @Override
+        public boolean verify(String hostname, SSLSession session) {
+            return true;
+        }
+    };
+
+    private void setHeaders(HttpsURLConnection urlConnection, String jsonHeaders) throws JSONException {
+        JSONObject jsonObject = new JSONObject(jsonHeaders);
+        for (Iterator<String> key = jsonObject.keys(); key.hasNext();) {
+            String header = key.next();
+            Log.d(LOG_TAG, "header => " + header + " value =>" + jsonObject.getString(header));
+            urlConnection.setRequestProperty(header, jsonObject.getString(header));
+        }
+//        urlConnection.setRequestProperty("Content-Type", "application/json");
+//        urlConnection.setRequestProperty("Authorization", "Basic dW5kZWZpbmVkOnBhc3N3b3Jk");
+//        urlConnection.setRequestProperty("Accept", "application/json");
+//        urlConnection.setRequestProperty("ClientId", "dmles");
+    }
+
 
     private void okhttpConnect(final String urlString) {
         new GetHtmlTask() {
@@ -778,6 +1140,7 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
                             return urlConnection.getResponseMessage();
                         }
 
+                        Log.d(LOG_TAG, "URL: " + urlString);
                         Log.d(LOG_TAG, "CipherSuite: " + urlConnection.getCipherSuite());
                         Log.d(LOG_TAG, "Content Type: " + urlConnection.getContentType());
                         Log.d(LOG_TAG, "Content Length: " + urlConnection.getContentLength());
@@ -807,7 +1170,7 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
         try {
             String line = null;
             while ((line = reader.readLine()) != null) {
-                buff.append(line + "\n");
+                buff.append(line);
             }
 
             return buff.toString();

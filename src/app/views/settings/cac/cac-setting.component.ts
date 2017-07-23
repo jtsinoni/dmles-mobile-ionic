@@ -3,6 +3,7 @@ import {LoggerService} from "../../../services/logger/logger-service";
 import {ViewController} from "ionic-angular";
 import {CACService} from "../../../services/cac.service";
 import {AppInjector} from "../../../app.module";
+import { AppConfigConstants } from "../../../constants/app-config.constants";
 
 @Component({
     selector: 'cac-setting',
@@ -81,7 +82,10 @@ export class CacSettingComponent {
     }
 
     public cacCheck() {
-        this.cacService.cacCheck()
+
+        //host, postData, headers
+        let btHost = AppConfigConstants.apiHosts.btBaseUrl;
+        this.cacService.cacCheck(btHost)
             .then((results) => {
                 this.log.debug(`cacCheck => ${results}`);
             })

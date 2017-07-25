@@ -38,7 +38,7 @@ export class RolesComponent {
     private getAllRoles() {
         let server: ServerModel;
         this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
-            this.showLoadingData({content: `Getting Roles`});
+            this.showLoadingData({content: `Getting Roles ...`});
 
             this.RoleService.setServer(server);
             this.RoleService.getAllRoles()

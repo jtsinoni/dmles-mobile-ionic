@@ -55,7 +55,7 @@ export class CACService {
             cordova.plugins.CacReader.isCardInserted(
                 (value) => {
                     observer.next(value);
-                    observer.complete();
+                    //observer.complete();
                 },
                 (error) => {
                     observer.error(error);
@@ -69,7 +69,7 @@ export class CACService {
             cordova.plugins.CacReader.isReaderAttached(
                 (value) => {
                     observer.next(value);
-                    observer.complete();
+                    //observer.complete();
                 },
                 (error) => {
                     observer.error(error);

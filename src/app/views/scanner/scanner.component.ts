@@ -224,7 +224,11 @@ export class ScannerComponent extends Search implements OnInit {
     }).then(() => {
       // this.log.debug("In get sites ");
       this.systemService.getBranchServices()
-        .map(response => response.json())
+        .map((results) => {
+          if(results) {
+            return this.utilService.getPayload(results);
+          }
+        })
         .subscribe((response) => {
           this.branchServices = response;
           if (this.branchServices) {

@@ -48,7 +48,7 @@ export class RolesComponent {
                 })
                 .subscribe((results) => {
                     this.items = results;
-                    this.log.debug(`getAllRoles => ${JSON.stringify(results)}`);
+                    //this.log.log(`getAllRoles => ${JSON.stringify(results)}`);
                     this.loadingEnded();
                 },
                 (error) => {

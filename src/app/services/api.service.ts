@@ -76,7 +76,7 @@ export class ApiService {
                            'Accept': 'application/json',
                            'ClientId': 'dmles'};
 
-        if(this.platform.is('android')) {
+        if(this.utilService.isHttps(url) && this.utilService.isAndroid()) {
             return this.cacService.sendPost(url, "{}", headers);
         } else {
             return this.http.post(url, {}, { headers: new Headers(headers) });
@@ -93,7 +93,7 @@ export class ApiService {
                                    'Accept': 'application/json',
                                    'ClientId': 'dmles'};
 
-                if(this.platform.is('android')) {
+                if(this.utilService.isHttps(url) && this.utilService.isAndroid()) {
                     return this.cacService.sendGet(url, headers);
                 } else {
                     return this.http.get(url, {headers: new Headers(headers)});
@@ -114,7 +114,7 @@ export class ApiService {
                                    'Accept': 'application/json',
                                    'ClientId': 'dmles'};
 
-                if(this.platform.is('android')) {
+                if(this.utilService.isHttps(url) && this.utilService.isAndroid()) {
                     return this.cacService.sendPost(url, data, headers);
                 } else {
                     return this.http.post(url, data, { headers: new Headers(headers) });

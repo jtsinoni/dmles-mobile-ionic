@@ -41,13 +41,22 @@ export class UtilService {
         return (this.platform.is('android')) ? true : false;
     }
 
+
+    public isHttps(url: string): boolean {
+        let index: number = url.indexOf('https');
+        return (index >= 0)?true: false;
+    }
+
     public getPayload(data: any): any {
         let results: any;
-        if(this.isAndroid()) {
-            results = JSON.parse(data);
-        } else {
+
+        // if data.status is valid then Angular http is being used
+        if(data.status) {
             results = data.json();
+        } else {
+            results = JSON.parse(data);
         }
+
         return results;
     }
 

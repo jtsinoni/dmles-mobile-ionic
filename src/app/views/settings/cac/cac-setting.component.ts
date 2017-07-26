@@ -3,7 +3,6 @@ import {LoggerService} from "../../../services/logger/logger-service";
 import {ViewController} from "ionic-angular";
 import {CACService} from "../../../services/cac.service";
 import {AppInjector} from "../../../app.module";
-import { AppConfigConstants } from "../../../constants/app-config.constants";
 
 @Component({
     selector: 'cac-setting',

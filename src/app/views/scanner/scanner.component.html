@@ -1,4 +1,4 @@
-<mb-header-page remove-parent-element [title]="'Ask ABi'" [menu]="'ScannerMenuComponent'"></mb-header-page>
+<!-- <mb-header-page remove-parent-element [title]="'Ask ABi'" [menu]="'ScannerMenuComponent'"></mb-header-page> -->
 
 <ion-content padding>
     <div class="top-spacer-div"></div>
@@ -31,10 +31,10 @@
         </span>
     </ion-item>
     <ion-list [virtualScroll]="item.items">
-        <ion-item text-wrap class="ripple" *virtualItem="let abiItem">
+        <ion-item text-wrap class="ripple" *virtualItem="let abiItem" (tap)="showDetail(abiItem)">
             <ion-grid>
                 <ion-row>
-                    <ion-col width-80>
+                    <ion-col>
                         <ion-icon [hidden]="!isPreferredItem(abiItem)" name="star"></ion-icon>
                         {{abiItem.longItemDescription}}
                         <div>
@@ -43,15 +43,11 @@
                 {{abiItem.ndc}} 
                  {{abiItem.manufacturerCatalogNumber}}                      
                  </span>
-
                         </div>
                     </ion-col>
                     <ion-col>
                         <ion-buttons end>
-                            <button ion-button small icon-only color="logi-cole-blue" (click)="showDetail(abiItem)">
-                                <ion-icon name="open"></ion-icon>
-                            </button>
-                            <button ion-button small *ngIf="abiItem.mmcProductIdentifier" color="secondary" (click)="goToSiteCatalogRecords(abiItem)"><ion-badge color="secondary" >{{abiItem.siteCount}}</ion-badge></button>
+                            <button ion-button small *ngIf="abiItem.mmcProductIdentifier" color="secondary" (press)="goToSiteCatalogRecords(abiItem)"><ion-badge color="secondary" >{{abiItem.siteCount}}</ion-badge></button>
                         </ion-buttons>
                     </ion-col>
                 </ion-row>

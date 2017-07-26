@@ -47,6 +47,7 @@
         <resource-file src="config/android/certs/trusted_cas.pem" target="res/raw/trusted_cas.pem" />
         <resource-file src="config/android/certs/trusted_certs.pem" target="res/raw/trusted_certs.pem" />
         <resource-file src="config/android/certs/untrusted_cas.pem" target="res/raw/untrusted_cas.pem" />
+        <resource-file src="config/common/lockscreen.png" target="res/drawable/lockscreen.png" />
     </platform>
 
     <!-- ios -->
@@ -63,7 +64,7 @@
         </js-module>
 
         <resource-file src="./config/ios/PKardSDK.bundle" target="PKardSDK.bundle" />
-        <resource-file src="./config/ios/lockScreen.png" target="lockScreen.png" />
+        <resource-file src="./config/common/lockscreen.png" target="lockscreen.png" />
         <resource-file src="./config/ios/certs/trusted_cas.pem" target="trusted_cas.pem" />
         <resource-file src="./config/ios/certs/trusted_certs.pem" target="trusted_certs.pem" />
         <resource-file src="./config/ios/certs/untrusted_cas.pem" target="untrusted_cas.pem" />
@@ -88,7 +89,7 @@
         </config-file>
 
         <config-file target="*-Info.plist" parent="LockScreenGraphic">
-            <string>lockScreen.png</string>
+            <string>lockscreen.png</string>
          </config-file>
 
 

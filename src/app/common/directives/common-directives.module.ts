@@ -10,6 +10,7 @@ import { ElementPositionDirective } from "./element-position.directive";
 import {IonicModule} from "ionic-angular";
 import {NavDrawerHeaderComponent} from "../../views/common/header/nav-drawer-header.component";
 import {ModalHeaderComponent} from "../../views/common/header/modal-header.component";
+import { SubHeaderDirective } from  "../../views/common/header/sub-header.directive";
 
 @NgModule({
     declarations: [
@@ -21,7 +22,9 @@ import {ModalHeaderComponent} from "../../views/common/header/modal-header.compo
         WarningDialogComponent,
         GrowlDialogComponent,
         Focuser,
-        ElementPositionDirective
+        ElementPositionDirective,
+        SubHeaderDirective
+
     ],
     imports: [IonicModule],
     exports: [
@@ -30,7 +33,8 @@ import {ModalHeaderComponent} from "../../views/common/header/modal-header.compo
         HeaderPageComponent,
         RemoveParentElementDirective,
         Focuser,
-        ElementPositionDirective
+        ElementPositionDirective,
+        SubHeaderDirective
     ],
     entryComponents: [
         AppMenuComponent,

@@ -80,17 +80,4 @@ export class CacSettingComponent {
                 this.log.error(error);
             });
     }
-
-    public cacCheck() {
-
-        //host, postData, headers
-        let btHost = AppConfigConstants.apiHosts.btBaseUrl;
-        this.cacService.cacCheck(btHost)
-            .then((results) => {
-                this.log.debug(`cacCheck => ${results}`);
-            })
-            .catch((error) => {
-                this.log.error(error);
-            });
-    }
 }

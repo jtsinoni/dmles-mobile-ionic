@@ -63,8 +63,16 @@ export class SettingsService extends BaseDatabaseService<SettingsModel> {
     }
 
     getActionPositionSetting(): Promise<SettingsModel> {
-        return this.findFirst(this.actionPositionSettingCallBack)
+        return this.findFirst(this.actionPositionSettingCallBack);
 
+    }
+
+    enableScannerSettingCallBack = (s: SettingsModel): boolean => {
+        return s.settingsName == "Enable Scanner";
+    }
+
+    getEnableScannerSetting(): Promise<SettingsModel> {
+        return this.findFirst(this.enableScannerSettingCallBack);
     }
 
 

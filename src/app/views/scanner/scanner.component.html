@@ -1,32 +1,65 @@
-<mb-header-page remove-parent-element [title]="'Scanner'" [menu]="'ScannerMenuComponent'"></mb-header-page>
+<mb-header-page remove-parent-element [title]="'Ask ABi'" [menu]="'ScannerMenuComponent'"></mb-header-page>
 
 <ion-content padding>
     <div class="top-spacer-div"></div>
     <ion-item>
         <ion-input type="text" focuser placeholder="Search" [(ngModel)]="searchValue" name="searchInput" clearInput (keyup.enter)="getSearchResults()"></ion-input>
+        <ion-icon *ngIf="isScannerDevice" name='barcode' is-active="true" (click)="getSearchResults()" item-right></ion-icon>
     </ion-item>
     <ion-item [hidden]="hasOneOrNoneResult()">
         <ion-input type="text" placeholder="Refine" [(ngModel)]="refineSearchValue" name="searchInput2" clearInput (keyup.enter)="getSearchResults()"></ion-input>
         <ion-icon name='search' is-active="true" (click)="getSearchResults()" item-right></ion-icon>
     </ion-item>
+    <div padding *ngIf="!isScannerDevice">
+        <div *ngIf="isConnected">
+            <button ion-button color="primary" block (click)="getSearchResults()" [disabled]="!searchValue">
+                <ion-icon name="search"></ion-icon>
+            </button>
+        </div>
+
+        <div *ngIf="!isConnected">
+            <button ion-button color="primary" block (click)="storeBarcode()" [disabled]="!barcodeHelper.barcodeResults">
+                <ion-icon name="add"></ion-icon>
+            </button>
+        </div>
+    </div>
 
     <ion-item *ngIf="item.resultReturned">
         <span>
-       <ion-badge color="primary-blue">{{item.resultCount}}</ion-badge> Items found
-       (<ion-badge color="primary-blue">{{item.milliseconds}}</ion-badge> milliseconds)
+       <ion-badge color="primary-blue">{{item.resultCount}}</ion-badge>&nbsp;Items found
+       (<ion-badge color="primary-blue">{{item.milliseconds}}</ion-badge>&nbsp;milliseconds)
         </span>
     </ion-item>
-    <ion-list>
-        <ion-item text-wrap class="ripple" *ngFor="let abiItem of item.items" (press)="showDetail(abiItem)">
-            <ion-icon [hidden]="!isPreferredItem(abiItem)" name="star"></ion-icon>
-            {{abiItem.longItemDescription}}
-            <span><ion-badge *ngIf="abiItem.mmcProductIdentifier" color="secondary"   (click)="goToSiteCatalogRecords(abiItem)">{{abiItem.siteCount}}</ion-badge></span>
-            <div>
-                <span style="color:gray">
+    <ion-list [virtualScroll]="item.items">
+        <ion-item text-wrap class="ripple" *virtualItem="let abiItem">
+            <ion-grid>
+                <ion-row>
+                    <ion-col width-80>
+                        <ion-icon [hidden]="!isPreferredItem(abiItem)" name="star"></ion-icon>
+                        {{abiItem.longItemDescription}}
+                        <div>
+                            <span style="color:gray">
                 {{abiItem.manufacturer}}
-                 {{abiItem.manufacturerCatalogNumber}}                   
+                {{abiItem.ndc}} 
+                 {{abiItem.manufacturerCatalogNumber}}                      
                  </span>
-            </div>
+
+                        </div>
+                    </ion-col>
+                    <ion-col>
+                        <ion-buttons end>
+                            <button ion-button small icon-only color="logi-cole-blue" (click)="showDetail(abiItem)">
+                                <ion-icon name="open"></ion-icon>
+                            </button>
+                            <button ion-button small *ngIf="abiItem.mmcProductIdentifier" color="secondary" (click)="goToSiteCatalogRecords(abiItem)"><ion-badge color="secondary" >{{abiItem.siteCount}}</ion-badge></button>
+                        </ion-buttons>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
         </ion-item>
     </ion-list>
+    <ion-fab logicole-element-position id="barcodeScanFab" *ngIf="!isScannerDevice">
+        <button id="scanFab" ion-fab (click)="barcodeScan()"><ion-icon name="barcode" >
+      </ion-icon></button>
+    </ion-fab>
 </ion-content>

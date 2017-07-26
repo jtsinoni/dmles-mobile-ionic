@@ -1,20 +1,14 @@
 package logicole.plugin.cac;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.view.View;
-import android.widget.AutoCompleteTextView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.cordova.LOG;
@@ -40,13 +34,11 @@ import com.thursby.pkard.sdk.PKardSDKFeatures;
 import com.thursby.pkard.sdk.ReaderStatus;
 import com.thursby.pkard.sdk.TokenStatus;
 import com.thursby.pkard.sdk.tsspki.PKSignature;
-import com.thursby.pkard.sdk.tsspki.PKSignatureException;
 import com.thursby.pkard.sdk.tsspki.PKSignatureRecord;
 import com.thursby.pkard.util.Log;
 import com.thursby.pkard.util.MiscHelper;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -58,29 +50,18 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.StreamCorruptedException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
-import java.security.InvalidKeyException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.Signature;
-import java.security.SignatureException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Iterator;
 
-import javax.crypto.Cipher;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManager;
@@ -105,33 +86,20 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
     /* toggle this to one of the values above to experiment with different types of trust manager
        Please note: CONFIG_TRUST_METHOD_PK_DIRECT is recommended, especially for cases where a user may need to approve a certificate
      */
-    int trustMethod = CONFIG_TRUST_METHOD_PK_DIRECT;
+    private int trustMethod = CONFIG_TRUST_METHOD_PK_DIRECT;
 
     private Context context;
     private Activity activity;
-    private AutoCompleteTextView inputData;
-    private TextView outputData;
-    private Signature signature;
-    private Cipher crypto;
-    private String dataToSign;
-    private byte[] mCipherText;
-    private String mPlainText;
-    private Certificate userCert;
-    private PublicKey pubKey;
-    private PrivateKey privKey;
     private PKardSDK pkardSDK;
     private KeyStore mKeyStore;
-    private Integer mCryptMode;
-    private static String mChosenAlias;
     private static PKSignature mIdentitySignature = null;
     private TrustManager[] mTrustManagers = null;
     private KeyManager[] mKeyManagers = null;
     private static final String LOG_TAG = "Logicole";
-    private static final int TIMEOUT = 10 * 1000;
-    private static final int MAX_ROUTE_CONNECTIONS = 10;
-    private static final int MAX_CONNECTIONS = 20;
     private boolean bIsSecureContext = true;
-    protected static final String SAVED_SIG_FILE = "stored.sig";
+    private static final String SAVED_SIG_FILE = "stored.sig";
+    private static SSLContext sslContext;
+
 
     private ArrayList<String> identities = new ArrayList<String>();
     private boolean pkardConnected;
@@ -140,11 +108,8 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
     private boolean isCardInserted = false;
     private boolean previousReaderState = false;
     private boolean previousCardState = false;
-
-
     private CallbackContext readerCallbackContext;
     private CallbackContext cardCallbackContext;
-    private CordovaInterface cordovaInterface;
 
     private StatusChangeReceiver mPKardReceiver = new StatusChangeReceiver();
     public class StatusChangeReceiver extends BroadcastReceiver {
@@ -186,19 +151,16 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
-
         LOG.d(LOG_TAG, "Starting => " + LOG_TAG);
 
-        this.mCryptMode = Cipher.ENCRYPT_MODE;
         this.activity = cordova.getActivity();
         this.context = cordova.getActivity().getApplicationContext();
-        this.cordovaInterface = cordova;
 
         // Initialize CAC Reader here
         ArrayList<PKardSDKFeatures> features = new ArrayList<PKardSDKFeatures>();
         features.add(PKardSDKFeatures.PKARD_SCARD);
         features.add(PKardSDKFeatures.PKARD_HTTPS);
-        //features.add(PKardSDKFeatures.PKARD_SCREENLOCK);
+        features.add(PKardSDKFeatures.PKARD_SCREENLOCK);
         features.add(PKardSDKFeatures.PKARD_ENTRUST_IDENTITYGUARD);
         // uncomment below to enable FIPS mode
         features.add(PKardSDKFeatures.PKARD_FIPS);
@@ -224,7 +186,18 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
         }
         if (pkardSDK != null) {
             pkardSDK.addEventListener(this);
-            //pkardSDK.setAutoScreenLock(true);
+            pkardSDK.setAutoScreenLock(true);
+
+            // set lockScreen image
+            int drawableId = cordova.getActivity().getResources().getIdentifier("lockscreen", "drawable", cordova.getActivity().getClass().getPackage().getName());
+            if(drawableId == 0) {
+                drawableId = cordova.getActivity().getResources().getIdentifier("lockscreen", "drawable", cordova.getActivity().getPackageName());
+            }
+
+            if(drawableId > 0) {
+                pkardSDK.setLockScreenLogoRes(drawableId);
+            }
+
             try {
                 mKeyStore = KeyStore.getInstance("PKardClient", pkardSDK.getProviderName());
                 mKeyStore.load(null, null);
@@ -247,7 +220,6 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         LOG.d(LOG_TAG, "Action: " + action);
 
-
         String[] identities = pkardSDK.getIdentities(android.os.Process.myPid());
         Log.d(LOG_TAG, "identities => " + Arrays.toString(identities));
 
@@ -265,13 +237,7 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
             this.isCardInserted();
             return true;
         } else if(action.equals("setFipsMode")) {
-            this.setFipsMode(callbackContext, args);
-            return true;
-        } else if(action.equals("lockScreen")) {
-            this.lockScreen(callbackContext);
-            return true;
-        } else if(action.equals("cacCheck")) {
-            this.cacCheck(args);
+            this.setFipsMode(args);
             return true;
         } else if(action.equals("sendPost")) {
             String host = args.getString(0);
@@ -320,11 +286,7 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
         }
     }
 
-    private void lockScreen(CallbackContext callbackContext) {
-        LOG.d(LOG_TAG, "Lockscreen TBD");
-    }
-
-    private void setFipsMode(CallbackContext callbackContext, JSONArray args) {
+    private void setFipsMode(JSONArray args) {
         Boolean fipsArgument = false;
         try {
             fipsArgument = args.getBoolean(0);
@@ -352,23 +314,6 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
         }
     }
 
-    private PublicKey getPublicKey(String alias) {
-
-        Log.v(LOG_TAG, "inspecting alias: " + alias);
-        PublicKey publickey = null;
-
-        try {
-            userCert = mKeyStore.getCertificate(alias);
-            if (userCert != null) {
-                publickey = userCert.getPublicKey();
-            }
-
-        } catch (KeyStoreException e) {
-            Log.e(LOG_TAG, "Error: " + e.getMessage(), e);
-        }
-        return publickey;
-    }
-
     private void sendGet(final String urlString, final String jsonHeaders, final CallbackContext callbackContext) {
         LOG.d(LOG_TAG, "sendGet: urlString => " + urlString );
 
@@ -380,14 +325,13 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
                 AsyncTaskPostResult asyncTaskPostResult = new AsyncTaskPostResult();
 
                 try {
-                    SSLContext sslCtx = createSslContext(true);
                     URL toLoad = new URL(urlString);
 
                     urlConnection = (HttpsURLConnection) toLoad.openConnection();
                     urlConnection.setRequestMethod("GET");
                     setHeaders(urlConnection, jsonHeaders);
                     urlConnection.setHostnameVerifier(hostnameVerifier);
-                    urlConnection.setSSLSocketFactory(sslCtx.getSocketFactory());
+                    urlConnection.setSSLSocketFactory(sslContext.getSocketFactory());
 
                     if (urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                         asyncTaskPostResult.OK = false;
@@ -395,12 +339,7 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
 
                         return asyncTaskPostResult;
                     } else {
-                        String response = readLines(urlConnection.getInputStream(),
-                                urlConnection.getContentEncoding(), urlConnection.getContentType());
-
-//                        Log.d(LOG_TAG, "CipherSuite: " + urlConnection.getCipherSuite());
-//                        Log.d(LOG_TAG, "Content Type: " + urlConnection.getContentType());
-//                        Log.d(LOG_TAG, "Content Length: " + urlConnection.getContentLength());
+                        String response = readLines(urlConnection.getInputStream(), urlConnection.getContentEncoding());
 
                         asyncTaskPostResult.OK = true;
                         asyncTaskPostResult.message = response;
@@ -432,14 +371,13 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
                 AsyncTaskPostResult asyncTaskPostResult = new AsyncTaskPostResult();
 
                 try {
-                    SSLContext sslCtx = createSslContext(true);
                     URL toLoad = new URL(urlString);
 
                     urlConnection = (HttpsURLConnection) toLoad.openConnection();
                     urlConnection.setRequestMethod("POST");
                     setHeaders(urlConnection, jsonHeaders);
                     urlConnection.setHostnameVerifier(hostnameVerifier);
-                    urlConnection.setSSLSocketFactory(sslCtx.getSocketFactory());
+                    urlConnection.setSSLSocketFactory(sslContext.getSocketFactory());
 
                     // For POST only - START
                     if(postData != null && postData.length() > 0) {
@@ -459,8 +397,7 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
 
                         return asyncTaskPostResult;
                     } else {
-                        String response = readLines(urlConnection.getInputStream(),
-                                urlConnection.getContentEncoding(), urlConnection.getContentType());
+                        String response = readLines(urlConnection.getInputStream(), urlConnection.getContentEncoding());
 
 //                        Log.d(LOG_TAG, "CipherSuite: " + urlConnection.getCipherSuite());
 //                        Log.d(LOG_TAG, "Content Type: " + urlConnection.getContentType());
@@ -488,15 +425,6 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
 
     }
 
-    private void cacCheck(JSONArray args) {
-        try {
-            String host = args.getString(0);
-            okhttpConnect(host);
-        } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getLocalizedMessage());
-        }
-    }
-
     @Override
     public void onPause(boolean multitasking) {
         super.onPause(multitasking);
@@ -514,11 +442,9 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
                 os.writeObject(mIdentitySignature);
                 os.close();
             } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                Log.e(LOG_TAG, "Error: " + e.getMessage(), e);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                Log.e(LOG_TAG, "Error: " + e.getMessage(), e);
             }
         }
         activity.unregisterReceiver(mPKardReceiver);
@@ -552,8 +478,6 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
             PKSignatureRecord.setSignature(mIdentitySignature);
             Log.d(LOG_TAG, "Alias Used: " + mIdentitySignature.mAlias);
         }
-        //actionSpinner.setSelection(0); // prevent a signature from starting w/o user interaction
-
         handleIncoming(activity.getIntent());
     }
 
@@ -604,8 +528,6 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
         Log.stop();
     }
 
-
-
     @Override
     public void onPKardConnected() {
         synchronized(this) {
@@ -629,7 +551,7 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
 
     @Override
     public void onKeyStorageChanged(boolean added, String alias) {
-        Log.d(LOG_TAG, "onKeyStorageChagned " + alias + ((added) == true ? " added":" removed"));
+        Log.d(LOG_TAG, "onKeyStorageChanged " + alias + ((added) == true ? " added":" removed"));
 
         if (!gettingIdentities && pkardConnected) {
             GetIdentitiesTask t = new GetIdentitiesTask();
@@ -646,7 +568,6 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
                 || tokenStatus == TokenStatus.kTokenStateNotPresent) {
             Log.i(LOG_TAG, "Token changed: check updated identities");
             if (!gettingIdentities && pkardConnected) {
-                //identitiesSpinner.setEnabled(false);
                 GetIdentitiesTask t = new GetIdentitiesTask();
                 t.execute();
             }
@@ -656,21 +577,16 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
     }
 
 
-
     /**
      * A task to fetch the list of available identities from PKard
      *
      * This will get the current list of object aliases
-     * @author chris
-     *
      */
     private class GetIdentitiesTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground (Void... arg0) {
 
-            PrivateKey keyPriv = null;
-            PublicKey keyPub = null;
             String alias;
             gettingIdentities = true;
             try {
@@ -698,148 +614,18 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
                 }
             } catch (KeyStoreException e) {
                 e.printStackTrace();
-            } finally {
-                if (keyPriv != null) {
-                    privKey = keyPriv;
-                }
-                if (keyPub != null) {
-                    pubKey = keyPub;
-                }
             }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void arg0) {
-            //identitiesSpinner.setEnabled(true);
-            //identitiesSpinner.setAdapter(identitiesAdapter);
             gettingIdentities = false;
         }
     }
 
 
-    private class GetKeyForChosenAlias extends AsyncTask<String, Void, Void> {
-        @Override
-        protected Void doInBackground(String... alias) {
-            Log.v(LOG_TAG, "inspecting alias: " + alias);
-            gettingIdentities = true;
-            try {
-                if (mKeyStore.isKeyEntry(alias[0])) {
-                    Log.i(LOG_TAG, "is a private key entry");
-                    privKey = (PrivateKey) mKeyStore.getKey(alias[0], null);
-                    if (privKey == null) return null;
-                    userCert = mKeyStore.getCertificate(alias[0]);
-                    if (userCert != null) {
-                        pubKey = userCert.getPublicKey();
-                    }
-                }
-            } catch (UnrecoverableKeyException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (KeyStoreException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Void arg0) {
-            //actionSpinner.setEnabled(true);
-            //identitiesSpinner.setEnabled(true);
-            X509Certificate x509 = (X509Certificate) userCert;
-            outputData.append("Chose ");
-            if (x509 != null) {
-                outputData.append(x509.getSubjectDN().getName());
-            }
-            gettingIdentities = false;
-        }
-    }
-
-
-    private File saveCertToFile(Certificate c, String alias) {
-        Log.d(LOG_TAG, alias);
-        String fName = alias + ".cer";
-        try {
-            Log.d(LOG_TAG, "writing out user cert " + fName);
-            final FileOutputStream fos = new FileOutputStream(Environment.getExternalStorageDirectory().getPath() + "/" + fName);
-            fos.write(c.getEncoded());
-            fos.close();
-            File f = new File(Environment.getExternalStorageDirectory().getPath(), fName);
-            return f;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        } catch (CertificateEncodingException e) {
-            e.printStackTrace();
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private class UpdateStoredSignature extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            try {
-                mIdentitySignature = new PKSignature(mChosenAlias);
-            } catch (PKSignatureException e) {
-                Log.d(LOG_TAG, "unable to create and store signature record: " + e.getMessage());
-            }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Void arg0) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("save signature for " + mChosenAlias);
-            if (mIdentitySignature != null) {
-                builder.setMessage("This will be used so secure your data within this app");
-                builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        Log.d(LOG_TAG, "saved signature");
-                        PKSignatureRecord.setSignature(mIdentitySignature);
-                        // and save it persistently to be read when the app relaunches
-                        FileOutputStream fos;
-                        try {
-                            fos = activity.openFileOutput(SAVED_SIG_FILE, Context.MODE_PRIVATE);
-                            ObjectOutputStream os = new ObjectOutputStream(fos);
-                            os.writeObject(mIdentitySignature);
-                            os.close();
-                        } catch (FileNotFoundException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            } else {
-                builder.setMessage("Signature failed");
-            }
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface arg0, int arg1) {
-                    // nothing to do.
-                }
-            });
-            builder.setCancelable(true);
-            //builder.setIcon(R.drawable.pkard_reader_nobg_small);
-
-            builder.create().show();
-            //actionSpinner.setEnabled(true);
-        }
-
-    }
-
-    private SSLContext createSslContext(boolean clientAuth)
-            throws GeneralSecurityException {
-
-
+    private SSLContext createSslContext(boolean clientAuth) throws GeneralSecurityException {
         TrustManagerFactory factory = TrustManagerFactory.getInstance("X509");
         Log.d(LOG_TAG, "using TrustManagerFactory.getTrustManagers to find trust manager");
 
@@ -876,7 +662,7 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
                     }
                 }
             } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
+                Log.e(LOG_TAG, "Error: " + e.getMessage(), e);
             }
         }
 
@@ -895,10 +681,21 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
             this.callbackContext = callbackContext;
         }
 
-//        @Override
-//        protected String doInBackground(Void... params) {
-//            return null;
-//        }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if(sslContext == null) {
+                try {
+                    sslContext = createSslContext(true);
+                } catch (GeneralSecurityException e) {
+                    Log.e(LOG_TAG, "Error: " + e.getMessage(), e);
+
+                    PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, e.getMessage());
+                    callbackContext.sendPluginResult(pluginResult);
+                }
+            }
+        }
 
         @Override
         protected void onPostExecute(AsyncTaskPostResult result) {
@@ -912,10 +709,6 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
             } else {
                 PluginResult pluginResult = new PluginResult(PluginResult.Status.ERROR, result.message);
                 callbackContext.sendPluginResult(pluginResult);
-
-//                Toast.makeText(context,
-//                        "Error: failed to connect", Toast.LENGTH_LONG)
-//                        .show();
             }
         }
     }
@@ -924,29 +717,6 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
         public boolean OK;
         public String message;
     }
-
-    abstract class GetHtmlTask extends AsyncTask<Void, Void, String> {
-        Exception error;
-
-//        @Override
-//        protected void onPreExecute() {
-//            outputData.setText("");
-//        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            if(result != null) {
-                Log.d(LOG_TAG, "GetHtmlTask return results => " + result);
-            }
-            else {
-                Toast.makeText(context,
-                        "Error: failed to connect", Toast.LENGTH_LONG)
-                        .show();
-            }
-        }
-    }
-
-
 
     // TODO:  remove and use real host name, since it's local dev and self signed, bypass
     HostnameVerifier hostnameVerifier = new HostnameVerifier() {
@@ -960,74 +730,12 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
         JSONObject jsonObject = new JSONObject(jsonHeaders);
         for (Iterator<String> key = jsonObject.keys(); key.hasNext();) {
             String header = key.next();
-            Log.d(LOG_TAG, "header => " + header + " value =>" + jsonObject.getString(header));
+//            Log.d(LOG_TAG, "header => " + header + " value =>" + jsonObject.getString(header));
             urlConnection.setRequestProperty(header, jsonObject.getString(header));
         }
-//        urlConnection.setRequestProperty("Content-Type", "application/json");
-//        urlConnection.setRequestProperty("Authorization", "Basic dW5kZWZpbmVkOnBhc3N3b3Jk");
-//        urlConnection.setRequestProperty("Accept", "application/json");
-//        urlConnection.setRequestProperty("ClientId", "dmles");
     }
 
-
-    private void okhttpConnect(final String urlString) {
-        new GetHtmlTask() {
-            @Override
-            protected String doInBackground(Void... arg0) {
-                try {
-
-                    SSLContext sslCtx = createSslContext(true);
-                    URL toLoad = new URL(urlString);
-
-                    // TODO:  remove and use real host name, since it's local dev and self signed, bypass
-                    HostnameVerifier hostnameVerifier = new HostnameVerifier() {
-                        @Override
-                        public boolean verify(String hostname, SSLSession session) {
-                            return true;
-                        }
-                    };
-
-                    /*
-                     * Using HttpsURLConnection client - okhttp client underneath
-                     */
-                    HttpsURLConnection urlConnection = (HttpsURLConnection) toLoad.openConnection();
-                    urlConnection.setHostnameVerifier(hostnameVerifier);
-                    urlConnection.setUseCaches(false);
-                    urlConnection.setDoInput(true);
-                    //urlConnection.setDoOutput(true);
-                    //urlConnection.setRequestProperty("Connection", "keep-alive");
-                    urlConnection.setConnectTimeout(0);
-                    urlConnection.setReadTimeout(TIMEOUT);
-                    urlConnection.setRequestMethod("GET");
-                    urlConnection
-                            .setSSLSocketFactory(sslCtx.getSocketFactory());
-                    try {
-                        urlConnection.connect();
-
-                        if (urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                            return urlConnection.getResponseMessage();
-                        }
-
-                        Log.d(LOG_TAG, "URL: " + urlString);
-                        Log.d(LOG_TAG, "CipherSuite: " + urlConnection.getCipherSuite());
-                        Log.d(LOG_TAG, "Content Type: " + urlConnection.getContentType());
-                        Log.d(LOG_TAG, "Content Length: " + urlConnection.getContentLength());
-                        return readLines(urlConnection.getInputStream(),
-                                urlConnection.getContentEncoding(), urlConnection.getContentType());
-                    } finally {
-                        urlConnection.disconnect();
-                    }
-                } catch (Exception e) {
-                    Log.d(LOG_TAG, "Error: " + e.getMessage(), e);
-
-                    return null;
-                }
-            }
-        }.execute();
-    }
-
-    private String readLines(InputStream in, String encoding, String contentType)
-            throws IOException {
+    private String readLines(InputStream in, String encoding) throws IOException {
         Log.i(LOG_TAG, "connection content encoding: " + encoding);
 
         StringBuilder buff = new StringBuilder();
@@ -1047,91 +755,11 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
             Log.v(LOG_TAG, buff.toString());
             in.close();
         }
-
-    }
-
-
-    private class DoSignatureTask extends AsyncTask<Void, Void, byte[]> {
-        @Override
-        protected byte[] doInBackground (Void... arg0) {
-            String errorString = "";
-            try {
-                // prepare to sign, specifying the algorithm. Provider is optional, but explicit is preferred
-                // alg name should be a supported hash function *withRSA,
-                // or "NONEwithRSA" to do a raw signature with out hasing in the case where the input was already hashed
-                signature = Signature.getInstance("SHA256withRSA", pkardSDK.getProviderName());
-                signature.initSign(privKey);
-            } catch (NoSuchAlgorithmException e) {
-                errorString = "Failed to init, no algorithm SHA1withRSA";
-                e.printStackTrace();
-            } catch (NoSuchProviderException e) {
-                errorString = "Failed to init, no provider named " + pkardSDK.getProviderName();
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                errorString = "Failed to init, bad key";
-                e.printStackTrace();
-            }
-
-            try {
-                // add DTBS to the signature object
-                signature.update(dataToSign.getBytes());
-                // when all data is updated, do the signature
-                byte[] realSig = signature.sign();
-                return realSig;
-            } catch (SignatureException e) {
-                e.printStackTrace();
-                // a big cheat to report the error message this way!!
-                errorString = pkardSDK.peekLastError(-1); // transactionSerial is currently unused, thus -1
-            }
-            return errorString.getBytes();
-        }
-
-        @Override
-        protected void onPostExecute(byte[] sigBytes) {
-            outputData.setText("Using " + pkardSDK.getProviderName() + "\n\n");
-            outputData.append("Results:\n" + signature.toString());
-            try {
-                // reset to verify
-                //signature = null;
-                //signature = Signature.getInstance("SHA256withRSA", pkard.getProviderName());
-                // init the object for verifying a signature
-                signature.initVerify(pubKey);
-                // provide the data that was signed previously
-                signature.update(dataToSign.getBytes());
-                // after the data is provided, do the verify
-
-                String outMessage = null;
-                if (sigBytes != null && sigBytes.length > 0) {
-                    if (signature.verify(sigBytes)) {
-                        outputData.append("\n has been VERIFIED\n\n");
-                    } else {
-                        outputData.append("\n FAILED to verify\n\n");
-                        //outMessage = MiscHelper.bytesToString(sigBytes, 0, sigBytes.length);
-                        outputData.append("Last PKard error: " + new String(sigBytes) + "\n\n"); // in case of results in peekLastError.
-                    }
-                } else {
-                    outMessage = "\n\nError: no signature";
-                }
-                if (outMessage != null)
-                    outputData.append(outMessage);
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (SignatureException e) {
-                e.printStackTrace();
-            }
-//            if (! breakSignatureLoop) {
-//                dataToSign = inputData.getText().toString();
-//                DoSignatureTask signer = new DoSignatureTask();
-//                signer.execute();
-//            }
-            //actionSpinner.setEnabled(true);
-        }
     }
 
     private class CleanupAsync extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void...voids) {
-
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                     PKardSDK.finishedWithInstance();

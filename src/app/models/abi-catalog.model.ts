@@ -58,6 +58,8 @@ export class ABiCatalogModel extends BaseDataTableModel {
     latexCode: string; //Latex
     mmcProductIdentifier: string;
 
+    isPreferredProduct: boolean = false;
+    
     // test input value, not an ABi data element
     quantity: number;
 

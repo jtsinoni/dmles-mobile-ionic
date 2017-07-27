@@ -17,6 +17,10 @@ export class BaseResultModel<T> {
     this.items = values;
   }
   
+  clearItems() {
+    this.items = new Array<T>();
+}
+
 }
 
 

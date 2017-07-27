@@ -118,6 +118,7 @@ export class ScannerComponent extends Search implements OnInit {
 
   public getSearchResults() {
     this.item.setDefaults();
+    if (this.searchValue && this.searchValue.length > 0) {
     this.log.debug('getting search results for value: ' + this.searchValue)
     this.showLoadingData({ content: `Searching for ${this.searchValue}` });
     let server: ServerModel;
@@ -147,6 +148,9 @@ export class ScannerComponent extends Search implements OnInit {
 
         });
     });
+    } else {
+     this.item.clearItems();
+  }
   }
 
   showDetail(item: ABiCatalogModel) {

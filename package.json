@@ -73,8 +73,7 @@
         "rxjs": "5.1.1",
         "sw-toolbox": "3.6.0",
         "xcode": "^0.9.1",
-        "zone.js": "0.8.11",
-        "logicole-plugin-cac": "./CACPlugin"
+        "zone.js": "0.8.11"
     },
     "devDependencies": {
         "@angular/cli": "^1.1.1",
@@ -139,8 +138,7 @@
             "phonegap-plugin-barcodescanner": {
                 "CAMERA_USAGE_DESCRIPTION": " "
             },
-            "cordova-plugin-nativestorage": {},
-            "logicole-plugin-cac": {}
+            "cordova-plugin-nativestorage": {}
         }
     }
 }

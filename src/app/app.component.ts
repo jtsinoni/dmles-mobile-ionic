@@ -13,7 +13,7 @@ import { AuthenticationService } from "./services/authentication.service";
 import { SettingsComponent } from "./views/settings/settings.component";
 import { LoginModalService } from "./services/login-modal.service";
 import { SecurityComponent } from "./views/security/security.component";
-import { CACService } from "./services/cac.service";
+//import { CACService } from "./services/cac.service";
 import { SettingsService } from "./services/settings.service";
 import { AppInjector } from "./app.module";
 import { NetworkService } from "./services/network.service";
@@ -67,7 +67,7 @@ export class DMLESMobile implements OnInit {
             // Initialize Ionic-Plugins
             AppInjector.get(AppVersionService);
             AppInjector.get(NetworkService);
-            AppInjector.get(CACService);
+            //AppInjector.get(CACService);
             this.splashScreen = AppInjector.get(SplashScreen);
             this.statusBar = AppInjector.get(StatusBar);
 

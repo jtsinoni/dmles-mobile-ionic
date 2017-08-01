@@ -31,7 +31,8 @@
         </span>
     </ion-item>
     <ion-list [virtualScroll]="item.items">
-        <ion-item text-wrap class="ripple" *virtualItem="let abiItem" (tap)="showDetail(abiItem)">
+        <ion-item-sliding text-wrap class="ripple" *virtualItem="let abiItem" (tap)="showDetail(abiItem)">
+            <ion-item>
             <ion-grid>
                 <ion-row>
                     <ion-col>
@@ -45,14 +46,16 @@
                  </span>
                         </div>
                     </ion-col>
-                    <ion-col>
-                        <ion-buttons end>
-                            <button ion-button small *ngIf="abiItem.mmcProductIdentifier" color="secondary" (press)="goToSiteCatalogRecords(abiItem)"><ion-badge color="secondary" >{{abiItem.siteCount}}</ion-badge></button>
-                        </ion-buttons>
-                    </ion-col>
+              
                 </ion-row>
             </ion-grid>
-        </ion-item>
+            <ion-item-options>
+                <ion-buttons end>
+                            <button ion-button small *ngIf="abiItem.mmcProductIdentifier" color="secondary" (press)="goToSiteCatalogRecords(abiItem)"><ion-badge color="secondary" >{{abiItem.siteCount}}</ion-badge></button>
+                        </ion-buttons>
+            </ion-item-options>
+            </ion-item>
+        </ion-item-sliding>
     </ion-list>
     <ion-fab logicole-element-position id="barcodeScanFab" *ngIf="!isScannerDevice">
         <button id="scanFab" ion-fab (click)="barcodeScan()"><ion-icon name="barcode" >

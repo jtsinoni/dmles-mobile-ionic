@@ -11,8 +11,8 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <allow-navigation href="*" />
     <platform name="android">
-        <allow-navigation href="*://*.192.168.1.13/*" />
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
@@ -37,7 +37,6 @@
         <preference name="FadeSplashScreenDuration" value="1500" />
     </platform>
     <platform name="ios">
-        <allow-navigation href="*://*.johns-macbook-pro.local/*" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />

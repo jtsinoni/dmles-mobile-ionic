@@ -33,28 +33,19 @@
     <ion-list [virtualScroll]="item.items">
         <ion-item-sliding text-wrap class="ripple" *virtualItem="let abiItem" (tap)="showDetail(abiItem)">
             <ion-item>
-            <ion-grid>
-                <ion-row>
-                    <ion-col>
-                        <ion-icon [hidden]="!isPreferredItem(abiItem)" name="star"></ion-icon>
-                        {{abiItem.longItemDescription}}
-                        <div>
-                            <span style="color:gray">
-                {{abiItem.manufacturer}}
-                {{abiItem.ndc}} 
-                 {{abiItem.manufacturerCatalogNumber}}                      
-                 </span>
-                        </div>
-                    </ion-col>
-              
-                </ion-row>
-            </ion-grid>
-            <ion-item-options>
-                <ion-buttons end>
-                            <button ion-button small *ngIf="abiItem.mmcProductIdentifier" color="secondary" (press)="goToSiteCatalogRecords(abiItem)"><ion-badge color="secondary" >{{abiItem.siteCount}}</ion-badge></button>
-                        </ion-buttons>
-            </ion-item-options>
+                <ion-icon [hidden]="!isPreferredItem(abiItem)" name="star"></ion-icon>
+                {{abiItem.longItemDescription}}
+                <div>
+                    <ion-note>
+                        <span>{{abiItem.manufacturer}}</span>
+                        <span *ngIf="abiItem.ndc">&nbsp;/&nbsp;{{abiItem.ndc}}</span>
+                        <span *ngIf="abiItem.manufacturerCatalogNumber">&nbsp;/&nbsp;{{abiItem.manufacturerCatalogNumber}}</span>
+                    </ion-note>
+                </div>
             </ion-item>
+            <ion-item-options side="right">
+               <button ion-button *ngIf="abiItem.mmcProductIdentifier" color="secondary" (tap)="goToSiteCatalogRecords(abiItem)"><ion-badge color="secondary" >{{abiItem.siteCount}}</ion-badge></button>
+            </ion-item-options>
         </ion-item-sliding>
     </ion-list>
     <ion-fab logicole-element-position id="barcodeScanFab" *ngIf="!isScannerDevice">

@@ -119,38 +119,38 @@ export class ScannerComponent extends Search implements OnInit {
   public getSearchResults() {
     this.item.setDefaults();
     if (this.searchValue && this.searchValue.length > 0) {
-    this.log.debug('getting search results for value: ' + this.searchValue)
-    this.showLoadingData({ content: `Searching for ${this.searchValue}` });
-    let server: ServerModel;
-    this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
-      this.abiCatalogService.setServer(server);
-      this.abiCatalogService.getABiCatalogRecords(this.searchValue, null, this.refineSearchValue)
-        .timeout(8000)
-          .map((response) => {
-            return this.utilService.getPayload(response);
-          })
-        .subscribe(
-        (response) => {
-          if (response) {
-            this.item.setResults(response.total, response.took, response.hits.fields);
-          }
-          this.item.resultReturned = true;
-          this.loadingEnded();
+      this.log.debug('getting search results for value: ' + this.searchValue)
+      this.showLoadingData({ content: `Searching for ${this.searchValue}` });
+      let server: ServerModel;
+      this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
+        this.abiCatalogService.setServer(server);
+        this.abiCatalogService.getABiCatalogRecords(this.searchValue, null, this.refineSearchValue)
+          .timeout(8000)
+            .map((response) => {
+              return this.utilService.getPayload(response);
+            })
+          .subscribe(
+          (response) => {
+            if (response) {
+              this.item.setResults(response.total, response.took, response.hits.fields);
+            }
+            this.item.resultReturned = true;
+            this.loadingEnded();
 
-        },
-        (error) => {
-          this.loadingEnded();
-          this.item.setDefaults();
-          this.item.resultReturned = true;
-          this.log.log(`Error => ${error}`);
-          let msg: string = "Error retrieving search results";
-          this.setErrorMessage(error, msg);
+          },
+          (error) => {
+            this.loadingEnded();
+            this.item.setDefaults();
+            this.item.resultReturned = true;
+            this.log.log(`Error => ${error}`);
+            let msg: string = "Error retrieving search results";
+            this.setErrorMessage(error, msg);
 
-        });
-    });
+          });
+      });
     } else {
      this.item.clearItems();
-  }
+    }
   }
 
   showDetail(item: ABiCatalogModel) {
@@ -259,9 +259,9 @@ export class ScannerComponent extends Search implements OnInit {
       });
   }
 
-   public storeBarcode() {
-        this.barcodeHelper.storeBarcode(this.upstreamService);
-    }
- 
+  public storeBarcode() {
+    this.barcodeHelper.storeBarcode(this.upstreamService);
+  }
+
 
 }

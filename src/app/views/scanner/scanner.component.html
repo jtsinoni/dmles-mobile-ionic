@@ -1,4 +1,4 @@
-<mb-header-page remove-parent-element [title]="'Ask ABi'" [menu]="'ScannerMenuComponent'"></mb-header-page>
+<!-- <mb-header-page remove-parent-element [title]="'Ask ABi'" [menu]="'ScannerMenuComponent'"></mb-header-page> -->
 
 <ion-content padding>
     <div class="top-spacer-div"></div>
@@ -31,28 +31,22 @@
         </span>
     </ion-item>
     <ion-list [virtualScroll]="item.items">
-        <ion-item text-wrap class="ripple" *virtualItem="let abiItem" (tap)="showDetail(abiItem)">
-            <ion-grid>
-                <ion-row>
-                    <ion-col>
-                        <ion-icon [hidden]="!isPreferredItem(abiItem)" name="star"></ion-icon>
-                        {{abiItem.longItemDescription}}
-                        <div>
-                            <ion-note>
-                                <span>{{abiItem.manufacturer}}</span>
-                                <span *ngIf="abiItem.ndc">&nbsp;/&nbsp;{{abiItem.ndc}}</span>
-                                <span *ngIf="abiItem.manufacturerCatalogNumber">&nbsp;/&nbsp;{{abiItem.manufacturerCatalogNumber}}</span>
-                            </ion-note>
-                        </div>
-                    </ion-col>
-                    <ion-col>
-                        <ion-buttons end>
-                            <button ion-button small *ngIf="abiItem.mmcProductIdentifier" color="secondary" (press)="goToSiteCatalogRecords(abiItem)"><ion-badge color="secondary" >{{abiItem.siteCount}}</ion-badge></button>
-                        </ion-buttons>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
-        </ion-item>
+        <ion-item-sliding text-wrap class="ripple" *virtualItem="let abiItem" (tap)="showDetail(abiItem)">
+            <ion-item>
+                <ion-icon [hidden]="!isPreferredItem(abiItem)" name="star"></ion-icon>
+                {{abiItem.longItemDescription}}
+                <div>
+                    <ion-note>
+                        <span>{{abiItem.manufacturer}}</span>
+                        <span *ngIf="abiItem.ndc">&nbsp;/&nbsp;{{abiItem.ndc}}</span>
+                        <span *ngIf="abiItem.manufacturerCatalogNumber">&nbsp;/&nbsp;{{abiItem.manufacturerCatalogNumber}}</span>
+                    </ion-note>
+                </div>
+            </ion-item>
+            <ion-item-options side="right">
+               <button ion-button *ngIf="abiItem.mmcProductIdentifier" color="secondary" (tap)="goToSiteCatalogRecords(abiItem)"><ion-badge color="secondary" >{{abiItem.siteCount}}</ion-badge></button>
+            </ion-item-options>
+        </ion-item-sliding>
     </ion-list>
     <ion-fab logicole-element-position id="barcodeScanFab" *ngIf="!isScannerDevice">
         <button id="scanFab" ion-fab (click)="barcodeScan()"><ion-icon name="barcode" >

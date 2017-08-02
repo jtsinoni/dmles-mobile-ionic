@@ -16,11 +16,10 @@ export class BaseResultModel<T> {
     this.milliseconds = mSeconds;
     this.items = values;
   }
-  
+
   clearItems() {
     this.items = new Array<T>();
-}
-
+  }
 }
 
 

@@ -3,20 +3,21 @@
         <button ion-button menuToggle icon-only>
             <ion-icon name='menu'></ion-icon>
         </button>
-        <ion-title>LogiCole Mobile</ion-title>
+        <ion-title>Ask ABi</ion-title>
 
     </ion-navbar>
 </ion-header>
 
 <ion-content>
-    <button ion-item menuClose color="{{area.color}}" *ngFor="let area of demoAreas" (click)="goTo(area)">
+    <scanner-inventory></scanner-inventory>
+    <!-- <button ion-item menuClose color="{{area.color}}" *ngFor="let area of demoAreas" (click)="goTo(area)">
         <ion-icon item-left name="{{area.iconName}}"></ion-icon>
         {{area.title}}
-    </button>
-    <ion-fab logicole-element-position id="searchFab">
+    </button> -->
+    <!-- <ion-fab logicole-element-position id="searchFab">
         <button id="findSomethingButton" ion-fab (click)="showFindItem()">
             <ion-icon name="search">
             </ion-icon>
         </button>
-    </ion-fab>
+    </ion-fab> -->
 </ion-content>

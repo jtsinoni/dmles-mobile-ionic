@@ -45,6 +45,3 @@ Plugins:
 ========
 $ cordova plugin add cordova-plugin-console
 
-References:
-=============
--- http://devgirl.org/2014/07/22/mixing-cordova-phonegap-components-with-nativ/#part1

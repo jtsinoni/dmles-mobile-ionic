@@ -1,11 +1,22 @@
+Installation:
+=============
 1.  get latest from GitHub
       -- git clone https://github.com/jtsinoni/dmles-mobile-ionic.git
 2.  cd to dmles-mobile-ionic
-4.  npm install
-5.  ionic prepare --nofetch (this adds the platforms and plugins to each platform)
-6.  done
+3.  npm install
+4.  ionic prepare --nofetch (this adds the platforms and plugins to each platform)
+5.  done
 
-a few ionic commands
-    -- ionic serve                      ## runs node.js and serves files, great during development, can make changes to code and autodeploys
-    -- ionic emulate [android|ios]      ## builds and deploys to emulator
-    -- ionic run [android|ios]          ## builds and deploys to device
+A few ionic commands
+=====================
+    -- ionic serve                          ## runs node.js and serves files, great during development, can make changes to code and autodeploys
+    -- ionic emulate [android|ios]          ## builds and deploys to emulator
+
+    ## Development Mode
+    -- ionic run [android|ios]              ## builds and deploys to device
+    -- ionic build [android|ios]            ## builds only
+
+    ## Production Mode
+    -- ionic run [android|ios] --prod       ## builds and deploys to device in prod mode
+    -- ionic build [android|ios] --prod     ## builds only in prod mode
+    

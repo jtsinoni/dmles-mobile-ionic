@@ -7,6 +7,8 @@ import {LoggerService} from "../../../../services/logger/logger-service";
 import {WarningDialogComponent} from "../../../common/dialogs/warning-dialog.component";
 import {EtmDetailComponent} from "../etm-detail/etm-detail.component";
 import {ElasticQueryModel} from "../../../../models/search/elastic-query.model";
+import {SubHeaderItem} from "../../../common/header/sub-header-item";
+import {SiteCatalogHeaderComponent} from "../../../siteCatalog/site-catalog-header.component";
 
 @Component({
     selector: 'inventory-etm-filtered',
@@ -19,6 +21,7 @@ export class EtmFilteredComponent extends Search {
     selectedItem: any;
     queryModel: ElasticQueryModel;
     title: string;
+    subHeader: SubHeaderItem;
 
     constructor(public navCtrl: NavController,
                 private navParams: NavParams,
@@ -43,6 +46,7 @@ export class EtmFilteredComponent extends Search {
         this.loadingData(message);
 
         this.getSearchResults(this.queryModel);
+        this.subHeader = new SubHeaderItem(SiteCatalogHeaderComponent, this.selectedItem);
     }
 
     public isPreferredItem(item: any) : boolean {

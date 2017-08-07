@@ -221,6 +221,11 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
         LOG.d(LOG_TAG, "Action: " + action);
 
         String[] identities = pkardSDK.getIdentities(android.os.Process.myPid());
+        if(identities.length > 0) {
+            isReaderAttached = isCardInserted = true;
+            isCardInserted();
+            isReaderAttached();
+        }
         Log.d(LOG_TAG, "identities => " + Arrays.toString(identities));
 
         if (action.equals("version")) {
@@ -273,6 +278,9 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
 
     private void isCardInserted() {
         LOG.d(LOG_TAG, "isCardInserted: " + isCardInserted);
+        if(!isCardInserted) {
+            sslContext = null;
+        }
 
         if(cardCallbackContext != null) {
             cordova.getThreadPool().execute(new Runnable() {
@@ -606,6 +614,10 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
                 identities.clear();
                 if (!aliases.hasMoreElements()) {
                     Log.d(LOG_TAG, "client key store has NO aliases");
+                    isCardInserted = false;
+                    isCardInserted();
+                    isReaderAttached();
+
                 } else {
                     while (aliases.hasMoreElements()) {
                         alias = (String)aliases.nextElement();

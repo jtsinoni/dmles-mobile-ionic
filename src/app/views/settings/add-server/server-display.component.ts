@@ -54,13 +54,13 @@ export class ServerDisplayComponent implements OnInit {
   //   this.ngOnInit();     
   // }
 
-  showHideSecureProtocol(serverModel: ServerModel, protocol: string) {
-    this.log.debug("what is server: " + serverModel.serverName + " " + serverModel.protocol);    
-    if (protocol != serverModel.protocol) {      
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // showHideSecureProtocol(serverModel: ServerModel, protocol: string) {
+  //   this.log.debug("what is server: " + serverModel.serverName + " " + serverModel.protocol);    
+  //   if (protocol != serverModel.protocol) {      
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
 }

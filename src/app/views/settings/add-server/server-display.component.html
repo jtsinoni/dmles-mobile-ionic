@@ -1,7 +1,7 @@
 <ion-list >
     <ion-item *ngFor="let server of servers" (press)=updateServer(server)>
-        <ion-icon [hidden]="showHideSecureProtocol(server, 'https')" item-left name='lock'></ion-icon>
-        <ion-icon [hidden]="showHideSecureProtocol(server, 'http')" item-left name='unlock'></ion-icon>
+        <ion-icon [hidden]="server.protocol != 'https'" item-left name='lock'></ion-icon>
+        <ion-icon [hidden]="server.protocol != 'http'" item-left name='unlock'></ion-icon>
         <ion-label>{{server.serverName}}</ion-label>
         <ion-label item-right>{{server.port}}</ion-label>
         <ion-checkbox item-right [ngModel]="server.isDefault" disabled></ion-checkbox>

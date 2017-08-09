@@ -192,6 +192,8 @@
         */
 
         [self setEnabled:YES];
+        
+        PKardSDK_MayDisplayUserInterface(YES);
 
         #ifdef USE_FIPS_MODE
             BOOL isOn = YES;
@@ -382,9 +384,9 @@
     NSString* errorMessage = NSLocalizedString(
                                                @"The current card does not match the user account.\n"
                                                "Please insert the card previously used to log in.", nil);
-
+    
     [self showAlert: errorMessage];
-
+    
     [self nextState:kUserLoginStateAuthenticateFailed];
     /*
     if( [self.delegate conformsToProtocol:

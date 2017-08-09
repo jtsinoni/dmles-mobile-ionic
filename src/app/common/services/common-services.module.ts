@@ -19,7 +19,6 @@ import {HostServerService} from "../../services/host-server.service";
 import {SettingsService} from "../../services/settings.service";
 import {DatabaseTableModelService} from "../../services/database/database-table-model.service";
 import {WindowService} from "../../services/window.service";
-import {BluetoothModalService} from "../../services/bluetooth-modal.service";
 import {CACService} from "../../services/cac.service";
 import {BarcodeScannerService} from "../../services/barcode-scanner.service";
 import {IMDatabaseService} from "../../services/database/im-database.service";
@@ -56,7 +55,6 @@ export class CommonServicesModule {
                 SettingsService,
                 HostServerService,
                 DatabaseTableModelService,
-                BluetoothModalService,
                 CACService,
                 BarcodeScannerService,
                 IMDatabaseService,

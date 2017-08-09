@@ -7,6 +7,7 @@ export class ElementPositionDirective {
     @Input() fixedPosition: string;
     standardMargin: string = "2em";
     topMargin: string = "12em";
+    bottomMargin: string = "6em";
 
     constructor(private el: ElementRef, private logger: LoggerService) {
         if (this.el.nativeElement) {
@@ -15,7 +16,7 @@ export class ElementPositionDirective {
 
         this.el.nativeElement.style.position = 'absolute';
         this.el.nativeElement.style.right = this.standardMargin;
-        this.el.nativeElement.style.bottom = this.standardMargin;
+        this.el.nativeElement.style.bottom = this.bottomMargin;
     }   
 
 
@@ -32,7 +33,7 @@ export class ElementPositionDirective {
             this.el.nativeElement.style.top = this.topMargin;
             this.el.nativeElement.style.bottom = null;
         } else {
-            this.el.nativeElement.style.bottom = this.standardMargin;
+            this.el.nativeElement.style.bottom = this.bottomMargin;
             this.el.nativeElement.style.top = null;
         }
     }

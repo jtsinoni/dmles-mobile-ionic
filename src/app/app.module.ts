@@ -7,7 +7,7 @@ import {DMLESMobile} from './app.component';
 
 import {AppContainerComponent} from './app-container.component';
 import {LoginComponent} from  './views/login/login.component';
-import {BluetoothComponent} from  './views/bluetooth/bluetooth.component';
+//import {BluetoothComponent} from  './views/bluetooth/bluetooth.component';
 import {InventoryComponent} from './views/inventory/inventory.component';
 import {SupplyComponent} from './views/supply/supply.component';
 
@@ -46,7 +46,6 @@ export let AppInjector: Injector;
         DMLESMobile,
         AppContainerComponent,
         LoginComponent,
-        BluetoothComponent,
     ],
     imports: [
         IonicModule.forRoot(DMLESMobile),
@@ -78,8 +77,7 @@ export let AppInjector: Injector;
         SupplyComponent,
         AppContainerComponent,
         LoginComponent,
-        BluetoothComponent,
-        
+
     ],
     providers: [
         { provide: LoggerService, useClass: FileLoggerService },

@@ -88,7 +88,7 @@ export class ScannerComponent extends Search implements OnInit {
   }
 
   ngOnInit() {
-    this.getSites();
+    //this.getSites();
 
     let setting: SettingsModel;
 
@@ -211,43 +211,99 @@ export class ScannerComponent extends Search implements OnInit {
   }
 
   goToSiteCatalogRecords(abiItem: ABiCatalogModel) {
-
+ 
     if (this.isPreferredItem(abiItem)) {
       abiItem.isPreferredProduct = true;
     }
-
-    this.modal = this.modalController.create(SiteCatalogListComponent, { selected: abiItem, sites: this.sites }); //, sites: this.sites
-    this.modal.present();
-
-  }
-
-  private getSites() {
-    let server: ServerModel;
-    this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
-      this.systemService.setServer(server);
-    }).then(() => {
-      // this.log.debug("In get sites ");
-      this.systemService.getBranchServices()
-        .map((results) => {
-          if(results) {
-            return this.utilService.getPayload(results);
+ 
+    if(this.sites && this.sites.length > 0) {
+      this.modal = this.modalController.create(SiteCatalogListComponent, { selected: abiItem, sites: this.sites }); //, sites: this.sites
+      this.modal.present();
+    } else {
+      this.getSites()
+        .then((sites) => {
+          if(sites) {
+            this.modal = this.modalController.create(SiteCatalogListComponent, { selected: abiItem, sites: sites }); //, sites: this.sites
+            this.modal.present();
           }
         })
-        .subscribe((response) => {
-          this.branchServices = response;
-          if (this.branchServices) {
-            for (let branch of this.branchServices) {
-              for (let region of branch.regions) {
-                for (let site of region.sites) {
-                  this.sites.push(site);
-                  // this.log.debug(site.dodaac + " " + site.name);
+        .catch((error) => {
+          this.log.error(error);
+        });
+    }
+  }
+ 
+  private getSites(): Promise<any> {
+    let server: ServerModel;
+ 
+    return this.hostServerService.getDefaultServer()
+      .then(s => server = s)
+      .then(() => {
+        this.systemService.setServer(server);
+      })
+      .then(() => {
+        this.systemService.getBranchServices()
+          .map((results) => {
+            if(results) {
+              return this.utilService.getPayload(results);
+            }
+          })
+          .subscribe((response) => {
+            this.branchServices = response;
+            if (this.branchServices) {
+              for (let branch of this.branchServices) {
+                for (let region of branch.regions) {
+                  for (let site of region.sites) {
+                    this.sites.push(site);
+                     // this.log.debug(site.dodaac + " " + site.name);
+                  }
                 }
               }
             }
-          }
-        });
-    });
+          });
+ 
+          return this.sites;
+      });
   }
+
+  // goToSiteCatalogRecords(abiItem: ABiCatalogModel) {
+
+  //   if (this.isPreferredItem(abiItem)) {
+  //     abiItem.isPreferredProduct = true;
+  //   }
+
+  //   this.modal = this.modalController.create(SiteCatalogListComponent, { selected: abiItem, sites: this.sites }); //, sites: this.sites
+  //   this.modal.present();
+
+  // }
+
+  // private getSites() {
+  //   let server: ServerModel;
+  //   this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
+  //     this.systemService.setServer(server);
+  //   }).then(() => {
+  //     // this.log.debug("In get sites ");
+  //     this.systemService.getBranchServices()
+  //       .map((results) => {
+  //         if(results) {
+  //           return this.utilService.getPayload(results);
+  //         }
+  //       })
+  //       .subscribe((response) => {
+  //         this.branchServices = response;
+  //         if (this.branchServices) {
+  //           for (let branch of this.branchServices) {
+  //             for (let region of branch.regions) {
+  //               for (let site of region.sites) {
+  //                 this.sites.push(site);
+  //                 // this.log.debug(site.dodaac + " " + site.name);
+  //               }
+  //             }
+  //           }
+  //         }
+  //       });
+  //   });
+  // }
 
   public barcodeScan() {
     this.barcodeHelper.barcodeScan()

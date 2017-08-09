@@ -14,8 +14,19 @@ export abstract class BaseDatabaseService<M extends BaseDataTableModel> {
         this.dbTable = table;
     }
 
-    getAll() {
-        return Promise.resolve(this.dbTable.toArray());
+    // getAll() {
+    //     return Promise.resolve(this.dbTable.toArray());
+    // }
+
+    getAll():Promise<any> {
+        let self = this;
+        return new Promise(function (resolve, reject) {
+
+            // fix for iOS 10.3, using Dexie wrapper for indexedDB
+            setTimeout(() => {
+                resolve(self.dbTable.toArray());
+            } ,1);
+        });
     }
 
     get(id: number) {

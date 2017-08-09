@@ -1,6 +1,5 @@
-<!-- <mb-header-page remove-parent-element [title]="'Ask ABi'" [menu]="'ScannerMenuComponent'"></mb-header-page> -->
-
-<ion-content padding>
+<mb-nav-drawer-header remove-parent-element [title]="'Ask ABi'" [menu]="'ScannerMenuComponent'"></mb-nav-drawer-header>  
+<ion-content>
     <div class="top-spacer-div"></div>
     <ion-item>
         <ion-input type="text" focuser placeholder="Search" [(ngModel)]="searchValue" name="searchInput" clearInput (keyup.enter)="getSearchResults()"></ion-input>

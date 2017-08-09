@@ -49,9 +49,7 @@ export class SettingsComponent {
     Promise.resolve().then(() => {
       return this.hostServerService.getDefaultServer();
     }).then((s) => {
-        if(s != undefined) {
-            this.defaultServer = s;
-        }
+      this.defaultServer = s;
     });
   }
 

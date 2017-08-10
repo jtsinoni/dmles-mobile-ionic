@@ -116,7 +116,7 @@ export class SiteCatalogListComponent extends Search implements OnInit {
             let site = this.siteItems.find((t) => t.dodaac === item.siteDodaac);
             if (site) {
                 item.siteName = site.name;
-                this.log.debug("setting the site name");
+                //this.log.debug("setting the site name");
             }
 
         }

@@ -28,7 +28,7 @@ import { ElementPositionDirective } from "../../common/directives/element-positi
 import { ABiTopicUpstreamService } from "../../services/upstream/abi-topic-upstream.service";
 
 @Component({
-  selector: 'scanner-inventory',
+  selector: 'scanner-component',
   templateUrl: './scanner.component.html',
   providers: [BarcodeHelper]
 })
@@ -153,8 +153,13 @@ export class ScannerComponent extends Search implements OnInit {
     }
   }
 
-  showDetail(item: ABiCatalogModel) {
-    this.presentModal(item);
+  showDetail(event: any, item: ABiCatalogModel) {
+    this.log.debug(`showDetail`)
+    this.log.debug(`event name => ${event.target.nodeName}`);
+    if(event) {
+      if(!(event.target.nodeName == "ION-BADGE"))
+        this.presentModal(item);
+    }
   }
 
   hasOneOrNoneResult(): boolean {
@@ -210,8 +215,7 @@ export class ScannerComponent extends Search implements OnInit {
     }
   }
 
-  goToSiteCatalogRecords(abiItem: ABiCatalogModel) {
- 
+  goToSiteCatalogRecords(event: Event, abiItem: ABiCatalogModel) {
     if (this.isPreferredItem(abiItem)) {
       abiItem.isPreferredProduct = true;
     }

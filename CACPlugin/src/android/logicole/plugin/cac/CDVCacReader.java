@@ -170,63 +170,60 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
 
             if (pkardSDK == null) {
                 Toast.makeText(context, "PKard Toolkit failed to start, please restart", Toast.LENGTH_SHORT).show();
+            } else {
+                try {
+                    // do some basic checks for root, disable FIPS 140-2 mode if root is detected
+                    PKardSDK.isDeviceRooted();
+                } catch (PKardDeviceRootedException e) {
+                    Log.d(LOG_TAG, "Root access to device detected", e);
+                    Toast.makeText(context, "Root access to device detected, FIPS mode will be disabled", Toast.LENGTH_SHORT).show();
+                    bIsSecureContext = false;
+                }
+
+                if (pkardSDK != null) {
+                    pkardSDK.addEventListener(this);
+                    pkardSDK.setAutoScreenLock(true);
+
+                    // set lockScreen image
+                    int drawableId = cordova.getActivity().getResources().getIdentifier("lockscreen", "drawable", cordova.getActivity().getClass().getPackage().getName());
+                    if(drawableId == 0) {
+                        drawableId = cordova.getActivity().getResources().getIdentifier("lockscreen", "drawable", cordova.getActivity().getPackageName());
+                    }
+
+                    if(drawableId > 0) {
+                        pkardSDK.setLockScreenLogoRes(drawableId);
+                    }
+
+                    try {
+                        mKeyStore = KeyStore.getInstance("PKardClient", pkardSDK.getProviderName());
+                        mKeyStore.load(null, null);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(LOG_TAG, e.getLocalizedMessage());
+                    }
+                }
             }
 
         } catch (PKardNotAvailableException e2) {
             Log.e(LOG_TAG, "Pkard Service not available");
         }
 
-        try {
-            // do some basic checks for root, disable FIPS 140-2 mode if root is detected
-            PKardSDK.isDeviceRooted();
-        } catch (PKardDeviceRootedException e) {
-            Log.d(LOG_TAG, "Root access to device detected", e);
-            Toast.makeText(context, "Root access to device detected, FIPS mode will be disabled", Toast.LENGTH_SHORT).show();
-            bIsSecureContext = false;
-        }
-        if (pkardSDK != null) {
-            pkardSDK.addEventListener(this);
-            pkardSDK.setAutoScreenLock(true);
-
-            // set lockScreen image
-            int drawableId = cordova.getActivity().getResources().getIdentifier("lockscreen", "drawable", cordova.getActivity().getClass().getPackage().getName());
-            if(drawableId == 0) {
-                drawableId = cordova.getActivity().getResources().getIdentifier("lockscreen", "drawable", cordova.getActivity().getPackageName());
-            }
-
-            if(drawableId > 0) {
-                pkardSDK.setLockScreenLogoRes(drawableId);
-            }
-
-            try {
-                mKeyStore = KeyStore.getInstance("PKardClient", pkardSDK.getProviderName());
-                mKeyStore.load(null, null);
-
-            } catch (KeyStoreException e) {
-                e.printStackTrace();
-            } catch (NoSuchProviderException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (CertificateException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         LOG.d(LOG_TAG, "Action: " + action);
 
-        String[] identities = pkardSDK.getIdentities(android.os.Process.myPid());
-        if(identities.length > 0) {
-            isReaderAttached = isCardInserted = true;
-            isCardInserted();
-            isReaderAttached();
+        if(pkardConnected) {
+            String[] identities = pkardSDK.getIdentities(android.os.Process.myPid());
+            if(identities.length > 0) {
+                isReaderAttached = isCardInserted = true;
+                isCardInserted();
+                isReaderAttached();
+            }
+            Log.d(LOG_TAG, "identities => " + Arrays.toString(identities));
         }
-        Log.d(LOG_TAG, "identities => " + Arrays.toString(identities));
 
         if (action.equals("version")) {
             this.version(callbackContext);
@@ -299,10 +296,12 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
         try {
             fipsArgument = args.getBoolean(0);
 
-            if(bIsSecureContext && fipsArgument) {
-                pkardSDK.setFipsMode(1);
-            } else {
-                pkardSDK.setFipsMode(0);
+            if(pkardConnected) {
+                if (bIsSecureContext && fipsArgument) {
+                    pkardSDK.setFipsMode(1);
+                } else {
+                    pkardSDK.setFipsMode(0);
+                }
             }
 
         } catch (JSONException e) {
@@ -313,10 +312,14 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
     }
 
     private void version(CallbackContext callbackContext) {
-        String version = pkardSDK.getVersionNumber();
+        if(pkardConnected) {
+            String version = pkardSDK.getVersionNumber();
 
-        if(version != null) {
-            callbackContext.success(version);
+            if(version != null) {
+                callbackContext.success(version);
+            } else {
+                callbackContext.error("No version set by Thursby PKard.");
+            }
         } else {
             callbackContext.error("No version set by Thursby PKard.");
         }

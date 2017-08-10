@@ -154,8 +154,6 @@ export class ScannerComponent extends Search implements OnInit {
   }
 
   showDetail(event: any, item: ABiCatalogModel) {
-    this.log.debug(`showDetail`)
-    this.log.debug(`event name => ${event.target.nodeName}`);
     if(event) {
       if(!(event.target.nodeName == "ION-BADGE"))
         this.presentModal(item);

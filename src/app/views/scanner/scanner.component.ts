@@ -26,300 +26,307 @@ import { SiteModel } from "../../models/branchServices/site.model"
 import { BarcodeHelper } from "../common/barcode-helper";
 import { ElementPositionDirective } from "../../common/directives/element-position.directive";
 import { ABiTopicUpstreamService } from "../../services/upstream/abi-topic-upstream.service";
+import { AppConfigConstants } from "../../constants/app-config.constants";
 
 @Component({
-  selector: 'scanner-component',
-  templateUrl: './scanner.component.html',
-  providers: [BarcodeHelper]
+    selector: 'scanner-component',
+    templateUrl: './scanner.component.html',
+    providers: [BarcodeHelper]
 })
 export class ScannerComponent extends Search implements OnInit {
 
-  @Input()
-  item: ABiCatalogResultModel;
+    @Input()
+    item: ABiCatalogResultModel;
 
-  @ViewChild(ElementPositionDirective)
-  posDirective: ElementPositionDirective;
+    @ViewChild(ElementPositionDirective)
+    posDirective: ElementPositionDirective;
 
-  modal: Modal;
+    modal: Modal;
 
-  itemSelected: boolean;
+    itemSelected: boolean;
 
-  searchValue: string;
+    searchValue: string;
 
-  refineSearchValue: string;
+    refineSearchValue: string;
 
-  private branchServices: Array<BranchModel>;
+    private branchServices: Array<BranchModel>;
 
-  private sites: Array<SiteModel>;
+    private sites: Array<SiteModel>;
 
-  isScannerDevice: boolean = false;
+    isScannerDevice: boolean = false;
 
-  constructor(
-    loadingCtrl: LoadingController,
-    private platform: Platform,
-    private abiCatalogService: ABiCatalogService,
-    private hostServerService: HostServerService,
-    private log: LoggerService,
-    private modalController: ModalController,
-    private systemService: SystemService,
-    public barcodeHelper: BarcodeHelper,
-    public settingsService: SettingsService,
-    private upstreamService: ABiTopicUpstreamService,
-  ) {
-    super(loadingCtrl);
+    showHelp: boolean = true;
 
-    this.item = new ABiCatalogResultModel();
-    this.item.setDefaults();
-    this.itemSelected = false;
-    this.searchValue = "";
-    this.sites = new Array<SiteModel>();
-  }
+    constructor(
+        loadingCtrl: LoadingController,
+        private platform: Platform,
+        private abiCatalogService: ABiCatalogService,
+        private hostServerService: HostServerService,
+        private log: LoggerService,
+        private modalController: ModalController,
+        private systemService: SystemService,
+        public barcodeHelper: BarcodeHelper,
+        public settingsService: SettingsService,
+        private upstreamService: ABiTopicUpstreamService,
+    ) {
+        super(loadingCtrl);
 
-  ionViewDidEnter() {
-    this.resetFocus();
-  }
-
-  private resetFocus() {
-    this.platform.ready().then(() => {
-      setTimeout(() => {
-        Focuser.refocus();
-      }, 800);
-    });
-  }
-
-  ngOnInit() {
-    //this.getSites();
-
-    let setting: SettingsModel;
-
-    this.settingsService.getEnableScannerSetting().then(s => setting = s).then(() => {
-      if (setting) {
-        this.isScannerDevice = setting.setting;
-        this.log.debug("is Scanner = " + this.isScannerDevice);
-      }
-
-    }).then(() => {
-      if (!this.isScannerDevice) {
-        this.settingsService.getActionPositionSetting().then(s => setting = s).then(() => {
-
-          if (setting) {
-            let val = setting.setting.split(" ");
-            if (val && val.length > 0) {
-              let topBottom = val[0];
-              let leftRight = val[1];
-              this.posDirective.setPosition(leftRight, topBottom);
-            }
-          }
-        });
-      }
-    });
-
-  }
-
-  public getSearchResults() {
-    this.item.setDefaults();
-    if (this.searchValue && this.searchValue.length > 0) {
-      this.log.debug('getting search results for value: ' + this.searchValue)
-      this.showLoadingData({ content: `Searching for ${this.searchValue}` });
-      let server: ServerModel;
-      this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
-        this.abiCatalogService.setServer(server);
-        this.abiCatalogService.getABiCatalogRecords(this.searchValue, null, this.refineSearchValue)
-          .timeout(8000)
-            .map((response) => {
-              return this.utilService.getPayload(response);
-            })
-          .subscribe(
-          (response) => {
-            if (response) {
-              this.item.setResults(response.total, response.took, response.hits.fields);
-            }
-            this.item.resultReturned = true;
-            this.loadingEnded();
-
-          },
-          (error) => {
-            this.loadingEnded();
-            this.item.setDefaults();
-            this.item.resultReturned = true;
-            this.log.log(`Error => ${error}`);
-            let msg: string = "Error retrieving search results";
-            this.setErrorMessage(error, msg);
-
-          });
-      });
-    } else {
-     this.item.clearItems();
+        this.item = new ABiCatalogResultModel();
+        this.item.setDefaults();
+        this.itemSelected = false;
+        this.searchValue = "";
+        this.sites = new Array<SiteModel>();
     }
-  }
 
-  showDetail(event: any, item: ABiCatalogModel) {
-    if(event) {
-      if(!(event.target.nodeName == "ION-BADGE"))
+    ionViewDidEnter() {
+        this.resetFocus();
+    }
+
+    private resetFocus() {
+        this.platform.ready().then(() => {
+            setTimeout(() => {
+                Focuser.refocus();
+            }, 800);
+        });
+    }
+
+    ngOnInit() {
+        //this.getSites();
+
+        let setting: SettingsModel;
+
+        this.settingsService.getEnableScannerSetting().then(s => setting = s).then(() => {
+            if (setting) {
+                this.isScannerDevice = setting.setting;
+                this.log.debug("is Scanner = " + this.isScannerDevice);
+            }
+
+        }).then(() => {
+            if (!this.isScannerDevice) {
+                this.settingsService.getActionPositionSetting().then(s => setting = s).then(() => {
+
+                    if (setting) {
+                        let val = setting.setting.split(" ");
+                        if (val && val.length > 0) {
+                            let topBottom = val[0];
+                            let leftRight = val[1];
+                            this.posDirective.setPosition(leftRight, topBottom);
+                        }
+                    }
+                });
+            }
+        });
+
+        this.settingsService.getEnableABiHelpSetting().then(s => setting = s).then(() => {
+            if (setting) {
+                this.showHelp = setting.setting;
+                this.log.debug("is ABi Help = " + this.showHelp);
+            }
+        })
+    }
+
+    public getSearchResults() {
+        this.item.setDefaults();
+        this.showHelp = false;
+        if (this.searchValue && this.searchValue.length > 0) {
+            this.log.debug('getting search results for value: ' + this.searchValue)
+            this.showLoadingData({ content: `Searching for ${this.searchValue}` });
+            let server: ServerModel;
+            this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
+                this.abiCatalogService.setServer(server);
+                this.abiCatalogService.getABiCatalogRecords(this.searchValue, null, this.refineSearchValue)
+                    .timeout(AppConfigConstants.timeout.value)
+                    .map((response) => {
+                        return this.utilService.getPayload(response);
+                    })
+                    .subscribe(
+                    (response) => {
+                        if (response) {
+                            this.item.setResults(response.total, response.took, response.hits.fields);
+                        }
+                        this.item.resultReturned = true;
+                        this.loadingEnded();
+
+                    },
+                    (error) => {
+                        this.loadingEnded();
+                        this.item.setDefaults();
+                        this.item.resultReturned = true;
+                        this.log.log(`Error => ${error}`);
+                        let msg: string = "Error retrieving search results";
+                        this.setErrorMessage(error, msg);
+
+                    });
+            });
+        } else {
+            this.item.clearItems();
+        }
+    }
+
+    showDetail(item: ABiCatalogModel) {
         this.presentModal(item);
     }
-  }
 
-  hasOneOrNoneResult(): boolean {
-    if (this.refineSearchValue) {
-      return false;
-    } else {
-      return this.item.resultCount < 2;
-    }
-  }
-
-
-  public presentModal(item: ABiCatalogModel) {
-    // this.modal = this.modalController.create(InputNumericComponent, { selected: item, id: item.enterpriseProductIdentifier, description: item.fullDescription });
-    // this.modal.onDidDismiss(data => {
-    //   this.onDataSaved(data);
-    // })
-    // this.modal.present();  
-    this.modal = this.modalController.create(EtmDetailComponent, { selected: item });
-    this.modal.present();
-  }
-
-  setErrorMessage(error: string, msg: string) {
-    let errorModal = this.modalController.create(WarningDialogComponent, { txt: error, message: msg });
-    errorModal.present();
-  }
-
-  onDataSaved(data: any) {
-
-    if (data) {
-      let id = data.id;
-      let quantity = data.quantity;
-      this.log.info("got: " + id + " qty:" + quantity);
-      // todo 
-      // if (!this.isConnected) {
-      // // store data locally
-      // } else {
-      //  // send to server
-      // }
-
+    hasOneOrNoneResult(): boolean {
+        if (this.refineSearchValue) {
+            return false;
+        } else {
+            return this.item.resultCount < 2;
+        }
     }
 
-    this.item.items = [];
-    this.item.resultReturned = false;
-    this.searchValue = "";
-    this.resetFocus();
-  }
 
-  public isPreferredItem(item: ABiCatalogModel): boolean {
-    if (item && item.preferredProductIndicator) {
-      return item.preferredProductIndicator.toUpperCase() === "Y" ? true : false;
-    } else {
-      return false;
+    public presentModal(item: ABiCatalogModel) {
+        // this.modal = this.modalController.create(InputNumericComponent, { selected: item, id: item.enterpriseProductIdentifier, description: item.fullDescription });
+        // this.modal.onDidDismiss(data => {
+        //   this.onDataSaved(data);
+        // })
+        // this.modal.present();  
+        this.modal = this.modalController.create(EtmDetailComponent, { selected: item });
+        this.modal.present();
     }
-  }
 
-  goToSiteCatalogRecords(event: Event, abiItem: ABiCatalogModel) {
-    if (this.isPreferredItem(abiItem)) {
-      abiItem.isPreferredProduct = true;
+    setErrorMessage(error: string, msg: string) {
+        let errorModal = this.modalController.create(WarningDialogComponent, { txt: error, message: msg });
+        errorModal.present();
     }
- 
-    if(this.sites && this.sites.length > 0) {
-      this.modal = this.modalController.create(SiteCatalogListComponent, { selected: abiItem, sites: this.sites }); //, sites: this.sites
-      this.modal.present();
-    } else {
-      this.getSites()
-        .then((sites) => {
-          if(sites) {
-            this.modal = this.modalController.create(SiteCatalogListComponent, { selected: abiItem, sites: sites }); //, sites: this.sites
+
+    onDataSaved(data: any) {
+
+        if (data) {
+            let id = data.id;
+            let quantity = data.quantity;
+            this.log.info("got: " + id + " qty:" + quantity);
+            // todo 
+            // if (!this.isConnected) {
+            // // store data locally
+            // } else {
+            //  // send to server
+            // }
+
+        }
+
+        this.item.items = [];
+        this.item.resultReturned = false;
+        this.searchValue = "";
+        this.resetFocus();
+    }
+
+    public isPreferredItem(item: ABiCatalogModel): boolean {
+        if (item && item.preferredProductIndicator) {
+            return item.preferredProductIndicator.toUpperCase() === "Y" ? true : false;
+        } else {
+            return false;
+        }
+    }
+
+    goToSiteCatalogRecords(abiItem: ABiCatalogModel) {
+        if (this.isPreferredItem(abiItem)) {
+            abiItem.isPreferredProduct = true;
+        }
+
+        if (this.sites && this.sites.length > 0) {
+            this.modal = this.modalController.create(SiteCatalogListComponent, { selected: abiItem, sites: this.sites }); //, sites: this.sites
             this.modal.present();
-          }
-        })
-        .catch((error) => {
-          this.log.error(error);
-        });
+        } else {
+            this.getSites()
+                .then((sites) => {
+                    if (sites) {
+                        this.modal = this.modalController.create(SiteCatalogListComponent, { selected: abiItem, sites: sites }); //, sites: this.sites
+                        this.modal.present();
+                    }
+                })
+                .catch((error) => {
+                    this.log.error(error);
+                });
+        }
     }
-  }
- 
-  private getSites(): Promise<any> {
-    let server: ServerModel;
- 
-    return this.hostServerService.getDefaultServer()
-      .then(s => server = s)
-      .then(() => {
-        this.systemService.setServer(server);
-      })
-      .then(() => {
-        this.systemService.getBranchServices()
-          .map((results) => {
-            if(results) {
-              return this.utilService.getPayload(results);
-            }
-          })
-          .subscribe((response) => {
-            this.branchServices = response;
-            if (this.branchServices) {
-              for (let branch of this.branchServices) {
-                for (let region of branch.regions) {
-                  for (let site of region.sites) {
-                    this.sites.push(site);
-                     // this.log.debug(site.dodaac + " " + site.name);
-                  }
-                }
-              }
-            }
-          });
- 
-          return this.sites;
-      });
-  }
 
-  // goToSiteCatalogRecords(abiItem: ABiCatalogModel) {
+    private getSites(): Promise<any> {
+        let server: ServerModel;
 
-  //   if (this.isPreferredItem(abiItem)) {
-  //     abiItem.isPreferredProduct = true;
-  //   }
+        return this.hostServerService.getDefaultServer()
+            .then(s => server = s)
+            .then(() => {
+                this.systemService.setServer(server);
+            })
+            .then(() => {
+                this.systemService.getBranchServices()
+                    .map((results) => {
+                        if (results) {
+                            return this.utilService.getPayload(results);
+                        }
+                    })
+                    .subscribe((response) => {
+                        this.branchServices = response;
+                        if (this.branchServices) {
+                            for (let branch of this.branchServices) {
+                                for (let region of branch.regions) {
+                                    for (let site of region.sites) {
+                                        this.sites.push(site);
+                                        // this.log.debug(site.dodaac + " " + site.name);
+                                    }
+                                }
+                            }
+                        }
+                    });
 
-  //   this.modal = this.modalController.create(SiteCatalogListComponent, { selected: abiItem, sites: this.sites }); //, sites: this.sites
-  //   this.modal.present();
+                return this.sites;
+            });
+    }
 
-  // }
+    // goToSiteCatalogRecords(abiItem: ABiCatalogModel) {
 
-  // private getSites() {
-  //   let server: ServerModel;
-  //   this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
-  //     this.systemService.setServer(server);
-  //   }).then(() => {
-  //     // this.log.debug("In get sites ");
-  //     this.systemService.getBranchServices()
-  //       .map((results) => {
-  //         if(results) {
-  //           return this.utilService.getPayload(results);
-  //         }
-  //       })
-  //       .subscribe((response) => {
-  //         this.branchServices = response;
-  //         if (this.branchServices) {
-  //           for (let branch of this.branchServices) {
-  //             for (let region of branch.regions) {
-  //               for (let site of region.sites) {
-  //                 this.sites.push(site);
-  //                 // this.log.debug(site.dodaac + " " + site.name);
-  //               }
-  //             }
-  //           }
-  //         }
-  //       });
-  //   });
-  // }
+    //   if (this.isPreferredItem(abiItem)) {
+    //     abiItem.isPreferredProduct = true;
+    //   }
 
-  public barcodeScan() {
-    this.barcodeHelper.barcodeScan()
-      .then((results) => {
-        this.searchValue = results.text;
-      })
-      .catch((error) => {
-        this.log.error(`${error}`);
-      });
-  }
+    //   this.modal = this.modalController.create(SiteCatalogListComponent, { selected: abiItem, sites: this.sites }); //, sites: this.sites
+    //   this.modal.present();
 
-  public storeBarcode() {
-    this.barcodeHelper.storeBarcode(this.upstreamService);
-  }
+    // }
+
+    // private getSites() {
+    //   let server: ServerModel;
+    //   this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
+    //     this.systemService.setServer(server);
+    //   }).then(() => {
+    //     // this.log.debug("In get sites ");
+    //     this.systemService.getBranchServices()
+    //       .map((results) => {
+    //         if(results) {
+    //           return this.utilService.getPayload(results);
+    //         }
+    //       })
+    //       .subscribe((response) => {
+    //         this.branchServices = response;
+    //         if (this.branchServices) {
+    //           for (let branch of this.branchServices) {
+    //             for (let region of branch.regions) {
+    //               for (let site of region.sites) {
+    //                 this.sites.push(site);
+    //                 // this.log.debug(site.dodaac + " " + site.name);
+    //               }
+    //             }
+    //           }
+    //         }
+    //       });
+    //   });
+    // }
+
+    public barcodeScan() {
+        this.barcodeHelper.barcodeScan()
+            .then((results) => {
+                this.searchValue = results.text;
+            })
+            .catch((error) => {
+                this.log.error(`${error}`);
+            });
+    }
+
+    public storeBarcode() {
+        this.barcodeHelper.storeBarcode(this.upstreamService);
+    }
 
 
 }

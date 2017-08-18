@@ -10,6 +10,7 @@ import {EquipReqTopicUpstreamService} from "../../../services/upstream/equip-req
 import {WarningDialogComponent} from "../../common/dialogs/warning-dialog.component";
 import {ModalDialogController} from "../../common/dialogs/modal-dialog-controller.component";
 import {UtilService} from "../../../common/services/util.service";
+import { AppConfigConstants } from "../../../constants/app-config.constants";
 
 @Component({
     selector: 'equipment-requests-page',
@@ -47,7 +48,7 @@ export class EquipmentRequestsComponent {
 
             this.RequestApiService.setServer(server);
             this.RequestApiService.getEquipmentRequests()
-                .timeout(8000)
+                .timeout(AppConfigConstants.timeout.value)
                 .map((response) => {
                     return this.utilService.getPayload(response);
                 })

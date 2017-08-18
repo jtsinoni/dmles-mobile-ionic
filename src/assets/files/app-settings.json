@@ -5,6 +5,11 @@
         "dataType": "boolean"
     },
     {
+        "settingsName": "Enable ABi Help",
+        "setting": true,
+        "dataType": "boolean"
+    },    
+    {
         "settingsName": "Work Area",
         "setting": "Inventory",
         "dataType": "select",

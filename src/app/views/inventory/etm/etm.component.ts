@@ -18,6 +18,7 @@ import { SettingsService } from "../../../services/settings.service";
 import { SettingsModel } from "../../../models/settings.model";
 import { WarningDialogComponent } from "../../common/dialogs/warning-dialog.component";
 import {ModalDialogController} from "../../common/dialogs/modal-dialog-controller.component";
+import { AppConfigConstants } from "../../../constants/app-config.constants";
 
 
 
@@ -98,7 +99,7 @@ export class EtmComponent extends Search {
         this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
             this.abiCatalogService.setServer(server);
             this.abiCatalogService.getABiCatalogRecords(searchValue)
-                .timeout(8000)
+                .timeout(AppConfigConstants.timeout.value)
                 .map((results) => {
                     if(results) {
                         return this.utilService.getPayload(results);

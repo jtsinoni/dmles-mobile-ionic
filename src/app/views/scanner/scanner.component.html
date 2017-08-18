@@ -1,4 +1,4 @@
-<mb-nav-drawer-header remove-parent-element [title]="'Ask ABi'" [menu]="'ScannerMenuComponent'"></mb-nav-drawer-header>  
+<mb-nav-drawer-header remove-parent-element [title]="'Ask ABi'" [menu]="'ScannerMenuComponent'"></mb-nav-drawer-header>
 <ion-content>
     <div class="top-spacer-div"></div>
     <ion-item>
@@ -29,22 +29,51 @@
        (<ion-badge color="primary-blue">{{item.milliseconds}}</ion-badge>&nbsp;milliseconds)
         </span>
     </ion-item>
-    <ion-list [virtualScroll]="item.items" approxItemHeight="50px">
-        <button ion-item *virtualItem="let abiItem" (tap)="showDetail($event, abiItem)">
-            <div class="longItemDescription">
-                <ion-icon [hidden]="!isPreferredItem(abiItem)" name="star"></ion-icon>
-                {{abiItem.longItemDescription}}
-            </div>
 
-            <ion-note>
-                <span>{{abiItem.manufacturer}}</span>
-                <span *ngIf="abiItem.ndc">&nbsp;/&nbsp;{{abiItem.ndc}}</span>
-                <span *ngIf="abiItem.manufacturerCatalogNumber">&nbsp;/&nbsp;{{abiItem.manufacturerCatalogNumber}}</span>
-            </ion-note>
-            <ion-badge item-end color="secondary" (tap)="goToSiteCatalogRecords($event, abiItem)">
-                {{abiItem.siteCount}}
-            </ion-badge>
-        </button>
+    <ion-item *ngIf="showHelp">
+        <ion-note>
+            <ion-grid>
+                <ion-row text-wrap>
+                    <ion-col>
+                        To search the ABi catalog, enter a partial description for a product or scan a product barcode.
+                    </ion-col>
+                </ion-row>
+                <ion-row text-wrap>
+                    <ion-col>
+                        To scan with a mobile device camera, go to Settings --> Set Enable Scanner to false.
+                    </ion-col>
+                </ion-row>
+                <ion-row text-wrap>
+                    <ion-col>
+                        To use a handheld scanner, just scan the barcode.
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-note>
+    </ion-item>
+
+    <ion-list [virtualScroll]="item.items" approxItemHeight="50px">
+        <ion-item *virtualItem="let abiItem" >
+            <ion-grid>
+                <ion-row text-wrap>
+                    <ion-col class="ripple cursor" col-10 (tap)="showDetail(abiItem)" >
+                        <div class="longItemDescription">
+                            <ion-icon [hidden]="!isPreferredItem(abiItem)" name="star"></ion-icon>
+                            {{abiItem.longItemDescription}}
+                        </div>
+
+                        <ion-note>
+                            <span>{{abiItem.manufacturer}}</span>
+                            <span *ngIf="abiItem.ndc">&nbsp;/&nbsp;{{abiItem.ndc}}</span>
+                            <span *ngIf="abiItem.manufacturerCatalogNumber">&nbsp;/&nbsp;{{abiItem.manufacturerCatalogNumber}}</span>
+                        </ion-note>
+                    </ion-col>
+                    <ion-col class="button" ion-button color="secondary" text-center col-2 (tap)="goToSiteCatalogRecords(abiItem)">
+                        {{abiItem.siteCount}}
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-item>
     </ion-list>
     <ion-fab logicole-element-position id="barcodeScanFab" *ngIf="!isScannerDevice">
         <button id="scanFab" ion-fab (click)="barcodeScan()"><ion-icon name="barcode" >

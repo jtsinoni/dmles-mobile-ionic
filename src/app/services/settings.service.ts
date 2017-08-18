@@ -75,5 +75,12 @@ export class SettingsService extends BaseDatabaseService<SettingsModel> {
         return this.findFirst(this.enableScannerSettingCallBack);
     }
 
+    enableABiHelpSettingCallBack = (s: SettingsModel): boolean => {
+        return s.settingsName == "Enable ABi Help";
+    }
+
+    getEnableABiHelpSetting(): Promise<SettingsModel> {
+        return this.findFirst(this.enableABiHelpSettingCallBack);
+    }   
 
 }

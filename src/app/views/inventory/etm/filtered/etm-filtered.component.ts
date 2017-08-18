@@ -9,6 +9,7 @@ import {EtmDetailComponent} from "../etm-detail/etm-detail.component";
 import {ElasticQueryModel} from "../../../../models/search/elastic-query.model";
 import {SubHeaderItem} from "../../../common/header/sub-header-item";
 import {SiteCatalogHeaderComponent} from "../../../siteCatalog/site-catalog-header.component";
+import {AppConfigConstants} from "../../../../constants/app-config.constants";
 
 @Component({
     selector: 'inventory-etm-filtered',
@@ -55,7 +56,7 @@ export class EtmFilteredComponent extends Search {
 
     public getSearchResults(queryModel: ElasticQueryModel) {
         this.abiCatalogService.getABiCatalogRecordsByQueryModel(queryModel)
-            .timeout(8000)
+            .timeout(AppConfigConstants.timeout.value)
             .map((response) => {
                 return this.utilService.getPayload(response);
             })

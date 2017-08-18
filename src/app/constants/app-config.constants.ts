@@ -59,4 +59,11 @@ export class AppConfigConstants {
         bluetoothBarcodeKey: "BluetoothBarcodePrinter",
         defaultPaperKey: "DefaultPaperPrinter"
     }
+
+    public static timeout: any = {
+        value: 10000,
+        login:  {
+            value: 30000
+        }
+    }    
 }

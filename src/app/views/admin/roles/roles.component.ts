@@ -10,6 +10,7 @@ import {ModalDialogController} from "../../common/dialogs/modal-dialog-controlle
 import {WarningDialogComponent} from "../../common/dialogs/warning-dialog.component";
 import {UtilService} from "../../../common/services/util.service";
 import {AppInjector} from "../../../app.module";
+import { AppConfigConstants } from "../../../constants/app-config.constants";
 
 @Component({
     templateUrl: './roles.component.html'}
@@ -42,7 +43,7 @@ export class RolesComponent {
 
             this.RoleService.setServer(server);
             this.RoleService.getAllRoles()
-                .timeout(8000)
+                .timeout(AppConfigConstants.timeout.value)
                 .map((response) => {
                     return this.utilService.getPayload(response);
                 })

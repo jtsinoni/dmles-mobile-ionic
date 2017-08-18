@@ -8,6 +8,7 @@ import { HostServerService } from "../../services/host-server.service";
 import { ServerModel } from "../../models/server.model";
 import { JSONWebTokenService } from "../../services/jason-web-token.service";
 import { WarningDialogComponent } from "../common/dialogs/warning-dialog.component";
+import { AppConfigConstants } from "../../constants/app-config.constants";
 
 @Component({
     selector: 'login-login',
@@ -50,6 +51,7 @@ export class LoginComponent {
         this.platform.ready()
             .then(() => {
                 this.OAuthService.getToken(loginModel.username)
+                    .timeout(AppConfigConstants.timeout.login.value)
                     .subscribe(
                     (token) => {
                         let decodedToken = this.jwtService.decodeToken(token);

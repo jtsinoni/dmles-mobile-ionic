@@ -2,4 +2,17 @@ scanner-component {
   .longItemDescription {
     padding-bottom: 5px;
   }
+
+  ion-content {
+    ion-col.button {
+      padding: 1.5em;
+    }
+    ion-col.cursor {
+      cursor: pointer;
+    }
+
+    ion-label.label-md, ion-label.label-ios {
+        margin: 0px;
+    }
+  }
 }

@@ -15,10 +15,10 @@ export class ABiTopicUpstreamService extends TopicUpstreamService<ABiDatabaseSer
     }
 
     setup() {
-        this.log.debug(`ABiTopicUpstream Service - Start`);
-
         // Attempt to connect to messaging server if connect flag is true
         if (AppConfigConstants.messagingServer.connect) {
+            this.log.debug(`ABiTopicUpstream Service - Start`);
+
             this.name = "ABi";
             this.clientId = `${this.name}_mqttjs_${this.utilService.generateUUID()}`;
             this.start();

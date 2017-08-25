@@ -317,7 +317,10 @@ export class ScannerComponent extends Search implements OnInit {
     public barcodeScan() {
         this.barcodeHelper.barcodeScan()
             .then((results) => {
-                this.searchValue = results.text;
+                return this.searchValue = results.text;
+            })
+            .then((results) => {
+                this.getSearchResults();
             })
             .catch((error) => {
                 this.log.error(`${error}`);

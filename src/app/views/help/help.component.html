@@ -1,8 +1,22 @@
 <mb-nav-drawer-header remove-parent-element [title]="'Help'"></mb-nav-drawer-header>
 
 <ion-content>
-  <ion-card>
-    {{helpText}}
-  </ion-card>
+    <ion-grid>
+      <ion-row text-wrap>
+        <ion-col>
+          To search the ABi catalog, enter a partial description for a product or scan a product barcode.
+        </ion-col>
+      </ion-row>
+      <ion-row text-wrap>
+        <ion-col>
+          To scan with a mobile device camera, go to Settings --> Set Enable Scanner to false.
+        </ion-col>
+      </ion-row>
+      <ion-row text-wrap>
+        <ion-col>
+          To use a handheld scanner, just scan the barcode.
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 </ion-content>
 

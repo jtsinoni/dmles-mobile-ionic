@@ -40,7 +40,7 @@ export class AppConfigConstants {
         protocol:"ws",
         reconnectAttempts:3,
         reconnectPeriod:2000,
-        connect:true,
+        connect:false,
         clean:true,
         connectionTimeout:3000,
         qos:0,

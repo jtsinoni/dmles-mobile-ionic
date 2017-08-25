@@ -20,6 +20,9 @@ export class CommonHeader implements OnInit {
     @Input()
     isMobility: boolean;
 
+    @Input()
+    showSettings: boolean = true;
+
     // Registry of MenuComponents
     menuComponents: any = {
         'ImMenuComponent':ImMenuComponent, 

@@ -52,7 +52,7 @@
         </ion-note>
     </ion-item>
 
-    <ion-list [virtualScroll]="item.items" approxItemHeight="50px">
+    <ion-list [hidden]="item.items.length === 0" [virtualScroll]="item.items" approxItemHeight="50px">
         <ion-item *virtualItem="let abiItem" >
             <ion-grid>
                 <ion-row text-wrap>

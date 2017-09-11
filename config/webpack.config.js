@@ -16,7 +16,7 @@ function getPlugins() {
 
     if (env === 'prod') {
         // This helps ensure the builds are consistent if source hasn't changed:
-        plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
+        //plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
         //plugins.push(new webpack.SourceMapDevToolPlugin({filename:'[name].js.map'}));
         //plugins.push(new webpack.optimize.UglifyJsPlugin({ sourceMap: true }));
     }

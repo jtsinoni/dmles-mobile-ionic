@@ -63,6 +63,16 @@ export class ABiCatalogService extends ApiService {
         return this.post(actionString, this.currentQuery);
     }
 
+    public getABiCatalogRecordsByBarcode(barcodeString: string): Observable<any> {
+        this.log.debug('Get ABi item by Barcode string: ' + barcodeString);
+
+        let actionString = 'getABiCatalogRecordESResultsForBarcodeString?barcodeString=' + barcodeString;
+
+        return this.get(actionString);
+
+    }
+
+
 
 }
 

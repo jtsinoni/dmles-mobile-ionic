@@ -90,8 +90,7 @@ export class ScannerComponent extends Search implements OnInit {
         });
     }
 
-    ngOnInit() {
-        //this.getSites();
+    ngOnInit() {      
 
         let setting: SettingsModel;
 
@@ -99,7 +98,7 @@ export class ScannerComponent extends Search implements OnInit {
             if (setting) {
                 this.isScannerDevice = setting.setting;
                 this.log.debug("is Scanner = " + this.isScannerDevice);
-            }
+            } 
 
         }).then(() => {
             if (!this.isScannerDevice) {
@@ -134,6 +133,21 @@ export class ScannerComponent extends Search implements OnInit {
             let server: ServerModel;
             this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
                 this.abiCatalogService.setServer(server);
+                if (this.isScannerDevice) {
+                    this.abiCatalogService.getABiCatalogRecordsByBarcode(this.searchValue)
+                    .timeout(AppConfigConstants.timeout.value)
+                    .map((response) => {
+                        return this.utilService.getPayload(response);
+                    })
+                    .subscribe(
+                    (response) => {
+                       this.setResponse(response);
+                    },
+                    (error) => {
+                       this.setError(error);
+                    });
+                
+                } else {
                 this.abiCatalogService.getABiCatalogRecords(this.searchValue, null, this.refineSearchValue)
                     .timeout(AppConfigConstants.timeout.value)
                     .map((response) => {
@@ -141,26 +155,35 @@ export class ScannerComponent extends Search implements OnInit {
                     })
                     .subscribe(
                     (response) => {
-                        if (response) {
-                            this.item.setResults(response.total, response.took, response.hits.fields);
-                        }
-                        this.item.resultReturned = true;
-                        this.loadingEnded();
-
+                        this.setResponse(response);
                     },
                     (error) => {
-                        this.loadingEnded();
-                        this.item.setDefaults();
-                        this.item.resultReturned = true;
-                        this.log.log(`Error => ${error}`);
-                        let msg: string = "Error retrieving search results";
-                        this.setErrorMessage(error, msg);
-
+                        this.setError(error);
                     });
+                }
             });
         } else {
             this.item.clearItems();
         }
+    }
+
+    setResponse(response: any) {
+        if (response) {
+            this.item.setResults(response.total, response.took, response.hits.fields);
+        }
+        this.item.resultReturned = true;
+        this.loadingEnded();
+
+    }
+
+    setError(error: any) {
+        this.loadingEnded();
+        this.item.setDefaults();
+        this.item.resultReturned = true;
+        this.log.log(`Error => ${error}`);
+        let msg: string = "Error retrieving search results";
+        this.setErrorMessage(error, msg);
+        this.item.clearItems();
     }
 
     showDetail(item: ABiCatalogModel) {
@@ -168,20 +191,18 @@ export class ScannerComponent extends Search implements OnInit {
     }
 
     hasOneOrNoneResult(): boolean {
-        if (this.refineSearchValue) {
-            return false;
+        // TODO should the scanner be able to refine search??
+        if (this.isScannerDevice) {
+            return true;
+        } else if (this.refineSearchValue) {
+            return false;            
         } else {
             return this.item.resultCount < 2;
         }
     }
 
 
-    public presentModal(item: ABiCatalogModel) {
-        // this.modal = this.modalController.create(InputNumericComponent, { selected: item, id: item.enterpriseProductIdentifier, description: item.fullDescription });
-        // this.modal.onDidDismiss(data => {
-        //   this.onDataSaved(data);
-        // })
-        // this.modal.present();  
+    public presentModal(item: ABiCatalogModel) {      
         this.modal = this.modalController.create(EtmDetailComponent, { selected: item });
         this.modal.present();
     }
@@ -275,44 +296,6 @@ export class ScannerComponent extends Search implements OnInit {
             });
     }
 
-    // goToSiteCatalogRecords(abiItem: ABiCatalogModel) {
-
-    //   if (this.isPreferredItem(abiItem)) {
-    //     abiItem.isPreferredProduct = true;
-    //   }
-
-    //   this.modal = this.modalController.create(SiteCatalogListComponent, { selected: abiItem, sites: this.sites }); //, sites: this.sites
-    //   this.modal.present();
-
-    // }
-
-    // private getSites() {
-    //   let server: ServerModel;
-    //   this.hostServerService.getDefaultServer().then(s => server = s).then(() => {
-    //     this.systemService.setServer(server);
-    //   }).then(() => {
-    //     // this.log.debug("In get sites ");
-    //     this.systemService.getBranchServices()
-    //       .map((results) => {
-    //         if(results) {
-    //           return this.utilService.getPayload(results);
-    //         }
-    //       })
-    //       .subscribe((response) => {
-    //         this.branchServices = response;
-    //         if (this.branchServices) {
-    //           for (let branch of this.branchServices) {
-    //             for (let region of branch.regions) {
-    //               for (let site of region.sites) {
-    //                 this.sites.push(site);
-    //                 // this.log.debug(site.dodaac + " " + site.name);
-    //               }
-    //             }
-    //           }
-    //         }
-    //       });
-    //   });
-    // }
 
     public barcodeScan() {
         this.barcodeHelper.barcodeScan()

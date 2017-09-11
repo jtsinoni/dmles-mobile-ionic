@@ -61,7 +61,7 @@ export class AppConfigConstants {
     }
 
     public static timeout: any = {
-        value: 10000,
+        value: 15000,
         login:  {
             value: 30000
         }

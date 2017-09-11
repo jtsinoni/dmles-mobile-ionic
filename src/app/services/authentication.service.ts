@@ -29,19 +29,19 @@ export class AuthenticationService {
         return this.localStorageService.storeData(ApiConstants.DMLES_TOKEN, token);
     }
 
-    public isTokenValid(): Promise<boolean> {
-        return this.localStorageService.getData(ApiConstants.DMLES_TOKEN)
-            .then((token) => {
-                if(token) {
-                    this.log.debug(`${this.serviceName} - Token found locally`);
-                    return !this.jwtService.isTokenExpired(token);
-                } else {
-                    return false;
-                }
+    // public isTokenValid(): Promise<boolean> {
+    //     return this.localStorageService.getData(ApiConstants.DMLES_TOKEN)
+    //         .then((token) => {
+    //             if(token) {
+    //                 this.log.debug(`${this.serviceName} - Token found locally`);
+    //                 return !this.jwtService.isTokenExpired(token);
+    //             } else {
+    //                 return false;
+    //             }
 
-            })
-            .catch((error) => {
-                this.log.error(`${this.serviceName} => ${error}`)
-            })
-    }
+    //         })
+    //         .catch((error) => {
+    //             this.log.error(`${this.serviceName} => ${error}`)
+    //         })
+    // }
 }

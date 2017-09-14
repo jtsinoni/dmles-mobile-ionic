@@ -10,7 +10,7 @@ import {Platform} from "ionic-angular";
 
 export class StorageFactory {
     constructor(log: LoggerService, utilService: UtilService, windowService: WindowService, platform: Platform) {
-        if(utilService.isProd()) {
+        if(utilService.isProd() && utilService.isIos()) {
             return new LocalSecureStorageService(log, platform);
         } else if(utilService.isMobility()) {
             return new LocalNativeStorageService(log);

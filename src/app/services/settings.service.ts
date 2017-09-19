@@ -4,8 +4,6 @@ import { LoggerService } from "./logger/logger-service";
 import { SettingsModel } from '../models/settings.model'
 import { BaseDatabaseService } from './database/base-database.service';
 import { DatabaseTableModelService } from './database/database-table-model.service';
-import { AppConfigConstants } from "../constants/app-config.constants";
-
 
 @Injectable()
 export class SettingsService extends BaseDatabaseService<SettingsModel> {
@@ -44,18 +42,6 @@ export class SettingsService extends BaseDatabaseService<SettingsModel> {
             }
         });
 
-    }
-
-    isBluetoothBarcodePrinterSettingsCallback = (s: SettingsModel): boolean => {
-        return s.settingsName === AppConfigConstants.printer.bluetoothBarcodeKey;
-    }
-
-    getBluetoothBarcodePrinterSettingsCount(): Promise<number> {
-        return this.getFilteredCount(this.isBluetoothBarcodePrinterSettingsCallback);
-    }
-
-    deleteBluetoothBarcodePrinterSettings(): Promise<number> {
-        return this.deleteFilteredCollection(this.isBluetoothBarcodePrinterSettingsCallback);
     }
 
     actionPositionSettingCallBack = (s: SettingsModel): boolean => {

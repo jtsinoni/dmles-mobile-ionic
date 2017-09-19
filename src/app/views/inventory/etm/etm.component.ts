@@ -1,6 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
-//import { Keyboard } from 'ionic-native';
 import { Search } from "../../common/search";
 import { LoadingController, ModalController, Modal } from 'ionic-angular';
 import { LoggerService } from "../../../services/logger/logger-service";
@@ -12,7 +11,6 @@ import { ABiCatalogModel } from "../../../models/abi-catalog.model";
 import { EtmDetailComponent } from "./etm-detail/etm-detail.component";
 import { ABiTopicUpstreamService } from "../../../services/upstream/abi-topic-upstream.service";
 import { BarcodeHelper } from "../../common/barcode-helper";
-// import { Focuser } from "../../../common/directives/focuser.directive";
 import { ElementPositionDirective } from "../../../common/directives/element-position.directive";
 import { SettingsService } from "../../../services/settings.service";
 import { SettingsModel } from "../../../models/settings.model";

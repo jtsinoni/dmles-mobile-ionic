@@ -15,10 +15,6 @@
         <ion-option *ngFor="let value of setting.values" [value]="value">{{value}}</ion-option>
       </ion-select>
     </ion-item>
-    <!--<button ion-item detail-none (click)="presentBluetoothModal()">-->
-      <!--<ion-label>Bluetooth Settings</ion-label>-->
-      <!--<ion-icon item-end name="bluetooth"></ion-icon>-->
-    <!--</button>-->
     <button ion-item detail-none (click)="presentAddServer()">
       <ion-label>Selected Host Server</ion-label>
       <ion-icon item-end name="add"></ion-icon>

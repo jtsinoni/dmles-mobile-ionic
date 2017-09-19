@@ -7,7 +7,6 @@ import { ModalController } from 'ionic-angular';
 // // uncomment to add settings manually in dev
 //import { AddSettingComponent } from "./add-setting/add-setting.component";
 import { UtilService } from "./../../common/services/util.service";
-//import { BluetoothModalService } from "../../services/bluetooth-modal.service";
 import { AddServerComponent } from "./add-server/add-server.component";
 import { HostServerService } from "../../services/host-server.service";
 import {CacSettingComponent} from "./cac/cac-setting.component";
@@ -30,7 +29,6 @@ export class SettingsComponent {
     public modalController: ModalController,
     private log: LoggerService,
     private utilService: UtilService,
-    // private bluetoothModalService: BluetoothModalService,
     private hostServerService: HostServerService) {
   }
 
@@ -93,10 +91,6 @@ export class SettingsComponent {
     }
 
   }
-
-  // presentBluetoothModal() {
-  //   this.bluetoothModalService.presentModal();
-  // }
 
   presentAddServer() {
     let addServerModal = this.modalController.create(AddServerComponent);

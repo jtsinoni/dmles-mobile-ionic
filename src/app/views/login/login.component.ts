@@ -9,6 +9,7 @@ import { ServerModel } from "../../models/server.model";
 import { JSONWebTokenService } from "../../services/jason-web-token.service";
 import { WarningDialogComponent } from "../common/dialogs/warning-dialog.component";
 import { AppConfigConstants } from "../../constants/app-config.constants";
+import {AuthenticationService} from "../../services/authentication.service";
 
 @Component({
     selector: 'login-login',
@@ -26,7 +27,8 @@ export class LoginComponent {
         private jwtService: JSONWebTokenService,
         private hostServerService: HostServerService,
         private modalController: ModalController,
-        private viewController: ViewController) {
+        private viewController: ViewController,        
+        private authenticationService: AuthenticationService) {
         this.loginModel = new LoginModel('');
         this.setLoginServer();
 
@@ -54,11 +56,14 @@ export class LoginComponent {
                     .timeout(AppConfigConstants.timeout.login.value)
                     .subscribe(
                     (token) => {
+                        let date = this.jwtService.getTokenExpirationDate(token);
+                        this.log.debug(`LoginComponenet => token expiration date => ${date}`);
                         let decodedToken = this.jwtService.decodeToken(token);
                         let message = `OAuth Token Decoded => ${JSON.stringify(decodedToken)}`;
                         this.addLogMessage(message);
                     },
                     (error) => {
+                        this.authenticationService.setIsLoggedIn(false);
                         message = `Error => ${error}`;
                         this.logErrorMessage(message);
                         this.viewController.dismiss();
@@ -66,11 +71,13 @@ export class LoginComponent {
                     },
                     () => {
                         message = `Authentication Complete`;
+                        this.authenticationService.setIsLoggedIn(true);
                         this.addLogMessage(message);
                         this.viewController.dismiss();
                     })
             })
             .catch((error) => {
+                this.authenticationService.setIsLoggedIn(false);
                 message = `Error => ${error}`;
                 this.logErrorMessage(message);
                 this.viewController.dismiss();

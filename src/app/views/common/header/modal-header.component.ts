@@ -23,6 +23,9 @@ export class ModalHeaderComponent implements AfterViewInit {
     @ViewChild(SubHeaderDirective)
     subHeaderDirective: SubHeaderDirective;
 
+    @Input()
+    public showCancelButton:boolean = true;
+
     constructor(private viewController: ViewController,
         private componentFactoryResolver: ComponentFactoryResolver,
     private log: LoggerService) {

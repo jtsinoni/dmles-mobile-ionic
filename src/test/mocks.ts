@@ -145,6 +145,10 @@ export class ModalControllerMock {
 export class CACServiceMock {
 }
 
+export class OAuthServiceMock {
+}
+
+
 export class SettingsServiceMock {    
 }
 

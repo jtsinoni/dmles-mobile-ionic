@@ -3,7 +3,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { Focuser } from "../../common/directives/focuser.directive";
 import { Search } from "../common/search";
-import { LoadingController, ModalController, Modal } from 'ionic-angular';
+import { LoadingController, ModalController, Modal, NavParams } from 'ionic-angular';
 
 import { LoggerService } from "../../services/logger/logger-service";
 import { ABiCatalogService } from "../../common/endpoints/abi-catalog.service";
@@ -27,6 +27,8 @@ import { BarcodeHelper } from "../common/barcode-helper";
 import { ElementPositionDirective } from "../../common/directives/element-position.directive";
 import { ABiTopicUpstreamService } from "../../services/upstream/abi-topic-upstream.service";
 import { AppConfigConstants } from "../../constants/app-config.constants";
+import { AuthenticationService } from '../../services/authentication.service';
+import { LoginModalService } from '../../services/login-modal.service';
 
 @Component({
     selector: 'scanner-component',
@@ -53,6 +55,9 @@ export class ScannerComponent extends Search implements OnInit {
 
     private sites: Array<SiteModel>;
 
+    @Input()
+    public isLoggedIn: boolean = false;
+
     isScannerDevice: boolean = false;
 
     showHelp: boolean = true;
@@ -68,6 +73,9 @@ export class ScannerComponent extends Search implements OnInit {
         public barcodeHelper: BarcodeHelper,
         public settingsService: SettingsService,
         private upstreamService: ABiTopicUpstreamService,
+        private authService: AuthenticationService,
+        private params: NavParams,
+        private loginModalService: LoginModalService,
     ) {
         super(loadingCtrl);
 
@@ -76,6 +84,8 @@ export class ScannerComponent extends Search implements OnInit {
         this.itemSelected = false;
         this.searchValue = "";
         this.sites = new Array<SiteModel>();
+
+       
     }
 
     ionViewDidEnter() {
@@ -91,7 +101,6 @@ export class ScannerComponent extends Search implements OnInit {
     }
 
     ngOnInit() {      
-
         let setting: SettingsModel;
 
         this.settingsService.getEnableScannerSetting().then(s => setting = s).then(() => {
@@ -122,6 +131,17 @@ export class ScannerComponent extends Search implements OnInit {
                 this.log.debug("is ABi Help = " + this.showHelp);
             }
         })
+
+        let params: any = this.params.get('isLoggedIn');
+        if(params) {
+            this.isLoggedIn = this.params.get('isLoggedIn');
+            this.log.debug(`ScannerComponent out: logged in => ${this.isLoggedIn}`)
+        }
+
+        this.authService.onLoggedIn().subscribe((value: boolean) => {
+            this.isLoggedIn = value;
+            // this.log.debug(`ScannerComponent in: logged in => ${this.isLoggedIn}`)
+        }); 
     }
 
     public getSearchResults() {
@@ -312,6 +332,10 @@ export class ScannerComponent extends Search implements OnInit {
 
     public storeBarcode() {
         this.barcodeHelper.storeBarcode(this.upstreamService);
+    }
+
+    public login() {
+        this.loginModalService.presentModal();
     }
 
 

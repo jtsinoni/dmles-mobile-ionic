@@ -12,7 +12,7 @@ export class Search {
     public searchValue: string;
     public networkService: NetworkService;
     protected utilService: UtilService;
-    private ngZone: NgZone;
+    protected ngZone: NgZone;
     private loader: Loading;
 
     constructor (public loadingCtrl: LoadingController) {

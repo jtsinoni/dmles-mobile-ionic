@@ -1,17 +1,18 @@
-import { Component, ViewChild } from '@angular/core';
-import { NavController, AlertController, PopoverController, MenuController } from 'ionic-angular';
-import { LoggerService } from "./services/logger/logger-service";
+import {Component, ViewChild} from '@angular/core';
+import {NavController, AlertController, PopoverController, MenuController} from 'ionic-angular';
+import {LoggerService} from "./services/logger/logger-service";
 //import { AppMenuComponent } from "./views/common/header/app-menu.component";
-import { AreaModel } from './models/area.model';
+import {AreaModel} from './models/area.model';
 
-import { EquipmentComponent } from './views/equipment/equipment.component';
-import { InventoryComponent } from './views/inventory/inventory.component';
-import { SupplyComponent } from './views/supply/supply.component';
-import { AdminComponent } from "./views/admin/admin.component";
-import { ScannerComponent } from "./views/scanner/scanner.component";
-import { SettingsService } from "./services/settings.service";
+import {EquipmentComponent} from './views/equipment/equipment.component';
+import {InventoryComponent} from './views/inventory/inventory.component';
+import {SupplyComponent} from './views/supply/supply.component';
+import {AdminComponent} from "./views/admin/admin.component";
+import {ScannerComponent} from "./views/scanner/scanner.component";
+import {SettingsService} from "./services/settings.service";
 //import { SettingsModel } from "./models/settings.model";
-import { ElementPositionDirective } from "./common/directives/element-position.directive";
+import {ElementPositionDirective} from "./common/directives/element-position.directive";
+import {OAuthService} from "./services/oauth.service";
 
 @Component({
     templateUrl: './app-container.html'
@@ -19,34 +20,35 @@ import { ElementPositionDirective } from "./common/directives/element-position.d
 export class AppContainerComponent {
 
     demoAreas = new Array<AreaModel>();
-    
+
     @ViewChild(ElementPositionDirective)
     posDirective: ElementPositionDirective;
 
     constructor(public navCtrl: NavController,
-        public alertController: AlertController,
-        public log: LoggerService,
-        private popoverCtrl: PopoverController,
-        private menuController: MenuController, 
-        private settingsService: SettingsService) {
+                public alertController: AlertController,
+                public log: LoggerService,
+                private OAuthService: OAuthService,
+                private popoverCtrl: PopoverController,
+                private menuController: MenuController,
+                private settingsService: SettingsService) {
         this.setAreas();
     }
 
     ngOnInit() {
-      //this.setActionLocation();
+        //this.setActionLocation();
     }
 
-     setAreas() {
+    setAreas() {
 
         this.demoAreas.push(new AreaModel('Equipment', 'cog', EquipmentComponent, 'gray'));
         this.demoAreas.push(new AreaModel('Admin', 'card', AdminComponent, 'light'));
         this.demoAreas.push(new AreaModel('Supply', 'document', SupplyComponent, 'gray'));
-        this.demoAreas.push(new AreaModel('Inventory', 'clipboard',InventoryComponent , 'light'));        // TODO include component
+        this.demoAreas.push(new AreaModel('Inventory', 'clipboard', InventoryComponent, 'light'));        // TODO include component
         this.demoAreas.push(new AreaModel('Ask ABi', 'search', ScannerComponent, 'gray'));
 
     }
 
-     goTo(area: AreaModel) {
+    goTo(area: AreaModel) {
         this.navCtrl.push(area.component);
     }
 
@@ -96,7 +98,6 @@ export class AppContainerComponent {
     //         }
     //     });
     // }
-
 
 
 }

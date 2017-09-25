@@ -3,7 +3,6 @@ import {Http} from "@angular/http";
 import {Observable} from "rxjs";
 
 import {ApiService} from "./api.service";
-import {ApiConstants} from "../constants/api.constants";
 import {AuthenticationService} from "./authentication.service";
 import {AppService} from "./app.service";
 import {Base64Service} from "../common/services/base64.service";
@@ -33,30 +32,34 @@ export class OAuthService extends ApiService {
         return this.getTokenViaOAuth("token", encodedDn);
     }
 
+    public isTokenExpired(token: string): boolean {
+        return this.jwtService.isTokenExpired(token);
+    }
+
     public getToken(dn): Observable<any> {
         return Observable.fromPromise(
-            this.localStorageService.getData(ApiConstants.DMLES_TOKEN)
+            this.authenticationService.getToken()
                 .then((token) => {
                     return token;
                 })
                 .catch((error) => {
                     this.log.error(`${this.serviceName} => ${error}`)
                 })
-        )
-        .flatMap((token) => {
-            if(token) {
-                this.log.debug(`${this.serviceName} - Token found locally`);
-                if(this.jwtService.isTokenExpired(token)) {
-                    this.log.debug(`Token expired => ${this.jwtService.getTokenExpirationDate(token)}`);
-                    return this.getNewToken(dn);
+            )
+            .flatMap((token) => {
+                if(token) {
+                    this.log.debug(`${this.serviceName} - Token found locally`);
+                    if(this.jwtService.isTokenExpired(token)) {
+                        this.log.debug(`Token expired => ${this.jwtService.getTokenExpirationDate(token)}`);
+                        return this.getNewToken(dn);
+                    } else {
+                        return Observable.of(token);
+                    }
                 } else {
-                    return Observable.of(token);
+                    this.log.debug(`${this.serviceName} - Token not found locally`);
+                    return this.getNewToken(dn);
                 }
-            } else {
-                this.log.debug(`${this.serviceName} - Token not found locally`);
-                return this.getNewToken(dn);
-            }
-        });
+            });
     }
 
     private getNewToken(dn): Observable<any> {

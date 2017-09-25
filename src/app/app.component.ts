@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { Platform, Nav, App } from 'ionic-angular';
+import { Platform, Nav, App, AlertController } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { LoginComponent } from './views/login/login.component';
@@ -38,7 +38,7 @@ export class DMLESMobile implements OnInit {
     logOut = 'Logout';
     exit = 'Exit';
     settingsCount: number = 0;
-    //isLoggedIn: boolean = false;
+    isLoggedIn: boolean = false;
 
     constructor(
         public platform: Platform,
@@ -47,9 +47,12 @@ export class DMLESMobile implements OnInit {
         private authService: AuthenticationService,
         private loginModalService: LoginModalService,
         private log: LoggerService,
-        private settingService: SettingsService) {
+        private settingService: SettingsService,
+        public alertController: AlertController) {
         if (this.utilService.isProd() == false) {
             this.rootPage = AppContainerComponent;
+
+            //this.loginModalService.presentModal();
         }
         // if you want to see the DoD warning in DEV / ionic serve --lab - use this block
         // if (this.utilService.isMobility() === false) {
@@ -80,8 +83,29 @@ export class DMLESMobile implements OnInit {
                 this.settingService.getAssetFile();
 
             }
-
             this.setLoggedInOutAreas();
+
+            // If logged in show area Logout, remove area Logout when logging out
+            this.authService.onLoggedIn().subscribe((loggedIn: boolean) => {
+                if(loggedIn) {
+                    this.loggedOutAreas.forEach((area, index) => {
+                        if(area.component == LoginComponent) {
+                            this.loggedOutAreas.splice(index, 1);
+                        }
+                    });                    
+                    this.loggedOutAreas.push(new AreaModel('Logout', 'log-out', this.logOut, 'gray'));
+                    this.goToHome();
+                } else {
+                    this.loggedOutAreas.forEach((area, index) => {
+                        if(area.component == this.logOut || area.component == LoginComponent) {
+                            this.loggedOutAreas.splice(index, 1);
+                        }
+                    });
+                    this.loggedOutAreas.push(new AreaModel('Login', 'log-in', LoginComponent, 'gray'));
+                }
+            }); 
+
+            this.loginModalService.presentModal();
         });
     }
     setLoggedInOutAreas() {
@@ -91,24 +115,17 @@ export class DMLESMobile implements OnInit {
 
     setAreas(areas: Array<AreaModel>) {
         areas.push(new AreaModel('Home', 'home', this.home, 'primary'));
-        // todo show logged out, watch for token expiration
-        // if (this.isLoggedIn) {
-        //     areas.push(new AreaModel('Logout', 'log-out', this.logOut, 'gray'));
-        // } else {
-        areas.push(new AreaModel('Login', 'log-in', LoginComponent, 'gray'));
-        //}
 
         //this.isMobility && !this.isProd
         if (this.isMobility && !this.utilService.isProd()) {
             // todo always show this?
             areas.push(new AreaModel('Logs', 'logo-android', LogsModalComponent, 'light'));
         }
-
-
         areas.push(new AreaModel('Settings', 'settings', SettingsComponent, 'light'));
         areas.push(new AreaModel('Help', 'help', HelpComponent, 'gray'));
-        areas.push(new AreaModel(this.exit, 'exit', this.exit, 'light'));
-
+        if(!this.isLoggedIn) {
+            this.loggedOutAreas.push(new AreaModel('Login', 'log-in', LoginComponent, 'gray'));
+        }
     }
 
     goTo(area: AreaModel) {
@@ -116,12 +133,9 @@ export class DMLESMobile implements OnInit {
             if (area.component == LoginComponent) {
                 this.loginModalService.presentModal();
             } else if (area.component == this.logOut) {
-                this.logout();
+                this.confirmLogout();
             } else if (area.component == this.home) {
                 this.goToHome();
-            } else if (area.component == this.exit) {
-                // todo are you sure message...?
-                this.exitApp();
             } else {
                 this.nav.push(area.component);
             }
@@ -131,30 +145,42 @@ export class DMLESMobile implements OnInit {
     }
 
     goToHome() {
-        this.app.getRootNav().setRoot(AppContainerComponent);
+        this.app.getRootNav().popToRoot();
     }
 
-    goToDoDConfirmationPage() {
-        this.app.getRootNav().setRoot(SecurityComponent);
-    }
-
-    logout() {
+    private logout() {
         // todo are you sure message...?
         this.log.debug('in logout')
-        this.authService.logout();
-
+        this.authService.logout()
+            .then(() => {
+                this.app.getRootNav().setRoot(AppContainerComponent);
+            })
+            .catch((error) => {
+                this.log.error(`${error}`);
+            });
     }
 
-    exitApp() {
-        // TODO: this doesn't work as expected on the device...
-        // are there any cordova plugins that do this?
-        // we may need to create one
-        this.log.info('exiting app')
-        this.authService.logout();
-        if (this.isMobility && !this.platform.is('ios')) {
-            this.platform.exitApp();
-        }
-    }
+    confirmLogout() {
+        let confirm = this.alertController.create({
+            title: 'Are you sure you want to Logout?',
+            message: 'Logging out will clear tokens and search queries.',
+            buttons: [
+                {
+                    text: 'Cancel',
+                    handler: () => {
+                        this.log.debug(`confirmLogout => Cancel clicked`);
+                    }
+                },
+                {
+                    text: 'OK',
+                    handler: () => {
+                        this.logout()
+                    }
+                }
+            ]
+        });
+        confirm.present();
+    }    
 
     private setSettingsCount() {
         this.settingService.getCount().then((c) => {
@@ -163,6 +189,4 @@ export class DMLESMobile implements OnInit {
         })
 
     }
-
-
 }

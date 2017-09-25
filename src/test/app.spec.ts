@@ -4,7 +4,8 @@ import {
     AppMock, AuthServiceMock, LoginModalServiceMock,
     //UpstreamServiceMock,
     LoggerServiceMock,
-    SettingsServiceMock
+    SettingsServiceMock,
+    AlertControllerMock
 } from './mocks';
 
 
@@ -20,7 +21,8 @@ describe('dmles-mobile-ionic-app', () => {
       (<any>new LoginModalServiceMock),
       //(<any>new UpstreamServiceMock),
       (<any>new LoggerServiceMock),
-      (<any>new SettingsServiceMock));
+      (<any>new SettingsServiceMock),
+      (<any>new AlertControllerMock));
 
     instance['nav'] = (<any>new NavMock());
   });

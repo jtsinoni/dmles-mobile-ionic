@@ -1,6 +1,13 @@
 <mb-nav-drawer-header remove-parent-element [title]="'Ask ABi'" [showSettings]="false"></mb-nav-drawer-header>
+<ion-content padding="" *ngIf="!isLoggedIn">
+    <h1>Welcome to Ask ABi</h1>
+    <div padding-top>
+        <h4>Please login in.</h4>
+        <button ion-button color="primary" block (click)="login()">Login</button>
+    </div>
+</ion-content> 
+
 <ion-content>
-    <div class="top-spacer-div"></div>
     <ion-item>
         <ion-input type="text" focuser placeholder="Search" [(ngModel)]="searchValue" name="searchInput" clearInput (keyup.enter)="getSearchResults()"></ion-input>
         <ion-icon *ngIf="isScannerDevice" name='barcode' is-active="true" (click)="getSearchResults()" item-right></ion-icon>
@@ -80,3 +87,5 @@
       </ion-icon></button>
     </ion-fab>
 </ion-content>
+
+

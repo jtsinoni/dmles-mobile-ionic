@@ -1,7 +1,7 @@
 [
-    [
+    
         {
-            "settingsName": "Barcode Scanning",
+            "settingsName": "Barcode Reader",
             "setting": "Scanner",
             "dataType": "select",
             "values": ["Scanner", "Camera"]
@@ -17,5 +17,5 @@
             "dataType": "select",
              "values": [ "bottom right", "top right", "bottom left", "top left"]
         }
-    ]
+    
 ]

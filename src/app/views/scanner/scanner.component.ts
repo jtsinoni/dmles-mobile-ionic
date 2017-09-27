@@ -98,7 +98,9 @@ export class ScannerComponent extends Search implements OnInit {
             if (setting) {
                 this.isScannerDevice = setting.setting === "Scanner";
                 this.log.debug("is Scanner = " + this.isScannerDevice);
-            } 
+            } else {
+                this.isScannerDevice = true;
+            }
 
         }).then(() => {
             if (!this.isScannerDevice) {

@@ -1,42 +1,21 @@
 [
-    {
-        "settingsName": "Enable Scanner",
-        "setting": true,
-        "dataType": "boolean"
-    },
-    {
-        "settingsName": "Enable ABi Help",
-        "setting": true,
-        "dataType": "boolean"
-    },    
-    {
-        "settingsName": "Work Area",
-        "setting": "Inventory",
-        "dataType": "select",
-         "values": ["All", "Inventory", "Ordering", "Equipment"]
-
-    },
-    {
-        "settingsName": "Pin Code",
-        "setting": 0,
-        "dataType": "number"
-    },
-    {
-        "settingsName": "Action Position",
-        "setting": "bottom right",
-        "dataType": "select",
-         "values": [ "bottom right", "top right", "bottom left", "top left"]
-    },
-    {
-        "settingsName": "Theme",
-        "setting": "Light",
-        "dataType": "select",
-        "values": ["Light", "Dark", "Creamy", "Dystopian"]
-    },
-    {
-        "settingsName": "Colors",
-        "setting": "Standard",
-        "dataType": "select",
-        "values": ["Standard", "Fuchsia", "Mauve", "NuttyCaCa"]
-    }
+    [
+        {
+            "settingsName": "Barcode Scanning",
+            "setting": "Scanner",
+            "dataType": "select",
+            "values": ["Scanner", "Camera"]
+        },
+        {
+            "settingsName": "Enable ABi Help",
+            "setting": true,
+            "dataType": "boolean"
+        },    
+        {
+            "settingsName": "Action Position",
+            "setting": "bottom right",
+            "dataType": "select",
+             "values": [ "bottom right", "top right", "bottom left", "top left"]
+        }
+    ]
 ]

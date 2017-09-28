@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { Platform, Nav, App, AlertController } from 'ionic-angular';
+import { Platform, Nav, App, ToastController } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { LoginComponent } from './views/login/login.component';
@@ -48,7 +48,7 @@ export class DMLESMobile implements OnInit {
         private loginModalService: LoginModalService,
         private log: LoggerService,
         private settingService: SettingsService,
-        public alertController: AlertController) {
+        public toastController: ToastController) {
         if (this.utilService.isProd() == false) {
             this.rootPage = AppContainerComponent;
 
@@ -133,7 +133,7 @@ export class DMLESMobile implements OnInit {
             if (area.component == LoginComponent) {
                 this.loginModalService.presentModal();
             } else if (area.component == this.logOut) {
-                this.confirmLogout();
+                this.logout();
             } else if (area.component == this.home) {
                 this.goToHome();
             } else {
@@ -153,6 +153,7 @@ export class DMLESMobile implements OnInit {
         this.log.debug('in logout')
         this.authService.logout()
             .then(() => {
+                this.logoutToast();
                 this.app.getRootNav().setRoot(AppContainerComponent);
             })
             .catch((error) => {
@@ -160,26 +161,12 @@ export class DMLESMobile implements OnInit {
             });
     }
 
-    confirmLogout() {
-        let confirm = this.alertController.create({
-            title: 'Are you sure you want to Logout?',
-            message: 'Logging out will clear tokens and search queries.',
-            buttons: [
-                {
-                    text: 'Cancel',
-                    handler: () => {
-                        this.log.debug(`confirmLogout => Cancel clicked`);
-                    }
-                },
-                {
-                    text: 'OK',
-                    handler: () => {
-                        this.logout()
-                    }
-                }
-            ]
-        });
-        confirm.present();
+    private logoutToast() {
+        let toast = this.toastController.create({
+            message: 'You have successfully logged out.  Your connection has been terminated.',
+            duration: 2000
+          });
+          toast.present();
     }    
 
     private setSettingsCount() {

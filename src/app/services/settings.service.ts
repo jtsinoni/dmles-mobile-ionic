@@ -54,7 +54,7 @@ export class SettingsService extends BaseDatabaseService<SettingsModel> {
     }
 
     enableScannerSettingCallBack = (s: SettingsModel): boolean => {
-        return s.settingsName == "Enable Scanner";
+        return s.settingsName == "Barcode Reader";
     }
 
     getEnableScannerSetting(): Promise<SettingsModel> {

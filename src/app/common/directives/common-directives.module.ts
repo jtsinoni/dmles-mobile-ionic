@@ -1,16 +1,17 @@
-import {NgModule} from '@angular/core';
-import {RemoveParentElementDirective} from './remove-parent-element.directive';
-import {HeaderPageComponent} from "../../views/common/header/header-page.component";
-import {AppMenuComponent} from "../../views/common/header/app-menu.component";
-import {WarningDialogComponent} from "../../views/common/dialogs/warning-dialog.component";
-import {GrowlDialogComponent} from "../../views/common/dialogs/growl-dialog.component";
-import {Focuser} from "./focuser.directive";
+import { NgModule } from '@angular/core';
+import { RemoveParentElementDirective } from './remove-parent-element.directive';
+import { HeaderPageComponent } from "../../views/common/header/header-page.component";
+import { AppMenuComponent } from "../../views/common/header/app-menu.component";
+import { WarningDialogComponent } from "../../views/common/dialogs/warning-dialog.component";
+import { GrowlDialogComponent } from "../../views/common/dialogs/growl-dialog.component";
+import { Focuser } from "./focuser.directive";
 import { ElementPositionDirective } from "./element-position.directive";
 
-import {IonicModule} from "ionic-angular";
-import {NavDrawerHeaderComponent} from "../../views/common/header/nav-drawer-header.component";
-import {ModalHeaderComponent} from "../../views/common/header/modal-header.component";
-import { SubHeaderDirective } from  "../../views/common/header/sub-header.directive";
+import { IonicModule } from "ionic-angular";
+import { NavDrawerHeaderComponent } from "../../views/common/header/nav-drawer-header.component";
+import { ModalHeaderComponent } from "../../views/common/header/modal-header.component";
+import { SubHeaderDirective } from "../../views/common/header/sub-header.directive";
+import { FouoFooterComponent } from "../../views/common/header/fouo-footer.component";
 
 @NgModule({
     declarations: [
@@ -23,7 +24,8 @@ import { SubHeaderDirective } from  "../../views/common/header/sub-header.direct
         GrowlDialogComponent,
         Focuser,
         ElementPositionDirective,
-        SubHeaderDirective
+        SubHeaderDirective,
+        FouoFooterComponent
 
     ],
     imports: [IonicModule],
@@ -34,7 +36,8 @@ import { SubHeaderDirective } from  "../../views/common/header/sub-header.direct
         RemoveParentElementDirective,
         Focuser,
         ElementPositionDirective,
-        SubHeaderDirective
+        SubHeaderDirective,
+        FouoFooterComponent
     ],
     entryComponents: [
         AppMenuComponent,
@@ -43,5 +46,5 @@ import { SubHeaderDirective } from  "../../views/common/header/sub-header.direct
     ]
 })
 
-export class CommonDirectivesModule{}
+export class CommonDirectivesModule { }
 

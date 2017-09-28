@@ -78,7 +78,7 @@ export class DMLESMobile implements OnInit {
             this.statusBar.styleDefault();
 
             this.isMobility = this.utilService.isMobility();
-            if (this.settingsCount < 1 && this.isMobility) {
+            if (this.settingsCount < 1) {
                 // add settings to the db from asset file
                 this.settingService.getAssetFile();
 

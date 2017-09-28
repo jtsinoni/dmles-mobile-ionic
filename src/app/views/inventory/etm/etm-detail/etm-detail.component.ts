@@ -3,6 +3,7 @@ import {NavParams, ModalController, Modal} from 'ionic-angular';
 import {ElasticQueryModel} from "../../../../models/search/elastic-query.model";
 import {ElasticFilterFieldModel} from "../../../../models/search/elastic-filter-field.model";
 import {EtmFilteredComponent} from "../filtered/etm-filtered.component";
+import { DemoImageService } from '../../../../services/demo-image.service';
 
 @Component({
     selector: 'etm-detail',
@@ -11,8 +12,13 @@ import {EtmFilteredComponent} from "../filtered/etm-filtered.component";
 export class EtmDetailComponent {
     selectedItem: any;
     constructor(private navParams: NavParams,
-                private modalController: ModalController) {
+                private modalController: ModalController,
+                private imageService: DemoImageService) {
         this.selectedItem = navParams.get('selected');
+        if (this.selectedItem) {
+            this.selectedItem.imageUrl = this.imageService.getAssetImageUrl(this.selectedItem.enterpriseProductIdentifier);
+        }
+
     }
 
     getEquivalentProducts() {

@@ -2,8 +2,8 @@
 <ion-content>
   <div *ngIf="selectedItem" class="selection">
       <ion-card>
-          <!--img *ngIf="selectedItem.productImages" src="selectedItem.productImages[0]"/->
-          <!--img src="assets/images/imageNotAvailable.jpg"/-->
+          <!--img *ngIf="selectedItem.productImages" src="selectedItem.productImages[0]"/-->
+          <img src="{{ selectedItem.imageUrl }}">
           <ion-card-header><strong>ID:&nbsp;</strong> {{selectedItem.enterpriseProductIdentifier}}</ion-card-header>
           <ion-card-content>
               <ion-row>

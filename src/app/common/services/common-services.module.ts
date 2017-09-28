@@ -27,6 +27,8 @@ import {IMTopicUpstreamService} from "../../services/upstream/im-topic-upstream.
 import {ABiTopicUpstreamService} from "../../services/upstream/abi-topic-upstream.service";
 import {ABiDatabaseService} from "../../services/database/abi-database.service";
 import {AppVersionService} from "../../services/app-version.service";
+// TODO: REMOVE
+import {DemoImageService} from "../../services/demo-image.service";
 
 
 @NgModule({
@@ -63,6 +65,7 @@ export class CommonServicesModule {
                 ABiTopicUpstreamService,
                 ABiDatabaseService,
                 AppVersionService,
+                DemoImageService
 
                 // { provide: UpstreamService, useClass: TopicUpstreamService },
             ]

@@ -101,20 +101,67 @@ export class ScannerComponent extends Search implements OnInit {
     }
 
     ngOnInit() {      
-        let setting: SettingsModel;
+        this.settingsService.getEnableScannerSetting()
+            .then((setting: SettingsModel) => {
+                if (setting) {
+                    this.isScannerDevice = setting.setting === "Scanner";
+                    this.log.debug("is Scanner = " + this.isScannerDevice);
+                } else {
+                    this.isScannerDevice = true;
+                }
+            })
+            .then(() => {
+                this.setFABPosition();
+            });
 
-        this.settingsService.getEnableScannerSetting().then(s => setting = s).then(() => {
-            if (setting) {
-                this.isScannerDevice = setting.setting === "Scanner";
-                this.log.debug("is Scanner = " + this.isScannerDevice);
-            } else {
-                this.isScannerDevice = true;
-            }
+        this.settingsService.getEnableABiHelpSetting()
+            .then((setting: SettingsModel) => {
+                if (setting) {
+                    this.showHelp = setting.setting;
+                    this.log.debug("is ABi Help = " + this.showHelp);
+                }
+            });
 
-        }).then(() => {
-            if (!this.isScannerDevice) {
-                this.settingsService.getActionPositionSetting().then(s => setting = s).then(() => {
+        this.settingsService.onUpdate()
+            .subscribe((model: SettingsModel) => {
+                // TODO:  
+                // The string "Enable ABi Help" has to be a constant somewhere,
+                // this value is coming from ../assets/app-settings.json, if the value chnages
+                // in ../assets/app-settings.json then the below code will not work
+                if(model.settingsName === "Enable ABi Help") {
+                    this.showHelp = model.setting;
+                    // this.log.debug(`ScannerComponent model: => ${model.selectedValue} ${model.setting} ${model.settingsName}`)
+                }
 
+                if(model.settingsName === "Barcode Reader" || model.settingsName === "Action Position") {
+                    this.isScannerDevice = model.setting === "Scanner";
+                    this.setFABPosition();
+                    // this.log.debug(`ScannerComponent model: => ${model.selectedValue} ${model.setting} ${model.settingsName}`)
+                } 
+                
+                if(model.settingsName === "Action Position") {
+                    this.setFABPosition();
+                    // this.log.debug(`ScannerComponent model: => ${model.selectedValue} ${model.setting} ${model.settingsName}`)
+                }                 
+            });         
+
+        let isLoggedInParam: any = this.params.get('isLoggedIn');
+        if(isLoggedInParam) {
+            this.isLoggedIn = this.params.get('isLoggedIn');
+            // this.log.debug(`ScannerComponent out: logged in => ${this.isLoggedIn}`)
+        }
+
+        this.authService.onLoggedIn()
+            .subscribe((value: boolean) => {
+                this.isLoggedIn = value;
+                // this.log.debug(`ScannerComponent in: logged in => ${this.isLoggedIn}`)
+            }); 
+    }
+
+    private setFABPosition() {
+        if (!this.isScannerDevice && this.posDirective) {
+            this.settingsService.getActionPositionSetting()
+                .then((setting) => {
                     if (setting) {
                         let val = setting.setting.split(" ");
                         if (val && val.length > 0) {
@@ -124,26 +171,7 @@ export class ScannerComponent extends Search implements OnInit {
                         }
                     }
                 });
-            }
-        });
-
-        this.settingsService.getEnableABiHelpSetting().then(s => setting = s).then(() => {
-            if (setting) {
-                this.showHelp = setting.setting;
-                this.log.debug("is ABi Help = " + this.showHelp);
-            }
-        })
-
-        let params: any = this.params.get('isLoggedIn');
-        if(params) {
-            this.isLoggedIn = this.params.get('isLoggedIn');
-            this.log.debug(`ScannerComponent out: logged in => ${this.isLoggedIn}`)
-        }
-
-        this.authService.onLoggedIn().subscribe((value: boolean) => {
-            this.isLoggedIn = value;
-            // this.log.debug(`ScannerComponent in: logged in => ${this.isLoggedIn}`)
-        }); 
+        }       
     }
 
     public getSearchResults() {

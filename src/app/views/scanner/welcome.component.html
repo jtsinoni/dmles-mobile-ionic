@@ -1,0 +1,8 @@
+<mb-nav-drawer-header remove-parent-element [title]="'Ask ABi'" [showSettings]="false"></mb-nav-drawer-header>
+<ion-content padding="" *ngIf="!isLoggedIn">
+    <h1>Welcome to Ask ABi</h1>
+    <div padding-top>
+        <h4>Please login in.</h4>
+        <button ion-button color="primary" block (click)="login()">Login</button>
+    </div>
+</ion-content> 

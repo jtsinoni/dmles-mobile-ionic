@@ -128,25 +128,10 @@
               </div>
           </ion-card-content>
       </ion-card>
-
-      <ion-card>
-          <ion-row>
-              <ion-col *ngIf="selectedItem.productGroup">
-                  <button ion-button color="primary" clear small (click)="getRelatedProducts()">
-                      <!--ion-icon name='text'></ion-icon-->
-                      Related Products
-                  </button>
-              </ion-col>
-              <ion-col *ngIf="selectedItem.productSubstituteGroup">
-                  <button ion-button color="primary" clear small (click)="getEquivalentProducts()">
-                      <!--ion-icon name='text'></ion-icon-->
-                      Equivalent Products
-                  </button>
-              </ion-col>
-          </ion-row>
-      </ion-card>
-
-
+      <div class="center-buttons">
+        <button *ngIf="selectedItem.productGroup"  ion-button color="primary" clear small (click)="getRelatedProducts()">Related Products</button>
+        <button *ngIf="selectedItem.productSubstituteGroup" ion-button color="primary" clear small (click)="getEquivalentProducts()">Equivalent Products</button>
+      </div>
   </div>
 </ion-content>
 <fouo-footer remove-parent-element></fouo-footer>

@@ -1,9 +1,11 @@
 import Dexie from 'dexie';
+import { Subject, Observable } from "rxjs";
 import { LoggerService } from "../logger/logger-service";
 import { BaseDataTableModel } from '../../models/base-data-table.model';
 
 export abstract class BaseDatabaseService<M extends BaseDataTableModel> {
     private serviceName;
+    private onUpdateSubject: Subject<any> = new Subject();
 
     dbTable: Dexie.Table<M, number>;
 
@@ -13,6 +15,10 @@ export abstract class BaseDatabaseService<M extends BaseDataTableModel> {
         this.serviceName = serviceName;
         this.dbTable = table;
     }
+
+    public onUpdate(): Observable<any> {
+        return (this.onUpdateSubject.asObservable());
+    }      
 
     // getAll() {
     //     return Promise.resolve(this.dbTable.toArray());
@@ -69,7 +75,13 @@ export abstract class BaseDatabaseService<M extends BaseDataTableModel> {
     }
 
     update(model: M) {
-        return Promise.resolve(this.dbTable.update(model.id, model));
+        return Promise.resolve(this.dbTable.update(model.id, model))
+            .then((value) => {
+                this.onUpdateSubject.next(model);      
+                return value;    
+            });
+        //this.onUpdateSubject.next(value);
+        //return Promise.resolve(this.dbTable.update(model.id, model));
     }
 
     getCount(): Promise<number> {

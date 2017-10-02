@@ -49,11 +49,7 @@ export class DMLESMobile implements OnInit {
         private log: LoggerService,
         private settingService: SettingsService,
         public toastController: ToastController) {
-        if (this.utilService.isProd() == false) {
-            this.rootPage = AppContainerComponent;
 
-            //this.loginModalService.presentModal();
-        }
         // if you want to see the DoD warning in DEV / ionic serve --lab - use this block
         // if (this.utilService.isMobility() === false) {
         //     this.rootPage = AppContainerComponent;
@@ -78,7 +74,7 @@ export class DMLESMobile implements OnInit {
             this.statusBar.styleDefault();
 
             this.isMobility = this.utilService.isMobility();
-            if (this.settingsCount < 1) {
+            if (this.settingsCount < 1 && this.isMobility) {
                 // add settings to the db from asset file
                 this.settingService.getAssetFile();
 
@@ -105,7 +101,10 @@ export class DMLESMobile implements OnInit {
                 }
             }); 
 
-            this.loginModalService.presentModal();
+            if (this.utilService.isProd() == false) {
+                this.rootPage = AppContainerComponent;
+                this.loginModalService.presentModal();
+            }            
         });
     }
     setLoggedInOutAreas() {

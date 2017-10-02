@@ -13,7 +13,7 @@ export class SecurityComponent {
     constructor(public navCtrl: NavController,
                 private loginModalService: LoginModalService,
                 private authService: AuthenticationService) {
-        // If logged in show area Logout, remove area Logout when logging out
+        // If logged in, show area Logout, remove area Logout when logging out
         this.authService.onLoggedIn().subscribe((loggedIn: boolean) => {
             if(loggedIn) {
                 this.navCtrl.setRoot(ScannerComponent, {isLoggedIn:true});

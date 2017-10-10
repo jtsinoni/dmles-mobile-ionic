@@ -4,6 +4,7 @@ import {NavController} from 'ionic-angular';
 import {LoginModalService} from "../../services/login-modal.service";
 import { AuthenticationService } from '../../services/authentication.service';
 import { ScannerComponent } from '../scanner/scanner.component';
+import { AppContainerComponent } from '../../app-container.component';
 
 @Component({
     selector: 'security',
@@ -22,6 +23,9 @@ export class SecurityComponent {
     }
 
     startApp() {
-        this.loginModalService.presentModal();
+        this.navCtrl.setRoot(AppContainerComponent)
+            .then(() => {
+                this.loginModalService.presentModal();
+            });
     }
 }

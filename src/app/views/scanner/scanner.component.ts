@@ -30,6 +30,8 @@ import { AppConfigConstants } from "../../constants/app-config.constants";
 import { AuthenticationService } from '../../services/authentication.service';
 import { LoginModalService } from '../../services/login-modal.service';
 
+import { DemoImageService } from "../../services/demo-image.service";
+
 @Component({
     selector: 'scanner-component',
     templateUrl: './scanner.component.html',
@@ -76,6 +78,7 @@ export class ScannerComponent extends Search implements OnInit {
         private authService: AuthenticationService,
         private params: NavParams,
         private loginModalService: LoginModalService,
+        private demoImageService: DemoImageService
     ) {
         super(loadingCtrl);
 
@@ -220,6 +223,7 @@ export class ScannerComponent extends Search implements OnInit {
     setResponse(response: any) {
         if (response) {
             this.item.setResults(response.total, response.took, response.hits.fields);
+            this.demoImageService.setCollectionImages(this.item.items);
         }
         this.item.resultReturned = true;
         this.loadingEnded();

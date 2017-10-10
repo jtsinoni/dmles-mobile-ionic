@@ -5,7 +5,7 @@
         <h4>Please login in.</h4>
         <button ion-button color="primary" block (click)="login()">Login</button>
     </div>
-</ion-content> 
+</ion-content>
 <ion-content>
     <ion-item>
         <ion-input type="text" focuser placeholder="Search" [(ngModel)]="searchValue" name="searchInput" clearInput (keyup.enter)="getSearchResults()"></ion-input>
@@ -59,10 +59,15 @@
     </ion-item>
 
     <ion-list [hidden]="item.items.length === 0" [virtualScroll]="item.items" approxItemHeight="50px">
-        <ion-item *virtualItem="let abiItem" >
+        <ion-item *virtualItem="let abiItem">
             <ion-grid>
-                <ion-row text-wrap>
-                    <ion-col class="ripple cursor" col-10 (tap)="showDetail(abiItem)" >
+                <ion-row text-wrap *ngIf="abiItem.imageUrl">
+                    <ion-col col-2 >
+                        <ion-avatar item-left>
+                            <img src="{{ abiItem.imageUrl }}">
+                        </ion-avatar>
+                    </ion-col>
+                    <ion-col class="ripple cursor" col-8 (tap)="showDetail(abiItem)">
                         <div class="longItemDescription">
                             <ion-icon [hidden]="!isPreferredItem(abiItem)" name="star"></ion-icon>
                             {{abiItem.longItemDescription}}
@@ -74,10 +79,26 @@
                             <span *ngIf="abiItem.manufacturerCatalogNumber">&nbsp;/&nbsp;{{abiItem.manufacturerCatalogNumber}}</span>
                         </ion-note>
                     </ion-col>
-                    <ion-col class="button" ion-button color="secondary" text-center col-2 (tap)="goToSiteCatalogRecords(abiItem)">
+                    <ion-col *ngIf="abiItem.siteCount > 0" class="button" ion-button color="secondary" text-center col-2 (tap)="goToSiteCatalogRecords(abiItem)">
                         {{abiItem.siteCount}}
                     </ion-col>
                 </ion-row>
+                <ion-row text-wrap *ngIf="!abiItem.imageUrl">
+                        <ion-col class="ripple cursor" col-10 (tap)="showDetail(abiItem)">
+                            <div class="longItemDescription">
+                                <ion-icon [hidden]="!isPreferredItem(abiItem)" name="star"></ion-icon>
+                                {{abiItem.longItemDescription}}
+                            </div>    
+                            <ion-note>
+                                <span>{{abiItem.manufacturer}}</span>
+                                <span *ngIf="abiItem.ndc">&nbsp;/&nbsp;{{abiItem.ndc}}</span>
+                                <span *ngIf="abiItem.manufacturerCatalogNumber">&nbsp;/&nbsp;{{abiItem.manufacturerCatalogNumber}}</span>
+                            </ion-note>
+                        </ion-col>
+                        <ion-col *ngIf="abiItem.siteCount > 0" class="button" ion-button color="secondary" text-center col-2 (tap)="goToSiteCatalogRecords(abiItem)">
+                            {{abiItem.siteCount}}
+                        </ion-col>
+                    </ion-row>
             </ion-grid>
         </ion-item>
     </ion-list>

@@ -59,6 +59,8 @@ export class ABiCatalogModel extends BaseDataTableModel {
     mmcProductIdentifier: string;
 
     isPreferredProduct: boolean = false;
+
+    imageUrl: string;
     
     // test input value, not an ABi data element
     quantity: number;

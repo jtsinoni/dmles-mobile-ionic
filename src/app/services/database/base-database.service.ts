@@ -80,8 +80,6 @@ export abstract class BaseDatabaseService<M extends BaseDataTableModel> {
                 this.onUpdateSubject.next(model);      
                 return value;    
             });
-        //this.onUpdateSubject.next(value);
-        //return Promise.resolve(this.dbTable.update(model.id, model));
     }
 
     getCount(): Promise<number> {

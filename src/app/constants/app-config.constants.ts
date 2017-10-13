@@ -19,8 +19,8 @@ export class AppConfigConstants {
 
     //TODO: get from UserForm, derived credentials, etc
     public static OAuth: any = {
-        userName:"",
-        password:""
+        userName:"user.admin.123",
+        password:"password"
     }
 
     public static indexedDatabase: any = {

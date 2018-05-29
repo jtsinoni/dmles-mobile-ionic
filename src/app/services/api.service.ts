@@ -70,6 +70,7 @@ export class ApiService {
     public getTokenViaOAuth(action: string, encodedDn: string): Observable<any> {
         let url: string = this.determineUrl(action);
         this.log.debug(`${this.apiServiceName} - BT getToken URL: ${url}`);
+        this.log.debug(`encodedDn => ${encodedDn}`);
 
         let headers:any = {'Content-Type': 'application/json',
                            'Authorization': 'Basic ' + encodedDn,

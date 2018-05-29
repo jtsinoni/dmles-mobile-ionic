@@ -195,7 +195,7 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
                     }
 
                     try {
-                        mKeyStore = KeyStore.getInstance("PKardClient", pkardSDK.getProviderName());
+                        mKeyStore = KeyStore.getInstance("PKardClient", "pkard");
                         mKeyStore.load(null, null);
 
                     } catch (Exception e) {
@@ -681,7 +681,8 @@ public class CDVCacReader extends CordovaPlugin implements PKardSDK.PKardSDKEven
             }
         }
 
-        SSLContext context = SSLContext.getInstance("TLS", pkardSDK.getProviderName());
+        // SSLContext context = SSLContext.getInstance("TLS", pkardSDK.getProviderName());
+        SSLContext context = SSLContext.getInstance("TLS", "pkard";
 
         // at last, initialize this context with our trust and keys
         context.init(mKeyManagers, mTrustManagers, null);

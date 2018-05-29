@@ -19,8 +19,8 @@ export class AppConfigConstants {
 
     //TODO: get from UserForm, derived credentials, etc
     public static OAuth: any = {
-        userName:"user.admin.123",
-        password:"password"
+        userName:"",
+        password:""
     }
 
     public static indexedDatabase: any = {
@@ -29,8 +29,8 @@ export class AppConfigConstants {
 
     public static messagingServer: any = {
         //host:"johns-macbook-pro.local",
-        host:"192.168.1.13",
-        //host:"192.168.43.242",
+        //host:"192.168.1.13",
+        host:"192.168.43.242",
         //host:"172.16.32.13",
         port:"9001",
         default:{topic:"logicole-mobile"},
